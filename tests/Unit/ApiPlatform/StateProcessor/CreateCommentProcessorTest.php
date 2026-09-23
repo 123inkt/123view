@@ -22,7 +22,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Service\CodeReview\Comment\CommentLocationResolver;
+use DR\Review\Service\CodeReview\Comment\CommentLocationValidator;
 use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
@@ -39,8 +39,8 @@ class CreateCommentProcessorTest extends AbstractTestCase
     private CodeReviewRepository&MockObject $reviewRepository;
     private CommentRepository&MockObject $commentRepository;
     private CodeReviewRevisionService&MockObject $revisionService;
-    private CommentLocationResolver&MockObject $locationResolver;
-    private LineReferenceFactory&MockObject $lineReferenceFactory;
+    private CommentLocationValidator&MockObject  $locationResolver;
+    private LineReferenceFactory&MockObject      $lineReferenceFactory;
     private UserEntityProvider&MockObject $userProvider;
     private CommentOutputFactory&MockObject $outputFactory;
     private CreateCommentProcessor $processor;
@@ -51,7 +51,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
         $this->reviewRepository      = $this->createMock(CodeReviewRepository::class);
         $this->commentRepository     = $this->createMock(CommentRepository::class);
         $this->revisionService       = $this->createMock(CodeReviewRevisionService::class);
-        $this->locationResolver      = $this->createMock(CommentLocationResolver::class);
+        $this->locationResolver      = $this->createMock(CommentLocationValidator::class);
         $this->lineReferenceFactory  = $this->createMock(LineReferenceFactory::class);
         $this->userProvider          = $this->createMock(UserEntityProvider::class);
         $this->outputFactory         = $this->createMock(CommentOutputFactory::class);
@@ -80,7 +80,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
         $this->reviewRepository->expects($this->once())->method('find')->with(20)->willReturn($review);
         $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn($user);
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$first, $latest]);
-        $this->locationResolver->expects($this->once())->method('resolve')->with($review, 'src/Foo.php', 42);
+        $this->locationResolver->expects($this->once())->method('validate')->with($review, 'src/Foo.php', 42);
         $this->lineReferenceFactory
             ->expects($this->once())
             ->method('createFromReview')
@@ -129,7 +129,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
         $this->revisionService->expects($this->once())->method('getRevisions')->willReturn([
             new Revision()->setRepository(new Repository())->setCommitHash('sha'),
         ]);
-        $this->locationResolver->expects($this->once())->method('resolve');
+        $this->locationResolver->expects($this->once())->method('validate');
         $this->lineReferenceFactory->expects($this->once())->method('createFromReview')->willReturn(new LineReference());
         $this->commentRepository->expects($this->once())->method('save');
         $this->outputFactory->expects($this->once())->method('create')->willReturn(static::createStub(CommentOutput::class));
@@ -147,7 +147,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
         $this->reviewRepository->expects($this->once())->method('find')->with(20)->willReturn(null);
         $this->revisionService->expects($this->never())->method('getRevisions');
         $this->userProvider->expects($this->never())->method('getCurrentUser');
-        $this->locationResolver->expects($this->never())->method('resolve');
+        $this->locationResolver->expects($this->never())->method('validate');
         $this->lineReferenceFactory->expects($this->never())->method('createFromReview');
         $this->commentRepository->expects($this->never())->method('save');
         $this->outputFactory->expects($this->never())->method('create');
@@ -162,7 +162,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
         $this->reviewRepository->expects($this->once())->method('find')->willReturn($review);
         $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([]);
         $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn(new User());
-        $this->locationResolver->expects($this->never())->method('resolve');
+        $this->locationResolver->expects($this->never())->method('validate');
         $this->commentRepository->expects($this->never())->method('save');
         $this->lineReferenceFactory->expects($this->never())->method('createFromReview');
         $this->outputFactory->expects($this->never())->method('create');
@@ -179,7 +179,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
             new Revision()->setRepository(new Repository())->setCommitHash('sha'),
         ]);
         $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn(new User());
-        $this->locationResolver->expects($this->once())->method('resolve')->willThrowException(new UnprocessableEntityHttpException());
+        $this->locationResolver->expects($this->once())->method('validate')->willThrowException(new UnprocessableEntityHttpException());
         $this->lineReferenceFactory->expects($this->never())->method('createFromReview');
         $this->commentRepository->expects($this->never())->method('save');
         $this->outputFactory->expects($this->never())->method('create');
@@ -196,7 +196,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
             new Revision()->setRepository(new Repository())->setCommitHash('sha'),
         ]);
         $this->userProvider->expects($this->once())->method('getCurrentUser')->willReturn(new User());
-        $this->locationResolver->expects($this->once())->method('resolve');
+        $this->locationResolver->expects($this->once())->method('validate');
         $this->lineReferenceFactory->expects($this->once())->method('createFromReview')->willReturn(new LineReference());
         $this->commentRepository->expects($this->once())->method('save');
         $this->outputFactory->expects($this->once())->method('create')->willReturn(static::createStub(CommentOutput::class));

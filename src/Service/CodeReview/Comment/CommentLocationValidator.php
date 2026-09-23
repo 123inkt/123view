@@ -9,7 +9,7 @@ use DR\Review\Service\CodeReview\CodeReviewDiffService;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
 
-readonly class CommentLocationResolver
+readonly class CommentLocationValidator
 {
     public function __construct(private CodeReviewDiffService $diffService)
     {
@@ -18,7 +18,7 @@ readonly class CommentLocationResolver
     /**
      * @throws UnprocessableEntityHttpException|Throwable
      */
-    public function resolve(CodeReview $review, string $filepath, int $line): void
+    public function validate(CodeReview $review, string $filepath, int $line): void
     {
         foreach ($this->diffService->getDiff($review) as $diffFile) {
             // check filename against the "recent" file name and line numbers

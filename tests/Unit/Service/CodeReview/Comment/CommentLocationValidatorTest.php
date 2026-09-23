@@ -9,23 +9,23 @@ use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\CodeReview\CodeReviewDiffService;
-use DR\Review\Service\CodeReview\Comment\CommentLocationResolver;
+use DR\Review\Service\CodeReview\Comment\CommentLocationValidator;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-#[CoversClass(CommentLocationResolver::class)]
-class CommentLocationResolverTest extends AbstractTestCase
+#[CoversClass(CommentLocationValidator::class)]
+class CommentLocationValidatorTest extends AbstractTestCase
 {
     private CodeReviewDiffService&MockObject $diffService;
-    private CommentLocationResolver $resolver;
+    private CommentLocationValidator $resolver;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->diffService = $this->createMock(CodeReviewDiffService::class);
-        $this->resolver    = new CommentLocationResolver($this->diffService);
+        $this->resolver    = new CommentLocationValidator($this->diffService);
     }
 
     public function testResolvesExactNewSidePathAndLine(): void
@@ -37,7 +37,7 @@ class CommentLocationResolverTest extends AbstractTestCase
 
         $this->diffService->expects($this->once())->method('getDiff')->with($review)->willReturn([$file]);
 
-        $this->resolver->resolve($review, 'src/Foo.php', 5);
+        $this->resolver->validate($review, 'src/Foo.php', 5);
     }
 
     public function testRejectsOldPathOfRenamedFile(): void
@@ -47,7 +47,7 @@ class CommentLocationResolverTest extends AbstractTestCase
             $this->createDiffFile('src/Old.php', 'src/New.php', [$this->createLine(DiffLine::STATE_CHANGED, 1, 1)]),
         ]);
 
-        $this->resolver->resolve(new CodeReview(), 'src/Old.php', 1);
+        $this->resolver->validate(new CodeReview(), 'src/Old.php', 1);
     }
 
     public function testRejectsDeletedFile(): void
@@ -57,7 +57,7 @@ class CommentLocationResolverTest extends AbstractTestCase
             $this->createDiffFile('src/Foo.php', null, [$this->createLine(DiffLine::STATE_REMOVED, 1, null)]),
         ]);
 
-        $this->resolver->resolve(new CodeReview(), 'src/Foo.php', 1);
+        $this->resolver->validate(new CodeReview(), 'src/Foo.php', 1);
     }
 
     public function testRejectsRemovedOnlyLine(): void
@@ -67,7 +67,7 @@ class CommentLocationResolverTest extends AbstractTestCase
             $this->createDiffFile('src/Foo.php', 'src/Foo.php', [$this->createLine(DiffLine::STATE_REMOVED, 1, null)]),
         ]);
 
-        $this->resolver->resolve(new CodeReview(), 'src/Foo.php', 1);
+        $this->resolver->validate(new CodeReview(), 'src/Foo.php', 1);
     }
 
     public function testRejectsLineNotPresentInTheFileBlocks(): void
@@ -77,7 +77,7 @@ class CommentLocationResolverTest extends AbstractTestCase
             $this->createDiffFile('src/Foo.php', 'src/Foo.php', [$this->createLine(DiffLine::STATE_UNCHANGED, 1, 1)]),
         ]);
 
-        $this->resolver->resolve(new CodeReview(), 'src/Foo.php', 2);
+        $this->resolver->validate(new CodeReview(), 'src/Foo.php', 2);
     }
 
     /**

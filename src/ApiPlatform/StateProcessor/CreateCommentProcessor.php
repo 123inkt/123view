@@ -17,7 +17,7 @@ use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Review\Service\CodeReview\Comment\CommentLocationResolver;
+use DR\Review\Service\CodeReview\Comment\CommentLocationValidator;
 use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Arrays;
@@ -38,7 +38,7 @@ class CreateCommentProcessor implements ProcessorInterface
         private readonly CodeReviewRepository $reviewRepository,
         private readonly CommentRepository $commentRepository,
         private readonly CodeReviewRevisionService $reviewRevisionService,
-        private readonly CommentLocationResolver $locationResolver,
+        private readonly CommentLocationValidator $locationResolver,
         private readonly LineReferenceFactory $lineReferenceFactory,
         private readonly UserEntityProvider $userProvider,
         private readonly CommentOutputFactory $commentOutputFactory,
@@ -75,7 +75,7 @@ class CreateCommentProcessor implements ProcessorInterface
         $tag      = $data->tag === null ? null : CommentTagEnum::from($data->tag);
 
         // validate location is valid
-        $this->locationResolver->resolve($review, $filepath, $line);
+        $this->locationResolver->validate($review, $filepath, $line);
 
         $comment = new Comment();
         $comment->setReview($review);
