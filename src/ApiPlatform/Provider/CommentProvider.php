@@ -13,7 +13,6 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentVisibility;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Assert;
-use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -37,10 +36,7 @@ readonly class CommentProvider implements ProviderInterface
      */
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): CommentOutput
     {
-        if ($operation instanceof Get === false) {
-            throw new InvalidArgumentException('Only Get operation is supported');
-        }
-
+        Assert::isInstanceOf($operation, Get::class, 'Only Get operation is supported');
         $id = (int)Assert::numeric($uriVariables['id']);
 
         $comment = $this->commentRepository->find($id);

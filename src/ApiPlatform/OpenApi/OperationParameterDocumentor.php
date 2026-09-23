@@ -40,7 +40,19 @@ class OperationParameterDocumentor
             'updateTimestamp[gte]'     => 'Search for updateTimestamp greater or equal than the value',
             'updateTimestamp[lt]'      => 'Search for updateTimestamp lesser than the value',
             'updateTimestamp[lte]'     => 'Search for updateTimestamp lesser or equal than the value',
-        ]
+        ],
+        'api_comments_get_collection' => [
+            'user.id'                => 'Exact search for the comment author id',
+            'review.id'              => 'Exact search for the review id of the comment',
+            'exact[filepath]'        => 'Exact search for the comment filepath',
+            'order[id]'              => 'Order by comment id',
+            'order[user.id]'         => 'Order by comment author id',
+            'order[review.id]'       => 'Order by comment review id',
+            'order[filepath]'        => 'Order by comment filepath',
+            'order[state]'           => 'Order by comment state',
+            'order[createTimestamp]' => 'Order by comment creation timestamp',
+            'order[updateTimestamp]' => 'Order by comment update timestamp',
+        ],
     ];
 
     public function getDescription(Operation $operation, Parameter $parameter): string

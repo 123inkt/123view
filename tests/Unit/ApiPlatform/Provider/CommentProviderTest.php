@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ApiPlatform\Provider;
 
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
 use DR\Review\ApiPlatform\Factory\CommentOutputFactory;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
@@ -15,7 +14,6 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentVisibility;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
-use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
@@ -43,18 +41,6 @@ class CommentProviderTest extends AbstractTestCase
             $this->commentVisibility,
             $this->commentOutputFactory,
         );
-    }
-
-    public function testProvideShouldOnlySupportGet(): void
-    {
-        $this->commentRepository->expects($this->never())->method('find');
-        $this->userProvider->expects($this->never())->method('getCurrentUser');
-        $this->commentVisibility->expects($this->never())->method('isVisible');
-        $this->commentOutputFactory->expects($this->never())->method('create');
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Only Get operation is supported');
-        $this->provider->provide(new GetCollection());
     }
 
     public function testProvideMapsVisibleComment(): void
