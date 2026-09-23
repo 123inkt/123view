@@ -49,7 +49,7 @@ class UpdateCommentInput
 
     public function hasChanges(): bool
     {
-        return isset($this->message, $this->state) || $this->tagProvided;
+        return isset($this->message) || isset($this->state) || $this->tagProvided;
     }
 
     #[Assert\Callback]
