@@ -177,9 +177,7 @@ class PostControllerTest extends AbstractApiTestCase
 
     private function getCurrentUserId(): int
     {
-        $user = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']));
-
-        return $user->getId();
+        return Assert::notNull(self::getService(UserRepository::class)->findOneBy(['email' => 'sherlock@example.com']))->getId();
     }
 
     /**
