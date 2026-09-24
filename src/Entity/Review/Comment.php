@@ -8,6 +8,7 @@ use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,10 +16,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Input\CreateCommentInput;
+use DR\Review\ApiPlatform\Input\UpdateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentProcessor;
+use DR\Review\ApiPlatform\StateProcessor\UpdateCommentProcessor;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Doctrine\Type\CommentTypeType;
@@ -70,10 +73,24 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     read                        : false,
     processor                   : CreateCommentProcessor::class,
 )]
+#[Patch(
+    uriTemplate                 : '/comments/{id}',
+    requirements                : ['id' => '\\d+'],
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    collectDenormalizationErrors: true,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : UpdateCommentInput::class,
+    output                      : CommentOutput::class,
+    read                        : false,
+    processor                   : UpdateCommentProcessor::class,
+)]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
 class Comment
 {
+    public const int MAX_COMMENT_LENGTH = 2000;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -82,7 +99,7 @@ class Comment
     #[ORM\Column(type: 'string', length: 500)]
     private string $filePath;
 
-    #[ORM\Column(type: 'string', length: 2000)]
+    #[ORM\Column(type: 'string', length: self::MAX_COMMENT_LENGTH)]
     private string $lineReference;
 
     #[ORM\Column(type: CommentStateType::TYPE, enumType: CommentStateEnum::class, options: ['default' => CommentStateEnum::Open->value])]

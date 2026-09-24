@@ -103,6 +103,7 @@ class CreateCommentProcessorTest extends AbstractTestCase
                 self::assertSame(CommentTypeEnum::Final, $comment->getType());
                 self::assertSame(CommentStateEnum::Open, $comment->getState());
                 self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
+                self::assertSame(0, $comment->getNotificationStatus()->getStatus());
 
                 return true;
             }))
