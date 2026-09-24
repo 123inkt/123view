@@ -21,6 +21,7 @@ use DR\Review\ApiPlatform\Input\UpdateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
+use DR\Review\ApiPlatform\Provider\DeleteCommentProvider;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentProcessor;
 use DR\Review\ApiPlatform\StateProcessor\DeleteCommentProcessor;
 use DR\Review\ApiPlatform\StateProcessor\UpdateCommentProcessor;
@@ -30,6 +31,7 @@ use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Security\Voter\CommentVoter;
 use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -91,9 +93,10 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     uriTemplate: '/comments/{id}',
     requirements: ['id' => '\\d+'],
     status: 204,
-    security: 'is_granted("' . Roles::ROLE_USER . '")',
+    security: 'is_granted("' . Roles::ROLE_USER . '") and is_granted("' . CommentVoter::DELETE . '", object)',
     output: false,
-    read: false,
+    read: true,
+    provider: DeleteCommentProvider::class,
     processor: DeleteCommentProcessor::class,
 )]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]

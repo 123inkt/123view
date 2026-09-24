@@ -120,6 +120,15 @@ class DeleteControllerTest extends AbstractApiTestCase
         $this->assertThreadExists($comment);
     }
 
+    public function testAuthorCanDeleteFinalComment(): void
+    {
+        $comment = $this->getComment('patch author final');
+
+        $response = $this->delete($comment->getId());
+
+        self::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode(), $response->getContent(false));
+    }
+
     public function testAnotherUsersDraftIsHidden(): void
     {
         $comment = $this->getComment('patch other draft');
