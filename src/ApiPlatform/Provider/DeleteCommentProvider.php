@@ -37,13 +37,8 @@ readonly class DeleteCommentProvider implements ProviderInterface
         Assert::isInstanceOf($operation, Delete::class, 'Only Delete operation is supported.');
 
         $comment = $this->commentRepository->find((int)Assert::numeric($uriVariables['id']));
-        if ($comment === null) {
-            throw new NotFoundHttpException('Comment not found.');
-        }
-
-        // Let operation security produce the normal unauthenticated response.
-        $user = $this->userProvider->getUser();
-        if ($user === null || $this->commentVisibility->isVisible($comment, $user) === false) {
+        $user    = $this->userProvider->getUser();
+        if ($user === null || $comment === null || $this->commentVisibility->isVisible($comment, $user) === false) {
             throw new NotFoundHttpException('Comment not found.');
         }
 
