@@ -103,6 +103,7 @@
         "twig/twig": "^3.23"
     },
     "require-dev": {
+        "api-platform/test": "^5.0",
         "digitalrevolution/accessorpair-constraint": "^2.7",
         "digitalrevolution/phpunit-extensions": "^1.13",
         "digitalrevolution/phpunit-file-coverage-inspection": "^3.1",
