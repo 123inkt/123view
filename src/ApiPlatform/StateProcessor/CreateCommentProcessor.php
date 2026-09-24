@@ -71,8 +71,6 @@ class CreateCommentProcessor implements ProcessorInterface
         $user     = $this->userProvider->getCurrentUser();
         $message  = trim($data->message);
         $filepath = trim($data->filepath);
-        $line     = $data->line;
-        $tag      = $data->tag === null ? null : CommentTagEnum::from($data->tag);
 
         // validate location is valid
         $this->locationResolver->validate($review, $filepath, $data->line);
