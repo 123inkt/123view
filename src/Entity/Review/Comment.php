@@ -21,7 +21,6 @@ use DR\Review\ApiPlatform\Input\UpdateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
-use DR\Review\ApiPlatform\Provider\DeleteCommentProvider;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentProcessor;
 use DR\Review\ApiPlatform\StateProcessor\DeleteCommentProcessor;
 use DR\Review\ApiPlatform\StateProcessor\UpdateCommentProcessor;

@@ -3,12 +3,36 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Output\CommentReplyOutput;
+use DR\Review\ApiPlatform\Provider\CommentReplyCollectionProvider;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentReplyRepository;
+use DR\Review\Security\Role\Roles;
 
+#[GetCollection(
+    paginationEnabled           : true,
+    paginationClientEnabled     : false,
+    paginationClientItemsPerPage: true,
+    order                       : ['createTimestamp' => 'ASC', 'id' => 'ASC'],
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output                      : CommentReplyOutput::class,
+    provider                    : CommentReplyCollectionProvider::class,
+    parameters                  : [
+        'comment.id'              => new QueryParameter(filter: new ExactFilter(), property: 'comment.id'),
+        'order[id]'                => new QueryParameter(filter: new SortFilter(), property: 'id'),
+        'order[comment.id]'        => new QueryParameter(filter: new SortFilter(), property: 'comment.id'),
+        'order[user.id]'           => new QueryParameter(filter: new SortFilter(), property: 'user.id'),
+        'order[createTimestamp]'   => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
+        'order[updateTimestamp]'   => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),
+    ],
+)]
 #[ORM\Entity(repositoryClass: CommentReplyRepository::class)]
 class CommentReply
 {
