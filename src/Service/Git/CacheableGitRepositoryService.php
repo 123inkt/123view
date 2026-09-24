@@ -7,22 +7,20 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Model\Git\GitRepository;
 
-class CacheableGitRepositoryService extends GitRepositoryService
+class CacheableGitRepositoryService
 {
     /** @var array<int, GitRepository> */
     private array $repositories = [];
+
+    public function __construct(private readonly GitRepositoryService $gitRepositoryService)
+    {
+    }
 
     /**
      * @throws RepositoryException
      */
     public function getRepository(Repository $repository): GitRepository
     {
-        $repositoryId = $repository->getId();
-
-        if (isset($this->repositories[$repositoryId]) === false) {
-            $this->repositories[$repositoryId] = parent::getRepository($repository);
-        }
-
-        return $this->repositories[$repositoryId];
+        return $this->repositories[$repository->getId()] ??= $this->gitRepositoryService->getRepository($repository);
     }
 }
