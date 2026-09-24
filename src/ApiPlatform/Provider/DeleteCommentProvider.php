@@ -43,7 +43,7 @@ readonly class DeleteCommentProvider implements ProviderInterface
 
         // Let operation security produce the normal unauthenticated response.
         $user = $this->userProvider->getUser();
-        if ($user !== null && $this->commentVisibility->isVisible($comment, $user) === false) {
+        if ($user === null || $this->commentVisibility->isVisible($comment, $user) === false) {
             throw new NotFoundHttpException('Comment not found.');
         }
 
