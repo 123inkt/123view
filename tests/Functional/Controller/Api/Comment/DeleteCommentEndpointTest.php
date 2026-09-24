@@ -62,13 +62,13 @@ class DeleteCommentEndpointTest extends AbstractApiTestCase
         $this->assertThreadExists($comment);
     }
 
-    private function delete(int $id, ?string $token = UserAccessTokenFixtures::TOKEN_VALUE): ApiResponse
+    private function delete(int $id): ApiResponse
     {
         return Assert::isInstanceOf(
             $this->client->request(
                 Request::METHOD_DELETE,
                 '/api/comments/' . $id,
-                ['headers' => ['authorization' => 'Bearer ' . $token],]
+                ['headers' => ['authorization' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE],]
             ),
             ApiResponse::class
         );

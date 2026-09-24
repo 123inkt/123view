@@ -96,7 +96,6 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     security: 'is_granted("' . Roles::ROLE_USER . '") and is_granted("' . CommentVoter::DELETE . '", object)',
     output: false,
     read: true,
-    provider: DeleteCommentProvider::class,
     processor: DeleteCommentProcessor::class,
 )]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
