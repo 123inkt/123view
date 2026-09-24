@@ -6,10 +6,10 @@ namespace DR\Review\Tests\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
@@ -60,13 +60,7 @@ class PatchCommentApiFixtures extends Fixture implements DependentFixtureInterfa
         return [CommentApiFixtures::class, UserAccessTokenFixtures::class];
     }
 
-    private function insertComment(
-        \Doctrine\DBAL\Connection $connection,
-        int $userId,
-        int $reviewId,
-        string $message,
-        CommentTypeEnum $type,
-    ): void
+    private function insertComment(Connection $connection, int $userId, int $reviewId, string $message, CommentTypeEnum $type,): void
     {
         $connection->insert('comment', [
             'file_path'           => 'src/Foo.php',

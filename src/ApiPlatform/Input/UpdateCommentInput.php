@@ -15,9 +15,9 @@ class UpdateCommentInput
     #[Assert\When('this.hasMessage()', new Assert\NotBlank(normalizer: 'trim'))]
     #[Assert\Length(max: Comment::MAX_COMMENT_LENGTH)]
     public string           $message;
+    public CommentStateEnum $state;
     private bool            $tagProvided = false;
     private ?CommentTagEnum $tag;
-    public CommentStateEnum $state;
 
     public function hasMessage(): bool
     {
