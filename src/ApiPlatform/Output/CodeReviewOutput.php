@@ -20,6 +20,7 @@ class CodeReviewOutput
         public readonly string $url,
         public readonly string $state,
         public readonly string $reviewerState,
+        public readonly ?array $revisions,
         public readonly ?array $authors,
         public readonly ?array $reviewers,
         public readonly int $createTimestamp,

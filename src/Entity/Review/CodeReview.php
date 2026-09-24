@@ -7,7 +7,7 @@ use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -27,21 +27,22 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource(
-    operations: [
-        new GetCollection(
-            order   : ['updateTimestamp' => 'DESC'],
-            security: 'is_granted("' . Roles::ROLE_USER . '")',
-            output  : CodeReviewOutput::class,
-            provider: CodeReviewProvider::class
-        ),
-        new Patch(
-            normalizationContext  : ['groups' => ['code_review_write']],
-            denormalizationContext: ['groups' => ['code_review_write']],
-            security              : 'is_granted("' . Roles::ROLE_USER . '")',
-            processor             : CodeReviewProcessor::class
-        )
-    ]
+#[Get(
+    security: 'is_granted("' . Roles::ROLE_USER . '")',
+    output  : CodeReviewOutput::class,
+    provider: CodeReviewProvider::class
+)]
+#[GetCollection(
+    order   : ['updateTimestamp' => 'DESC'],
+    security: 'is_granted("' . Roles::ROLE_USER . '")',
+    output  : CodeReviewOutput::class,
+    provider: CodeReviewProvider::class
+)]
+#[Patch(
+    normalizationContext  : ['groups' => ['code_review_write']],
+    denormalizationContext: ['groups' => ['code_review_write']],
+    security              : 'is_granted("' . Roles::ROLE_USER . '")',
+    processor             : CodeReviewProcessor::class
 )]
 #[ApiFilter(
     SearchFilter::class,
