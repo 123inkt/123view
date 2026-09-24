@@ -41,8 +41,8 @@ class DeleteControllerTest extends AbstractApiTestCase
         static::getContainer()->set(MessageBusInterface::class, $bus);
 
         $commentRepository = static::getContainer()->get(CommentRepository::class);
-        $targetComment = Assert::isInstanceOf($commentRepository, CommentRepository::class)->findOneBy(['message' => 'patch author final']);
-        $unrelatedComment = Assert::isInstanceOf($commentRepository, CommentRepository::class)->findOneBy(['message' => 'patch other final']);
+        $targetComment     = Assert::isInstanceOf($commentRepository, CommentRepository::class)->findOneBy(['message' => 'patch author final']);
+        $unrelatedComment  = Assert::isInstanceOf($commentRepository, CommentRepository::class)->findOneBy(['message' => 'patch other final']);
         self::assertInstanceOf(Comment::class, $targetComment);
         self::assertInstanceOf(Comment::class, $unrelatedComment);
 
@@ -53,16 +53,16 @@ class DeleteControllerTest extends AbstractApiTestCase
         $this->entityManager?->flush();
         $this->addMention($targetComment->getId(), $unrelatedComment->getUser()->getId());
         $this->addMention($unrelatedComment->getId(), $targetComment->getUser()->getId());
-        self::assertSame(1, $this->countRows('user_mention', 'comment_id', $targetComment->getId()));
-        self::assertSame(1, $this->countRows('user_mention', 'comment_id', $unrelatedComment->getId()));
+        self::assertSame(1, $this->countRows('user_mention', $targetComment->getId()));
+        self::assertSame(1, $this->countRows('user_mention', $unrelatedComment->getId()));
         $this->entityManager?->clear();
     }
 
     public function testAuthorDeletesFinalCommentThread(): void
     {
-        $comment = $this->getComment('patch author final');
-        $unrelatedComment = $this->getComment('patch other final');
-        $commentId = $comment->getId();
+        $comment            = $this->getComment('patch author final');
+        $unrelatedComment   = $this->getComment('patch other final');
+        $commentId          = $comment->getId();
         $unrelatedCommentId = $unrelatedComment->getId();
         self::assertCount(
             1,
@@ -82,23 +82,22 @@ class DeleteControllerTest extends AbstractApiTestCase
 
         $this->entityManager?->clear();
         $commentRepository = self::getService(CommentRepository::class);
-        $replyRepository = self::getService(CommentReplyRepository::class);
+        $replyRepository   = self::getService(CommentReplyRepository::class);
 
         self::assertNull($commentRepository->find($commentId));
-        self::assertSame(0, $this->countRows('comment_reply', 'comment_id', $commentId));
-        self::assertSame(0, $this->countRows('user_mention', 'comment_id', $commentId));
+        self::assertSame(0, $this->countRows('comment_reply', $commentId));
+        self::assertSame(0, $this->countRows('user_mention', $commentId));
 
         $unrelatedComment = Assert::notNull($commentRepository->find($unrelatedCommentId));
         self::assertSame('patch other final', $unrelatedComment->getMessage());
         self::assertCount(1, $replyRepository->findBy(['comment' => $unrelatedComment]));
-        self::assertSame(1, $this->countRows('user_mention', 'comment_id', $unrelatedCommentId));
+        self::assertSame(1, $this->countRows('user_mention', $unrelatedCommentId));
     }
 
     public function testAuthorDeletesOwnDraft(): void
     {
-        $comment = $this->getComment('patch author draft');
+        $comment   = $this->getComment('patch author draft');
         $commentId = $comment->getId();
-
         $response = $this->delete($comment->getId());
 
         self::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode(), $response->getContent(false));
@@ -106,7 +105,7 @@ class DeleteControllerTest extends AbstractApiTestCase
         self::assertCount(0, $this->dispatchedMessages, 'Draft comment removal events remain suppressed.');
         $this->entityManager?->clear();
         self::assertNull(self::getService(CommentRepository::class)->find($commentId));
-        self::assertSame(0, $this->countRows('user_mention', 'comment_id', $commentId));
+        self::assertSame(0, $this->countRows('user_mention', $commentId));
     }
 
     public function testAnotherUserCannotDeleteFinalComment(): void
@@ -152,7 +151,7 @@ class DeleteControllerTest extends AbstractApiTestCase
 
     public function testUnauthenticatedRequestReturns401(): void
     {
-        $comment = $this->getComment('patch author final');
+        $comment  = $this->getComment('patch author final');
         $response = $this->client->request(Request::METHOD_DELETE, '/api/comments/' . $comment->getId());
 
         self::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), $response->getContent(false));
@@ -162,6 +161,7 @@ class DeleteControllerTest extends AbstractApiTestCase
 
     /**
      * @param class-string $messageType
+     *
      * @return list<object>
      */
     private function messagesOfType(string $messageType): array
@@ -189,7 +189,7 @@ class DeleteControllerTest extends AbstractApiTestCase
         self::assertCount(2, self::getService(CommentReplyRepository::class)->findBy(['comment' => $comment]));
         self::assertSame(
             1,
-            $this->countRows('user_mention', 'comment_id', $commentId),
+            $this->countRows('user_mention', $commentId),
         );
     }
 
@@ -214,10 +214,10 @@ class DeleteControllerTest extends AbstractApiTestCase
         ]);
     }
 
-    private function countRows(string $table, string $column, int $commentId): int
+    private function countRows(string $table, int $commentId): int
     {
         $count = $this->entityManager?->getConnection()->fetchOne(
-            sprintf('SELECT COUNT(*) FROM %s WHERE %s = ?', $table, $column),
+            sprintf('SELECT COUNT(*) FROM %s WHERE %s = ?', $table, 'comment_id'),
             [$commentId],
         );
 
