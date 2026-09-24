@@ -15,6 +15,7 @@ return App::config([
             'versions' => [3],
             'api_keys' => ['Bearer' => ['name' => 'Authorization', 'type' => 'header']],
         ],
+        'jsonapi'                     => ['use_iri_as_id' => false],
         'mercure'                     => ['enabled' => false],
         'messenger'                   => ['enabled' => false],
         'formats'                     => [

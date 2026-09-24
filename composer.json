@@ -38,7 +38,8 @@
         "ext-intl": "*",
         "ext-mbstring": "*",
         "ext-zlib": "*",
-        "api-platform/core": "^4.2",
+        "api-platform/doctrine-orm": "^5.0",
+        "api-platform/symfony": "^5.0",
         "digitalrevolution/jbdiff": "^1.2",
         "digitalrevolution/symfony-console-validation": "^2.0",
         "digitalrevolution/symfony-request-validation": "^3.0",
@@ -102,6 +103,7 @@
         "twig/twig": "^3.23"
     },
     "require-dev": {
+        "api-platform/test": "^5.0",
         "digitalrevolution/accessorpair-constraint": "^2.7",
         "digitalrevolution/phpunit-extensions": "^1.13",
         "digitalrevolution/phpunit-file-coverage-inspection": "^3.1",

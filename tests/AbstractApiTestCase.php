@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests;
 
-use ApiPlatform\Symfony\Bundle\Test\ApiTestCase as BaseApiTestCase;
-use ApiPlatform\Symfony\Bundle\Test\Client;
+use ApiPlatform\Test\ApiTestCase;
+use ApiPlatform\Test\Client;
 use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,7 +14,7 @@ use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
 use Throwable;
 
-abstract class AbstractApiTestCase extends BaseApiTestCase
+abstract class AbstractApiTestCase extends ApiTestCase
 {
     protected ?AbstractDatabaseTool   $databaseTool;
     protected ?EntityManagerInterface $entityManager;
