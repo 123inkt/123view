@@ -43,7 +43,7 @@ class PatchControllerTest extends AbstractApiTestCase
         static::getContainer()->set(MessageBusInterface::class, $bus);
     }
 
-    public function testAuthorChangesMessageAndOmittedTagRemainsUnchanged(): void
+    public function testAuthorMessageKeepsOmittedTag(): void
     {
         $comment = $this->getComment('patch author final');
 
@@ -77,7 +77,7 @@ class PatchControllerTest extends AbstractApiTestCase
         self::assertNull($this->reload($comment)->getTag());
     }
 
-    public function testAuthorCanPatchMessageTagAndStateTogether(): void
+    public function testAuthorPatchesMessageTagAndState(): void
     {
         $comment = $this->getComment('patch author final');
 
@@ -91,7 +91,7 @@ class PatchControllerTest extends AbstractApiTestCase
         self::assertInstanceOf(CommentResolved::class, $messages[1]);
     }
 
-    public function testAnyAuthenticatedUserCanResolveAndReopenFinalComment(): void
+    public function testOtherUserTogglesFinalCommentState(): void
     {
         $comment = $this->getComment('patch author final');
 
@@ -129,7 +129,7 @@ class PatchControllerTest extends AbstractApiTestCase
         self::assertSame($original, $comment->getUpdateTimestamp());
     }
 
-    public function testMixedNonAuthorUpdateIsDeniedAtomically(): void
+    public function testMixedNonAuthorUpdateFailsAtomically(): void
     {
         $comment = $this->getComment('patch author final');
         $originalTimestamp = $comment->getUpdateTimestamp();
@@ -147,7 +147,7 @@ class PatchControllerTest extends AbstractApiTestCase
         self::assertSame($originalTimestamp, $comment->getUpdateTimestamp());
     }
 
-    public function testAuthorCanEditOwnDraftButCannotChangeItsState(): void
+    public function testAuthorEditsOwnDraftButNotState(): void
     {
         $comment = $this->getComment('patch author draft');
 
@@ -166,7 +166,7 @@ class PatchControllerTest extends AbstractApiTestCase
         self::assertSame($timestamp, $comment->getUpdateTimestamp());
     }
 
-    public function testForeignDraftIsNotFoundBeforeAuthorization(): void
+    public function testForeignDraftNotFoundBeforeAuth(): void
     {
         $comment = $this->getComment('patch other draft');
 
@@ -176,7 +176,7 @@ class PatchControllerTest extends AbstractApiTestCase
         self::assertSame('patch other draft', $this->reload($comment)->getMessage());
     }
 
-    public function testEveryValidMutationRefreshesTimestampEvenWhenValueIsUnchanged(): void
+    public function testUnchangedValueRefreshesTimestamp(): void
     {
         $comment = $this->getComment('patch author final');
         $originalTimestamp = $comment->getUpdateTimestamp();
@@ -288,6 +288,7 @@ class PatchControllerTest extends AbstractApiTestCase
      */
     private function assertPatchJsonContains(array $expectedFields): void
     {
+        /** @var array<string, mixed> $response */
         $response = Json::decode($this->getBrowserResponseContent(), true);
         foreach ($expectedFields as $field => $value) {
             self::assertArrayHasKey($field, $response);

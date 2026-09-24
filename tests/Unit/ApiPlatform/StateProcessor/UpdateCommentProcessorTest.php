@@ -46,9 +46,9 @@ class UpdateCommentProcessorTest extends AbstractTestCase
     {
         parent::setUp();
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->userProvider      = $this->createStub(UserEntityProvider::class);
-        $this->commentVisibility = $this->createStub(CommentVisibility::class);
-        $this->outputFactory     = $this->createStub(CommentOutputFactory::class);
+        $this->userProvider      = static::createStub(UserEntityProvider::class);
+        $this->commentVisibility = static::createStub(CommentVisibility::class);
+        $this->outputFactory     = static::createStub(CommentOutputFactory::class);
         $this->processor         = new UpdateCommentProcessor(
             $this->commentRepository,
             $this->userProvider,
@@ -80,7 +80,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         });
     }
 
-    public function testAppliesCombinedAuthorUpdateAndSavesOnce(): void
+    public function testSavesCombinedAuthorUpdateOnce(): void
     {
         $input          = $this->input('  Updated comment  ');
         $input->setTag(null);
@@ -89,8 +89,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
             $this->saved = true;
             $this->saveCount++;
         });
-        $output = $this->processor->process($input, new Patch(), ['id' => '123']);
-        self::assertInstanceOf(CommentOutput::class, $output);
+        $this->processor->process($input, new Patch(), ['id' => '123']);
         self::assertSame(1, $this->saveCount);
         self::assertSame('Updated comment', $this->comment->getMessage());
         self::assertNull($this->comment->getTag());
@@ -98,7 +97,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         self::assertSame(self::time(), $this->comment->getUpdateTimestamp());
     }
 
-    public function testAllowsNonAuthorToChangeFinalCommentState(): void
+    public function testNonAuthorCanChangeFinalState(): void
     {
         $this->currentUser = new User()->setId(20);
         $input             = new UpdateCommentInput();
@@ -117,7 +116,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         self::assertSame(self::time(), $this->comment->getUpdateTimestamp());
     }
 
-    public function testRejectsMixedNonAuthorUpdateBeforeMutationOrSave(): void
+    public function testMixedNonAuthorUpdateFailsAtomically(): void
     {
         $this->currentUser = new User()->setId(20);
         $input             = $this->input('Unauthorized edit');
@@ -135,7 +134,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         }
     }
 
-    public function testRejectsStateChangeOnDraftBeforeMutationOrSave(): void
+    public function testRejectsDraftStateChangeBeforeSave(): void
     {
         $this->comment->setType(CommentTypeEnum::Draft);
         $input        = new UpdateCommentInput();

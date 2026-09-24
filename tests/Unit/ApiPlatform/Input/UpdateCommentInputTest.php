@@ -41,7 +41,7 @@ class UpdateCommentInputTest extends AbstractTestCase
         static::assertTrue($input->hasChanges());
     }
 
-    public function testTracksWhetherTagWasProvidedAndReturnsItsValue(): void
+    public function testTracksProvidedTagAndItsValue(): void
     {
         $input = new UpdateCommentInput();
 

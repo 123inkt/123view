@@ -50,8 +50,7 @@ class UpdateCommentProcessor implements ProcessorInterface
         Assert::isInstanceOf($data, UpdateCommentInput::class);
         Assert::isInstanceOf($operation, Patch::class, 'Only Patch operation is supported.');
 
-        $id      = (int)Assert::numeric($uriVariables['id']);
-        $comment = $this->commentRepository->find($id);
+        $comment = $this->commentRepository->find((int)Assert::numeric($uriVariables['id']));
         if ($comment === null) {
             throw new NotFoundHttpException('Comment not found.');
         }
