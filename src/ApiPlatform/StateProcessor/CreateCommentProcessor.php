@@ -12,7 +12,6 @@ use DR\Review\ApiPlatform\Input\CreateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentStateEnum;
-use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Review\CommentRepository;
