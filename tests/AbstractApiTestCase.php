@@ -12,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use DR\Utils\Assert;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 abstract class AbstractApiTestCase extends BaseApiTestCase
@@ -19,6 +21,8 @@ abstract class AbstractApiTestCase extends BaseApiTestCase
     protected ?AbstractDatabaseTool   $databaseTool;
     protected ?EntityManagerInterface $entityManager;
     protected Client                  $client;
+    /** @var list<object> */
+    protected array $dispatchedMessages = [];
 
     /**
      * @see https://latteandcode.medium.com/symfony-improving-your-tests-with-doctrinefixturesbundle-1a37b704ac05
@@ -41,6 +45,14 @@ abstract class AbstractApiTestCase extends BaseApiTestCase
         if (count($fixtures) > 0) {
             $this->databaseTool->loadFixtures($fixtures);
         }
+
+        $bus = static::createStub(MessageBusInterface::class);
+        $bus->method('dispatch')->willReturnCallback(function (object $message): Envelope {
+            $this->dispatchedMessages[] = $message;
+
+            return new Envelope($message);
+        });
+        static::getContainer()->set(MessageBusInterface::class, $bus);
     }
 
     /**
@@ -69,6 +81,18 @@ abstract class AbstractApiTestCase extends BaseApiTestCase
 
         return $service;
     }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $messageType
+     *
+     * @return list<T>
+     */
+    protected function messagesOfType(string $messageType): array
+    {
+        return array_values(array_filter($this->dispatchedMessages, static fn(object $message): bool => $message instanceof $messageType));
+    }
+
 
     /**
      * @return list<class-string>
