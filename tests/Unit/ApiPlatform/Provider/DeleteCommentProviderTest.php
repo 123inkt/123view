@@ -68,7 +68,8 @@ class DeleteCommentProviderTest extends AbstractTestCase
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($this->comment);
         $this->provider = $this->createProvider(null, false);
 
-        self::assertSame($this->comment, $this->provider->provide(new Delete(), ['id' => '123']));
+        $this->expectException(NotFoundHttpException::class);
+        $this->provider->provide(new Delete(), ['id' => '123']);
     }
 
     public function testRejectsNonDeleteOperation(): void
