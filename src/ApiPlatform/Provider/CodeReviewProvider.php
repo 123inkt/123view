@@ -12,6 +12,7 @@ use ApiPlatform\State\ProviderInterface;
 use DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory;
 use DR\Review\ApiPlatform\Output\CodeReviewOutput;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Utils\Arrays;
 use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Throwable;
@@ -58,13 +59,16 @@ class CodeReviewProvider implements ProviderInterface
      */
     private function provideCollection(Operation $operation, array $uriVariables, array $context): array
     {
-        /** @var CodeReview[] $reviews */
+        /** @var iterable<CodeReview> $reviews */
         $reviews = $this->collectionProvider->provide($operation, $uriVariables, $context);
 
-        return array_map(static fn(CodeReview $review) => $this->reviewOutputFactory->create($review), $reviews);
+        return Arrays::map($reviews, fn(CodeReview $review) => $this->reviewOutputFactory->create($review));
     }
 
     /**
+     * @param array<string, mixed> $uriVariables
+     * @param array<string, mixed> $context
+     *
      * @throws Throwable
      */
     private function provideItem(Operation $operation, array $uriVariables, array $context): ?CodeReviewOutput
