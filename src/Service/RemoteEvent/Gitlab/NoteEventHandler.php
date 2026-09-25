@@ -54,8 +54,8 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         $referenceId = sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id);
         if ($this->commentRepository->findOneBy(['extReferenceId' => $referenceId])) {
             $this->logger?->notice(
-                'NoteEventHandler: comment already exists in 123view {id} {message}',
-                ['id' => $event->discussionId, 'message' => $event->message]
+                'NoteEventHandler: comment already exists in 123view',
+                ['discussionId' => $event->discussionId, 'message' => $event->message]
             );
 
             return;
@@ -64,7 +64,8 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find gitlab user
         $gitlabUser = $this->api->users()->getUser($event->userId);
         if ($gitlabUser === null) {
-            $this->logger?->notice('NoteEventHandler: user {id} not found in gitlab', ['id' => $event->userId]);
+            $this->logger?->notice('NoteEventHandler: user {id} not found in gitlab', ['id' => $event->userId, 'discussionId' => $event->discussionId]
+            );
 
             return;
         }
@@ -72,7 +73,10 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find user
         $user = $this->userRepository->findOneBy(['email' => $gitlabUser->email]);
         if ($user === null) {
-            $this->logger?->notice('NoteEventHandler: user {email} not found in 123view', ['email' => $gitlabUser->email]);
+            $this->logger?->notice(
+                'NoteEventHandler: user {email} not found in 123view',
+                ['email' => $gitlabUser->email, 'discussionId' => $event->discussionId]
+            );
 
             return;
         }
@@ -80,7 +84,10 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find repository
         $repository = $this->repository->findByProperty('gitlab-project-id', (string)$event->projectId);
         if ($repository === null || $repository->isActive() === false) {
-            $this->logger?->notice('NoteEventHandler: repository {id} doesnt exist or is inactive in 123view', ['id' => $event->projectId]);
+            $this->logger?->notice(
+                'NoteEventHandler: repository {id} doesnt exist or is inactive in 123view',
+                ['id' => $event->projectId, 'discussionId' => $event->discussionId]
+            );
 
             return;
         }
@@ -88,7 +95,10 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find revisions
         $revisions = $this->branchRevisionService->getRevisionsFor($repository, 'origin/' . $event->sourceBranch, $event->targetBranch);
         if (count($revisions) === 0) {
-            $this->logger?->notice('NoteEventHandler: no revisions found for branch {name}', ['name' => $event->sourceBranch]);
+            $this->logger?->notice(
+                'NoteEventHandler: no revisions found for branch {name}',
+                ['name' => $event->sourceBranch, 'discussionId' => $event->discussionId]
+            );
 
             return;
         }
@@ -99,12 +109,22 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find revision matching filename
         [$revision, $filepath] = $this->matchRevision($event, $revisions);
         if ($revision === null || $filepath === null) {
-            $this->logger?->notice('NoteEventHandler: no revision matching file {file}', ['file' => $event->newPath ?? $event->oldPath]);
+            $this->logger?->notice(
+                'NoteEventHandler: no revision matching file {file}',
+                ['file' => $event->newPath ?? $event->oldPath, 'discussionId' => $event->discussionId]
+            );
 
             return;
         }
         $review        = Assert::notNull($revision->getReview());
-        $lineReference = new LineReference($event->oldPath, $event->newPath, $event->oldLine ?? $event->newLine, 0, $event->newLine ?? $event->oldLine, $revision->getCommitHash());
+        $lineReference = new LineReference(
+            $event->oldPath,
+            $event->newPath,
+            $event->oldLine ?? $event->newLine,
+            0,
+            $event->newLine ?? $event->oldLine,
+            $revision->getCommitHash()
+        );
 
         $comment = new Comment();
         $comment->setFilePath($filepath);
@@ -120,12 +140,13 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);
         $this->logger?->info(
-            'NoteEventHandler: creating comment for {file} on {repository}-{review} by {user}',
+            'NoteEventHandler: creating comment for {file} on {repository}: {review} by {user}',
             [
-                'file'       => $event->newPath ?? $event->oldPath,
-                'repository' => $repository->getDisplayName(),
-                'review'     => 'CR-' . $review->getProjectId(),
-                'user'       => $user->getName()
+                'file'         => $event->newPath ?? $event->oldPath,
+                'repository'   => $repository->getDisplayName(),
+                'review'       => 'CR-' . $review->getProjectId(),
+                'user'         => $user->getName(),
+                'discussionId' => $event->discussionId
             ]
         );
     }
