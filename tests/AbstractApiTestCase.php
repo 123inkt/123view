@@ -93,7 +93,6 @@ abstract class AbstractApiTestCase extends BaseApiTestCase
         return array_values(array_filter($this->dispatchedMessages, static fn(object $message): bool => $message instanceof $messageType));
     }
 
-
     /**
      * @return list<class-string>
      */
