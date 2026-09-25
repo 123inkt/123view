@@ -5,6 +5,7 @@ namespace DR\Review\Entity\Review;
 
 use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -19,6 +20,7 @@ use DR\Review\ApiPlatform\Output\CommentReplyOutput;
 use DR\Review\ApiPlatform\Provider\CommentReplyCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentReplyProvider;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentReplyProcessor;
+use DR\Review\ApiPlatform\StateProcessor\DeleteCommentReplyProcessor;
 use DR\Review\ApiPlatform\StateProcessor\UpdateCommentReplyProcessor;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
@@ -76,6 +78,15 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     output                      : CommentReplyOutput::class,
     read                        : false,
     processor                   : UpdateCommentReplyProcessor::class,
+)]
+#[Delete(
+    uriTemplate: '/comment-replies/{id}',
+    requirements: ['id' => '\\d+'],
+    status: 204,
+    security: 'is_granted("' . Roles::ROLE_USER . '")',
+    output: false,
+    read: false,
+    processor: DeleteCommentReplyProcessor::class,
 )]
 #[ORM\Entity(repositoryClass: CommentReplyRepository::class)]
 class CommentReply
