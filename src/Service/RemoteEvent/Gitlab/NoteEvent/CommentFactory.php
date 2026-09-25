@@ -1,0 +1,45 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\Service\RemoteEvent\Gitlab\NoteEvent;
+
+use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\LineReference;
+use DR\Review\Entity\Revision\Revision;
+use DR\Review\Entity\User\User;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
+use DR\Utils\Assert;
+use Symfony\Component\Clock\ClockAwareTrait;
+
+class CommentFactory
+{
+    use ClockAwareTrait;
+
+    public function create(NoteEvent $event, User $user, Revision $revision, string $filepath): Comment
+    {
+        $now           = $this->now();
+        $review        = Assert::notNull($revision->getReview());
+        $lineReference = new LineReference(
+            $event->position->oldPath,
+            $event->position->newPath,
+            $event->position->oldLine ?? $event->position->newLine,
+            0,
+            $event->position->newLine ?? $event->position->oldLine,
+            $revision->getCommitHash()
+        );
+
+        $comment = new Comment();
+        $comment->setFilePath($filepath);
+        $comment->setTag(null);
+        $comment->setLineReference($lineReference);
+        $comment->setReview($review);
+        $comment->setMessage($event->description);
+        $comment->setUser($user);
+        $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id));
+        $comment->setCreateTimestamp($now->getTimestamp());
+        $comment->setUpdateTimestamp($now->getTimestamp());
+        $review->getComments()->add($comment);
+
+        return $comment;
+    }
+}

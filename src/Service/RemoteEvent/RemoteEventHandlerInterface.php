@@ -8,6 +8,8 @@ namespace DR\Review\Service\RemoteEvent;
  */
 interface RemoteEventHandlerInterface
 {
+    public function supports(object $event): bool;
+
     /**
      * @param T $event
      */

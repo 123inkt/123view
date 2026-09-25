@@ -6,6 +6,7 @@ namespace DR\Review\Service\RemoteEvent\Gitlab;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
+use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\ChangeReviewerStateService;
@@ -31,6 +32,11 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
     ) {
     }
 
+    public function supports(object $event): bool
+    {
+        return $event instanceof MergeRequestEvent && $event->action === 'approved';
+    }
+
     /**
      * @phpstan-param MergeRequestEvent $event
      * @throws Throwable
@@ -38,10 +44,6 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
     public function handle(object $event): void
     {
         Assert::isInstanceOf($event, MergeRequestEvent::class);
-        if ($event->action !== 'approved') {
-            return;
-        }
-
         $repository = $this->repositoryRepository->findByProperty('gitlab-project-id', (string)$event->project->id);
         if ($repository === null) {
             $this->logger?->info('ApprovedMergeRequestEventHandler: no repository found for project id {id}', ['id' => $event->project->id]);
