@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Controller\Api\Comment;
 
+use ApiPlatform\Test\Response as ApiTestResponse;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUpdated;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[CoversNothing]
 class PatchCommentEndpointTest extends AbstractApiTestCase
 {
-    private ?\ApiPlatform\Symfony\Bundle\Test\Response $lastResponse = null;
+    private ?ApiTestResponse $lastResponse = null;
 
     protected function setUp(): void
     {
@@ -172,7 +173,7 @@ class PatchCommentEndpointTest extends AbstractApiTestCase
             'headers' => ['content-type' => ['application/merge-patch+json']],
             'body'    => json_encode(['message' => 'Update'], JSON_THROW_ON_ERROR),
         ]);
-        $this->lastResponse = Assert::isInstanceOf($response, \ApiPlatform\Symfony\Bundle\Test\Response::class);
+        $this->lastResponse = Assert::isInstanceOf($response, ApiTestResponse::class);
 
         $this->assertPatchStatusCode(Response::HTTP_UNAUTHORIZED);
     }
@@ -197,7 +198,7 @@ class PatchCommentEndpointTest extends AbstractApiTestCase
             ],
             'json'    => $payload,
         ]);
-        $this->lastResponse = Assert::isInstanceOf($response, \ApiPlatform\Symfony\Bundle\Test\Response::class);
+        $this->lastResponse = Assert::isInstanceOf($response, ApiTestResponse::class);
     }
 
     private function otherToken(): string
