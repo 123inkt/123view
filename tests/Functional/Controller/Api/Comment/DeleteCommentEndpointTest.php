@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Controller\Api\Comment;
 
-use ApiPlatform\Symfony\Bundle\Test\Response as ApiResponse;
+use ApiPlatform\Test\Response as ApiResponse;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentReplyRemoved;
 use DR\Review\Repository\Review\CommentReplyRepository;
