@@ -24,7 +24,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
 
     public function logGitlabUserNotFound(NoteEvent $event): void
     {
-        $this->logger?->info('NoteEventHandler: user {id} not found in gitlab', ['id' => $event->userId, 'discussionId' => $event->discussionId]);
+        $this->logger?->info('NoteEventHandler: user {id} not found in gitlab', ['id' => $event->user->id, 'discussionId' => $event->discussionId]);
     }
 
     public function logUserNotFound(NoteEvent $event, GitlabUser $gitlabUser): void
@@ -55,7 +55,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
     {
         $this->logger?->info(
             'NoteEventHandler: no revision matching file {file}',
-            ['file' => $event->newPath ?? $event->oldPath, 'discussionId' => $event->discussionId]
+            ['file' => $event->position->newPath ?? $event->position->oldPath, 'discussionId' => $event->discussionId]
         );
     }
 
@@ -64,7 +64,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
         $this->logger?->info(
             'NoteEventHandler: creating comment for {file} on {repository}: {review} by {user}',
             [
-                'file'         => $event->newPath ?? $event->oldPath,
+                'file'         => $event->position->newPath ?? $event->position->oldPath,
                 'repository'   => $review->getRepository()->getDisplayName(),
                 'review'       => 'CR-' . $review->getProjectId(),
                 'user'         => $user->getName(),

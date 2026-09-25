@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Model\Webhook\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\Position;
+use DR\Review\Model\Api\Gitlab\User;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 
@@ -13,9 +15,6 @@ class NoteEvent
 
     #[SerializedName('project_id')]
     public int $projectId;
-
-    #[SerializedPath('[merge_request][id]')]
-    public int $mergeRequestId;
 
     #[SerializedPath('[merge_request][iid]')]
     public int $mergeRequestIId;
@@ -35,24 +34,8 @@ class NoteEvent
     #[SerializedPath('[object_attributes][action]')]
     public string $action;
 
-    #[SerializedPath('[object_attributes][position][old_path]')]
-    public ?string $oldPath;
+    #[SerializedPath('[object_attributes][position]')]
+    public Position $position;
 
-    #[SerializedPath('[object_attributes][position][new_path]')]
-    public ?string $newPath;
-
-    #[SerializedPath('[object_attributes][position][old_line]')]
-    public ?int $oldLine;
-
-    #[SerializedPath('[object_attributes][position][new_line]')]
-    public ?int $newLine;
-
-    #[SerializedPath('[object_attributes][position][head_sha]')]
-    public string $headSha;
-
-    #[SerializedPath('[user][id]')]
-    public int $userId;
-
-    #[SerializedPath('[user][email]')]
-    public string $userEmail;
+    public User $user;
 }

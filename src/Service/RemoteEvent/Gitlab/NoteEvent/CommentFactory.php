@@ -20,11 +20,11 @@ class CommentFactory
         $now           = $this->now();
         $review        = Assert::notNull($revision->getReview());
         $lineReference = new LineReference(
-            $event->oldPath,
-            $event->newPath,
-            $event->oldLine ?? $event->newLine,
+            $event->position->oldPath,
+            $event->position->newPath,
+            $event->position->oldLine ?? $event->position->newLine,
             0,
-            $event->newLine ?? $event->oldLine,
+            $event->position->newLine ?? $event->position->oldLine,
             $revision->getCommitHash()
         );
 

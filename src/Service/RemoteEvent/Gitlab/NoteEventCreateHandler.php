@@ -60,7 +60,7 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
         }
 
         // find gitlab user
-        $gitlabUser = $this->api->users()->getUser($event->userId);
+        $gitlabUser = $this->api->users()->getUser($event->user->id);
         if ($gitlabUser === null) {
             $this->eventLogger->logGitlabUserNotFound($event);
 
