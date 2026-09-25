@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Controller\Api\CommentReply;
 
+use ApiPlatform\Test\Response as ApiResponse;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentTagEnum;
 use DR\Review\Message\Comment\CommentReplyAdded;
@@ -13,7 +14,6 @@ use DR\Review\Tests\AbstractApiTestCase;
 use DR\Review\Tests\DataFixtures\CommentReplyApiFixtures;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use DR\Utils\Assert;
-use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,13 +30,13 @@ class PostCommentReplyEndpointTest extends AbstractApiTestCase
     public function testPostsReplyAndDispatchesEvent(): void
     {
         $comment = $this->getComment(CommentReplyApiFixtures::FINAL_COMMENT_MESSAGE);
-        $this->request($comment->getId(), [
+        $response = $this->request($comment->getId(), [
             'message' => '  Please extract this condition.  ',
             'tag'     => CommentTagEnum::Suggestion->value,
         ]);
 
         self::assertResponseStatusCodeSame(Response::HTTP_CREATED);
-        $response = Assert::isArray(Json::decode(Assert::notNull($this->client->getResponse())->getContent(), true));
+        $responseData = $response->toArray();
         self::assertSame([
             'id',
             'commentId',
@@ -45,13 +45,13 @@ class PostCommentReplyEndpointTest extends AbstractApiTestCase
             'tag',
             'createdAt',
             'updatedAt',
-        ], array_keys($response));
-        self::assertSame($comment->getId(), $response['commentId']);
-        self::assertSame($this->getCurrentUserId(), $response['userId']);
-        self::assertSame('Please extract this condition.', $response['message']);
-        self::assertSame(CommentTagEnum::Suggestion->value, $response['tag']);
-        self::assertIsString($response['createdAt']);
-        self::assertSame($response['createdAt'], $response['updatedAt']);
+        ], array_keys($responseData));
+        self::assertSame($comment->getId(), $responseData['commentId']);
+        self::assertSame($this->getCurrentUserId(), $responseData['userId']);
+        self::assertSame('Please extract this condition.', $responseData['message']);
+        self::assertSame(CommentTagEnum::Suggestion->value, $responseData['tag']);
+        self::assertIsString($responseData['createdAt']);
+        self::assertSame($responseData['createdAt'], $responseData['updatedAt']);
 
         $this->entityManager?->clear();
         $reply = Assert::notNull(self::getService(CommentReplyRepository::class)->findOneBy(['message' => 'Please extract this condition.']));
@@ -139,18 +139,21 @@ class PostCommentReplyEndpointTest extends AbstractApiTestCase
     /**
      * @param array<string, mixed> $payload
      */
-    private function request(int $commentId, array $payload): void
+    private function request(int $commentId, array $payload): ApiResponse
     {
-        $this->client->request(
-            Request::METHOD_POST,
-            '/api/comments/' . $commentId . '/replies',
-            [
-                'headers' => [
-                    'authorization' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE,
-                    'content-type'  => 'application/json',
+        return Assert::isInstanceOf(
+            $this->client->request(
+                Request::METHOD_POST,
+                '/api/comments/' . $commentId . '/replies',
+                [
+                    'headers' => [
+                        'authorization' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE,
+                        'content-type'  => 'application/json',
+                    ],
+                    'json'    => $payload,
                 ],
-                'json'    => $payload,
-            ],
+            ),
+            ApiResponse::class,
         );
     }
 
