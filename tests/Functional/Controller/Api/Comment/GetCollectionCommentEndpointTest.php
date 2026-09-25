@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
-class GetCollectionControllerTest extends AbstractFunctionalTestCase
+class GetCollectionCommentEndpointTest extends AbstractFunctionalTestCase
 {
     /**
      * @throws Exception

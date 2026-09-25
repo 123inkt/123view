@@ -23,17 +23,12 @@ use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Envelope;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversNothing]
-class PostControllerTest extends AbstractApiTestCase
+class PostCommentEndpointTest extends AbstractApiTestCase
 {
     /** @var list<Revision> */
     private array $revisions;
-
-    /** @var list<object> */
-    private array $dispatchedMessages = [];
 
     protected function setUp(): void
     {
@@ -51,16 +46,6 @@ class PostControllerTest extends AbstractApiTestCase
             ]),
         ]);
         static::getContainer()->set(CodeReviewDiffService::class, $diffService);
-
-        $bus = static::createStub(MessageBusInterface::class);
-        $bus->method('dispatch')->willReturnCallback(
-            function (object $message): Envelope {
-                $this->dispatchedMessages[] = $message;
-
-                return new Envelope($message);
-            },
-        );
-        static::getContainer()->set(MessageBusInterface::class, $bus);
     }
 
     public function testPostsComment(): void
@@ -96,8 +81,7 @@ class PostControllerTest extends AbstractApiTestCase
         self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
         self::assertSame(CommentTagEnum::Suggestion, $comment->getTag());
         self::assertSame(0, $comment->getNotificationStatus()->getStatus());
-        self::assertCount(1, $this->dispatchedMessages);
-        self::assertInstanceOf(CommentAdded::class, $this->dispatchedMessages[0]);
+        self::assertCount(1, $this->messagesOfType(CommentAdded::class));
     }
 
     public function testPostRejectsUnknownFields(): void

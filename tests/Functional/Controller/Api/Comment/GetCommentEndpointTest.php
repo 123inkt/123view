@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 #[CoversNothing]
-class GetControllerTest extends AbstractApiTestCase
+class GetCommentEndpointTest extends AbstractApiTestCase
 {
     /**
      * @throws Throwable
