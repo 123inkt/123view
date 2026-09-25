@@ -13,12 +13,11 @@ use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\CodeReview\LineReferenceFactory;
+use DR\Review\Service\RemoteEvent\Gitlab\Log\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Utils\Arrays;
 use DR\Utils\Assert;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
@@ -26,12 +25,12 @@ use Throwable;
 /**
  * @implements RemoteEventHandlerInterface<NoteEvent>
  */
-class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterface
+class NoteEventHandler implements RemoteEventHandlerInterface
 {
     use ClockAwareTrait;
-    use LoggerAwareTrait;
 
     public function __construct(
+        private readonly NoteEventHandlerLogger $eventLogger,
         private readonly RepositoryRepository $repository,
         private readonly MessageBusInterface $bus,
         private readonly GitlabApi $api,
@@ -53,10 +52,7 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         Assert::isInstanceOf($event, NoteEvent::class);
         $referenceId = sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id);
         if ($this->commentRepository->findOneBy(['extReferenceId' => $referenceId])) {
-            $this->logger?->notice(
-                'NoteEventHandler: comment already exists in 123view',
-                ['discussionId' => $event->discussionId, 'message' => $event->message]
-            );
+            $this->eventLogger->logCommentAlreadyExists($event);
 
             return;
         }
@@ -64,8 +60,7 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find gitlab user
         $gitlabUser = $this->api->users()->getUser($event->userId);
         if ($gitlabUser === null) {
-            $this->logger?->notice('NoteEventHandler: user {id} not found in gitlab', ['id' => $event->userId, 'discussionId' => $event->discussionId]
-            );
+            $this->eventLogger->logGitlabUserNotFound($event);
 
             return;
         }
@@ -73,10 +68,7 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find user
         $user = $this->userRepository->findOneBy(['email' => $gitlabUser->email]);
         if ($user === null) {
-            $this->logger?->notice(
-                'NoteEventHandler: user {email} not found in 123view',
-                ['email' => $gitlabUser->email, 'discussionId' => $event->discussionId]
-            );
+            $this->eventLogger->logUserNotFound($event, $gitlabUser);
 
             return;
         }
@@ -84,10 +76,7 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find repository
         $repository = $this->repository->findByProperty('gitlab-project-id', (string)$event->projectId);
         if ($repository === null || $repository->isActive() === false) {
-            $this->logger?->notice(
-                'NoteEventHandler: repository {id} doesnt exist or is inactive in 123view',
-                ['id' => $event->projectId, 'discussionId' => $event->discussionId]
-            );
+            $this->eventLogger->logRepositoryNotFound($event);
 
             return;
         }
@@ -95,10 +84,7 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find revisions
         $revisions = $this->branchRevisionService->getRevisionsFor($repository, 'origin/' . $event->sourceBranch, $event->targetBranch);
         if (count($revisions) === 0) {
-            $this->logger?->notice(
-                'NoteEventHandler: no revisions found for branch {name}',
-                ['name' => $event->sourceBranch, 'discussionId' => $event->discussionId]
-            );
+            $this->eventLogger->logRevisionsNotFound($event);
 
             return;
         }
@@ -109,10 +95,7 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         // find revision matching filename
         [$revision, $filepath] = $this->matchRevision($event, $revisions);
         if ($revision === null || $filepath === null) {
-            $this->logger?->notice(
-                'NoteEventHandler: no revision matching file {file}',
-                ['file' => $event->newPath ?? $event->oldPath, 'discussionId' => $event->discussionId]
-            );
+            $this->eventLogger->logRevisionForFilenameNotFound($event);
 
             return;
         }
@@ -139,16 +122,7 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
 
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);
-        $this->logger?->info(
-            'NoteEventHandler: creating comment for {file} on {repository}: {review} by {user}',
-            [
-                'file'         => $event->newPath ?? $event->oldPath,
-                'repository'   => $repository->getDisplayName(),
-                'review'       => 'CR-' . $review->getProjectId(),
-                'user'         => $user->getName(),
-                'discussionId' => $event->discussionId
-            ]
-        );
+        $this->eventLogger->logCommentAddedSuccess($event, $review, $user);
     }
 
     /**
