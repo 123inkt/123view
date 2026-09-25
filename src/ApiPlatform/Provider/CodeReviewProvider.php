@@ -59,7 +59,7 @@ class CodeReviewProvider implements ProviderInterface
      */
     private function provideCollection(Operation $operation, array $uriVariables, array $context): array
     {
-        /** @var iterable<CodeReview> $reviews */
+        /** @var iterable<int, CodeReview> $reviews */
         $reviews = $this->collectionProvider->provide($operation, $uriVariables, $context);
 
         return Arrays::map($reviews, fn(CodeReview $review) => $this->reviewOutputFactory->create($review));

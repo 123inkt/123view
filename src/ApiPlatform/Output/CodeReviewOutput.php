@@ -8,8 +8,9 @@ class CodeReviewOutput
     /**
      * @codeCoverageIgnore
      *
-     * @param UserOutput[] $authors
-     * @param UserOutput[] $reviewers
+     * @param array{startSha: string, endSha: string}|null $revisions
+     * @param UserOutput[]                                 $authors
+     * @param UserOutput[]                                 $reviewers
      */
     public function __construct(
         public readonly int $id,
