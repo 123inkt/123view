@@ -8,15 +8,18 @@ use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Input\CreateCommentReplyInput;
+use DR\Review\ApiPlatform\Input\UpdateCommentReplyInput;
 use DR\Review\ApiPlatform\Output\CommentReplyOutput;
 use DR\Review\ApiPlatform\Provider\CommentReplyCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentReplyProvider;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentReplyProcessor;
+use DR\Review\ApiPlatform\StateProcessor\UpdateCommentReplyProcessor;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentReplyRepository;
@@ -61,6 +64,18 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     output                      : CommentReplyOutput::class,
     read                        : false,
     processor                   : CreateCommentReplyProcessor::class,
+)]
+#[Patch(
+    uriTemplate                 : '/comment-replies/{id}',
+    requirements                : ['id' => '\\d+'],
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    collectDenormalizationErrors: true,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : UpdateCommentReplyInput::class,
+    output                      : CommentReplyOutput::class,
+    read                        : false,
+    processor                   : UpdateCommentReplyProcessor::class,
 )]
 #[ORM\Entity(repositoryClass: CommentReplyRepository::class)]
 class CommentReply
