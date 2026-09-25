@@ -5,12 +5,12 @@ namespace DR\Review\Service\RemoteEvent\Gitlab\NoteEvent;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
-use DR\Review\Model\Api\Gitlab\NoteEvent;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 
-readonly class NoteEventHandlerLogger implements LoggerAwareInterface
+class NoteEventHandlerLogger implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

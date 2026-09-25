@@ -7,7 +7,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
-use DR\Review\Model\Api\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Utils\Assert;
 use Symfony\Component\Clock\ClockAwareTrait;
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab\NoteEvent;
 
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Model\Api\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Utils\Arrays;
 

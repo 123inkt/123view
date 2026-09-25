@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Model\Api\Gitlab;
+namespace DR\Review\Model\Webhook\Gitlab;
 
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
@@ -31,6 +31,9 @@ class NoteEvent
 
     #[SerializedPath('[object_attributes][description]')]
     public string $description;
+
+    #[SerializedPath('[object_attributes][action]')]
+    public string $action;
 
     #[SerializedPath('[object_attributes][position][old_path]')]
     public ?string $oldPath;

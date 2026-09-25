@@ -6,7 +6,6 @@ use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
-use DR\Review\ApiPlatform\Extension\CommentVisibilityExtension;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;
@@ -25,8 +24,8 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
-use DR\Review\Model\Api\Gitlab\NoteEvent;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
 use DR\Review\Router\ReviewRouter;
@@ -58,7 +57,7 @@ use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\Parser\PrunableDiffParser;
 use DR\Review\Service\RemoteEvent\Gitlab\ApprovedMergeRequestEventHandler;
-use DR\Review\Service\RemoteEvent\Gitlab\NoteEventHandler;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
@@ -232,7 +231,7 @@ return static function (ContainerConfigurator $container): void {
     // Webhook handlers
     $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler', ['key' => MergeRequestEvent::class]);
     $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
-    $services->set(NoteEventHandler::class)->tag('webhook_handler', ['key' => NoteEvent::class]);
+    $services->set(NoteEventCreateHandler::class)->tag('webhook_handler', ['key' => NoteEvent::class]);
     $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));

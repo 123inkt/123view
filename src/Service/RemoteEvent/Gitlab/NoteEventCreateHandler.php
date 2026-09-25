@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Model\Api\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
@@ -22,7 +22,7 @@ use Throwable;
 /**
  * @implements RemoteEventHandlerInterface<NoteEvent>
  */
-class NoteEventHandler implements RemoteEventHandlerInterface
+class NoteEventCreateHandler implements RemoteEventHandlerInterface
 {
     use ClockAwareTrait;
 
@@ -38,6 +38,11 @@ class NoteEventHandler implements RemoteEventHandlerInterface
         private readonly CommentFactory $commentFactory,
         private readonly CommentRepository $commentRepository,
     ) {
+    }
+
+    public function supports(object $event): bool
+    {
+        return $event instanceof NoteEvent && $event->action === 'create';
     }
 
     /**
