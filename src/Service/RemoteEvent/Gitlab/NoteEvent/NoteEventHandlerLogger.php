@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace DR\Review\Service\RemoteEvent\Gitlab\Log;
+namespace DR\Review\Service\RemoteEvent\Gitlab\NoteEvent;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;

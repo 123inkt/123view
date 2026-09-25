@@ -3,20 +3,17 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
-use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Api\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\Api\Gitlab\GitlabApi;
-use DR\Review\Service\CodeReview\LineReferenceFactory;
-use DR\Review\Service\RemoteEvent\Gitlab\Log\NoteEventHandlerLogger;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentFactory;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Review\Service\Revision\BranchRevisionService;
-use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -37,8 +34,8 @@ class NoteEventHandler implements RemoteEventHandlerInterface
         private readonly UserRepository $userRepository,
         private readonly RepositoryRepository $repositoryRepository,
         private readonly BranchRevisionService $branchRevisionService,
-        private readonly RevisionFileRepository $revisionFileRepository,
-        private readonly LineReferenceFactory $lineReferenceFactory,
+        private readonly RevisionFilepathMatcher $revisionMatcher,
+        private readonly CommentFactory $commentFactory,
         private readonly CommentRepository $commentRepository,
     ) {
     }
@@ -89,68 +86,19 @@ class NoteEventHandler implements RemoteEventHandlerInterface
             return;
         }
 
-        // filter revisions with review
+        // remove all revisions without review
         $revisions = array_filter($revisions, static fn(Revision $revision) => $revision->getReview() !== null);
 
         // find revision matching filename
-        [$revision, $filepath] = $this->matchRevision($event, $revisions);
+        [$revision, $filepath] = $this->revisionMatcher->matchRevision($event, $revisions);
         if ($revision === null || $filepath === null) {
             $this->eventLogger->logRevisionForFilenameNotFound($event);
 
             return;
         }
-        $review        = Assert::notNull($revision->getReview());
-        $lineReference = new LineReference(
-            $event->oldPath,
-            $event->newPath,
-            $event->oldLine ?? $event->newLine,
-            0,
-            $event->newLine ?? $event->oldLine,
-            $revision->getCommitHash()
-        );
 
-        $comment = new Comment();
-        $comment->setFilePath($filepath);
-        $comment->setTag(null);
-        $comment->setLineReference($lineReference);
-        $comment->setReview($review);
-        $comment->setMessage($event->description);
-        $comment->setUser($user);
-        $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id));
-        $comment->setCreateTimestamp($this->now()->getTimestamp());
-        $comment->setUpdateTimestamp($this->now()->getTimestamp());
-
-        $review->getComments()->add($comment);
-        $this->commentRepository->save($comment, true);
-        $this->eventLogger->logCommentAddedSuccess($event, $review, $user);
-    }
-
-    /**
-     * @param Revision[] $revisions
-     *
-     * @return array{0: Revision|null, 1: string|null}
-     */
-    private function matchRevision(NoteEvent $event, array $revisions): array
-    {
-        foreach (Arrays::removeNull([$event->newPath, $event->oldPath]) as $path) {
-            $revision = $this->findRevisionFor($path, $revisions, $event->headSha);
-            if ($revision !== null) {
-                return [$revision, $path];
-            }
-        }
-
-        return [null, null];
-    }
-
-    private function findRevisionFor(string $filepath, array $revisions, string $preferSha): ?Revision
-    {
-        $files = $this->revisionFileRepository->findRevisionsForFile($revisions, $filepath);
-        foreach ($files as $file) {
-            if ($file->getRevision()->getCommitHash() === $preferSha) {
-                return $file->getRevision();
-            }
-        }
-
-        return Arrays::firstOrNull($files)?->getRevision();
+        // create comment and save
+        $this->commentRepository->save($this->commentFactory->create($event, $user, $revision, $filepath), true);
+        $this->eventLogger->logCommentAddedSuccess($event, Assert::notNull($revision->getReview()), $user);
     }
 }
