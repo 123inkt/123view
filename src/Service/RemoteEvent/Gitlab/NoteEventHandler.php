@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Api\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
@@ -102,29 +103,29 @@ class NoteEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
 
             return;
         }
-        $lineNumber = $event->newLine ?? $event->oldLine;
-        $review     = Assert::notNull($revision->getReview());
+        $review        = Assert::notNull($revision->getReview());
+        $lineReference = new LineReference($event->oldPath, $event->newPath, $event->oldLine ?? $event->newLine, 0, $event->newLine ?? $event->oldLine, $revision->getCommitHash());
 
         $comment = new Comment();
         $comment->setFilePath($filepath);
         $comment->setTag(null);
-        $comment->setLineReference($this->lineReferenceFactory->createFromReview($review, $filepath, $lineNumber, $revision->getCommitHash()));
+        $comment->setLineReference($lineReference);
         $comment->setReview($review);
         $comment->setMessage($event->description);
         $comment->setUser($user);
+        $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id));
         $comment->setCreateTimestamp($this->now()->getTimestamp());
         $comment->setUpdateTimestamp($this->now()->getTimestamp());
-        $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id));
 
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);
         $this->logger?->info(
             'NoteEventHandler: creating comment for {file} on {repository}-{review} by {user}',
             [
-                'file' => $event->newPath ?? $event->oldPath,
+                'file'       => $event->newPath ?? $event->oldPath,
                 'repository' => $repository->getDisplayName(),
-                'review' => 'CR-' . $review->getProjectId(),
-                'user' => $user->getName()
+                'review'     => 'CR-' . $review->getProjectId(),
+                'user'       => $user->getName()
             ]
         );
     }
