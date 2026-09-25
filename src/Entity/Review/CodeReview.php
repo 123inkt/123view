@@ -46,7 +46,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
         'createTimestamp'        => new QueryParameter(filter: new RangeFilter()),
         'updateTimestamp'        => new QueryParameter(filter: new RangeFilter()),
         'order[id]'              => new QueryParameter(filter: new SortFilter(), property: 'id'),
-        'order[title]'           => new QueryParameter(filter: new SortFilter(), property: 'id'),
+        'order[title]'           => new QueryParameter(filter: new SortFilter(), property: 'title'),
         'order[repository.id]'   => new QueryParameter(filter: new SortFilter(), property: 'repository.id'),
         'order[createTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
         'order[updateTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),

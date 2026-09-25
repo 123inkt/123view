@@ -36,7 +36,7 @@ class CodeReviewProviderTest extends AbstractTestCase
         $this->reviewProvider      = new CodeReviewProvider($this->collectionProvider, $this->itemProvider, $this->reviewOutputFactory);
     }
 
-    public function testProvideShouldRejectUnsupportedOperation(): void
+    public function testProvideShouldRejectUnsupported(): void
     {
         $this->collectionProvider->expects($this->never())->method('provide');
         $this->itemProvider->expects($this->never())->method('provide');
