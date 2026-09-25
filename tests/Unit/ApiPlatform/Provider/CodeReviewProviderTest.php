@@ -5,16 +5,13 @@ namespace DR\Review\Tests\Unit\ApiPlatform\Provider;
 
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\State\ProviderInterface;
 use ArrayIterator;
 use DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory;
 use DR\Review\ApiPlatform\Output\CodeReviewOutput;
 use DR\Review\ApiPlatform\Provider\CodeReviewProvider;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\Review\CodeReviewer;
-use DR\Review\Entity\Revision\Revision;
-use DR\Review\Entity\User\User;
-use DR\Review\Service\User\UserService;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -25,51 +22,70 @@ class CodeReviewProviderTest extends AbstractTestCase
 {
     /** @var MockObject&ProviderInterface<CodeReview> */
     private ProviderInterface&MockObject       $collectionProvider;
+    /** @var MockObject&ProviderInterface<CodeReview> */
+    private ProviderInterface&MockObject       $itemProvider;
     private CodeReviewOutputFactory&MockObject $reviewOutputFactory;
-    private UserService&MockObject             $userService;
     private CodeReviewProvider                 $reviewProvider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->collectionProvider  = $this->createMock(ProviderInterface::class);
+        $this->itemProvider        = $this->createMock(ProviderInterface::class);
         $this->reviewOutputFactory = $this->createMock(CodeReviewOutputFactory::class);
-        $this->userService         = $this->createMock(UserService::class);
-        $this->reviewProvider      = new CodeReviewProvider($this->collectionProvider, $this->reviewOutputFactory, $this->userService);
+        $this->reviewProvider      = new CodeReviewProvider($this->collectionProvider, $this->itemProvider, $this->reviewOutputFactory);
     }
 
-    public function testProvideShouldOnlySupportGetCollection(): void
+    public function testProvideShouldRejectUnsupported(): void
     {
         $this->collectionProvider->expects($this->never())->method('provide');
+        $this->itemProvider->expects($this->never())->method('provide');
         $this->reviewOutputFactory->expects($this->never())->method('create');
-        $this->userService->expects($this->never())->method('getUsersForRevisions');
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Only GetCollection operation is supported');
-        $this->reviewProvider->provide(new Get());
+        $this->expectExceptionMessage('Only GetCollection or Get operation is supported');
+        $this->reviewProvider->provide(new Patch());
     }
 
     public function testProvide(): void
     {
-        $user      = new User();
         $operation = new GetCollection();
-        $revision  = new Revision();
-        $reviewer  = new CodeReviewer();
         $review    = new CodeReview();
-        $review->getReviewers()->add($reviewer);
-        $review->getRevisions()->add($revision);
 
         $output = static::createStub(CodeReviewOutput::class);
 
         // setup mocks
         $this->collectionProvider->expects($this->once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$review]));
-        $this->userService->expects($this->once())->method('getUsersForRevisions')->with([$revision])->willReturn([$user]);
-        $this->reviewOutputFactory->expects($this->once())
-            ->method('create')
-            ->with($review, [$reviewer], [$user])
-            ->willReturn($output);
+        $this->itemProvider->expects($this->never())->method('provide');
+        $this->reviewOutputFactory->expects($this->once())->method('create')->with($review)->willReturn($output);
 
         // execute test
-        $result = $this->reviewProvider->provide(new GetCollection());
+        $result = $this->reviewProvider->provide($operation);
         static::assertSame([$output], $result);
+    }
+
+    public function testProvideItem(): void
+    {
+        $operation    = new Get();
+        $review       = new CodeReview();
+        $output       = static::createStub(CodeReviewOutput::class);
+        $uriVariables = ['id' => 123];
+        $context      = ['key' => 'value'];
+
+        $this->collectionProvider->expects($this->never())->method('provide');
+        $this->itemProvider->expects($this->once())->method('provide')->with($operation, $uriVariables, $context)->willReturn($review);
+        $this->reviewOutputFactory->expects($this->once())->method('create')->with($review)->willReturn($output);
+
+        static::assertSame($output, $this->reviewProvider->provide($operation, $uriVariables, $context));
+    }
+
+    public function testProvideItemWithoutReview(): void
+    {
+        $operation = new Get();
+
+        $this->collectionProvider->expects($this->never())->method('provide');
+        $this->itemProvider->expects($this->once())->method('provide')->with($operation)->willReturn(null);
+        $this->reviewOutputFactory->expects($this->never())->method('create');
+
+        static::assertNull($this->reviewProvider->provide($operation));
     }
 }
