@@ -24,9 +24,6 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
-use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
-use DR\Review\Model\Webhook\Gitlab\NoteEvent;
-use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
 use DR\Review\Router\ReviewRouter;
 use DR\Review\Security\Api\BearerAuthenticator;
@@ -229,10 +226,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
 
     // Webhook handlers
-    $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler', ['key' => MergeRequestEvent::class]);
-    $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
-    $services->set(NoteEventCreateHandler::class)->tag('webhook_handler', ['key' => NoteEvent::class]);
-    $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
+    $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler');
+    $services->set(PushEventHandler::class)->tag('webhook_handler');
+    $services->set(NoteEventCreateHandler::class)->tag('webhook_handler');
+    $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler'));
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 

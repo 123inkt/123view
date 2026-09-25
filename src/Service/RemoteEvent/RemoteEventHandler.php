@@ -18,15 +18,11 @@ class RemoteEventHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /** @var array<HandlerKey, HandlerValue> */
-    private array $handlers;
-
     /**
      * @param Traversable<HandlerKey, HandlerValue> $handlers
      */
-    public function __construct(Traversable $handlers)
+    public function __construct(private readonly Traversable $handlers)
     {
-        $this->handlers = iterator_to_array($handlers);
     }
 
     public function handle(object $object): void
