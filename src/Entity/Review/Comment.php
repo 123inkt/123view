@@ -5,6 +5,7 @@ namespace DR\Review\Entity\Review;
 
 use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Link;
@@ -21,6 +22,7 @@ use DR\Review\ApiPlatform\Output\CommentOutput;
 use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
 use DR\Review\ApiPlatform\Provider\CommentProvider;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentProcessor;
+use DR\Review\ApiPlatform\StateProcessor\DeleteCommentProcessor;
 use DR\Review\ApiPlatform\StateProcessor\UpdateCommentProcessor;
 use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Doctrine\Type\CommentTagType;
@@ -28,6 +30,7 @@ use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Security\Voter\CommentVoter;
 use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
@@ -84,6 +87,15 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
     output                      : CommentOutput::class,
     read                        : false,
     processor                   : UpdateCommentProcessor::class,
+)]
+#[Delete(
+    uriTemplate: '/comments/{id}',
+    requirements: ['id' => '\\d+'],
+    status: 204,
+    security: 'is_granted("' . Roles::ROLE_USER . '") and is_granted("' . CommentVoter::DELETE . '", object)',
+    output: false,
+    read: true,
+    processor: DeleteCommentProcessor::class,
 )]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
 #[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
