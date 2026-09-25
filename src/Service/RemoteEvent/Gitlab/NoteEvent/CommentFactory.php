@@ -17,6 +17,7 @@ class CommentFactory
 
     public function create(NoteEvent $event, User $user, Revision $revision, string $filepath): Comment
     {
+        $now           = $this->now();
         $review        = Assert::notNull($revision->getReview());
         $lineReference = new LineReference(
             $event->oldPath,
@@ -35,9 +36,8 @@ class CommentFactory
         $comment->setMessage($event->description);
         $comment->setUser($user);
         $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id));
-        $comment->setCreateTimestamp($this->now()->getTimestamp());
-        $comment->setUpdateTimestamp($this->now()->getTimestamp());
-
+        $comment->setCreateTimestamp($now->getTimestamp());
+        $comment->setUpdateTimestamp($now->getTimestamp());
         $review->getComments()->add($comment);
 
         return $comment;
