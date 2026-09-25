@@ -18,6 +18,7 @@ class CodeReviewOutput
         public readonly string $title,
         public readonly string $description,
         public readonly string $url,
+        public readonly string $type,
         public readonly string $state,
         public readonly string $reviewerState,
         public readonly ?array $revisions,

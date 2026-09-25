@@ -51,6 +51,7 @@ class CodeReviewOutputFactory
             $review->getTitle(),
             $review->getDescription(),
             $this->urlGenerator->generate(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL),
+            $review->getType(),
             (string)$review->getState(),
             $this->reviewerStateResolver->getReviewersState($review),
             $hashes,
