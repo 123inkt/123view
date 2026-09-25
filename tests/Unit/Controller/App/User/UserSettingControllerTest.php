@@ -17,6 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<UserSettingController>
+ */
 #[CoversClass(UserSettingController::class)]
 class UserSettingControllerTest extends AbstractControllerTestCase
 {
@@ -36,15 +39,15 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
+        $viewModel = new UserSettingViewModel(static::createStub(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
-        $this->provider->expects(self::once())->method('getUserSettingViewModel')->willReturn($viewModel);
+        $this->provider->expects($this->once())->method('getUserSettingViewModel')->willReturn($viewModel);
 
-        $this->userRepository->expects(self::never())->method('save');
+        $this->userRepository->expects($this->never())->method('save');
 
         $result = ($this->controller)($request);
         static::assertEquals(['settingViewModel' => $viewModel], $result);
@@ -56,16 +59,16 @@ class UserSettingControllerTest extends AbstractControllerTestCase
         $setting = new UserSetting();
         $user    = new User();
         $user->setSetting($setting);
-        $viewModel = new UserSettingViewModel($this->createMock(FormView::class));
+        $viewModel = new UserSettingViewModel(static::createStub(FormView::class));
 
         $this->expectGetUser($user);
         $this->expectCreateForm(UserSettingFormType::class, ['setting' => $user->getSetting()])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $this->provider->expects(self::once())->method('getUserSettingViewModel')->willReturn($viewModel);
+        $this->provider->expects($this->once())->method('getUserSettingViewModel')->willReturn($viewModel);
 
-        $this->userRepository->expects(self::once())->method('save')->with($user, true);
+        $this->userRepository->expects($this->once())->method('save')->with($user, true);
         $this->expectAddFlash('success', 'settings.save.successfully');
 
         $result = ($this->controller)($request);

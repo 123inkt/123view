@@ -19,6 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<RepositoryController>
+ */
 #[CoversClass(RepositoryController::class)]
 class RepositoryControllerTest extends AbstractControllerTestCase
 {
@@ -34,6 +37,8 @@ class RepositoryControllerTest extends AbstractControllerTestCase
 
     public function testInvokeRepositoryNotFound(): void
     {
+        $this->repositoryRepository->expects($this->never())->method('save');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request = new Request(attributes: ['id' => 123]);
 
         $this->expectException(NotFoundHttpException::class);
@@ -43,11 +48,13 @@ class RepositoryControllerTest extends AbstractControllerTestCase
 
     public function testInvokeFormNotSubmitted(): void
     {
+        $this->repositoryRepository->expects($this->never())->method('save');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request    = new Request();
         $repository = new Repository();
         $repository->setId(123);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = static::createStub(FormView::class);
 
         $this->expectCreateForm(EditRepositoryFormType::class, ['repository' => $repository])
             ->handleRequest($request)
@@ -69,8 +76,8 @@ class RepositoryControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $this->repositoryRepository->expects(self::once())->method('save')->with($repository, true);
-        $this->messageBus->expects(self::once())->method('dispatch')->with(new RepositoryUpdatedMessage(123))->willReturn($this->envelope);
+        $this->repositoryRepository->expects($this->once())->method('save')->with($repository, true);
+        $this->messageBus->expects($this->once())->method('dispatch')->with(new RepositoryUpdatedMessage(123))->willReturn($this->envelope);
         $this->expectAddFlash('success', 'repository.successful.saved');
         $this->expectRedirectToRoute(RepositoriesController::class)->willReturn('url');
 

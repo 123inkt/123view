@@ -29,13 +29,14 @@ class LineCoverageTypeTest extends AbstractTestCase
     {
         $column = ['length' => 100];
 
-        $this->platform->expects(self::once())->method('getBinaryTypeDeclarationSQL')->with($column)->willReturn('varbinary');
+        $this->platform->expects($this->once())->method('getBinaryTypeDeclarationSQL')->with($column)->willReturn('varbinary');
 
         static::assertSame('varbinary', $this->type->getSQLDeclaration($column, $this->platform));
     }
 
     public function testGetName(): void
     {
+        $this->platform->expects($this->never())->method('getBinaryTypeDeclarationSQL');
         static::assertSame(LineCoverageType::TYPE, $this->type->getName());
     }
 
@@ -44,6 +45,7 @@ class LineCoverageTypeTest extends AbstractTestCase
      */
     public function testConvertToDatabaseValue(): void
     {
+        $this->platform->expects($this->never())->method('getBinaryTypeDeclarationSQL');
         $coverage = new LineCoverage();
 
         static::assertNull($this->type->convertToDatabaseValue(null, $this->platform));
@@ -55,8 +57,9 @@ class LineCoverageTypeTest extends AbstractTestCase
      */
     public function testConvertToDatabaseValueInvalidValue(): void
     {
+        $this->platform->expects($this->never())->method('getBinaryTypeDeclarationSQL');
         $this->expectException(ConversionException::class);
-        $this->expectExceptionMessage('Could not convert PHP value');
+        $this->expectExceptionMessage('Could not convert database value');
         $this->type->convertToDatabaseValue('foobar', $this->platform);
     }
 
@@ -65,6 +68,7 @@ class LineCoverageTypeTest extends AbstractTestCase
      */
     public function testConvertToPHPValue(): void
     {
+        $this->platform->expects($this->never())->method('getBinaryTypeDeclarationSQL');
         static::assertNull($this->type->convertToPHPValue(null, $this->platform));
         static::assertInstanceOf(LineCoverage::class, $this->type->convertToPHPValue('', $this->platform));
     }
@@ -74,6 +78,7 @@ class LineCoverageTypeTest extends AbstractTestCase
      */
     public function testConvertToPHPValueInvalidValue(): void
     {
+        $this->platform->expects($this->never())->method('getBinaryTypeDeclarationSQL');
         $this->expectException(ConversionException::class);
         $this->expectExceptionMessage('Could not convert PHP value');
         $this->type->convertToPHPValue(12345, $this->platform);

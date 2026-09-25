@@ -5,6 +5,7 @@ namespace DR\Review\Tests\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ObjectManager;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Entity\Repository\Repository;
@@ -18,6 +19,10 @@ class CodeReviewFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        /** @var ClassMetadata<CodeReview> $metadata */
+        $metadata = $manager->getClassMetadata(CodeReview::class);
+        $metadata->setIdGeneratorType(ClassMetadata::GENERATOR_TYPE_NONE);
+
         $repository = Assert::notNull($manager->getRepository(Repository::class)->findOneBy(['name' => 'repository']));
 
         $review = new CodeReview();

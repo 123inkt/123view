@@ -9,6 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LoginFormType extends AbstractType
@@ -32,7 +33,7 @@ class LoginFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add('_username', EmailType::class, ['label' => 'email', 'data' => $options['username'] ?? '']);
         $builder->add('_password', PasswordType::class, ['label' => 'password']);
         if (isset($options['targetPath'])) {

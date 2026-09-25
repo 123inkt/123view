@@ -51,7 +51,7 @@ class DiffLineStateDeterminatorTest extends AbstractTestCase
         return [
             [DiffChange::ADDED, DiffLine::STATE_ADDED],
             [DiffChange::REMOVED, DiffLine::STATE_REMOVED],
-            [DiffChange::UNCHANGED, DiffLine::STATE_UNCHANGED],
+            [DiffChange::UNCHANGED, DiffLine::STATE_INLINED],
             [DiffChange::NEWLINE, DiffLine::STATE_CHANGED],
         ];
     }

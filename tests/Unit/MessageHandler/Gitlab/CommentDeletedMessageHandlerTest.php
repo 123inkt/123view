@@ -49,7 +49,10 @@ class CommentDeletedMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeSkipIfDisabled(): void
     {
-        $this->reviewRepository->expects(self::never())->method('find');
+        $this->reviewRepository->expects($this->never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->commentService->expects($this->never())->method('delete');
 
         $handler = new CommentDeletedMessageHandler(
             false,
@@ -72,9 +75,10 @@ class CommentDeletedMessageHandlerTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setRepository($repository);
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(111)->willReturn($review);
-        $this->userRepository->expects(self::once())->method('find')->with(333)->willReturn($user);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->reviewRepository->expects($this->once())->method('find')->with(111)->willReturn($review);
+        $this->userRepository->expects($this->once())->method('find')->with(333)->willReturn($user);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentService->expects($this->never())->method('delete');
 
         ($this->handler)(new CommentRemoved(111, 222, 333, 'file', 'message', 'referenceId'));
     }
@@ -94,12 +98,12 @@ class CommentDeletedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(111)->willReturn($review);
-        $this->userRepository->expects(self::once())->method('find')->with(333)->willReturn($user);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->commentService->expects(self::once())->method('delete')->with($api, $repository, 'referenceId');
+        $this->reviewRepository->expects($this->once())->method('find')->with(111)->willReturn($review);
+        $this->userRepository->expects($this->once())->method('find')->with(333)->willReturn($user);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->commentService->expects($this->once())->method('delete')->with($api, $repository, 'referenceId');
 
         ($this->handler)(new CommentRemoved(111, 222, 333, 'file', 'message', 'referenceId'));
     }

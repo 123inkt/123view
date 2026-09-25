@@ -4,26 +4,16 @@ declare(strict_types=1);
 namespace DR\Review\Twig;
 
 use InvalidArgumentException;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\Attribute\AsTwigFilter;
 
-class StrPadExtension extends AbstractExtension
+class StrPadExtension
 {
-    /**
-     * @return TwigFilter[]
-     */
-    public function getFilters(): array
-    {
-        return [
-            new TwigFilter('strpad', [$this, 'strpad'], ['is_safe' => ['html']]),
-        ];
-    }
-
     /**
      * Twig wrapper for str_pad to Pad a string to a fixed length.
      * example usage in template:
      * {{ page.title|strpad(50, 'left') }}
      */
+    #[AsTwigFilter(name: 'strpad', isSafe: ['html'])]
     public function strpad(int|string|null $input, int $padLength, string $padType = 'left'): string
     {
         $strPadType = match ($padType) {

@@ -13,6 +13,11 @@ class NotificationStatus
     {
     }
 
+    public static function all(): self
+    {
+        return new self(self::STATUS_CREATED | self::STATUS_UPDATED | self::STATUS_RESOLVED);
+    }
+
     /**
      * @param self::STATUS_* $flag
      */

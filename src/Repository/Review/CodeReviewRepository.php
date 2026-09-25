@@ -73,7 +73,7 @@ class CodeReviewRepository extends ServiceEntityRepository
         TermInterface $searchQuery,
         string $searchOrderBy = CodeReviewQueryBuilder::ORDER_UPDATE_TIMESTAMP
     ): Paginator {
-        $queryBuilder = (new CodeReviewQueryBuilder('r', $this->getEntityManager(), $this->expressionFactory))
+        $queryBuilder = new CodeReviewQueryBuilder('r', $this->getEntityManager(), $this->expressionFactory)
             ->prepare($repositoryId)
             ->paginate($page, 50)
             ->orderBy($searchOrderBy)
@@ -122,5 +122,43 @@ class CodeReviewRepository extends ServiceEntityRepository
             ->getOneOrNullResult(AbstractQuery::HYDRATE_OBJECT);
 
         return $review;
+    }
+
+    /**
+     * @return CodeReview[]
+     */
+    public function findByBranchName(int $repositoryId, string $branchName): array
+    {
+        /** @var CodeReview[] $reviews */
+        $reviews = $this->createQueryBuilder('c')
+            ->innerJoin('c.revisions', 'r', 'WITH', 'r.firstBranch = :branchName')
+            ->where('c.repository = :repositoryId')
+            ->setParameter('branchName', $branchName)
+            ->setParameter('repositoryId', $repositoryId)
+            ->getQuery()
+            ->getResult();
+
+        return $reviews;
+    }
+
+    /**
+     * Find all CodeReviews with the same title as the given CodeReview.
+     * The Repository entity is eagerly fetched to minimize database queries.
+     *
+     * @return CodeReview[]
+     */
+    public function findByTitle(CodeReview $codeReview): array
+    {
+        /** @var CodeReview[] $reviews */
+        $reviews = $this->createQueryBuilder('c')
+            ->innerJoin('c.repository', 'r')
+            ->addSelect('r')
+            ->where('c.title = :title')
+            ->setParameter('title', $codeReview->getTitle())
+            ->orderBy('r.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        return $reviews;
     }
 }

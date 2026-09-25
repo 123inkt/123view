@@ -18,7 +18,7 @@ class CommitBundlerTest extends AbstractTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $combiner = $this->createMock(CommitCombiner::class);
+        $combiner = static::createStub(CommitCombiner::class);
         $combiner->method('combine')->willReturnCallback(static fn(array $commits) => reset($commits));
         $this->bundler = new CommitBundler($combiner);
     }

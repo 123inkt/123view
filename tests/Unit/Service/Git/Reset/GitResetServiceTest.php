@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Reset;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
@@ -35,18 +35,21 @@ class GitResetServiceTest extends AbstractTestCase
      */
     public function testResetHard(): void
     {
+        $commitHash = '123abc';
+
         $repository = new Repository();
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitResetCommandBuilder::class);
-        $builder->expects(self::once())->method('hard')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createReset')->willReturn($builder);
+        $builder->expects($this->once())->method('hard')->willReturnSelf();
+        $builder->expects($this->once())->method('commitHash')->with($commitHash)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createReset')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
-        $this->service->resetHard($repository);
+        $this->service->resetHard($repository, $commitHash);
     }
 
     /**
@@ -60,13 +63,13 @@ class GitResetServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitResetCommandBuilder::class);
-        $builder->expects(self::once())->method('soft')->willReturnSelf();
-        $builder->expects(self::once())->method('commitHash')->with($commitHash)->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createReset')->willReturn($builder);
+        $builder->expects($this->once())->method('soft')->willReturnSelf();
+        $builder->expects($this->once())->method('commitHash')->with($commitHash)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createReset')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         $this->service->resetSoft($repository, $commitHash);
     }

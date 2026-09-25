@@ -5,22 +5,15 @@ namespace DR\Review\Service\Parser;
 
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\FormatPattern;
+use DR\Review\Model\Git\FormatPattern;
 use DR\Review\Service\CommitHydrator;
 use DR\Review\Service\Git\Log\FormatPatternFactory;
 use Exception;
 
-class GitLogParser
+readonly class GitLogParser
 {
-    private CommitHydrator       $hydrator;
-    private FormatPatternFactory $patternFactory;
-    private DiffParser           $diffParser;
-
-    public function __construct(FormatPatternFactory $patternFactory, CommitHydrator $hydrator, DiffParser $diffParser)
+    public function __construct(private FormatPatternFactory $patternFactory, private CommitHydrator $hydrator, private DiffParser $diffParser)
     {
-        $this->hydrator       = $hydrator;
-        $this->patternFactory = $patternFactory;
-        $this->diffParser     = $diffParser;
     }
 
     public function getPattern(): string
@@ -32,7 +25,7 @@ class GitLogParser
      * @return Commit[]
      * @throws Exception
      */
-    public function parse(Repository $repository, string $commitLog, ?int $limit = null): array
+    public function parse(Repository $repository, string $commitLog, ?int $limit = null, bool $includeRaw = false): array
     {
         $result         = [];
         $pattern        = array_merge([], FormatPatternFactory::PATTERN, [FormatPattern::PATCH]);
@@ -53,7 +46,7 @@ class GitLogParser
             $data = array_combine($pattern, $parts);
 
             // parse porcelain patch log
-            $diffFiles = $this->diffParser->parse($data[FormatPattern::PATCH]);
+            $diffFiles = $this->diffParser->parse($data[FormatPattern::PATCH], $includeRaw);
 
             // create model from the parts
             $result[] = $logCommit = $this->hydrator->hydrate($repository, $data, $diffFiles);

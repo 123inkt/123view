@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @extends AbstractControllerTestCase<RuleController>
+ */
 #[CoversClass(RuleController::class)]
 class RuleControllerTest extends AbstractControllerTestCase
 {
@@ -36,8 +39,9 @@ class RuleControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUserIsNotRuleOwner(): void
     {
+        $this->ruleRepository->expects($this->never())->method('save');
         $userB = new User();
-        $rule  = (new Rule())->setUser($userB);
+        $rule  = new Rule()->setUser($userB);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule, false);
         $this->expectException(AccessDeniedException::class);
@@ -47,6 +51,7 @@ class RuleControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUnknownRuleId(): void
     {
+        $this->ruleRepository->expects($this->never())->method('save');
         $this->expectException(NotFoundHttpException::class);
         $this->expectExceptionMessage('Rule not found');
         ($this->controller)(new Request([], [], ['id' => -1]), null);
@@ -55,7 +60,7 @@ class RuleControllerTest extends AbstractControllerTestCase
     public function testInvokeWithUser(): void
     {
         $request = new Request();
-        $rule    = (new Rule())->setUser($this->user);
+        $rule    = new Rule()->setUser($this->user);
 
         $form = $this->expectCreateForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
@@ -63,7 +68,7 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->isValidWillReturn(true);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleRepository->expects(self::once())->method('save')->with($rule, true);
+        $this->ruleRepository->expects($this->once())->method('save')->with($rule, true);
         $this->expectAddFlash('success', 'rule.successful.saved');
         $this->expectGenerateUrl(RulesController::class)->willReturn('redirect');
 
@@ -75,9 +80,9 @@ class RuleControllerTest extends AbstractControllerTestCase
     public function testInvokeWithUserNotSubmitted(): void
     {
         $request = new Request();
-        $rule    = (new Rule())->setUser($this->user);
+        $rule    = new Rule()->setUser($this->user);
 
-        $formView = $this->createMock(FormView::class);
+        $formView = static::createStub(FormView::class);
 
         $form = $this->expectCreateForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
@@ -85,12 +90,12 @@ class RuleControllerTest extends AbstractControllerTestCase
         $form->createViewWillReturn($formView);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleRepository->expects(self::never())->method('save');
+        $this->ruleRepository->expects($this->never())->method('save');
 
         $response = ($this->controller)($request, $rule);
         static::assertIsArray($response);
         static::assertArrayHasKey('editRuleModel', $response);
-        static::assertEquals((new EditRuleViewModel())->setForm($formView), $response['editRuleModel']);
+        static::assertEquals(new EditRuleViewModel()->setForm($formView), $response['editRuleModel']);
     }
 
     public function getController(): AbstractController

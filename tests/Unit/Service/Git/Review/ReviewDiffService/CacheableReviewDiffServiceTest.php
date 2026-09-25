@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Review\ReviewDiffService;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
@@ -36,7 +37,8 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
      */
     public function testGetDiffFilesWithoutRevisions(): void
     {
-        $this->cache->expects(self::never())->method('get');
+        $this->cache->expects($this->never())->method('get');
+        $this->diffService->expects($this->never())->method('getDiffForRevisions');
 
         static::assertSame([], $this->service->getDiffForRevisions(new Repository(), []));
     }
@@ -51,13 +53,13 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM);
+        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM, visibleLines: 123);
 
-        $this->cache->expects(self::once())
+        $this->cache->expects($this->once())
             ->method('get')
-            ->with('diff-files-revision-123-hash-fdo-20-trim')
+            ->with('diff-files-revision-123-hash-fdo-20-trim-commits-123-no-raw')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision], $options)->willReturn([$diffFile]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision], $options)->willReturn([$diffFile]);
 
         static::assertSame([$diffFile], $this->service->getDiffForRevisions($repository, [$revision], $options));
     }
@@ -69,19 +71,20 @@ class CacheableReviewDiffServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setId(123);
+        $review   = new CodeReview()->setRepository($repository);
         $revision = new Revision();
         $revision->setCommitHash('hash');
         $diffFile = new DiffFile();
-        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM);
+        $options  = new FileDiffOptions(20, DiffComparePolicy::TRIM, visibleLines: 123);
 
-        $this->cache->expects(self::once())
+        $this->cache->expects($this->once())
             ->method('get')
-            ->with('4040ca4757de48a78fe1faea962462df96f5ce9f9c3d270cb2d53d3b4bcccafb')
+            ->with('038b370a23b87498c815bcc4d4dc0dc1b4baf2018582aa1c3f8379c25931b260')
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->diffService->expects(self::once())->method('getDiffForBranch')
-            ->with($repository, [$revision], 'branch', $options)
+        $this->diffService->expects($this->once())->method('getDiffForBranch')
+            ->with($review, [$revision], 'branch', $options)
             ->willReturn([$diffFile]);
 
-        static::assertSame([$diffFile], $this->service->getDiffForBranch($repository, [$revision], 'branch', $options));
+        static::assertSame([$diffFile], $this->service->getDiffForBranch($review, [$revision], 'branch', $options));
     }
 }

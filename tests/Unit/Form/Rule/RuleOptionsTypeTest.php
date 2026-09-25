@@ -22,7 +22,7 @@ class RuleOptionsTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(10))
+        $builder->expects($this->exactly(10))
             ->method('add')
             ->with(
                 ...consecutive(

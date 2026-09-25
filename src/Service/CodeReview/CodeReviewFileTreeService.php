@@ -30,21 +30,21 @@ class CodeReviewFileTreeService
      * @return array{0: DirectoryTreeNode<DiffFile>, 1: DiffFile[]}
      * @throws Throwable
      */
-    public function getFileTree(CodeReview $review, array $revisions, ?FileDiffOptions $diffOptions = null): array
+    public function getFileTree(CodeReview $review, array $revisions, FileDiffOptions $diffOptions): array
     {
         $repository = Assert::notNull($review->getRepository());
 
         // generate diff files
         if (count($revisions) === 0) {
             $files = [];
-        } elseif ($review->getType() === CodeReviewType::BRANCH) {
-            $files = $this->diffService->getDiffForBranch($repository, $revisions, (string)$review->getReferenceId(), $diffOptions);
+        } elseif ($diffOptions->reviewType === CodeReviewType::BRANCH) {
+            $files = $this->diffService->getDiffForBranch($review, $revisions, (string)$review->getReferenceId(), $diffOptions);
         } else {
             $files = $this->diffService->getDiffForRevisions($repository, $revisions, $diffOptions);
         }
 
         // prune large diff files
-        $files = $this->diffFileUpdater->update($files, 6, HighlightedFileService::MAX_LINE_COUNT);
+        $files = $this->diffFileUpdater->update($files, $diffOptions->visibleLines ?? 6, HighlightedFileService::MAX_LINE_COUNT);
 
         // generate file tree
         $fileTree = $this->treeGenerator->generate($files)

@@ -16,7 +16,7 @@ use DR\Review\ViewModelProvider\ReviewsViewModelProvider;
 use Exception;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class ReviewsController extends AbstractController

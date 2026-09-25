@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Filter[]>
+ */
 class FilterCollectionType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
@@ -22,7 +25,7 @@ class FilterCollectionType extends AbstractType
                 'allow_delete'  => true,
                 'prototype'     => true,
                 'delete_empty'  => static fn(?Filter $filter) => $filter?->getPattern() === null,
-                'constraints'   => [new Assert\Count(['max' => 20, 'maxMessage' => 'At most {{ limit }} filters can be set'])]
+                'constraints'   => [new Assert\Count(max: 20, maxMessage: 'At most {{ limit }} filters can be set')]
             ]
         );
     }

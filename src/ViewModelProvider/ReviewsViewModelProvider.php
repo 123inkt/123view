@@ -5,8 +5,8 @@ namespace DR\Review\ViewModelProvider;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
-use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewOpened;
@@ -14,6 +14,7 @@ use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\QueryParser\Term\TermInterface;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Request\Reviews\SearchReviewsRequest;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModel\App\Review\ReviewsViewModel;
 
@@ -25,10 +26,11 @@ class ReviewsViewModelProvider
         ReviewOpened::NAME,
         CommentAdded::NAME,
         CommentResolved::NAME,
+        CommentReplyAdded::NAME
     ];
 
     public function __construct(
-        private readonly User $user,
+        private readonly UserEntityProvider $userProvider,
         private readonly CodeReviewRepository $reviewRepository,
         private readonly ReviewTimelineViewModelProvider $timelineViewModelProvider
     ) {
@@ -36,7 +38,7 @@ class ReviewsViewModelProvider
 
     public function getSearchReviewsViewModel(SearchReviewsRequest $request, ?TermInterface $terms): ReviewsViewModel
     {
-        $paginator          = null;
+        $reviews            = null;
         $paginatorViewModel = null;
 
         if ($terms !== null) {
@@ -48,34 +50,36 @@ class ReviewsViewModelProvider
             );
             /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
             $paginatorViewModel = new PaginatorViewModel($paginator, $request->getPage());
+            $reviews            = iterator_to_array($paginator);
         }
 
-        return new ReviewsViewModel(null, $paginator, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy(), null);
+        return new ReviewsViewModel(null, $reviews, $paginatorViewModel, $request->getSearchQuery(), $request->getOrderBy(), null);
     }
 
     public function getReviewsViewModel(SearchReviewsRequest $request, ?TermInterface $terms, Repository $repository): ReviewsViewModel
     {
-        $paginator          = null;
+        $reviews            = null;
         $paginatorViewModel = null;
 
         if ($terms !== null) {
             $paginator = $this->reviewRepository->getPaginatorForSearchQuery(
-                (int)$repository->getId(),
+                $repository->getId(),
                 $request->getPage(),
                 $terms,
                 $request->getOrderBy()
             );
             /** @var PaginatorViewModel<CodeReview> $paginatorViewModel */
             $paginatorViewModel = new PaginatorViewModel($paginator, $request->getPage());
+            $reviews            = iterator_to_array($paginator);
         }
 
         return new ReviewsViewModel(
             $repository,
-            $paginator,
+            $reviews,
             $paginatorViewModel,
             $request->getSearchQuery(),
             $request->getOrderBy(),
-            $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->user, self::FEED_EVENTS, $repository)
+            $this->timelineViewModelProvider->getTimelineViewModelForFeed($this->userProvider->getCurrentUser(), self::FEED_EVENTS, $repository)
         );
     }
 }

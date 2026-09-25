@@ -39,7 +39,7 @@ class BreadcrumbFactoryTest extends AbstractTestCase
         $review->setProjectId(456);
         $review->setRepository($repository);
 
-        $this->urlGenerator->expects(self::exactly(2))->method('generate')
+        $this->urlGenerator->expects($this->exactly(2))->method('generate')
             ->with(
                 ...consecutive(
                     [ReviewsController::class, ['id' => 123]],
@@ -63,7 +63,7 @@ class BreadcrumbFactoryTest extends AbstractTestCase
         $repository->setId(123);
         $repository->setDisplayName('foobar');
 
-        $this->urlGenerator->expects(self::once())->method('generate')->with(ReviewsController::class, ['id' => 123])->willReturn('url');
+        $this->urlGenerator->expects($this->once())->method('generate')->with(ReviewsController::class, ['id' => 123])->willReturn('url');
 
         $crumbs = $this->factory->createForReviews($repository);
         static::assertCount(1, $crumbs);

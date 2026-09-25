@@ -32,6 +32,7 @@ class DetachRevisionsFormTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -49,15 +50,15 @@ class DetachRevisionsFormTypeTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(456);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(DetachRevisionController::class, ['id' => 123])
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(2))
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(2))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -71,6 +72,7 @@ class DetachRevisionsFormTypeTest extends AbstractTestCase
 
     public function testGetBlockPrefix(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         static::assertSame('', $this->type->getBlockPrefix());
     }
 }

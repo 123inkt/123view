@@ -19,6 +19,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<DetachRevisionController>
+ */
 #[CoversClass(DetachRevisionController::class)]
 class DetachRevisionControllerTest extends AbstractControllerTestCase
 {
@@ -36,6 +39,9 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
 
     public function testInvokeBadFormSubmit(): void
     {
+        $this->reviewRepository->expects($this->never())->method('save');
+        $this->revisionRepository->expects($this->never())->method('save');
+        $this->eventService->expects($this->never())->method('revisionsDetached');
         $request = new Request();
 
         $revision = new Revision();
@@ -75,9 +81,9 @@ class DetachRevisionControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true)
             ->getDataWillReturn(['rev123' => true, 'rev456' => false]);
 
-        $this->revisionRepository->expects(self::once())->method('save')->with($revisionA);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->eventService->expects(self::once())->method('revisionsDetached')->with($review, [$revisionA], 456);
+        $this->revisionRepository->expects($this->once())->method('save')->with($revisionA);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->eventService->expects($this->once())->method('revisionsDetached')->with($review, [$revisionA], 456);
 
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 

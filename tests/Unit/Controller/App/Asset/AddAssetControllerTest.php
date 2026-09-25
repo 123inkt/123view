@@ -15,6 +15,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<AddAssetController>
+ */
 #[CoversClass(AddAssetController::class)]
 class AddAssetControllerTest extends AbstractControllerTestCase
 {
@@ -32,16 +35,17 @@ class AddAssetControllerTest extends AbstractControllerTestCase
     {
         $asset = new Asset();
         $asset->setId(123);
+        $asset->setData('foobar');
         $user = new User();
 
         $request = $this->createMock(AddAssetRequest::class);
-        $request->expects(self::once())->method('getMimeType')->willReturn('mime-type');
-        $request->expects(self::once())->method('getData')->willReturn('data');
+        $request->expects($this->once())->method('getMimeType')->willReturn('mime-type');
+        $request->expects($this->once())->method('getData')->willReturn('data');
 
         $this->expectGetUser($user);
-        $this->assetFactory->expects(self::once())->method('create')->with($user, 'mime-type', 'data')->willReturn($asset);
-        $this->assetRepository->expects(self::once())->method('save')->with($asset, true);
-        $this->expectGenerateUrl(GetAssetController::class, ['id' => 123]);
+        $this->assetFactory->expects($this->once())->method('create')->with($user, 'mime-type', 'data')->willReturn($asset);
+        $this->assetRepository->expects($this->once())->method('save')->with($asset, true);
+        $this->expectGenerateUrl(GetAssetController::class, ['id' => 123, 'hash' => 'c3ab8ff1']);
 
         ($this->controller)($request);
     }

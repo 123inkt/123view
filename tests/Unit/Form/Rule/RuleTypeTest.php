@@ -26,7 +26,7 @@ class RuleTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(6))
+        $builder->expects($this->exactly(6))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -38,7 +38,7 @@ class RuleTypeTest extends AbstractTestCase
                     ['filters', InExclusionFilterType::class],
                 )
             )->willReturnSelf();
-        $builder->expects(self::once())->method('get')->with('repositories')->willReturnSelf();
+        $builder->expects($this->once())->method('get')->with('repositories')->willReturnSelf();
 
         $type = new RuleType(true);
         $type->buildForm($builder, []);
@@ -48,7 +48,7 @@ class RuleTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(5))
+        $builder->expects($this->exactly(5))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -60,8 +60,8 @@ class RuleTypeTest extends AbstractTestCase
                 )
             )->willReturnSelf();
 
-        $builder->expects(self::once())->method('get')->with('repositories')->willReturnSelf();
-        $builder->expects(self::once())->method('addModelTransformer')->with(self::isInstanceOf(CollectionToArrayTransformer::class));
+        $builder->expects($this->once())->method('get')->with('repositories')->willReturnSelf();
+        $builder->expects($this->once())->method('addModelTransformer')->with(self::isInstanceOf(CollectionToArrayTransformer::class));
 
         $type = new RuleType(false);
         $type->buildForm($builder, []);

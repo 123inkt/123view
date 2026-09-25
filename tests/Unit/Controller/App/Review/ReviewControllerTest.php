@@ -22,6 +22,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<ReviewController>
+ */
 #[CoversClass(ReviewController::class)]
 class ReviewControllerTest extends AbstractControllerTestCase
 {
@@ -39,7 +42,7 @@ class ReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(ReviewRequest::class);
+        $request = static::createStub(ReviewRequest::class);
 
         $user = new User();
         $this->expectGetUser($user);
@@ -53,12 +56,12 @@ class ReviewControllerTest extends AbstractControllerTestCase
         $review->setProjectId(123);
 
         $diffFile  = new DiffFile();
-        $viewModel = new ReviewViewModel($review, []);
-        $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile, ReviewDiffModeEnum::INLINE));
+        $viewModel = new ReviewViewModel($review, [], [], 'tab', 1);
+        $viewModel->setFileDiffViewModel(new FileDiffViewModel($diffFile, ReviewDiffModeEnum::INLINE, 6));
 
-        $this->modelProvider->expects(self::once())->method('getViewModel')->with($review, $request)->willReturn($viewModel);
-        $this->fileSeenService->expects(self::once())->method('markAsSeen')->with($review, $user, $diffFile);
-        $this->breadcrumbFactory->expects(self::once())->method('createForReview')->with($review)->willReturn([$breadcrumb]);
+        $this->modelProvider->expects($this->once())->method('getViewModel')->with($review, $request)->willReturn($viewModel);
+        $this->fileSeenService->expects($this->once())->method('markAsSeen')->with($review, $user, $diffFile);
+        $this->breadcrumbFactory->expects($this->once())->method('createForReview')->with($review)->willReturn([$breadcrumb]);
 
         $data = ($this->controller)($request, $review);
         static::assertSame('CR-123 - Repository', $data['page_title']);
@@ -68,6 +71,9 @@ class ReviewControllerTest extends AbstractControllerTestCase
 
     public function testRedirectReviewRoute(): void
     {
+        $this->modelProvider->expects($this->never())->method('getViewModel');
+        $this->breadcrumbFactory->expects($this->never())->method('createForReview');
+        $this->fileSeenService->expects($this->never())->method('markAsSeen');
         $request = new Request(['foo' => 'bar']);
         $review  = new CodeReview();
 

@@ -1,13 +1,17 @@
 .review-revision--grid {
     display: grid;
-    grid-column-gap: 5px;
+    column-gap: 5px;
     grid-template-columns: auto 1fr 50px;
 }
 
 .review-revision-branch--grid {
     display: grid;
-    grid-column-gap: 5px;
+    column-gap: 5px;
     grid-template-columns: 1fr 50px;
+}
+
+.review-revision--title-author {
+    font-size: 0.7rem;
 }
 
 .review-revision--author-time {
@@ -42,4 +46,8 @@
 
 .revision-entities-title {
     max-width: 600px;
+}
+
+.review-revision.search-active .review-revision--grid:not(.search-match) {
+    display: none;
 }

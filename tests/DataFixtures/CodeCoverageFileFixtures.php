@@ -19,7 +19,7 @@ class CodeCoverageFileFixtures extends Fixture implements DependentFixtureInterf
 
         $issue = new CodeCoverageFile();
         $issue->setFile('filepath');
-        $issue->setCoverage((new LineCoverage())->setCoverage(123, 1)->setCoverage(456, 0));
+        $issue->setCoverage(new LineCoverage()->setCoverage(123, 1)->setCoverage(456, 0));
         $issue->setReport($report);
 
         $manager->persist($issue);

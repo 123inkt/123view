@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Fetch;
 
 use DR\Review\Entity\Git\Fetch\BranchUpdate;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
@@ -51,15 +51,15 @@ class GitFetchServiceTest extends AbstractTestCase
         $gitRepository = $this->createMock(GitRepository::class);
 
         $fetchBuilder = $this->createMock(GitFetchCommandBuilder::class);
-        $fetchBuilder->expects(self::once())->method('all')->willReturnSelf();
-        $fetchBuilder->expects(self::once())->method('verbose')->willReturnSelf();
-        $fetchBuilder->expects(self::once())->method('noTags')->willReturnSelf();
-        $fetchBuilder->expects(self::once())->method('prune')->willReturnSelf();
+        $fetchBuilder->expects($this->once())->method('all')->willReturnSelf();
+        $fetchBuilder->expects($this->once())->method('verbose')->willReturnSelf();
+        $fetchBuilder->expects($this->once())->method('noTags')->willReturnSelf();
+        $fetchBuilder->expects($this->once())->method('prune')->willReturnSelf();
 
-        $this->commandBuilderFactory->expects(self::once())->method('createFetch')->willReturn($fetchBuilder);
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
-        $gitRepository->expects(self::once())->method('execute')->with($fetchBuilder, true)->willReturn('output');
-        $this->fetchParser->expects(self::once())->method('parse')->with('output')->willReturn([$change]);
+        $this->commandBuilderFactory->expects($this->once())->method('createFetch')->willReturn($fetchBuilder);
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($fetchBuilder, true)->willReturn('output');
+        $this->fetchParser->expects($this->once())->method('parse')->with('output')->willReturn([$change]);
 
         static::assertSame([$change], $this->fetchService->fetch($repository));
     }

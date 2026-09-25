@@ -14,6 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 
+/**
+ * @extends AbstractControllerTestCase<AzureAdAuthController>
+ */
 #[CoversClass(AzureAdAuthController::class)]
 class AzureAdAuthControllerTest extends AbstractControllerTestCase
 {
@@ -33,7 +36,7 @@ class AzureAdAuthControllerTest extends AbstractControllerTestCase
 
         $this->expectGenerateUrl(AzureAdCallbackController::class, [], UrlGeneratorInterface::ABSOLUTE_URL)->willReturn($url);
         $this->azureProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAuthorizationUrl')
             ->with(
                 self::callback(static function (array $options) use ($url) {

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace DR\Review\Service\Api\Gitlab;
 
 use DR\Review\Model\Api\Gitlab\Version;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
@@ -58,5 +60,25 @@ class MergeRequests
             JsonEncoder::FORMAT,
             [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]
         );
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function approve(int $projectId, int $mergeRequestIId): bool
+    {
+        $response = $this->client->request('POST', sprintf('projects/%d/merge_requests/%d/approve', $projectId, $mergeRequestIId));
+
+        return $response->getStatusCode() === Response::HTTP_CREATED;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function unapprove(int $projectId, int $mergeRequestIId): bool
+    {
+        $response = $this->client->request('POST', sprintf('projects/%d/merge_requests/%d/unapprove', $projectId, $mergeRequestIId));
+
+        return $response->getStatusCode() === Response::HTTP_CREATED;
     }
 }

@@ -21,7 +21,7 @@ class FilterTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(2))
+        $builder->expects($this->exactly(2))
             ->method('add')
             ->with(...consecutive(['type', ChoiceType::class], ['pattern', TextType::class]))
             ->willReturnSelf();

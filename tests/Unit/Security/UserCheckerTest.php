@@ -35,7 +35,7 @@ class UserCheckerTest extends AbstractTestCase
         // sanity check, userA should be allowed
         $this->checker->checkPreAuth($userA);
 
-        $this->translator->expects(self::once())->method('trans')->with('user.account.suspended')->willReturn('account suspended');
+        $this->translator->expects($this->once())->method('trans')->with('user.account.suspended')->willReturn('account suspended');
 
         // userB should be disallowed
         $this->expectException(CustomUserMessageAuthenticationException::class);

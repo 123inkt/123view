@@ -1,0 +1,68 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\Service\Ai;
+
+use DR\Review\Entity\Git\Diff\DiffFile;
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Service\CodeReview\CodeReviewDiffService;
+use Psr\Log\LoggerInterface;
+use Symfony\AI\Agent\AgentInterface;
+use Symfony\AI\Platform\Message\Message;
+use Symfony\AI\Platform\Message\MessageBag;
+use Symfony\Component\Clock\ClockAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Target;
+use Throwable;
+
+class AiCodeReviewService
+{
+    use ClockAwareTrait;
+
+    public const int RESULT_NO_FILES = 1;
+    public const int RESULT_SUCCESS  = 2;
+    public const int RESULT_FAILURE  = 3;
+
+    public function __construct(
+        #[Target('aiLogger')] private ?LoggerInterface $aiLogger,
+        private readonly CodeReviewDiffService $diffService,
+        private readonly AgentInterface $agent,
+        private readonly AiCodeReviewFileFilter $fileFilter,
+    ) {
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function startCodeReview(CodeReview $review): int
+    {
+        $files = $this->diffService->getDiff($review);
+
+        // filter out large and non-essential files
+        $files = array_filter($files, $this->fileFilter);
+        if (count($files) === 0) {
+            $this->aiLogger?->info('No suitable files found for code review, skipping review {reviewId}', ['reviewId' => $review->getId()]);
+
+            return self::RESULT_NO_FILES;
+        }
+
+        // get the diffs
+        $diff = implode("\n", array_map(static fn(DiffFile $file) => $file->raw, $files));
+        $message = "CODE_REVIEW_ID: " . $review->getId() . "\n";
+
+        $this->aiLogger?->info(
+            'AiCodeReviewService: Starting code review for review {id} with {fileCount} files',
+            ['id' => $review->getId(), 'fileCount' => count($files),]
+        );
+
+        // invoke the agent
+        try {
+            $this->agent->call(new MessageBag(Message::ofUser($message . $diff)));
+        } catch (Throwable $exception) {
+            $this->aiLogger?->error($exception->getMessage(), ['exception' => $exception]);
+
+            return self::RESULT_FAILURE;
+        }
+
+        return self::RESULT_SUCCESS;
+    }
+}

@@ -11,7 +11,6 @@ class UserMention
 {
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Comment::class, cascade: ['persist'], inversedBy: 'mentions')]
-    #[ORM\JoinColumn(nullable: false)]
     private Comment $comment;
 
     #[ORM\Id]

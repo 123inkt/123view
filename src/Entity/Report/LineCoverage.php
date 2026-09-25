@@ -19,7 +19,9 @@ class LineCoverage
     {
         $lineCoverage = new LineCoverage();
         if ($data !== '') {
-            $lineCoverage->lines = Assert::isArray(Json::decode(Assert::notFalse(gzuncompress($data)), true));
+            /** @var array<int, int> $lines */
+            $lines               = Assert::isArray(Json::decode(Assert::notFalse(gzuncompress($data)), true));
+            $lineCoverage->lines = $lines;
         }
 
         return $lineCoverage;

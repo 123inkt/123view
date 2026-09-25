@@ -10,6 +10,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Repository>
+ */
 class RepositoryChoiceType extends AbstractType
 {
     public function __construct(private RepositoryRepository $repositoryRepository)
@@ -18,7 +21,7 @@ class RepositoryChoiceType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $repositories = $this->repositoryRepository->findBy([], ['name' => 'ASC']);
+        $repositories = $this->repositoryRepository->findBy(['active' => 1], ['name' => 'ASC']);
         $resolver->setDefaults(
             [
                 'label'                     => 'repository',
@@ -28,7 +31,7 @@ class RepositoryChoiceType extends AbstractType
                 'choice_translation_domain' => false,
                 'multiple'                  => true,
                 'expanded'                  => true,
-                'constraints'               => [new Assert\Count(['min' => 1, 'minMessage' => 'At least {{ limit }} repository is required'])]
+                'constraints'               => [new Assert\Count(min: 1, minMessage: 'At least {{ limit }} repository is required')]
             ]
         );
     }

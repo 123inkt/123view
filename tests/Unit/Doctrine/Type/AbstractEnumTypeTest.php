@@ -19,14 +19,14 @@ class AbstractEnumTypeTest extends AbstractTestCase
     {
         parent::setUp();
         $this->enumType = new class extends AbstractEnumType {
-            public const TYPE   = 'type';
-            public const VALUES = ['foo', 'bar'];
+            public const string   TYPE   = 'type';
+            public const array    VALUES = ['foo', 'bar'];
         };
     }
 
     public function testGetSQLDeclaration(): void
     {
-        $result = $this->enumType->getSQLDeclaration([], $this->createMock(AbstractPlatform::class));
+        $result = $this->enumType->getSQLDeclaration([], static::createStub(AbstractPlatform::class));
         static::assertSame("ENUM('foo', 'bar')", $result);
     }
 
@@ -35,8 +35,8 @@ class AbstractEnumTypeTest extends AbstractTestCase
      */
     public function testConvertToDatabaseValue(): void
     {
-        static::assertNull($this->enumType->convertToDatabaseValue(null, $this->createMock(AbstractPlatform::class)));
-        static::assertSame('foo', $this->enumType->convertToDatabaseValue('foo', $this->createMock(AbstractPlatform::class)));
+        static::assertNull($this->enumType->convertToDatabaseValue(null, static::createStub(AbstractPlatform::class)));
+        static::assertSame('foo', $this->enumType->convertToDatabaseValue('foo', static::createStub(AbstractPlatform::class)));
     }
 
     /**
@@ -45,8 +45,8 @@ class AbstractEnumTypeTest extends AbstractTestCase
     public function testConvertToDatabaseValueThrowsExceptionOnInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage("Invalid value 'foobar' for type 'type'");
-        $this->enumType->convertToDatabaseValue('foobar', $this->createMock(AbstractPlatform::class));
+        $this->expectExceptionMessage("Invalid value 'string' for type 'type'.");
+        $this->enumType->convertToDatabaseValue('foobar', static::createStub(AbstractPlatform::class));
     }
 
     public function testGetName(): void

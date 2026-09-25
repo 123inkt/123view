@@ -34,7 +34,7 @@ class DiffLineChangeSetOptimizerTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
         $set   = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $this->differ->expects(self::once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn(null);
+        $this->differ->expects($this->once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn(null);
 
         static::assertSame($set, $this->optimizer->optimize($set, DiffComparePolicy::IGNORE));
     }
@@ -57,7 +57,7 @@ class DiffLineChangeSetOptimizerTest extends AbstractTestCase
                 [LineBlockTextIterator::TEXT_ADDED, 'added'],
             ]
         );
-        $this->differ->expects(self::once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn($changes);
+        $this->differ->expects($this->once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn($changes);
 
         $set = $this->optimizer->optimize($set, DiffComparePolicy::IGNORE);
 

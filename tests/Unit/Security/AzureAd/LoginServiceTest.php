@@ -45,7 +45,8 @@ class LoginServiceTest extends AbstractTestCase
             ]
         );
 
-        $this->translator->expects(self::once())->method('trans')->with('login.cancelled')->willReturn('login cancelled');
+        $this->translator->expects($this->once())->method('trans')->with('login.cancelled')->willReturn('login cancelled');
+        $this->azureProvider->expects($this->never())->method('getAccessToken');
 
         $result = $this->service->handleLogin($request);
         static::assertInstanceOf(LoginFailure::class, $result);
@@ -63,7 +64,8 @@ class LoginServiceTest extends AbstractTestCase
             ]
         );
 
-        $this->translator->expects(self::once())->method('trans')->with('login.not.successful')->willReturn('login not successful');
+        $this->translator->expects($this->once())->method('trans')->with('login.not.successful')->willReturn('login not successful');
+        $this->azureProvider->expects($this->never())->method('getAccessToken');
 
         $result = $this->service->handleLogin($request);
         static::assertInstanceOf(LoginFailure::class, $result);
@@ -73,7 +75,8 @@ class LoginServiceTest extends AbstractTestCase
     {
         $request = new Request([]);
 
-        $this->translator->expects(self::once())->method('trans')->with('login.invalid.azuread.callback')->willReturn('invalid callback');
+        $this->translator->expects($this->once())->method('trans')->with('login.invalid.azuread.callback')->willReturn('invalid callback');
+        $this->azureProvider->expects($this->never())->method('getAccessToken');
 
         $result = $this->service->handleLogin($request);
         static::assertInstanceOf(LoginFailure::class, $result);
@@ -83,9 +86,9 @@ class LoginServiceTest extends AbstractTestCase
     {
         $request = new Request(['code' => '123abc']);
 
-        $this->translator->expects(self::once())->method('trans')->with('login.unable.to.validate.login.attempt')->willReturn('invalid auth');
+        $this->translator->expects($this->once())->method('trans')->with('login.unable.to.validate.login.attempt')->willReturn('invalid auth');
         $this->azureProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAccessToken')
             ->with('authorization_code', ['scope' => ['scope'], 'code' => '123abc'])
             ->willThrowException(new InvalidArgumentException('failed'));
@@ -98,12 +101,12 @@ class LoginServiceTest extends AbstractTestCase
     {
         $request = new Request(['code' => '123abc']);
 
-        $this->translator->expects(self::once())->method('trans')->with("login.authorization.has.no.token")->willReturn('invalid auth');
+        $this->translator->expects($this->once())->method('trans')->with("login.authorization.has.no.token")->willReturn('invalid auth');
         $this->azureProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAccessToken')
             ->with('authorization_code', ['scope' => ['scope'], 'code' => '123abc'])
-            ->willReturn($this->createMock(AccessTokenInterface::class));
+            ->willReturn(static::createStub(AccessTokenInterface::class));
 
         $result = $this->service->handleLogin($request);
         static::assertInstanceOf(LoginFailure::class, $result);
@@ -113,12 +116,12 @@ class LoginServiceTest extends AbstractTestCase
     {
         $request = new Request(['code' => '123abc']);
 
-        $this->translator->expects(self::never())->method('trans');
+        $this->translator->expects($this->never())->method('trans');
 
-        $token = $this->createMock(AccessToken::class);
+        $token = static::createStub(AccessToken::class);
         $token->method('getIdTokenClaims')->willReturn(['name' => 'sherlock', 'preferred_username' => 'holmes@example.com']);
         $this->azureProvider
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('getAccessToken')
             ->with('authorization_code', ['scope' => ['scope'], 'code' => '123abc'])
             ->willReturn($token);

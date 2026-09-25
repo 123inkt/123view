@@ -10,15 +10,15 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Repository\Report\CodeInspectionReportRepository;
 
 #[ORM\Entity(repositoryClass: CodeInspectionReportRepository::class)]
-#[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp')]
-#[ORM\Index(columns: ['repository_id', 'create_timestamp'], name: 'repository_create_timestamp')]
+#[ORM\Index(name: 'create_timestamp', columns: ['create_timestamp'])]
+#[ORM\Index(name: 'repository_create_timestamp', columns: ['repository_id', 'create_timestamp'])]
 #[ORM\UniqueConstraint('IDX_COMMIT_HASH_REPOSITORY_ID', ['repository_id', 'inspection_id', 'commit_hash'])]
 class CodeInspectionReport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     private string $commitHash;
@@ -37,7 +37,7 @@ class CodeInspectionReport
     private int $createTimestamp;
 
     /** @phpstan-var Collection<int, CodeInspectionIssue> */
-    #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeInspectionIssue::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CodeInspectionIssue::class, mappedBy: 'report', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $issues;
 
     public function __construct()
@@ -45,12 +45,12 @@ class CodeInspectionReport
         $this->issues = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

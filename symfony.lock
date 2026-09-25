@@ -12,17 +12,25 @@
             "./src/ApiResource/.gitignore"
         ]
     },
-    "chrisguitarguy/request-id-bundle": {
-        "version": "v5.1.0"
+    "api-platform/symfony": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "e9952e9f393c2d048f10a78f272cd35e807d972b"
+        },
+        "files": [
+            "./config/packages/api_platform.yaml",
+            "./config/routes/api_platform.yaml",
+            "./src/ApiResource/.gitignore"
+        ]
     },
     "composer/pcre": {
         "version": "1.0.0"
     },
     "composer/xdebug-handler": {
         "version": "2.0.2"
-    },
-    "czproject/git-php": {
-        "version": "v4.0.2"
     },
     "dealerdirect/phpcodesniffer-composer-installer": {
         "version": "v0.7.1"
@@ -33,17 +41,8 @@
     "digitalrevolution/phpunit-file-coverage-inspection": {
         "version": "v1.1.1"
     },
-    "doctrine/annotations": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "a2759dd6123694c8d901d0ec80006e044c2e6457"
-        },
-        "files": [
-            "./config/routes/annotations.yaml"
-        ]
+    "digitalrevolution/symfony-trace-bundle": {
+        "version": "v0.3.1"
     },
     "doctrine/cache": {
         "version": "2.1.1"
@@ -126,11 +125,11 @@
     "egulias/email-validator": {
         "version": "3.1.1"
     },
+    "fdekker/log-viewer-bundle": {
+        "version": "v0.1.1"
+    },
     "firebase/php-jwt": {
         "version": "v5.5.1"
-    },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.12"
     },
     "guzzlehttp/guzzle": {
         "version": "7.4.3"
@@ -141,11 +140,20 @@
     "guzzlehttp/psr7": {
         "version": "2.2.1"
     },
-    "laminas/laminas-code": {
-        "version": "4.5.1"
-    },
     "league/oauth2-client": {
         "version": "2.6.1"
+    },
+    "liip/monitor-bundle": {
+        "version": "2.22",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.6",
+            "ref": "02c7cd93304dead890f9042fc2670dd9b0e0c091"
+        },
+        "files": [
+            "./config/packages/monitor.yaml"
+        ]
     },
     "liip/test-fixtures-bundle": {
         "version": "2.4.1"
@@ -158,18 +166,6 @@
     },
     "myclabs/deep-copy": {
         "version": "1.10.2"
-    },
-    "nelmio/cors-bundle": {
-        "version": "2.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.5",
-            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
-        },
-        "files": [
-            "./config/packages/nelmio_cors.yaml"
-        ]
     },
     "nikic/php-parser": {
         "version": "v4.10.5"
@@ -185,6 +181,18 @@
     },
     "phar-io/version": {
         "version": "3.1.0"
+    },
+    "php-http/discovery": {
+        "version": "1.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "./config/packages/http_discovery.yaml"
+        ]
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -329,6 +337,30 @@
             "./phpcs.xml.dist"
         ]
     },
+    "symfony/ai-anthropic-platform": {
+        "version": "0.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "169d966953a6b9aeca111cb7f0ac2da72e050159"
+        },
+        "files": [
+            "./config/packages/ai_anthropic_platform.yaml"
+        ]
+    },
+    "symfony/ai-bundle": {
+        "version": "0.9999999",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "0.1",
+            "ref": "39bb71a39860be3a261f5b527ed57e952366943d"
+        },
+        "files": [
+            "./config/packages/ai.yaml"
+        ]
+    },
     "symfony/browser-kit": {
         "version": "v6.0.3"
     },
@@ -464,6 +496,9 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/mcp-bundle": {
+        "version": "v0.8.0"
     },
     "symfony/mercure-bundle": {
         "version": "0.3",
@@ -634,6 +669,15 @@
             "./config/packages/twig.yaml",
             "./templates/base.html.twig"
         ]
+    },
+    "symfony/uid": {
+        "version": "7.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "7.0",
+            "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
+        }
     },
     "symfony/validator": {
         "version": "6.0",

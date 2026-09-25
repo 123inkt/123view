@@ -13,11 +13,19 @@ use LogicException;
 class DirectoryTreeNode
 {
     /**
-     * @param DirectoryTreeNode<T>[] $directories
-     * @param T[]                    $files
+     * @param DirectoryTreeNode<T>|null $parentNode
+     * @param DirectoryTreeNode<T>[]    $directories
+     * @param T[]                       $files
      */
-    public function __construct(private string $name, private array $directories = [], private array $files = [])
-    {
+    public function __construct(
+        private string $name,
+        private ?DirectoryTreeNode $parentNode = null,
+        private array $directories = [],
+        private array $files = []
+    ) {
+        foreach ($this->directories as $directory) {
+            $directory->parentNode = $this;
+        }
     }
 
     public function isEmpty(): bool
@@ -30,18 +38,22 @@ class DirectoryTreeNode
         return $this->name;
     }
 
+    public function getPathname(): string
+    {
+        $path = [];
+        for ($node = $this; $node->parentNode !== null; $node = $node->parentNode) {
+            array_unshift($path, $node->name);
+        }
+
+        return implode('/', $path);
+    }
+
     /**
      * @return DirectoryTreeNode<T>|null
      */
     public function getDirectory(string $path): ?self
     {
-        foreach ($this->directories as $directory) {
-            if ($directory->getName() === $path) {
-                return $directory;
-            }
-        }
-
-        return null;
+        return array_find($this->directories, static fn($directory) => $directory->getName() === $path);
     }
 
     /**
@@ -105,8 +117,11 @@ class DirectoryTreeNode
             }
             $subdirectory      = $this->directories[0];
             $this->directories = $subdirectory->getDirectories();
-            $this->files       = $subdirectory->getFiles();
-            $this->name        .= '/' . $subdirectory->getName();
+            foreach ($this->directories as $directory) {
+                $directory->parentNode = $this;
+            }
+            $this->files = $subdirectory->getFiles();
+            $this->name  .= '/' . $subdirectory->getName();
         }
 
         // flatten subdirectories
@@ -153,7 +168,7 @@ class DirectoryTreeNode
         $path         = array_shift($filepath);
         $subdirectory = $this->getDirectory($path);
         if ($subdirectory === null) {
-            $this->directories[] = $subdirectory = new DirectoryTreeNode($path, [], []);
+            $this->directories[] = $subdirectory = new DirectoryTreeNode($path, $this);
         }
 
         $subdirectory->addNode($filepath, $item);

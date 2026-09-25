@@ -21,17 +21,6 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $this->linkRepository = $this->createMock(ExternalLinkRepository::class);
     }
 
-    public function testGetFilters(): void
-    {
-        $extension = new ExternalLinkExtension($this->linkRepository);
-        $filters   = $extension->getFilters();
-
-        static::assertCount(1, $filters);
-
-        $filter = $filters[0];
-        static::assertSame('external_links', $filter->getName());
-    }
-
     public function testInjectExternalLinks(): void
     {
         $content = 'A commit <message> for JB1234 ticket.';
@@ -40,7 +29,7 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $link->setUrl('https://mycompany.com/jira/{}');
         $expect = 'A commit &lt;message&gt; for <a href="https://mycompany.com/jira/1234" class="external-link" target="_blank">JB1234</a> ticket.';
 
-        $this->linkRepository->expects(self::once())->method('findAll')->willReturn([$link]);
+        $this->linkRepository->expects($this->once())->method('findAll')->willReturn([$link]);
 
         $extension = new ExternalLinkExtension($this->linkRepository);
         $actual    = $extension->injectExternalLinks($content);
@@ -59,7 +48,7 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $expect = 'F#123 <a href="https://mycompany.com/jira/456" class="external-link" target="_blank">US#456</a> ';
         $expect .= '<a href="https://mycompany.com/jira/789" class="external-link" target="_blank">T#789</a> A random task';
 
-        $this->linkRepository->expects(self::once())->method('findAll')->willReturn([$linkA, $linkB]);
+        $this->linkRepository->expects($this->once())->method('findAll')->willReturn([$linkA, $linkB]);
 
         $extension = new ExternalLinkExtension($this->linkRepository);
         $actual    = $extension->injectExternalLinks($html);
@@ -75,7 +64,7 @@ class ExternalLinkExtensionTest extends AbstractTestCase
         $expect = 'A commit message for <a href="https://mycompany.com/jira/1234" class="external-link" target="_blank">JB1234</a> and ';
         $expect .= '<a href="https://mycompany.com/jira/4567" class="external-link" target="_blank">JB4567</a> ticket.';
 
-        $this->linkRepository->expects(self::once())->method('findAll')->willReturn([$link]);
+        $this->linkRepository->expects($this->once())->method('findAll')->willReturn([$link]);
 
         $extension = new ExternalLinkExtension($this->linkRepository);
         $actual    = $extension->injectExternalLinks($html);

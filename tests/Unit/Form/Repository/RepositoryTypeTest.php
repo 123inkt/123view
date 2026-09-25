@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Form\Repository;
 
-use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
@@ -21,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Debug\OptionsResolverIntrospector;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(RepositoryType::class)]
@@ -38,12 +38,12 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testBuildForm(): void
     {
-        $this->urlGenerator->expects(self::once())->method('generate')->with(CredentialsController::class)->willReturn('url');
-        $this->credentialRepository->expects(self::once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([]);
+        $this->urlGenerator->expects($this->once())->method('generate')->with(CredentialsController::class)->willReturn('url');
+        $this->credentialRepository->expects($this->once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn([]);
 
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(11))
+        $builder->expects($this->exactly(12))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -58,9 +58,10 @@ class RepositoryTypeTest extends AbstractTestCase
                     ['updateRevisionsInterval', IntegerType::class],
                     ['validateRevisionsInterval', IntegerType::class],
                     ['gitlabProjectId', GitlabProjectIdType::class],
+                    ['gitApprovalSync', CheckboxType::class],
                 )
             )->willReturnSelf();
-        $builder->expects(self::once())->method('get')->with('url')->willReturnSelf();
+        $builder->expects($this->once())->method('get')->with('url')->willReturnSelf();
 
         $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
         $type->buildForm($builder, []);
@@ -68,6 +69,8 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testSetGitType(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->credentialRepository->expects($this->never())->method('findBy');
         $repository = new Repository();
 
         $type = new RepositoryType($this->urlGenerator, $this->credentialRepository, 'gitlab');
@@ -80,6 +83,8 @@ class RepositoryTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $this->credentialRepository->expects($this->never())->method('findBy');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 

@@ -30,10 +30,13 @@ class UserSetting
     #[ORM\Column(length: 10000, options: ['default' => ''])]
     private string $browserNotificationEvents = '';
 
-    #[ORM\OneToOne(inversedBy: 'setting', targetEntity: User::class)]
+    #[ORM\Column(length: 500, nullable: true)]
+    private ?string $ideUrl = null;
+
+    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'setting')]
     private ?User $user = null;
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
 
@@ -124,6 +127,18 @@ class UserSetting
     public function setBrowserNotificationEvents(array $browserNotificationEvents): self
     {
         $this->browserNotificationEvents = implode(',', $browserNotificationEvents);
+
+        return $this;
+    }
+
+    public function getIdeUrl(): ?string
+    {
+        return $this->ideUrl;
+    }
+
+    public function setIdeUrl(?string $ideUrl): UserSetting
+    {
+        $this->ideUrl = $ideUrl;
 
         return $this;
     }

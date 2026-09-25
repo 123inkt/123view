@@ -26,6 +26,7 @@ class TestMailCommandTest extends AbstractTestCase
 
     public function testConfigure(): void
     {
+        $this->mailer->expects($this->never())->method('send');
         static::assertSame('test:mail', $this->command->getName());
 
         // test options
@@ -38,7 +39,7 @@ class TestMailCommandTest extends AbstractTestCase
     public function testCommandInvalidConfig(): void
     {
         $commandTester = new CommandTester($this->command);
-        $this->mailer->expects(static::once())->method('send');
+        $this->mailer->expects($this->once())->method('send');
 
         static::assertSame(Command::SUCCESS, $commandTester->execute(['address' => 'sherlock@example.com']));
     }

@@ -3,14 +3,18 @@ declare(strict_types=1);
 
 namespace DR\Review\EventSubscriber;
 
+use DR\Review\Service\User\IdeUrlPatternProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private readonly string $hostname, private readonly bool $ideUrlEnabled, private readonly string $ideUrlPattern)
-    {
+    public function __construct(
+        private readonly string $hostname,
+        private readonly bool $ideUrlEnabled,
+        private readonly IdeUrlPatternProvider $ideUrlPatternProvider
+    ) {
     }
 
     public function onResponse(ResponseEvent $event): void
@@ -24,14 +28,15 @@ class ContentSecurityPolicyResponseSubscriber implements EventSubscriberInterfac
         // allow image svg+xml
         // allow websocket to connect to any port.
         $policy = [
-            "default-src 'self'",
+            "default-src 'self' https://cdn.jsdelivr.net",
             "img-src 'self' data:",
-            "object-src: 'none'",
+            "object-src 'none'",
+            "base-uri 'none'",
             sprintf("connect-src 'self' %s:*", $this->hostname),
         ];
 
         // if IDE url is allowed, allow iframe host from http or https url
-        if ($this->ideUrlEnabled && preg_match('#^(https?://[^:/]+)#', $this->ideUrlPattern, $matches) === 1) {
+        if ($this->ideUrlEnabled && preg_match('#^(https?://[^:/]+)#', $this->ideUrlPatternProvider->getUrl(), $matches) === 1) {
             $policy[] = sprintf("frame-src %s:*", $matches[1]);
         }
 

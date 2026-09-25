@@ -66,11 +66,12 @@ class RuleProcessorTest extends AbstractTestCase
         $commit  = $this->createCommit(files: [new DiffFile()]);
         $commits = [$commit];
 
-        $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn($commits);
-        $this->diffEmphasizer->expects(static::once())->method('emphasizeFile');
-        $this->commitBundler->expects(static::once())->method('bundle')->with($commits)->willReturn($commits);
-        $this->diffService->expects(static::once())->method('getBundledDiff')->with($rule, $commit);
-        $this->dispatcher->expects(static::once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
+        $this->gitLogService->expects($this->once())->method('getCommits')->with($config)->willReturn($commits);
+        $this->diffEmphasizer->expects($this->once())->method('emphasizeFile');
+        $this->commitBundler->expects($this->once())->method('bundle')->with($commits)->willReturn($commits);
+        $this->diffService->expects($this->once())->method('getBundledDiff')->with($rule, $commit);
+        $this->dispatcher->expects($this->once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
+        $this->commitFilter->expects($this->never())->method('exclude');
 
         static::assertSame($commits, $this->ruleProcessor->processRule($config));
     }
@@ -80,27 +81,28 @@ class RuleProcessorTest extends AbstractTestCase
      */
     public function testProcessRuleWithExclusionAndInclusions(): void
     {
-        $excludeFilter = (new Filter())->setInclusion(false);
-        $includeFilter = (new Filter())->setInclusion(true);
-        $rule          = (new Rule())->setName('foobar')->addFilter($excludeFilter)->addFilter($includeFilter);
+        $excludeFilter = new Filter()->setInclusion(false);
+        $includeFilter = new Filter()->setInclusion(true);
+        $rule          = new Rule()->setName('foobar')->addFilter($excludeFilter)->addFilter($includeFilter);
         $config        = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
         $commit        = $this->createCommit();
         $commits       = [$commit];
 
-        $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn($commits);
-        $this->commitBundler->expects(static::once())->method('bundle')->with($commits)->willReturn($commits);
-        $this->diffService->expects(static::once())->method('getBundledDiff')->with($rule, $commit)->willReturn($commit);
+        $this->gitLogService->expects($this->once())->method('getCommits')->with($config)->willReturn($commits);
+        $this->commitBundler->expects($this->once())->method('bundle')->with($commits)->willReturn($commits);
+        $this->diffService->expects($this->once())->method('getBundledDiff')->with($rule, $commit)->willReturn($commit);
         $this->commitFilter
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('exclude')
             ->with($commits, static::callback(static fn($collection) => $collection->contains($excludeFilter)))
             ->willReturn($commits);
         $this->commitFilter
-            ->expects(static::once())
+            ->expects($this->once())
             ->method('include')
             ->with($commits, static::callback(static fn($collection) => $collection->contains($includeFilter)))
             ->willReturn($commits);
-        $this->dispatcher->expects(static::once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
+        $this->dispatcher->expects($this->once())->method('dispatch')->with(static::isInstanceOf(CommitEvent::class));
+        $this->diffEmphasizer->expects($this->never())->method('emphasizeFile');
 
         static::assertSame($commits, $this->ruleProcessor->processRule($config));
     }
@@ -114,10 +116,12 @@ class RuleProcessorTest extends AbstractTestCase
         $rule->setName('foobar');
         $config = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
 
-        $this->gitLogService->expects(static::once())->method('getCommits')->with($config)->willReturn([]);
-        $this->commitBundler->expects(static::once())->method('bundle')->with([])->willReturn([]);
-        $this->diffService->expects(static::never())->method('getBundledDiff');
-        $this->dispatcher->expects(static::never())->method('dispatch');
+        $this->gitLogService->expects($this->once())->method('getCommits')->with($config)->willReturn([]);
+        $this->commitBundler->expects($this->once())->method('bundle')->with([])->willReturn([]);
+        $this->diffService->expects($this->never())->method('getBundledDiff');
+        $this->dispatcher->expects($this->never())->method('dispatch');
+        $this->diffEmphasizer->expects($this->never())->method('emphasizeFile');
+        $this->commitFilter->expects($this->never())->method('exclude');
 
         static::assertSame([], $this->ruleProcessor->processRule($config));
     }

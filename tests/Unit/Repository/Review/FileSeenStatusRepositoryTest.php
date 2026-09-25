@@ -32,7 +32,7 @@ class FileSeenStatusRepositoryTest extends AbstractRepositoryTestCase
         $statusA->setUser($user);
         $statusA->setCreateTimestamp(123456789);
         $statusRepository->save($statusA, true);
-        static::assertNotNull($statusA->getId());
+        static::assertTrue($statusA->hasId());
 
         // seen status with same primary key, should not save
         $statusB = new FileSeenStatus();
@@ -41,7 +41,7 @@ class FileSeenStatusRepositoryTest extends AbstractRepositoryTestCase
         $statusB->setUser($user);
         $statusB->setCreateTimestamp(123456789);
         $statusRepository->save($statusB, true);
-        static::assertNull($statusB->getId());
+        static::assertFalse($statusB->hasId());
     }
 
     /**

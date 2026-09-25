@@ -12,8 +12,10 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<ViewRevisionFileController>
+ */
 #[CoversClass(ViewRevisionFileController::class)]
 class ViewRevisionFileControllerTest extends AbstractControllerTestCase
 {
@@ -32,13 +34,14 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $request  = new Request(['file' => 'image.jpg']);
         $revision = new Revision();
 
-        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'image.jpg', true)->willReturn('contents');
+        $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'image.jpg', true)->willReturn('contents');
+        $this->converter->expects($this->never())->method('convert');
 
         $response = ($this->controller)($request, $revision);
-        self::assertSame('contents', $response->getContent());
-        self::assertSame(200, $response->getStatusCode());
-        self::assertSame('image/jpeg', $response->headers->get('Content-Type'));
-        self::assertSame('public', $response->headers->get('Cache-Control'));
+        static::assertSame('contents', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('image/jpeg', $response->headers->get('Content-Type'));
+        static::assertSame('public', $response->headers->get('Cache-Control'));
     }
 
     public function testInvokeWithMarkdown(): void
@@ -46,25 +49,27 @@ class ViewRevisionFileControllerTest extends AbstractControllerTestCase
         $request  = new Request(['file' => 'readme.md']);
         $revision = new Revision();
 
-        $this->showService->expects(self::once())->method('getFileContents')->with($revision, 'readme.md', true)->willReturn('markdown');
-        $this->converter->expects(self::once())->method('convert')->with('markdown')->willReturn('html');
+        $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'readme.md', true)->willReturn('markdown');
+        $this->converter->expects($this->once())->method('convert')->with('markdown')->willReturn('html');
 
         $response = ($this->controller)($request, $revision);
-        self::assertSame('html', $response->getContent());
-        self::assertSame(200, $response->getStatusCode());
-        self::assertSame('text/html', $response->headers->get('Content-Type'));
+        static::assertSame('html', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('text/html', $response->headers->get('Content-Type'));
     }
 
     public function testInvokeInvalidMimetype(): void
     {
-        $request  = new Request(['file' => 'text/plain']);
+        $request  = new Request(['file' => 'readme.cmd']);
         $revision = new Revision();
 
-        $this->showService->expects(self::never())->method('getFileContents');
+        $this->showService->expects($this->once())->method('getFileContents')->with($revision, 'readme.cmd', true)->willReturn('text');
+        $this->converter->expects($this->never())->method('convert');
 
-        $this->expectException(BadRequestHttpException::class);
-        $this->expectExceptionMessage('Could not determine mime-type for file "text/plain"');
-        ($this->controller)($request, $revision);
+        $response = ($this->controller)($request, $revision);
+        static::assertSame('text', $response->getContent());
+        static::assertSame(200, $response->getStatusCode());
+        static::assertSame('text/plain', $response->headers->get('Content-Type'));
     }
 
     public function getController(): AbstractController

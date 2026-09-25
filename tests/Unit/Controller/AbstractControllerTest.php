@@ -12,6 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @extends AbstractControllerTestCase<AbstractController>
+ */
 #[CoversClass(AbstractController::class)]
 class AbstractControllerTest extends AbstractControllerTestCase
 {
@@ -35,8 +38,7 @@ class AbstractControllerTest extends AbstractControllerTestCase
     public function testRefererRedirect(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => 'referer']);
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->container->set('request_stack', $requestStack);
 
         $response = $this->controller->refererRedirect('route');
@@ -46,8 +48,7 @@ class AbstractControllerTest extends AbstractControllerTestCase
     public function testRefererRedirectInvalidRefererShouldBeSkipped(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => false]);
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->container->set('request_stack', $requestStack);
 
         $this->expectGenerateUrl('route', [])->willReturn('url');
@@ -59,8 +60,7 @@ class AbstractControllerTest extends AbstractControllerTestCase
     public function testRefererRedirectShouldFilterQueryParam(): void
     {
         $request      = new Request(server: ['HTTP_REFERER' => 'https://referer?foo=bar&action=great']);
-        $requestStack = new RequestStack();
-        $requestStack->push($request);
+        $requestStack = new RequestStack([$request]);
         $this->container->set('request_stack', $requestStack);
 
         $response = $this->controller->refererRedirect('route', [], ['action']);
@@ -69,12 +69,11 @@ class AbstractControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        /** @var AbstractController&callable $mock */
-        $mock = $this->getMockForAbstractClass(
-            originalClassName      : AbstractController::class,
-            callOriginalConstructor: false
-        );
-
-        return $mock;
+        return new class () extends AbstractController {
+            public function __invoke(): void
+            {
+                // nothing
+            }
+        };
     }
 }

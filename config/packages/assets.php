@@ -1,8 +1,13 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\FrameworkConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (FrameworkConfig $framework): void {
-    $framework->assets()->enabled(true)->jsonManifestPath('%kernel.project_dir%/public/build/manifest.json');
-};
+return App::config([
+    'framework' => [
+        'assets' => [
+            'enabled'            => true,
+            'json_manifest_path' => '%kernel.project_dir%/public/build/manifest.json',
+        ],
+    ],
+]);

@@ -35,9 +35,9 @@ class UserAccessTokenIssuerTest extends AbstractTestCase
     {
         $user = new User();
 
-        $this->generator->expects(self::once())->method('generate')->willReturn('token');
+        $this->generator->expects($this->once())->method('generate')->willReturn('token');
         $this->accessTokenRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('save')
             ->with(
                 static::callback(

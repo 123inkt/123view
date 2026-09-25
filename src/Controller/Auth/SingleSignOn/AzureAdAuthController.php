@@ -7,7 +7,7 @@ use DR\Review\Controller\AbstractController;
 use Nette\Utils\Json;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use Throwable;
@@ -29,7 +29,7 @@ class AzureAdAuthController extends AbstractController
     public function __invoke(Request $request): RedirectResponse
     {
         // forward all requests parameters as state
-        $state       = Json::encode(array_filter($request->query->all()));
+        $state       = Json::encode(array_filter($request->query->all(), static fn($val) => $val !== null));
         $callbackUrl = $this->generateUrl(AzureAdCallbackController::class, [], UrlGeneratorInterface::ABSOLUTE_URL);
         $options     = ['scope' => $this->provider->scope, 'redirectUri' => $callbackUrl, 'state' => $state];
 

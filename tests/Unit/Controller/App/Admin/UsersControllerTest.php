@@ -11,6 +11,9 @@ use DR\Review\ViewModelProvider\UserViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<UsersController>
+ */
 #[CoversClass(UsersController::class)]
 class UsersControllerTest extends AbstractControllerTestCase
 {
@@ -25,7 +28,7 @@ class UsersControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $viewModel = new UsersViewModel([], []);
-        $this->modelProvider->expects(self::once())->method('getUsersViewModel')->willReturn($viewModel);
+        $this->modelProvider->expects($this->once())->method('getUsersViewModel')->willReturn($viewModel);
 
         static::assertSame(['usersViewModel' => $viewModel], ($this->controller)());
     }

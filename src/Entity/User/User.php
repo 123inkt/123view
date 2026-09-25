@@ -23,6 +23,7 @@ use DR\Utils\EquatableInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -42,43 +43,51 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private int $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    /** @var non-empty-string */
+    #[Assert\NotBlank]
+    #[ORM\Column(length: 255)]
     private string $email;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $password = null;
 
     /** @var string[]|null */
     #[ORM\Column(type: SpaceSeparatedStringValueType::TYPE, length: 500)]
     private ?array $roles = null;
 
-    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserSetting::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\Column(nullable: true)]
+    private ?int $gitlabUserId = null;
+
+    #[ORM\OneToOne(targetEntity: UserSetting::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private ?UserSetting $setting = null;
 
+    #[ORM\OneToOne(targetEntity: UserReviewSetting::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
+    private ?UserReviewSetting $reviewSetting = null;
+
     /** @phpstan-var Collection<int, Rule> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Rule::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: Rule::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $rules;
 
     /** @phpstan-var Collection<int, GitAccessToken> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: GitAccessToken::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: GitAccessToken::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $tokens;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CodeReviewer::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
 
     /** @phpstan-var Collection<int, Comment> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $comments;
 
     /** @phpstan-var Collection<int, CommentReply> */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CommentReply::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $replies;
 
     public function __construct()
@@ -95,6 +104,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->id = $id;
 
         return $this;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function getId(): int
@@ -114,11 +128,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this;
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getEmail(): string
     {
         return $this->email;
     }
 
+    /**
+     * @param non-empty-string $email
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -131,21 +151,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->password;
     }
 
-    public function setPassword(string $password): User
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getSetting(): UserSetting
+    public function getGitlabUserId(): ?int
     {
-        return $this->setting ??= (new UserSetting())->setUser($this);
+        return $this->gitlabUserId;
     }
 
-    public function setSetting(?UserSetting $setting): self
+    public function setGitlabUserId(?int $gitlabUserId): self
+    {
+        $this->gitlabUserId = $gitlabUserId;
+
+        return $this;
+    }
+
+    public function getSetting(): UserSetting
+    {
+        return $this->setting ??= new UserSetting()->setUser($this);
+    }
+
+    public function setSetting(UserSetting $setting): self
     {
         $this->setting = $setting;
+
+        return $this;
+    }
+
+    public function getReviewSetting(): UserReviewSetting
+    {
+        return $this->reviewSetting ??= new UserReviewSetting()->setUser($this);
+    }
+
+    public function setReviewSetting(UserReviewSetting $reviewSetting): self
+    {
+        $this->reviewSetting = $reviewSetting;
 
         return $this;
     }

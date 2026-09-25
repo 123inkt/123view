@@ -38,7 +38,7 @@ class RevisionVisibilityTypeTest extends AbstractTestCase
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('add')->with('visible', CheckboxType::class)->willReturnSelf();
+        $builder->expects($this->once())->method('add')->with('visible', CheckboxType::class)->willReturnSelf();
 
         $this->type->buildForm($builder, ['form_id' => 123]);
     }

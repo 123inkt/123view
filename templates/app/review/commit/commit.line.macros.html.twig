@@ -36,35 +36,33 @@
 {%- endmacro -%}
 
 {%- macro gutter_double(line, lineNrLengthBefore, lineNrLengthAfter) -%}
-    {%- apply spaceless -%}
-        <span class="diff-file__line-gutter" data-action="click->review#addComment">
-            {#- add comments -#}
-            <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
+      <span class="diff-file__line-gutter" data-action="click->review#addComment">
+        {#- add comments -#}
+        <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
 
-            {#- line number -#}
-            <span class="diff-file__line-numbers">
-                {{- line.lineNumberBefore|strpad(lineNrLengthBefore) -}}
-                &nbsp;
-                {{- line.lineNumberAfter|strpad(lineNrLengthAfter) -}}
-            </span>
+        {#- line number -#}
+        <span class="diff-file__line-numbers">
+            {{- line.lineNumberBefore|strpad(lineNrLengthBefore) -}}
+            &nbsp;
+            {{- line.lineNumberAfter|strpad(lineNrLengthAfter) -}}
         </span>
-    {%- endapply -%}
+        {#- end -#}
+    </span>
 {%- endmacro -%}
 
 {%- macro gutter_single(lineNumber, lineNrLength, addComment) -%}
-    {%- apply spaceless -%}
-        <span class="diff-file__line-gutter" {% if addComment %}data-action="click->review#addComment"{% endif %}>
-            {%- if addComment -%}
-                {#- add comments -#}
-                <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
-            {%- endif -%}
+    <span class="diff-file__line-gutter" {% if addComment %}data-action="click->review#addComment"{% endif %}>
+        {%- if addComment -%}
+            {#- add comments -#}
+            <span class="diff-file__add-comment"><i class="bi bi-pencil-fill"></i></span>
+        {%- endif -%}
 
-            {#- line number -#}
-            <span class="diff-file__line-numbers">
-                {{- lineNumber|strpad(lineNrLength) -}}
-            </span>
+        {#- line number -#}
+        <span class="diff-file__line-numbers">
+            {{- lineNumber|strpad(lineNrLength) -}}
         </span>
-    {%- endapply -%}
+        {#- end -#}
+    </span>
 {%- endmacro -%}
 
 {%- macro changes(line) -%}

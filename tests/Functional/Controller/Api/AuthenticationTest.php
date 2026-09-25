@@ -9,8 +9,8 @@ use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
 use DR\Utils\Assert;
 use Exception;
-use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
@@ -24,10 +24,10 @@ class AuthenticationTest extends AbstractFunctionalTestCase
         $user  = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']));
         $token = Assert::notNull(self::getService(UserAccessTokenRepository::class)->findOneBy(['user' => $user]));
 
-        $this->client->request('GET', '/api/users/me', server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $token->getToken()]);
+        $this->client->request(Request::METHOD_GET, '/api/users/me', server: ['HTTP_AUTHORIZATION' => 'Bearer ' . $token->getToken()]);
         self::assertResponseIsSuccessful();
 
-        $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
+        $data = $this->getResponseArray();
         static::assertSame(['id' => $user->getId(), 'name' => $user->getName(), 'email' => $user->getEmail()], $data);
     }
 
@@ -36,8 +36,12 @@ class AuthenticationTest extends AbstractFunctionalTestCase
      */
     public function testAuthenticatedFailure(): void
     {
-        $this->client->request('GET', '/api/users/me', server: ['HTTP_AUTHORIZATION' => 'Bearer foobar']);
-        static::assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
+        $this->client->request(
+            Request::METHOD_GET,
+            '/api/users/me',
+            server: ['HTTP_AUTHORIZATION' => 'Bearer foobar']
+        );
+        static::assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
     /**

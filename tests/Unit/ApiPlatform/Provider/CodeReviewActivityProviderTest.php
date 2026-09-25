@@ -34,6 +34,8 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
 
     public function testProvideShouldOnlySupportGetCollection(): void
     {
+        $this->collectionProvider->expects($this->never())->method('provide');
+        $this->outputFactory->expects($this->never())->method('create');
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Only GetCollection operation is supported');
         $this->activityProvider->provide(new Get());
@@ -44,10 +46,10 @@ class CodeReviewActivityProviderTest extends AbstractTestCase
         $operation = new GetCollection();
         $activity  = new CodeReviewActivity();
 
-        $output = $this->createMock(CodeReviewActivityOutput::class);
+        $output = static::createStub(CodeReviewActivityOutput::class);
 
-        $this->collectionProvider->expects(self::once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$activity]));
-        $this->outputFactory->expects(self::once())->method('create')->with($activity)->willReturn($output);
+        $this->collectionProvider->expects($this->once())->method('provide')->with($operation)->willReturn(new ArrayIterator([$activity]));
+        $this->outputFactory->expects($this->once())->method('create')->with($activity)->willReturn($output);
 
         $result = $this->activityProvider->provide(new GetCollection());
         static::assertSame([$output], $result);

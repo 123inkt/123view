@@ -8,42 +8,39 @@ use DR\Review\Controller\App\Review\Comment\AddCommentController;
 use DR\Review\Controller\App\Review\Comment\GetCommentThreadController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\AddCommentFormType;
-use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<AddCommentController>
+ */
 #[CoversClass(AddCommentController::class)]
 class AddCommentControllerTest extends AbstractControllerTestCase
 {
-    private CommentRepository&MockObject          $commentRepository;
-    private CommentEventMessageFactory&MockObject $messageFactory;
-    private MessageBusInterface&MockObject        $bus;
+    private CommentRepository&MockObject $commentRepository;
 
     public function setUp(): void
     {
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
-        $this->bus               = $this->createMock(MessageBusInterface::class);
         parent::setUp();
     }
 
     public function testInvokeFormNotSubmitted(): void
     {
+        $this->commentRepository->expects($this->never())->method('save');
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);
 
-        $this->expectCreateForm(AddCommentFormType::class, null, ['review' => $review])
+        $this->expectGetUser(new User());
+        $this->expectCreateForm(AddCommentFormType::class, static::isInstanceOf(Comment::class), ['review' => $review])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
 
@@ -57,28 +54,21 @@ class AddCommentControllerTest extends AbstractControllerTestCase
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);
-        $data  = ['lineReference' => 'filepath:1:2:3', 'message' => 'my-comment'];
-        $event = new CommentAdded(1, 2, 3, 'file', 'message');
-
         $user = new User();
         $this->expectGetUser($user);
 
-        $this->expectCreateForm(AddCommentFormType::class, null, ['review' => $review])
+        $this->expectCreateForm(AddCommentFormType::class, static::isInstanceOf(Comment::class), ['review' => $review])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
-            ->isValidWillReturn(true)
-            ->getDataWillReturn($data);
+            ->isValidWillReturn(true);
 
-        $this->commentRepository->expects(self::once())
+        $this->commentRepository->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(static function (Comment $comment) use ($user, $review) {
                     $comment->setId(123);
                     static::assertSame($user, $comment->getUser());
                     static::assertSame($review, $comment->getReview());
-                    static::assertSame('filepath', $comment->getFilePath());
-                    static::assertSame('my-comment', $comment->getMessage());
-                    static::assertEquals(LineReference::fromString('filepath:1:2:3'), $comment->getLineReference());
                     static::assertGreaterThan(0, $comment->getCreateTimestamp());
                     static::assertGreaterThan(0, $comment->getUpdateTimestamp());
 
@@ -86,8 +76,6 @@ class AddCommentControllerTest extends AbstractControllerTestCase
                 }),
                 true
             );
-        $this->messageFactory->expects(self::once())->method('createAdded')->willReturn($event);
-        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
         $this->expectGenerateUrl(GetCommentThreadController::class, ['id' => 123]);
 
         $response = ($this->controller)($request, $review);
@@ -97,6 +85,6 @@ class AddCommentControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new AddCommentController($this->commentRepository, $this->messageFactory, $this->bus);
+        return new AddCommentController($this->commentRepository);
     }
 }

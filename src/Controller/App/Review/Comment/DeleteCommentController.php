@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class DeleteCommentController extends AbstractController
@@ -35,7 +35,7 @@ class DeleteCommentController extends AbstractController
 
         $this->denyAccessUnlessGranted(CommentVoter::DELETE, $comment);
 
-        $messages = [$this->messageFactory->createRemoved($comment, $this->getUser())];
+        $messages = [];
         foreach ($comment->getReplies() as $reply) {
             $messages[] = $this->messageFactory->createReplyRemoved($reply, $this->getUser());
         }

@@ -17,11 +17,16 @@ use DR\Review\Message\Reviewer\ReviewerRemoved;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserSettingType extends AbstractType
 {
+    public function __construct(private readonly string $ideUrlPattern)
+    {
+    }
+
     /**
      * @inheritDoc
      */
@@ -63,6 +68,18 @@ class UserSettingType extends AbstractType
                 'choice_attr' => static fn() => ['data-role' => 'notification-event', 'disabled' => true],
                 'expanded'    => true,
                 'multiple'    => true,
+            ]
+        );
+        $builder->add(
+            'ideUrl',
+            TextType::class,
+            [
+                'required'  => false,
+                'label'     => 'form.label.ide.url',
+                'help'      => 'form.help.ide.url',
+                'help_html' => true,
+                'help_attr' => ['class' => 'form-text-visible'],
+                'attr'      => ['placeholder' => $this->ideUrlPattern]
             ]
         );
     }

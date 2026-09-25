@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\CodeReview;
 
-use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -11,13 +10,14 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use RuntimeException;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\Cache\CacheInterface;
 use Throwable;
 
 class CodeReviewFileService
 {
     public function __construct(
-        private readonly CacheInterface&AdapterInterface $revisionCache,
+        #[Target('revisionCache')] private readonly CacheInterface&AdapterInterface $revisionCache,
         private readonly DiffFinder $diffFinder,
         private readonly CodeReviewFileTreeService $fileTreeService
     ) {
@@ -29,10 +29,9 @@ class CodeReviewFileService
      * @return array{0: DirectoryTreeNode<DiffFile>, 1: ?DiffFile}
      * @throws Throwable
      */
-    public function getFiles(CodeReview $review, array $revisions, ?string $filePath, DiffComparePolicy $comparePolicy): array
+    public function getFiles(CodeReview $review, array $revisions, ?string $filePath, FileDiffOptions $diffOptions): array
     {
-        $diffOptions = new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, $comparePolicy);
-        $cacheKey    = $this->getReviewCacheKey($review, $revisions, $diffOptions);
+        $cacheKey = $this->getReviewCacheKey($review, $revisions, $diffOptions);
 
         $cacheItem = $this->revisionCache->getItem($cacheKey);
         if ($cacheItem->isHit()) {
@@ -73,7 +72,7 @@ class CodeReviewFileService
     {
         $hashes = array_map(static fn($rev) => $rev->getCommitHash(), $revisions);
 
-        return hash('sha512', sprintf('review-file-%s-%s-%s', $review->getId(), implode('', $hashes), $options));
+        return hash('sha512', sprintf('review-file-%d-%s-%s', $review->getId(), implode('', $hashes), $options));
     }
 
     private function getDiffFileCacheKey(string $cacheKeyPrefix, DiffFile $diffFile, FileDiffOptions $options): string

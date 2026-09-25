@@ -5,43 +5,40 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\ChangeCommentStateController;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\User\User;
-use DR\Review\Message\Comment\CommentResolved;
-use DR\Review\Message\Comment\CommentUnresolved;
+use DR\Review\Entity\Review\CommentStateEnum;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Request\Comment\ChangeCommentStateRequest;
-use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<ChangeCommentStateController>
+ */
 #[CoversClass(ChangeCommentStateController::class)]
 class ChangeCommentStateControllerTest extends AbstractControllerTestCase
 {
-    private CommentRepository&MockObject          $commentRepository;
-    private CommentEventMessageFactory&MockObject $messageFactory;
-    private TranslatorInterface&MockObject        $translator;
-    private MessageBusInterface&MockObject        $bus;
+    private CommentRepository&MockObject   $commentRepository;
+    private TranslatorInterface&Stub $translator;
 
     protected function setUp(): void
     {
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
-        $this->translator        = $this->createMock(TranslatorInterface::class);
-        $this->bus               = $this->createMock(MessageBusInterface::class);
+        $this->translator        = static::createStub(TranslatorInterface::class);
         parent::setUp();
     }
 
     public function testInvokeCommentMissing(): void
     {
-        $request = $this->createMock(ChangeCommentStateRequest::class);
+        $this->commentRepository->expects($this->never())->method('save');
+        $request = static::createStub(ChangeCommentStateRequest::class);
 
         $response = ($this->controller)($request, null);
         static::assertInstanceOf(JsonResponse::class, $response);
@@ -51,24 +48,16 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CommentStateType::RESOLVED);
+        $request->expects($this->once())->method('getState')->willReturn(CommentStateEnum::Resolved);
 
         $review = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setState(CommentStateType::OPEN);
+        $comment->setState(CommentStateEnum::Open);
         $comment->setReview($review);
 
-        $user = new User();
-        $user->setId(789);
-
-        $event = new CommentResolved(123, 456, 789, 'file');
-
-        $this->expectGetUser($user);
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
-        $this->messageFactory->expects(self::once())->method('createResolved')->willReturn($event);
-        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
@@ -78,53 +67,37 @@ class ChangeCommentStateControllerTest extends AbstractControllerTestCase
     public function testInvokeWithUnresolvedComment(): void
     {
         $request = $this->createMock(ChangeCommentStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CommentStateType::OPEN);
+        $request->expects($this->once())->method('getState')->willReturn(CommentStateEnum::Open);
 
         $review = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
         $comment->setId(456);
-        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setState(CommentStateEnum::Resolved);
         $comment->setReview($review);
 
-        $user = new User();
-        $user->setId(789);
-
-        $event = new CommentUnresolved(123, 456, 789, 'file');
-
-        $this->expectGetUser($user);
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
-        $this->messageFactory->expects(self::once())->method('createUnresolved')->willReturn($event);
-        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
-    public function testInvokeShouldNotDispatchIfStateDidNotChange(): void
+    public function testInvokeWithDraftComment(): void
     {
-        $request = $this->createMock(ChangeCommentStateRequest::class);
-        $request->expects(self::once())->method('getState')->willReturn(CommentStateType::OPEN);
+        $this->commentRepository->expects($this->never())->method('save');
+        $request = static::createStub(ChangeCommentStateRequest::class);
 
-        $review = new CodeReview();
-        $review->setId(123);
         $comment = new Comment();
-        $comment->setId(456);
-        $comment->setState(CommentStateType::OPEN);
-        $comment->setReview($review);
-
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
-        $this->messageFactory->expects(self::never())->method('createResolved');
-        $this->bus->expects(self::never())->method('dispatch');
+        $comment->setType(CommentTypeEnum::Draft);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     public function getController(): AbstractController
     {
-        return new ChangeCommentStateController($this->commentRepository, $this->messageFactory, $this->translator, $this->bus);
+        return new ChangeCommentStateController($this->commentRepository, $this->translator);
     }
 }

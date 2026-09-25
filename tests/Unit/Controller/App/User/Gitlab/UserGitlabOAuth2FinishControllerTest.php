@@ -20,6 +20,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
+/**
+ * @extends AbstractControllerTestCase<UserGitlabOAuth2FinishController>
+ */
 #[CoversClass(UserGitlabOAuth2FinishController::class)]
 class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 {
@@ -37,6 +40,9 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
     public function testInvokeAbsentCode(): void
     {
+        $this->session->expects($this->never())->method('get');
+        $this->authProvider->expects($this->never())->method('getAccessToken');
+        $this->tokenRepository->expects($this->never())->method('save');
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Missing `code` query parameter');
         ($this->controller)(new Request());
@@ -44,8 +50,10 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
     public function testInvokeInvalidState(): void
     {
-        $this->session->expects(self::exactly(2))->method('get')->willReturn('foobar', 'pkce');
-        $this->session->expects(self::exactly(2))->method('remove');
+        $this->session->expects($this->exactly(2))->method('get')->willReturn('foobar', 'pkce');
+        $this->session->expects($this->exactly(2))->method('remove');
+        $this->authProvider->expects($this->never())->method('getAccessToken');
+        $this->tokenRepository->expects($this->never())->method('save');
 
         $request = new Request(['code' => 'code', 'state' => 'invalid']);
         $request->setSession($this->session);
@@ -57,10 +65,10 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUpdateGitAccessToken(): void
     {
-        $this->session->expects(self::exactly(2))->method('get')
+        $this->session->expects($this->exactly(2))->method('get')
             ->with(...consecutive(['gitlab.oauth2.state'], ['gitlab.oauth2.pkce']))
             ->willReturn('state', 'pkce');
-        $this->session->expects(self::exactly(2))->method('remove')->with(...consecutive(['gitlab.oauth2.state'], ['gitlab.oauth2.pkce']));
+        $this->session->expects($this->exactly(2))->method('remove')->with(...consecutive(['gitlab.oauth2.state'], ['gitlab.oauth2.pkce']));
 
         $request = new Request(['code' => 'code', 'state' => 'state']);
         $request->setSession($this->session);
@@ -75,20 +83,20 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
         $this->expectAddFlash('success', 'gitlab.comment.sync.enabled');
         $this->expectRedirectToRoute(UserGitSyncController::class)->willReturn('url');
-        $this->authProvider->expects(self::once())->method('getAccessToken')
+        $this->authProvider->expects($this->once())->method('getAccessToken')
             ->with('authorization_code', ['code' => 'code'])
             ->willReturn($accessToken);
-        $this->tokenRepository->expects(self::once())->method('save')->with($gitAccessToken, true);
+        $this->tokenRepository->expects($this->once())->method('save')->with($gitAccessToken, true);
 
         ($this->controller)($request);
     }
 
     public function testInvokeCreateGitAccessToken(): void
     {
-        $this->session->expects(self::exactly(2))->method('get')
+        $this->session->expects($this->exactly(2))->method('get')
             ->with(...consecutive(['gitlab.oauth2.state'], ['gitlab.oauth2.pkce']))
             ->willReturn('state', 'pkce');
-        $this->session->expects(self::exactly(2))->method('remove')->with(...consecutive(['gitlab.oauth2.state'], ['gitlab.oauth2.pkce']));
+        $this->session->expects($this->exactly(2))->method('remove')->with(...consecutive(['gitlab.oauth2.state'], ['gitlab.oauth2.pkce']));
 
         $request = new Request(['code' => 'code', 'state' => 'state']);
         $request->setSession($this->session);
@@ -100,10 +108,10 @@ class UserGitlabOAuth2FinishControllerTest extends AbstractControllerTestCase
 
         $this->expectAddFlash('success', 'gitlab.comment.sync.enabled');
         $this->expectRedirectToRoute(UserGitSyncController::class)->willReturn('url');
-        $this->authProvider->expects(self::once())->method('getAccessToken')
+        $this->authProvider->expects($this->once())->method('getAccessToken')
             ->with('authorization_code', ['code' => 'code'])
             ->willReturn($accessToken);
-        $this->tokenRepository->expects(self::once())->method('save');
+        $this->tokenRepository->expects($this->once())->method('save');
 
         ($this->controller)($request);
     }

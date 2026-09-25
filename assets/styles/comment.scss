@@ -37,6 +37,22 @@
 .comment__reply {
     max-width: calc(100vw - var(--review-sidebar-width) - var(--review-sidebar-gap) - 75px);
     padding-left: 40px;
+
+    &.comment__reply--no-indent {
+        padding-left: 5px;
+    }
+}
+
+.comment__comment.highlighted,
+.comment__reply.highlighted {
+    background: var(--bs-warning-bg-subtle);
+    border-left: 4px solid var(--bs-warning);
+    transition: background-color 0.3s ease, border-left 0.3s ease;
+
+    &.comment__state_resolved {
+        background: var(--bs-success-bg-subtle);
+        border-left: 4px solid var(--bs-success);
+    }
 }
 
 .diff-side-by-side .comment__reply {
@@ -75,6 +91,11 @@
     filter: grayscale(1);
 }
 
+.comment__comment-thread.comment__draft {
+    background: var(--bs-info-bg-subtle);
+    border-left: 3px solid var(--bs-info);
+}
+
 .comment__comment .comment__edit,
 .comment__reply .comment__edit {
     display: none;
@@ -96,6 +117,12 @@
     line-height: 20px;
     text-align: center;
     width: 20px;
+
+    &.active {
+        color: #ffffff;
+        background: var(--bs-success);
+        border-radius: 5px;
+    }
 }
 
 .comment__reaction-button {

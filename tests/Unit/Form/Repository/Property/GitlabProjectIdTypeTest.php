@@ -17,7 +17,7 @@ class GitlabProjectIdTypeTest extends AbstractTestCase
 {
     public function testGetParent(): void
     {
-        static::assertSame(IntegerType::class, (new GitlabProjectIdType())->getParent());
+        static::assertSame(IntegerType::class, new GitlabProjectIdType()->getParent());
     }
 
     public function testSetProperty(): void

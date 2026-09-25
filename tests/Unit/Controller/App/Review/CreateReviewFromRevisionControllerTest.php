@@ -13,30 +13,36 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\CodeReview\CodeReviewCreationService;
 use DR\Review\Service\Git\Review\CodeReviewService;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\Webhook\ReviewRevisionEventService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<CreateReviewFromRevisionController>
+ */
 #[CoversClass(CreateReviewFromRevisionController::class)]
 class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
 {
-    private CodeReviewCreationService&MockObject $reviewCreationService;
-    private CodeReviewService&MockObject         $reviewService;
-    private ReviewEventService&MockObject        $eventService;
+    private CodeReviewCreationService&MockObject  $reviewCreationService;
+    private CodeReviewService&MockObject          $reviewService;
+    private ReviewRevisionEventService&MockObject $eventService;
 
     protected function setUp(): void
     {
         $this->reviewCreationService = $this->createMock(CodeReviewCreationService::class);
         $this->reviewService         = $this->createMock(CodeReviewService::class);
-        $this->eventService          = $this->createMock(ReviewEventService::class);
+        $this->eventService          = $this->createMock(ReviewRevisionEventService::class);
         parent::setUp();
     }
 
     public function testInvokeOnlyAllowUnattachedReview(): void
     {
-        $review   = new CodeReview();
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->reviewService->expects($this->never())->method('addRevisions');
+        $this->eventService->expects($this->never())->method('revisionAddedToReview');
+        $review   = new CodeReview()->setId(123);
         $revision = new Revision();
         $revision->setReview($review);
 
@@ -53,9 +59,9 @@ class CreateReviewFromRevisionControllerTest extends AbstractControllerTestCase
         $user->setId(123);
 
         $this->expectGetUser($user);
-        $this->reviewCreationService->expects(self::once())->method('createFromRevision')->with($revision)->willReturn($review);
-        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
-        $this->eventService->expects(self::once())->method('revisionAddedToReview')->with(
+        $this->reviewCreationService->expects($this->once())->method('createFromRevision')->with($revision)->willReturn($review);
+        $this->reviewService->expects($this->once())->method('addRevisions')->with($review, [$revision]);
+        $this->eventService->expects($this->once())->method('revisionAddedToReview')->with(
             $review,
             $revision,
             true,

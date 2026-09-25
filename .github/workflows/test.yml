@@ -1,4 +1,4 @@
-name: Testing Symfony with MySQL
+name: Tests
 
 on:
     push:
@@ -8,13 +8,15 @@ on:
 
 jobs:
     test:
-        name: Symfony (PHP 8.1)
+        name: Symfony (PHP 8.4)
         runs-on: ubuntu-latest
+        env:
+            SYMFONY_DEPRECATIONS_HELPER: disabled
 
         # Docs: https://docs.github.com/en/actions/using-containerized-services
         services:
             mysql:
-                image: mysql:latest
+                image: mysql:26.7.0
                 env:
                     MYSQL_ALLOW_EMPTY_PASSWORD: false
                     MYSQL_ROOT_PASSWORD: symfony
@@ -24,26 +26,28 @@ jobs:
                 options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
         steps:
             -   name: Checkout
-                uses: actions/checkout@v4
-            -   name: Use Node.js 18.x
-                uses: actions/setup-node@v4
+                uses: actions/checkout@v7
+            -   name: Use Node.js 22.x
+                uses: actions/setup-node@v7
                 with:
-                    node-version: 18.x
+                    node-version: 22.x
+                    cache: 'npm'
 
             # Docs: https://github.com/shivammathur/setup-php
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: 8.1
+                    php-version: 8.4
                     extensions: mbstring, xml, ctype, iconv, intl, mysql
                     coverage: pcov
+                    ini-values: zend.assertions=1
 
             -   name: Get composer cache directory
                 id: composer-cache
                 run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
             -   name: Cache composer dependencies
-                uses: actions/cache@v3
+                uses: actions/cache@v6
                 with:
                     path: ${{ steps.composer-cache.outputs.dir }}
                     key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -59,23 +63,24 @@ jobs:
                 run: |
                     php bin/console doctrine:migrations:migrate --no-interaction || echo "No migrations found or migration failed"
                 env:
-                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
+                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.4.8&charset=utf8mb4
 
             -   name: Run functional and integration test suite
-                run: php -dmax_execution_time=300 vendor/bin/phpunit --testsuite functional,integration
+                run: php -dmax_execution_time=300 vendor/bin/phpunit --display-deprecations --testsuite functional,integration
                 env:
-                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
+                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.4.8&charset=utf8mb4
 
             -   name: Run unit test suite
-                run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --testsuite unit --coverage-clover ./.coverage/coverage.xml
+                run: php -dmax_execution_time=300 -dpcov.enabled=1 -dpcov.exclude="~vendor~" vendor/bin/phpunit --display-deprecations --testsuite unit --coverage-clover ./.coverage/coverage.xml
                 env:
-                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.0&charset=utf8mb4
+                    DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.4.8&charset=utf8mb4
 
             -   name: Upload coverage to codecov
-                uses: codecov/codecov-action@v3
+                uses: codecov/codecov-action@v7
                 with:
+                    exclude: resources,tests
                     token: ${{ secrets.CODECOV_TOKEN }}
-                    files: ./.coverage/coverage.xml
+                    directory: ./.coverage
 
             -   name: Check coverage
                 run: test ! -f ./.coverage/coverage.xml || php vendor/bin/phpfci inspect ./.coverage/coverage.xml --exit-code-on-failure --reportText

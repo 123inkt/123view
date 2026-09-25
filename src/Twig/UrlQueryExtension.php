@@ -4,26 +4,18 @@ declare(strict_types=1);
 namespace DR\Review\Twig;
 
 use Symfony\Component\HttpFoundation\RequestStack;
-use Twig\Extension\AbstractExtension;
-use Twig\TwigFunction;
+use Twig\Attribute\AsTwigFunction;
 
-class UrlQueryExtension extends AbstractExtension
+class UrlQueryExtension
 {
     public function __construct(private readonly RequestStack $requestStack)
     {
     }
 
     /**
-     * @return TwigFunction[]
-     */
-    public function getFunctions(): array
-    {
-        return [new TwigFunction('url_query_params', [$this, 'getUrlQuery'], ['is_safe' => ['all']])];
-    }
-
-    /**
      * @param array<string, int|string> $queryParams
      */
+    #[AsTwigFunction(name: 'url_query_params', isSafe: ['all'])]
     public function getUrlQuery(array $queryParams): string
     {
         $request = $this->requestStack->getCurrentRequest();

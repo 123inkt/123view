@@ -47,18 +47,12 @@ fi
 ##
 # Stop current containers
 #
-docker compose down
-
-##
-# setup network
-#
-docker network rm 123view-network || true
-#docker network create --driver bridge 123view-network || true
+docker compose stop
 
 ##
 # remove cache directory
 #
-rm -rf ${SOURCEDIR}/var/cache
+rm -rf "${SOURCEDIR}/var/cache"
 
 ##
 # Start new container

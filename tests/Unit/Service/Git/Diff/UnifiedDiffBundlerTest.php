@@ -37,7 +37,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $file         = new DiffFile();
         $file->addBlock($block);
 
-        $this->setBundler->expects(self::once())->method('bundle')->willReturn([$line1, $line2]);
+        $this->setBundler->expects($this->once())->method('bundle')->willReturn([$line1, $line2]);
 
         static::assertSame($file, $this->bundler->bundleFile($file, DiffComparePolicy::IGNORE));
     }
@@ -49,7 +49,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $line3 = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'line3')]);
         $line4 = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'line4')]);
 
-        $this->setBundler->expects(self::once())->method('bundle')->willReturn([$line2]);
+        $this->setBundler->expects($this->once())->method('bundle')->willReturn([$line2]);
 
         $result = $this->bundler->bundleLines([$line1, $line2, $line3, $line4], DiffComparePolicy::IGNORE);
         static::assertSame([$line1, $line2, $line4], $result);
@@ -62,7 +62,7 @@ class UnifiedDiffBundlerTest extends AbstractTestCase
         $line3 = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'line3')]);
         $line4 = new DiffLine(DiffLine::STATE_UNCHANGED, [new DiffChange(DiffChange::UNCHANGED, 'line4')]);
 
-        $this->setBundler->expects(self::once())->method('bundle')->willReturn(null);
+        $this->setBundler->expects($this->once())->method('bundle')->willReturn(null);
 
         $result = $this->bundler->bundleLines([$line1, $line2, $line3, $line4], DiffComparePolicy::IGNORE);
         static::assertSame([$line1, $line2, $line3, $line4], $result);

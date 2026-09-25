@@ -25,7 +25,7 @@ class WebhookCleanUpCommandTest extends AbstractTestCase
 
     public function testExecute(): void
     {
-        $this->activityRepository->expects(self::once())->method('cleanUp')->willReturn(5);
+        $this->activityRepository->expects($this->once())->method('cleanUp')->willReturn(5);
 
         $tester = new CommandTester($this->command);
         $tester->execute([]);

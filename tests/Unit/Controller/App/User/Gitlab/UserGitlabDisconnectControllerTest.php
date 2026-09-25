@@ -14,6 +14,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<UserGitlabDisconnectController>
+ */
 #[CoversClass(UserGitlabDisconnectController::class)]
 class UserGitlabDisconnectControllerTest extends AbstractControllerTestCase
 {
@@ -35,7 +38,7 @@ class UserGitlabDisconnectControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->expectAddFlash('success', 'gitlab.comment.sync.disabled');
         $this->expectRedirectToRoute(UserGitSyncController::class)->willReturn('url');
-        $this->tokenRepository->expects(self::once())->method('remove')->with($token, true);
+        $this->tokenRepository->expects($this->once())->method('remove')->with($token, true);
 
         ($this->controller)();
     }
@@ -47,7 +50,7 @@ class UserGitlabDisconnectControllerTest extends AbstractControllerTestCase
         $this->expectGetUser($user);
         $this->expectAddFlash('success', 'gitlab.comment.sync.disabled');
         $this->expectRedirectToRoute(UserGitSyncController::class)->willReturn('url');
-        $this->tokenRepository->expects(self::never())->method('remove');
+        $this->tokenRepository->expects($this->never())->method('remove');
 
         ($this->controller)();
     }

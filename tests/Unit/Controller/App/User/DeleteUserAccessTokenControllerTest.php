@@ -13,6 +13,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteUserAccessTokenController>
+ */
 #[CoversClass(DeleteUserAccessTokenController::class)]
 class DeleteUserAccessTokenControllerTest extends AbstractControllerTestCase
 {
@@ -29,7 +32,7 @@ class DeleteUserAccessTokenControllerTest extends AbstractControllerTestCase
         $token = new UserAccessToken();
 
         $this->expectDenyAccessUnlessGranted(UserAccessTokenVoter::DELETE, $token);
-        $this->tokenRepository->expects(self::once())->method('remove')->with($token, true);
+        $this->tokenRepository->expects($this->once())->method('remove')->with($token, true);
         $this->expectAddFlash('success', 'access.token.deletion.success');
         $this->expectRedirectToRoute(UserAccessTokenController::class)->willReturn('url');
 

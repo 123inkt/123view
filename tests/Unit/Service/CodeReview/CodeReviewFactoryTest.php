@@ -33,7 +33,7 @@ class CodeReviewFactoryTest extends AbstractTestCase
         $revision->setDescription('description');
         $revision->setRepository($repository);
 
-        $this->titleNormalizer->expects(self::once())->method('normalize')->with('foobar')->willReturn('foobar');
+        $this->titleNormalizer->expects($this->once())->method('normalize')->with('foobar')->willReturn('foobar');
 
         $review = $this->factory->createFromRevision($revision, 'referenceId');
         static::assertSame('foobar', $review->getTitle());
@@ -45,6 +45,7 @@ class CodeReviewFactoryTest extends AbstractTestCase
 
     public function testCreateFromBranch(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
         $repository = new Repository();
 
         $review = $this->factory->createFromBranch($repository, 'origin/branch_name');

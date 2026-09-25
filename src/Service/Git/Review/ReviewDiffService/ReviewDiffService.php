@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Git\Review\ReviewDiffService;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\Strategy\ReviewDiffStrategyInterface;
@@ -63,8 +64,8 @@ class ReviewDiffService implements LoggerAwareInterface, ReviewDiffServiceInterf
     /**
      * @inheritDoc
      */
-    public function getDiffForBranch(Repository $repository, array $revisions, string $branchName, ?FileDiffOptions $options = null): array
+    public function getDiffForBranch(CodeReview $review, array $revisions, string $branchName, ?FileDiffOptions $options = null): array
     {
-        return $this->diffService->getBundledDiffFromBranch($repository, $branchName, 'origin/' . $repository->getMainBranchName(), $options);
+        return $this->diffService->getBundledDiffFromBranch($review->getRepository(), $branchName, 'origin/' . $review->getTargetBranch(), $options);
     }
 }

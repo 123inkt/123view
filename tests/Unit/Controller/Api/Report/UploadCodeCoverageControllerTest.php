@@ -15,11 +15,13 @@ use DR\Review\Service\Report\Coverage\CodeCoverageReportFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<UploadCodeCoverageController>
+ */
 #[CoversClass(UploadCodeCoverageController::class)]
 class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 {
@@ -37,9 +39,11 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUnknownRepository(): void
     {
-        $request = $this->createMock(UploadCodeCoverageRequest::class);
+        $request = static::createStub(UploadCodeCoverageRequest::class);
 
-        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(null);
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(null);
+        $this->reportRepository->expects($this->never())->method('save');
+        $this->reportFactory->expects($this->never())->method('parse');
 
         $this->expectException(NotFoundHttpException::class);
         ($this->controller)($request, 'repository', 'hash');
@@ -47,11 +51,13 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 
     public function testInvokeEmptyBody(): void
     {
-        $request = $this->createMock(UploadCodeCoverageRequest::class);
+        $request = static::createStub(UploadCodeCoverageRequest::class);
         $request->method('getData')->willReturn('');
         $repository = new Repository();
 
-        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
+        $this->reportRepository->expects($this->never())->method('save');
+        $this->reportFactory->expects($this->never())->method('parse');
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Body cannot be empty.');
@@ -60,7 +66,7 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(UploadCodeCoverageRequest::class);
+        $request = static::createStub(UploadCodeCoverageRequest::class);
         $request->method('getFormat')->willReturn('format');
         $request->method('getBasePath')->willReturn('basePath');
         $request->method('getBranchId')->willReturn('branchId');
@@ -70,15 +76,15 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
         $report = new CodeCoverageReport();
         $report->getFiles()->add(new CodeCoverageFile());
 
-        $this->repositoryRepository->expects(self::once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
-        $this->reportFactory->expects(self::once())
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
+        $this->reportFactory->expects($this->once())
             ->method('parse')
             ->with($repository, 'hash', 'branchId', 'format', 'basePath', 'data')
             ->willReturn($report);
-        $this->reportRepository->expects(self::once())->method('save')->with($report, true);
+        $this->reportRepository->expects($this->once())->method('save')->with($report, true);
 
         $response = ($this->controller)($request, 'repository', 'hash');
-        static::assertEquals(new JsonResponse(['created' => 1], Response::HTTP_OK), $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
     }
 
     public function getController(): AbstractController

@@ -8,21 +8,21 @@ use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
 use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
 use DR\Review\Service\Git\Clean\GitCleanCommandBuilder;
+use DR\Review\Service\Git\Clone\GitCloneCommandBuilder;
 use DR\Review\Service\Git\Commit\GitCommitCommandBuilder;
 use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Service\Git\Fetch\GitFetchCommandBuilder;
 use DR\Review\Service\Git\GarbageCollect\GitGarbageCollectCommandBuilder;
+use DR\Review\Service\Git\Grep\GitGrepCommandBuilder;
 use DR\Review\Service\Git\Log\GitLogCommandBuilder;
+use DR\Review\Service\Git\LsTree\GitLsTreeCommandBuilder;
 use DR\Review\Service\Git\Remote\GitRemoteCommandBuilder;
 use DR\Review\Service\Git\Reset\GitResetCommandBuilder;
 use DR\Review\Service\Git\RevList\GitRevListCommandBuilder;
 use DR\Review\Service\Git\Show\GitShowCommandBuilder;
 use DR\Review\Service\Git\Status\GitStatusCommandBuilder;
 
-/**
- * @suppressWarnings(PHPMD.TooManyPublicMethods)
- */
 class GitCommandBuilderFactory
 {
     public function __construct(private string $git)
@@ -32,6 +32,11 @@ class GitCommandBuilderFactory
     public function createAdd(): GitAddCommandBuilder
     {
         return new GitAddCommandBuilder($this->git);
+    }
+
+    public function createClone(): GitCloneCommandBuilder
+    {
+        return new GitCloneCommandBuilder($this->git);
     }
 
     public function createShow(): GitShowCommandBuilder
@@ -92,6 +97,16 @@ class GitCommandBuilderFactory
     public function createStatus(): GitStatusCommandBuilder
     {
         return new GitStatusCommandBuilder($this->git);
+    }
+
+    public function createLsTree(): GitLsTreeCommandBuilder
+    {
+        return new GitLsTreeCommandBuilder($this->git);
+    }
+
+    public function createGrep(): GitGrepCommandBuilder
+    {
+        return new GitGrepCommandBuilder($this->git);
     }
 
     public function createRevList(): GitRevListCommandBuilder

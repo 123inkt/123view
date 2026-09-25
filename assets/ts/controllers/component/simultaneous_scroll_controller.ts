@@ -1,13 +1,13 @@
 import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
-    public static targets              = ['panelLeft', 'panelRight'];
+    public static targets      = ['panelLeft', 'panelRight'];
     private readonly declare panelLeftTarget: HTMLElement;
     private readonly declare panelRightTarget: HTMLElement;
-    private leftLock: boolean          = false;
-    private rightLock: boolean         = false;
-    private leftScrollTimeout: number  = 0;
-    private rightScrollTimeout: number = 0;
+    private leftLock           = false;
+    private rightLock          = false;
+    private leftScrollTimeout  = 0;
+    private rightScrollTimeout = 0;
 
     public connect(): void {
         this.panelLeftTarget.addEventListener('scroll', () => this.onLeftScroll());

@@ -7,10 +7,10 @@ class CodeReviewOutput
 {
     /**
      * @codeCoverageIgnore
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      *
-     * @param UserOutput[] $authors
-     * @param UserOutput[] $reviewers
+     * @param array{startSha: string, endSha: string}|null $revisions
+     * @param UserOutput[]                                 $authors
+     * @param UserOutput[]                                 $reviewers
      */
     public function __construct(
         public readonly int $id,
@@ -19,8 +19,10 @@ class CodeReviewOutput
         public readonly string $title,
         public readonly string $description,
         public readonly string $url,
+        public readonly string $type,
         public readonly string $state,
         public readonly string $reviewerState,
+        public readonly ?array $revisions,
         public readonly ?array $authors,
         public readonly ?array $reviewers,
         public readonly int $createTimestamp,

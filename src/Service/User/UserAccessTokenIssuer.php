@@ -21,7 +21,7 @@ class UserAccessTokenIssuer
      */
     public function issue(User $user, string $name): void
     {
-        $token = (new UserAccessToken())
+        $token = new UserAccessToken()
             ->setToken($this->generator->generate())
             ->setName($name)
             ->setUser($user)

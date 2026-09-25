@@ -9,12 +9,12 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\ViewModel\App\User\UserGitSyncViewModel;
 use Exception;
 use Symfony\Bridge\Twig\Attribute\Template;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserGitSyncController extends AbstractController
 {
-    public function __construct(private readonly bool $gitlabCommentSyncEnabled)
+    public function __construct(private readonly bool $gitlabCommentSyncEnabled, private readonly bool $gitlabReviewerSyncEnabled)
     {
     }
 
@@ -30,6 +30,6 @@ class UserGitSyncController extends AbstractController
         $user  = $this->getUser();
         $token = $user->getGitAccessTokens()->findFirst(static fn($key, $token) => $token->getGitType() === RepositoryGitType::GITLAB);
 
-        return ['gitSyncModel' => new UserGitSyncViewModel($this->gitlabCommentSyncEnabled, $token !== null)];
+        return ['gitSyncModel' => new UserGitSyncViewModel($this->gitlabCommentSyncEnabled || $this->gitlabReviewerSyncEnabled, $token !== null)];
     }
 }

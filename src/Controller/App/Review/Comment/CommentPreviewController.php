@@ -10,7 +10,7 @@ use DR\Review\Service\CodeReview\Comment\CommentMentionService;
 use DR\Review\Service\Markdown\MarkdownConverterService;
 use League\CommonMark\Exception\CommonMarkException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CommentPreviewController extends AbstractController
@@ -30,7 +30,7 @@ class CommentPreviewController extends AbstractController
         $message = $this->mentionService->replaceMentionedUsers($message, $this->mentionService->getMentionedUsers($message));
         $message = $this->converter->convert($message);
 
-        return (new Response($message, 200, ['Content-Type' => 'text/html']))
+        return new Response($message, 200, ['Content-Type' => 'text/html'])
             ->setMaxAge(86400)
             ->setPublic();
     }

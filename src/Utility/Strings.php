@@ -55,4 +55,24 @@ class Strings
     {
         return (string)preg_replace('#' . preg_quote($suffix, '#') . '$#', '', $string);
     }
+
+    /**
+     * Test if all substrings are part of the string
+     *
+     * @param string[] $substrings
+     */
+    public static function contains(string $string, array $substrings): bool
+    {
+        if (count($substrings) === 0) {
+            return false;
+        }
+
+        foreach ($substrings as $substring) {
+            if (stripos($string, $substring) === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

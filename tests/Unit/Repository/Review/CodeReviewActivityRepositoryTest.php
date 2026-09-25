@@ -59,7 +59,7 @@ class CodeReviewActivityRepositoryTest extends AbstractRepositoryTestCase
         static::assertCount(1, $this->activityRepository->findForUser(456, ['event'], $review->getRepository()));
 
         // expect to find 0 result for zero repository
-        static::assertCount(0, $this->activityRepository->findForUser(456, ['event'], (new Repository())->setId(0)));
+        static::assertCount(0, $this->activityRepository->findForUser(456, ['event'], new Repository()->setId(0)));
     }
 
     /**

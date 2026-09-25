@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Remote;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\Remote\GitRemoteCommandBuilder;
@@ -39,12 +39,12 @@ class GitRemoteServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://example.com'));
 
         $builder = $this->createMock(GitRemoteCommandBuilder::class);
-        $builder->expects(self::once())->method('setUrl')->with('origin', 'https://example.com')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createRemote')->willReturn($builder);
+        $builder->expects($this->once())->method('setUrl')->with('origin', 'https://example.com')->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createRemote')->willReturn($builder);
 
         $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects(static::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         $this->service->updateRemoteUrl($repository);
     }

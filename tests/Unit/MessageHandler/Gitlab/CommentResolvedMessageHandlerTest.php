@@ -51,7 +51,10 @@ class CommentResolvedMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeSkipIfDisabled(): void
     {
-        $this->commentRepository->expects(self::never())->method('find');
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->commentService->expects($this->never())->method('resolve');
 
         $handler = new CommentResolvedMessageHandler(
             false,
@@ -75,11 +78,13 @@ class CommentResolvedMessageHandlerTest extends AbstractTestCase
         $review->setRepository($repository);
 
         $comment = new Comment();
+        $comment->setUser($user);
         $comment->setReview($review);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->userRepository->expects(self::once())->method('find')->with(333)->willReturn($user);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->userRepository->expects($this->once())->method('find')->with(333)->willReturn($user);
+        $this->apiProvider->expects($this->exactly(2))->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentService->expects($this->never())->method('resolve');
 
         ($this->handler)(new CommentResolved(111, 222, 333, 'file'));
     }
@@ -101,12 +106,12 @@ class CommentResolvedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->userRepository->expects(self::once())->method('find')->with(333)->willReturn($user);
-        $this->commentService->expects(self::once())->method('resolve')->with($api, $comment, $resolve);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->userRepository->expects($this->once())->method('find')->with(333)->willReturn($user);
+        $this->commentService->expects($this->once())->method('resolve')->with($api, $comment, $resolve);
 
         ($this->handler)($event);
     }

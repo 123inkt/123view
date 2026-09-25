@@ -32,6 +32,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
 
     public function testGetEditCommentViewModelNullCommentShouldReturnNull(): void
     {
+        $this->formFactory->expects($this->never())->method('create');
         $action = new EditCommentAction(null);
         static::assertNull($this->provider->getEditCommentViewModel($action));
     }
@@ -41,7 +42,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $comment = new Comment();
         $action  = new EditCommentAction($comment);
 
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(EditCommentFormType::class, $comment, ['comment' => $comment]);
 
@@ -52,6 +53,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
 
     public function testGetReplyCommentViewModelNullCommentShouldReturnNull(): void
     {
+        $this->formFactory->expects($this->never())->method('create');
         $action = new AddCommentReplyAction(null);
         static::assertNull($this->provider->getReplyCommentViewModel($action));
     }
@@ -61,7 +63,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $comment = new Comment();
         $action  = new AddCommentReplyAction($comment);
 
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(AddCommentReplyFormType::class, null, ['comment' => $comment]);
 
@@ -72,6 +74,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
 
     public function testGetEditCommentReplyViewModelNullCommentShouldReturnNull(): void
     {
+        $this->formFactory->expects($this->never())->method('create');
         $action = new EditCommentReplyAction(null);
         static::assertNull($this->provider->getEditCommentReplyViewModel($action));
     }
@@ -81,7 +84,7 @@ class CommentViewModelProviderTest extends AbstractTestCase
         $reply  = new CommentReply();
         $action = new EditCommentReplyAction($reply);
 
-        $this->formFactory->expects(self::once())
+        $this->formFactory->expects($this->once())
             ->method('create')
             ->with(EditCommentReplyFormType::class, $reply, ['reply' => $reply]);
 

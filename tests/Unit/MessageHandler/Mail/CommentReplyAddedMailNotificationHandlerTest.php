@@ -31,18 +31,14 @@ class CommentReplyAddedMailNotificationHandlerTest extends AbstractTestCase
         $this->handler         = new CommentReplyAddedMailNotificationHandler($this->mailService, $this->replyRepository);
     }
 
-    public function testAccepts(): void
-    {
-        static::assertSame(CommentReplyAdded::class, CommentReplyAddedMailNotificationHandler::accepts());
-    }
-
     /**
      * @throws Throwable
      */
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
-        $this->handler->handle(new CommentReplyAdded(5, 123, 456, 'message'));
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->mailService->expects($this->never())->method('sendNewCommentReplyMail');
+        $this->handler->handle(new CommentReplyAdded(5, 123, 456, 'message', 'file'));
     }
 
     /**
@@ -53,8 +49,9 @@ class CommentReplyAddedMailNotificationHandlerTest extends AbstractTestCase
         $comment = new CommentReply();
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
 
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
-        $this->handler->handle(new CommentReplyAdded(5, 123, 456, 'message'));
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->mailService->expects($this->never())->method('sendNewCommentReplyMail');
+        $this->handler->handle(new CommentReplyAdded(5, 123, 456, 'message', 'file'));
     }
 
     /**
@@ -68,11 +65,11 @@ class CommentReplyAddedMailNotificationHandlerTest extends AbstractTestCase
         $reply = new CommentReply();
         $reply->setComment($comment);
 
-        $this->replyRepository->expects(self::once())->method('find')->with(123)->willReturn($reply);
-        $this->mailService->expects(self::once())->method('sendNewCommentReplyMail')->with($review, $comment, $reply);
-        $this->replyRepository->expects(self::once())->method('save')->with($reply, true);
+        $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($reply);
+        $this->mailService->expects($this->once())->method('sendNewCommentReplyMail')->with($review, $comment, $reply);
+        $this->replyRepository->expects($this->once())->method('save')->with($reply, true);
 
-        $this->handler->handle(new CommentReplyAdded(5, 123, 456, 'message'));
+        $this->handler->handle(new CommentReplyAdded(5, 123, 456, 'message', 'file'));
 
         static::assertTrue($reply->getNotificationStatus()->hasStatus(NotificationStatus::STATUS_CREATED));
     }

@@ -28,7 +28,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         parent::setUp();
         $this->commandBuilder = $this->createMock(GitLogCommandBuilder::class);
-        $factory              = $this->createMock(GitCommandBuilderFactory::class);
+        $factory              = static::createStub(GitCommandBuilderFactory::class);
         $factory->method('createLog')->willReturn($this->commandBuilder);
         $this->factory = new GitLogCommandFactory($factory, new FormatPatternFactory());
     }
@@ -37,7 +37,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setRuleOptions(
-            (new RuleOptions())
+            new RuleOptions()
                 ->setFrequency(Frequency::ONCE_PER_DAY)
                 ->setIgnoreSpaceAtEol(false)
                 ->setExcludeMergeCommits(false)
@@ -47,21 +47,21 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
         $config    = new RuleConfiguration($period, $rule);
 
-        $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('patch')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('decorate')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('format')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('since')->with($startDate)->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('until')->with($endDate)->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('remotes')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('topoOrder')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('patch')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('decorate')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('diffAlgorithm')->with($rule->getRuleOptions()?->getDiffAlgorithm())->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('format')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreCrAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('since')->with($startDate)->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('until')->with($endDate)->willReturnSelf();
 
-        $this->commandBuilder->expects(static::never())->method('noMerges')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreSpaceAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreSpaceChange')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreAllSpace')->willReturnSelf();
-        $this->commandBuilder->expects(static::never())->method('ignoreBlankLines')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('noMerges')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreSpaceChange')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreAllSpace')->willReturnSelf();
+        $this->commandBuilder->expects($this->never())->method('ignoreBlankLines')->willReturnSelf();
 
         $this->factory->fromRule($config);
     }
@@ -70,7 +70,7 @@ class GitLogCommandFactoryTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setRuleOptions(
-            (new RuleOptions())
+            new RuleOptions()
                 ->setFrequency(Frequency::ONCE_PER_DAY)
                 ->setIgnoreAllSpace(true)
                 ->setIgnoreSpaceChange(true)
@@ -81,21 +81,21 @@ class GitLogCommandFactoryTest extends AbstractTestCase
         $period    = new DatePeriod($startDate, new DateInterval('PT1H'), $endDate);
         $config    = new RuleConfiguration($period, $rule);
 
-        $this->commandBuilder->expects(static::once())->method('remotes')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('topoOrder')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('patch')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('decorate')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('diffAlgorithm')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('format')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreCrAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('since')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('until')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('remotes')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('topoOrder')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('patch')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('decorate')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('diffAlgorithm')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('format')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreCrAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('since')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('until')->willReturnSelf();
 
-        $this->commandBuilder->expects(static::once())->method('noMerges')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreSpaceAtEol')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreSpaceChange')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreAllSpace')->willReturnSelf();
-        $this->commandBuilder->expects(static::once())->method('ignoreBlankLines')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('noMerges')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreSpaceAtEol')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreSpaceChange')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreAllSpace')->willReturnSelf();
+        $this->commandBuilder->expects($this->once())->method('ignoreBlankLines')->willReturnSelf();
 
         $this->factory->fromRule($config);
     }

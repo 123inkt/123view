@@ -28,6 +28,7 @@ class DiffFinderTest extends AbstractTestCase
 
     public function testFindFileByPath(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $fileA                 = new DiffFile();
         $fileA->filePathBefore = '/path/to/file/deleted.txt';
 
@@ -42,7 +43,7 @@ class DiffFinderTest extends AbstractTestCase
 
         static::assertNull($this->finder->findFileByPath($files, null));
         static::assertSame($fileA, $this->finder->findFileByPath($files, '/path/to/file/deleted.txt'));
-        static::assertNull($this->finder->findFileByPath($files, '/path/to/file/changed.txt'));
+        static::assertSame($fileB, $this->finder->findFileByPath($files, '/path/to/file/changed.txt'));
         static::assertSame($fileB, $this->finder->findFileByPath($files, '/path/to/file/changed.doc'));
         static::assertSame($fileC, $this->finder->findFileByPath($files, '/path/to/file/created.txt'));
 
@@ -78,7 +79,7 @@ class DiffFinderTest extends AbstractTestCase
         $file->filePathAfter  = '/path/to/file/foobar.txt';
         $file->addBlock($block);
 
-        $this->referenceMatcher->method('exactMatch')->willReturn($lineA, $lineB, $lineB);
+        $this->referenceMatcher->expects($this->exactly(4))->method('exactMatch')->willReturn($lineA, $lineB, $lineB, null);
 
         // match line 100 => expect before: 100, after: 101
         static::assertSame(
@@ -105,8 +106,8 @@ class DiffFinderTest extends AbstractTestCase
     {
         $line = new DiffLine(DiffLine::STATE_UNCHANGED, []);
 
-        $this->referenceMatcher->expects(self::exactly(3))->method('exactMatch')->willReturn($line, null, null);
-        $this->referenceMatcher->expects(self::exactly(2))->method('bestEffortMatch')->willReturn($line, null);
+        $this->referenceMatcher->expects($this->exactly(3))->method('exactMatch')->willReturn($line, null, null);
+        $this->referenceMatcher->expects($this->exactly(2))->method('bestEffortMatch')->willReturn($line, null);
 
         static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', '', 100, 0, 100)));
         static::assertSame($line, $this->finder->findLineInLines([$line], new LineReference('', '', 100, 1, 100)));
@@ -115,6 +116,7 @@ class DiffFinderTest extends AbstractTestCase
 
     public function testFindLineInFile(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
         $line->lineNumberAfter = 100;
 
@@ -131,6 +133,7 @@ class DiffFinderTest extends AbstractTestCase
 
     public function testFineLineInBlockForNewFile(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $line                  = new DiffLine(DiffLine::STATE_ADDED, []);
         $line->lineNumberAfter = 100;
 
@@ -157,13 +160,14 @@ class DiffFinderTest extends AbstractTestCase
         $file->filePathBefore = '/path/to/file/foobar.txt';
         $file->filePathAfter  = '/path/to/file/foobar.txt';
 
-        $this->referenceMatcher->expects(self::once())->method('exactMatch')->willReturn($line);
+        $this->referenceMatcher->expects($this->once())->method('exactMatch')->willReturn($line);
 
         static::assertSame($line, $this->finder->findLineInBlock($file, $block, new LineReference('', '', 100, 0, 100)));
     }
 
     public function testFindLineInNewFile(): void
     {
+        $this->referenceMatcher->expects($this->never())->method('exactMatch');
         $lineA                  = new DiffLine(DiffLine::STATE_UNCHANGED, []);
         $lineA->lineNumberAfter = 100;
 

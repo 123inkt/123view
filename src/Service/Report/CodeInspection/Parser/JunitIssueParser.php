@@ -30,7 +30,7 @@ class JunitIssueParser implements CodeInspectionIssueParserInterface
 
         // create document and search for error, failure and warning nodes
         $document      = $this->documentFactory->createFromString($data);
-        $issueElements = Assert::notFalse((new DOMXpath($document))->query("//error | //failure | //warning"));
+        $issueElements = Assert::notFalse(new DOMXpath($document)->query("//error | //failure | //warning"));
 
         /** @var DOMElement $issueElement */
         foreach ($issueElements as $issueElement) {

@@ -27,8 +27,8 @@ class FilterCollectionTransformerTest extends AbstractTestCase
 
     public function testTransformCollection(): void
     {
-        $filterA    = (new Filter())->setInclusion(true);
-        $filterB    = (new Filter())->setInclusion(false);
+        $filterA    = new Filter()->setInclusion(true);
+        $filterB    = new Filter()->setInclusion(false);
         $collection = new ArrayCollection([$filterA, $filterB]);
 
         $result = $this->transformer->transform($collection);
@@ -47,8 +47,8 @@ class FilterCollectionTransformerTest extends AbstractTestCase
 
     public function testReverseTransform(): void
     {
-        $filterA = (new Filter())->setInclusion(true);
-        $filterB = (new Filter())->setInclusion(false);
+        $filterA = new Filter()->setInclusion(true);
+        $filterB = new Filter()->setInclusion(false);
         $data    = [
             'inclusions' => new ArrayCollection([$filterA]),
             'exclusions' => new ArrayCollection([$filterB])

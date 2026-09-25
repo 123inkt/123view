@@ -3,11 +3,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Git;
 
-use CzProject\GitPhp\Git;
-use CzProject\GitPhp\GitRepository;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
+use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitRepositoryFactory;
+use DR\Review\Service\Git\GitRepositoryLocationService;
+use DR\Review\Service\Git\GitRepositoryLockManager;
+use DR\Review\Service\Util\MessageSanitizer;
 use DR\Review\Tests\AbstractTestCase;
 use League\Uri\Uri;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,23 +22,24 @@ use Symfony\Component\Filesystem\Filesystem;
 #[CoversClass(CacheableGitRepositoryService::class)]
 class CacheableGitRepositoryServiceTest extends AbstractTestCase
 {
-    private const CACHE_DIRECTORY = "/cache/directory";
-
     private Filesystem&MockObject         $filesystem;
-    private Git&MockObject                $git;
+    private GitRepositoryFactory&MockObject $repositoryFactory;
     private CacheableGitRepositoryService $service;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->git        = $this->createMock(Git::class);
-        $this->filesystem = $this->createMock(Filesystem::class);
-        $this->service    = new CacheableGitRepositoryService(
-            $this->createMock(LoggerInterface::class),
-            $this->git,
+        $this->filesystem        = $this->createMock(Filesystem::class);
+        $this->repositoryFactory = $this->createMock(GitRepositoryFactory::class);
+        $this->service           = new CacheableGitRepositoryService(
+            static::createStub(LoggerInterface::class),
             $this->filesystem,
             null,
-            self::CACHE_DIRECTORY
+            static::createStub(GitRepositoryLocationService::class),
+            static::createStub(GitCommandBuilderFactory::class),
+            $this->repositoryFactory,
+            static::createStub(GitRepositoryLockManager::class),
+            static::createStub(MessageSanitizer::class),
         );
     }
 
@@ -43,14 +48,14 @@ class CacheableGitRepositoryServiceTest extends AbstractTestCase
      */
     public function testGetRepositoryWithoutCache(): void
     {
-        $repository = new Repository();
+        $repository    = new Repository();
         $repository->setId(123);
         $repository->setUrl(Uri::new('https://my.repository.com'));
-        $gitRepository = $this->createMock(GitRepository::class);
+        $gitRepository = static::createStub(GitRepository::class);
 
         // setup mocks
-        $this->filesystem->expects(static::once())->method('exists')->willReturn(false);
-        $this->git->expects(static::once())->method('cloneRepository')->willReturn($gitRepository);
+        $this->filesystem->expects($this->once())->method('exists')->willReturn(true);
+        $this->repositoryFactory->expects($this->once())->method('create')->willReturn($gitRepository);
 
         // first call should invoke parent method
         $firstRepository = $this->service->getRepository($repository);

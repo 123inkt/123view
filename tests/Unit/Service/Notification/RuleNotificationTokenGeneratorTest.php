@@ -27,7 +27,7 @@ class RuleNotificationTokenGeneratorTest extends AbstractTestCase
         $notification->setId(123);
         $notification->setNotifyTimestamp(123456789);
         $notification->setCreateTimestamp(987654321);
-        $notification->setRule((new Rule())->setUser((new User())->setId(456)));
+        $notification->setRule(new Rule()->setUser(new User()->setId(456)));
 
         $expected = hash('sha512', '123view123123view123456789987654321123view456123view');
         $result   = $this->generator->generate($notification);

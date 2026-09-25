@@ -11,6 +11,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<Filter>
+ */
 class FilterType extends AbstractType
 {
     /**
@@ -36,6 +39,6 @@ class FilterType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Filter::class,]);
+        $resolver->setDefaults(['data_class' => Filter::class]);
     }
 }

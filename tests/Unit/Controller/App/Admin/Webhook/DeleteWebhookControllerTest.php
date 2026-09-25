@@ -12,6 +12,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteWebhookController>
+ */
 #[CoversClass(DeleteWebhookController::class)]
 class DeleteWebhookControllerTest extends AbstractControllerTestCase
 {
@@ -27,7 +30,7 @@ class DeleteWebhookControllerTest extends AbstractControllerTestCase
     {
         $webhook = new Webhook();
 
-        $this->webhookRepository->expects(self::once())->method('remove')->with($webhook, true);
+        $this->webhookRepository->expects($this->once())->method('remove')->with($webhook, true);
         $this->expectAddFlash('success', 'webhook.successful.removed');
         $this->expectRefererRedirect(WebhooksController::class);
 

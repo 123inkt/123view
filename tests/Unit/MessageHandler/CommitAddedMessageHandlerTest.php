@@ -53,9 +53,11 @@ class CommitAddedMessageHandlerTest extends AbstractTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->showService->expects(self::once())->method('getCommitFromHash')->with($repository, 'hash')->willReturn(null);
-        $this->revisionFactory->expects(self::never())->method('createFromCommit');
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
+        $this->showService->expects($this->once())->method('getCommitFromHash')->with($repository, 'hash')->willReturn(null);
+        $this->revisionFactory->expects($this->never())->method('createFromCommit');
+        $this->revisionRepository->expects($this->never())->method('saveAll');
+        $this->bus->expects($this->never())->method('dispatch');
 
         ($this->messageHandler)(new CommitAddedMessage(123, 'hash'));
     }
@@ -71,11 +73,11 @@ class CommitAddedMessageHandlerTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(456);
 
-        $this->repositoryRepository->expects(self::once())->method('find')->with(123)->willReturn($repository);
-        $this->showService->expects(self::once())->method('getCommitFromHash')->with($repository, 'hash')->willReturn($commit);
-        $this->revisionFactory->expects(self::once())->method('createFromCommit')->with($commit)->willReturn([$revision]);
-        $this->revisionRepository->expects(self::once())->method('saveAll')->with($repository, [$revision]);
-        $this->bus->expects(self::once())->method('dispatch')->with(new NewRevisionMessage(456))->willReturn($this->envelope);
+        $this->repositoryRepository->expects($this->once())->method('find')->with(123)->willReturn($repository);
+        $this->showService->expects($this->once())->method('getCommitFromHash')->with($repository, 'hash')->willReturn($commit);
+        $this->revisionFactory->expects($this->once())->method('createFromCommit')->with($commit)->willReturn([$revision]);
+        $this->revisionRepository->expects($this->once())->method('saveAll')->with($repository, [$revision])->willReturn([$revision]);
+        $this->bus->expects($this->once())->method('dispatch')->with(new NewRevisionMessage(456))->willReturn($this->envelope);
 
         ($this->messageHandler)(new CommitAddedMessage(123, 'hash'));
     }

@@ -8,6 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
@@ -21,6 +22,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     private RepositoryRepository&MockObject            $repositoryRepository;
     private RevisionRepository&MockObject              $revisionRepository;
     private ReviewTimelineViewModelProvider&MockObject $viewModelProvider;
+    private UserEntityProvider&MockObject              $userProvider;
     private ProjectsViewModelProvider                  $provider;
     private User                                       $user;
 
@@ -28,6 +30,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     {
         parent::setUp();
         $this->user                 = new User();
+        $this->userProvider         = $this->createMock(UserEntityProvider::class);
         $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
         $this->revisionRepository   = $this->createMock(RevisionRepository::class);
         $this->viewModelProvider    = $this->createMock(ReviewTimelineViewModelProvider::class);
@@ -35,7 +38,7 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
             $this->repositoryRepository,
             $this->revisionRepository,
             $this->viewModelProvider,
-            $this->user
+            $this->userProvider
         );
     }
 
@@ -45,16 +48,20 @@ class ProjectsViewModelProviderTest extends AbstractTestCase
     public function testGetProjectsViewModel(): void
     {
         $repository = new Repository();
-        $timeline   = $this->createMock(TimelineViewModel::class);
+        $repository->setDisplayName('repository');
+        $timeline   = static::createStub(TimelineViewModel::class);
 
-        $this->repositoryRepository->expects(self::once())
+        $this->userProvider->expects($this->once())
+            ->method('getCurrentUser')
+            ->willReturn($this->user);
+        $this->repositoryRepository->expects($this->once())
             ->method('findBy')
             ->with(['active' => 1], ['displayName' => 'ASC'])
             ->willReturn([$repository]);
-        $this->revisionRepository->expects(self::once())->method('getRepositoryRevisionCount')->willReturn([5 => 6]);
-        $this->viewModelProvider->expects(self::once())->method('getTimelineViewModelForFeed')->with($this->user)->willReturn($timeline);
+        $this->revisionRepository->expects($this->once())->method('getRepositoryRevisionCount')->willReturn([5 => 6]);
+        $this->viewModelProvider->expects($this->once())->method('getTimelineViewModelForFeed')->with($this->user)->willReturn($timeline);
 
-        $viewModel = $this->provider->getProjectsViewModel();
+        $viewModel = $this->provider->getProjectsViewModel('repo');
         static::assertSame([$repository], $viewModel->repositories);
         static::assertSame([5 => 6], $viewModel->revisionCount);
         static::assertSame($timeline, $viewModel->timeline);

@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Command;
 
-use DR\Review\Git\GitRepository;
-use DR\Review\Repository\Config\ExternalLinkRepository;
-use DR\Review\Repository\Config\RuleNotificationRepository;
-use DR\Review\Repository\Config\RuleRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Review\Tests\AbstractKernelTestCase;
+use DR\Review\Tests\DataFixtures\Command\MailCommandTestFixtures;
 use DR\Review\Tests\Helper\MessageEventCollector;
+use DR\Utils\Assert;
 use Exception;
+use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use PHPUnit\Framework\Attributes\CoversNothing;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -25,10 +25,8 @@ use Symfony\Component\Mailer\Event\MessageEvent;
 #[CoversNothing]
 class MailCommandTest extends AbstractKernelTestCase
 {
-    private GitRepositoryService&MockObject   $repositoryService;
-    private RuleRepository&MockObject         $ruleRepository;
-    private ExternalLinkRepository&MockObject $linkRepository;
-    private MessageEventCollector             $messageCollector;
+    private GitRepositoryService&Stub $repositoryService;
+    private MessageEventCollector           $messageCollector;
 
     /**
      * @throws Exception
@@ -37,20 +35,15 @@ class MailCommandTest extends AbstractKernelTestCase
     {
         parent::setUp();
 
-        $this->ruleRepository    = $this->createMock(RuleRepository::class);
-        $this->linkRepository    = $this->createMock(ExternalLinkRepository::class);
-        $this->repositoryService = $this->createMock(CacheableGitRepositoryService::class);
+        $fixtureLoader  = Assert::isInstanceOf(static::getContainer()->get(DatabaseToolCollection::class), DatabaseToolCollection::class)->get();
+        $fixtureLoader->loadFixtures([MailCommandTestFixtures::class]);
+
+        $this->repositoryService = static::createStub(CacheableGitRepositoryService::class);
         $this->messageCollector  = new MessageEventCollector();
 
-        $notificationRepository = $this->createMock(RuleNotificationRepository::class);
-        $notificationRepository->method('save')->willReturnCallback(static fn($notification) => $notification->setId(123));
-
         // register mock repository service
-        self::getContainer()->set(RuleRepository::class, $this->ruleRepository);
-        self::getContainer()->set(RuleNotificationRepository::class, $notificationRepository);
-        self::getContainer()->set(ExternalLinkRepository::class, $this->linkRepository);
         self::getContainer()->set(CacheableGitRepositoryService::class, $this->repositoryService);
-        self::getContainer()->set(RevisionFetchService::class, $this->createMock(RevisionFetchService::class));
+        self::getContainer()->set(RevisionFetchService::class, static::createStub(RevisionFetchService::class));
 
         // register MessageEventCollector to subscribe to send e-mails
         /** @var EventDispatcherInterface|null $dispatcher */
@@ -61,17 +54,13 @@ class MailCommandTest extends AbstractKernelTestCase
 
     public function testMail(): void
     {
-        // setup data
-        $this->linkRepository->method('findAll')->willReturn($this->loadFixture('links.php'));
-        $this->ruleRepository->method('getActiveRulesForFrequency')->willReturn($this->loadFixture('rules.php'));
-
         // setup repository mocks
-        $repository = $this->createMock(GitRepository::class);
+        $repository = static::createStub(GitRepository::class);
         $this->repositoryService->method('getRepository')->willReturn($repository);
         $repository->method('execute')->willReturn($this->getFileContents('git-log-commits.txt'));
 
         // start application and find the `mail`-command
-        $command = (new Application(static::$kernel))->find('mail');
+        $command = new Application(Assert::notNull(static::$kernel))->find('mail');
 
         // execute command
         $commandTester = new CommandTester($command);

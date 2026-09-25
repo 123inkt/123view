@@ -13,7 +13,7 @@ class DiffComparePolicyTest extends AbstractTestCase
 {
     public function testValues(): void
     {
-        static::assertSame(['all', 'trim', 'ignore'], DiffComparePolicy::values());
+        static::assertSame(['all', 'trim', 'ignore', 'ignore_empty_lines'], DiffComparePolicy::values());
     }
 
     public function testToComparisonPolicy(): void
@@ -21,5 +21,6 @@ class DiffComparePolicyTest extends AbstractTestCase
         static::assertSame(ComparisonPolicy::DEFAULT, DiffComparePolicy::ALL->toComparisonPolicy());
         static::assertSame(ComparisonPolicy::TRIM_WHITESPACES, DiffComparePolicy::TRIM->toComparisonPolicy());
         static::assertSame(ComparisonPolicy::IGNORE_WHITESPACES, DiffComparePolicy::IGNORE->toComparisonPolicy());
+        static::assertSame(ComparisonPolicy::IGNORE_WHITESPACES, DiffComparePolicy::IGNORE_EMPTY_LINES->toComparisonPolicy());
     }
 }

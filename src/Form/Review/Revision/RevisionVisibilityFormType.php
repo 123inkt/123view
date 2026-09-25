@@ -4,13 +4,18 @@ declare(strict_types=1);
 namespace DR\Review\Form\Review\Revision;
 
 use DR\Review\Controller\App\Revision\UpdateRevisionVisibilityController;
+use DR\Review\Entity\Revision\RevisionVisibility;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @extends AbstractType<array{visibilities: RevisionVisibility[]}>
+ */
 class RevisionVisibilityFormType extends AbstractType
 {
     private const FORM_ID = 'revision-visibility-form';
@@ -39,7 +44,7 @@ class RevisionVisibilityFormType extends AbstractType
         $reviewId = $options['reviewId'];
 
         $builder->setAction($this->urlGenerator->generate(UpdateRevisionVisibilityController::class, ['id' => $reviewId]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add('hidden', HiddenType::class, ['data' => 'hidden']);
         $builder->add(
             'visibilities',

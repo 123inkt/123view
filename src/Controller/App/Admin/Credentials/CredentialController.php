@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class CredentialController extends AbstractController
@@ -42,7 +42,7 @@ class CredentialController extends AbstractController
             throw new NotFoundHttpException('Credential not found');
         }
 
-        $credential ??= (new RepositoryCredential())->setAuthType(AuthenticationType::BASIC_AUTH);
+        $credential ??= new RepositoryCredential()->setAuthType(AuthenticationType::BASIC_AUTH);
 
         $form = $this->createForm(EditCredentialFormType::class, ['credential' => $credential]);
         $form->handleRequest($request);
@@ -52,7 +52,7 @@ class CredentialController extends AbstractController
 
         $this->credentialRepository->save($credential, true);
         foreach ($this->repositoryRepository->findBy(['credential' => $credential]) as $repository) {
-            $this->bus->dispatch(new RepositoryUpdatedMessage((int)$repository->getId()));
+            $this->bus->dispatch(new RepositoryUpdatedMessage($repository->getId()));
         }
 
         $this->addFlash('success', 'credential.successful.saved');

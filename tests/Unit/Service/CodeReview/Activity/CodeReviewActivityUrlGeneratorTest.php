@@ -42,10 +42,11 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
         $activity->setReview($review);
         $activity->setEventName(ReviewAccepted::NAME);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review])
             ->willReturn('url');
+        $this->replyRepository->expects($this->never())->method('find');
 
         static::assertSame('url', $this->activityUrlGenerator->generate($activity));
     }
@@ -60,10 +61,11 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
         $activity->setData(['commentId' => 456, 'file' => 'filePath']);
         $activity->setEventName(CommentAdded::NAME);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review, 'filePath' => 'filePath'])
             ->willReturn('url');
+        $this->replyRepository->expects($this->never())->method('find');
 
         static::assertSame('url#focus:comment:456', $this->activityUrlGenerator->generate($activity));
     }
@@ -83,11 +85,11 @@ class CodeReviewActivityUrlGeneratorTest extends AbstractTestCase
         $activity->setData(['commentId' => 456]);
         $activity->setEventName(CommentReplyAdded::NAME);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review, 'filePath' => 'filePath'])
             ->willReturn('url');
-        $this->replyRepository->expects(self::once())->method('find')->with(456)->willReturn($reply);
+        $this->replyRepository->expects($this->once())->method('find')->with(456)->willReturn($reply);
 
         static::assertSame('url#focus:reply:456', $this->activityUrlGenerator->generate($activity));
     }

@@ -1,8 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\WebpackEncoreConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (WebpackEncoreConfig $config): void {
-    $config->strictMode(false);
-};
+return App::config(['webpack_encore' => ['strict_mode' => false]]);

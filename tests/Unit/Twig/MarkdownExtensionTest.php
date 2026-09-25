@@ -23,17 +23,12 @@ class MarkdownExtensionTest extends AbstractTestCase
         $this->extension         = new MarkdownExtension($this->markdownConverter);
     }
 
-    public function testGetFilters(): void
-    {
-        static::assertCount(1, $this->extension->getFilters());
-    }
-
     /**
      * @throws CommonMarkException
      */
     public function testConvert(): void
     {
-        $this->markdownConverter->expects(self::once())->method('convert')->with('string')->willReturn("markdown: string");
+        $this->markdownConverter->expects($this->once())->method('convert')->with('string')->willReturn("markdown: string");
 
         static::assertSame("markdown: string", $this->extension->convert('string'));
     }

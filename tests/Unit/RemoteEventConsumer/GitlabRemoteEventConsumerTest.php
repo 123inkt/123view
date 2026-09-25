@@ -35,6 +35,8 @@ class GitlabRemoteEventConsumerTest extends AbstractTestCase
      */
     public function testConsumeInvalidEvent(): void
     {
+        $this->denormalizer->expects($this->never())->method('denormalize');
+        $this->eventHandler->expects($this->never())->method('handle');
         $event = new RemoteEvent('name', 'id', ['payload']);
 
         $this->expectException(RuntimeException::class);
@@ -49,8 +51,8 @@ class GitlabRemoteEventConsumerTest extends AbstractTestCase
     {
         $event = new GitlabRemoteEvent('name', 'id', ['payload']);
 
-        $this->denormalizer->expects(static::once())->method('denormalize')->with('name', ['payload'])->willReturn(null);
-        $this->eventHandler->expects(self::never())->method('handle');
+        $this->denormalizer->expects($this->once())->method('denormalize')->with('name', ['payload'])->willReturn(null);
+        $this->eventHandler->expects($this->never())->method('handle');
 
         $this->eventConsumer->consume($event);
     }
@@ -63,8 +65,8 @@ class GitlabRemoteEventConsumerTest extends AbstractTestCase
         $event       = new GitlabRemoteEvent('name', 'id', ['payload']);
         $gitlabEvent = new PushEvent();
 
-        $this->denormalizer->expects(static::once())->method('denormalize')->with('name', ['payload'])->willReturn($gitlabEvent);
-        $this->eventHandler->expects(self::once())->method('handle')->with($gitlabEvent);
+        $this->denormalizer->expects($this->once())->method('denormalize')->with('name', ['payload'])->willReturn($gitlabEvent);
+        $this->eventHandler->expects($this->once())->method('handle')->with($gitlabEvent);
 
         $this->eventConsumer->consume($event);
     }

@@ -8,8 +8,12 @@ use DR\Review\Entity\Repository\RepositoryCredential;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * @extends AbstractType<array{credential: RepositoryCredential|null}>
+ */
 class EditCredentialFormType extends AbstractType
 {
     public function __construct(private UrlGeneratorInterface $urlGenerator)
@@ -24,8 +28,10 @@ class EditCredentialFormType extends AbstractType
         /** @var array{credential: RepositoryCredential|null} $data */
         $data = $options['data'];
 
-        $builder->setAction($this->urlGenerator->generate(CredentialController::class, ['id' => $data['credential']?->getId()]));
-        $builder->setMethod('POST');
+        $id = $data['credential']?->hasId() === true ? $data['credential']->getId() : null;
+
+        $builder->setAction($this->urlGenerator->generate(CredentialController::class, ['id' => $id]));
+        $builder->setMethod(Request::METHOD_POST);
         $builder->add('credential', RepositoryCredentialType::class, ['label' => false]);
         $builder->add('save', SubmitType::class, ['label' => 'save']);
     }

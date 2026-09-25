@@ -6,10 +6,11 @@ namespace DR\Review\MessageHandler;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Message\Revision\NewRevisionMessage;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\CodeReview\CodeReviewRevisionMatcher;
 use DR\Review\Service\CodeReview\FileSeenStatusService;
 use DR\Review\Service\Git\Review\CodeReviewService;
-use DR\Review\Service\Webhook\ReviewEventService;
+use DR\Review\Service\Webhook\ReviewRevisionEventService;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -20,12 +21,13 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private RevisionRepository $revisionRepository,
-        private CodeReviewService $reviewService,
-        private CodeReviewRevisionMatcher $reviewRevisionMatcher,
-        private FileSeenStatusService $seenStatusService,
-        private ManagerRegistry $registry,
-        private ReviewEventService $eventService,
+        private readonly RevisionRepository $revisionRepository,
+        private readonly CodeReviewService $reviewService,
+        private readonly CodeReviewerStateResolver $reviewerStateResolver,
+        private readonly CodeReviewRevisionMatcher $reviewRevisionMatcher,
+        private readonly FileSeenStatusService $seenStatusService,
+        private readonly ManagerRegistry $registry,
+        private readonly ReviewRevisionEventService $eventService,
     ) {
     }
 
@@ -51,8 +53,8 @@ class NewRevisionMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        $reviewCreated  = $review->getId() === null;
-        $reviewersState = $review->getReviewersState();
+        $reviewCreated  = $review->hasId() === false;
+        $reviewersState = $this->reviewerStateResolver->getReviewersState($review);
         $reviewState    = $review->getState();
 
         try {

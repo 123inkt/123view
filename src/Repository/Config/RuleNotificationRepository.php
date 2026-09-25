@@ -7,6 +7,7 @@ use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
+use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleNotification;
 use DR\Review\Entity\User\User;
 use DR\Utils\Assert;
@@ -26,6 +27,17 @@ class RuleNotificationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, RuleNotification::class);
+    }
+
+    public function markAsRead(Rule $rule): void
+    {
+        $this->createQueryBuilder('n')
+            ->update()
+            ->set('n.read', '1')
+            ->where('n.rule = :rule')
+            ->setParameter('rule', $rule)
+            ->getQuery()
+            ->execute();
     }
 
     /**

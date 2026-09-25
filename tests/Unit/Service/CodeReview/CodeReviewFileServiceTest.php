@@ -11,6 +11,7 @@ use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\CodeReviewFileTreeService;
 use DR\Review\Service\CodeReview\DiffFinder;
+use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\Tests\CacheTestTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -53,6 +54,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(456);
         $revision->setCommitHash('hash');
+        $options = new FileDiffOptions(5, DiffComparePolicy::IGNORE);
 
         $diffFileA = new DiffFile();
         $diffFileB = new DiffFile();
@@ -62,11 +64,12 @@ class CodeReviewFileServiceTest extends AbstractTestCase
 
         $cacheItem = self::createCacheItem('key', $tree, true);
 
-        $this->revisionCache->expects(self::once())->method('getItem')->willReturn($cacheItem);
-        $this->revisionCache->expects(self::once())->method('get')->willReturn($diffFileA);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
+        $this->revisionCache->expects($this->once())->method('getItem')->willReturn($cacheItem);
+        $this->revisionCache->expects($this->once())->method('get')->willReturn($diffFileA);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
+        $this->fileTreeService->expects($this->never())->method('getFileTree');
 
-        $result = $this->service->getFiles($review, [$revision], 'filepath', DiffComparePolicy::IGNORE);
+        $result = $this->service->getFiles($review, [$revision], 'filepath', $options);
         static::assertSame([$tree, $diffFileA], $result);
     }
 
@@ -80,6 +83,7 @@ class CodeReviewFileServiceTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setId(456);
         $revision->setCommitHash('hash');
+        $options = new FileDiffOptions(5, DiffComparePolicy::IGNORE);
 
         $diffFileA = new DiffFile();
         $diffFileB = new DiffFile();
@@ -89,12 +93,12 @@ class CodeReviewFileServiceTest extends AbstractTestCase
 
         $cacheItem = self::createCacheItem('key', null, false);
 
-        $this->revisionCache->expects(self::once())->method('getItem')->willReturn($cacheItem);
-        $this->fileTreeService->expects(self::once())->method('getFileTree')->with($review, [$revision])->willReturn([$tree, [$diffFileA]]);
-        $this->revisionCache->expects(self::exactly(3))->method('get')->willReturn(null, null, $diffFileA);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
+        $this->revisionCache->expects($this->once())->method('getItem')->willReturn($cacheItem);
+        $this->fileTreeService->expects($this->once())->method('getFileTree')->with($review, [$revision])->willReturn([$tree, [$diffFileA]]);
+        $this->revisionCache->expects($this->exactly(3))->method('get')->willReturn(null, null, $diffFileA);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$diffFileA], 'filepath')->willReturn($diffFileB);
 
-        $result = $this->service->getFiles($review, [$revision], 'filepath', DiffComparePolicy::IGNORE);
+        $result = $this->service->getFiles($review, [$revision], 'filepath', $options);
         static::assertSame([$tree, $diffFileA], $result);
     }
 }

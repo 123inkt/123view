@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Service\Git\DiffTree;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeService;
@@ -45,10 +45,10 @@ class GitDiffTreeServiceTest extends AbstractTestCase
         $commandBuilder = new GitDiffTreeCommandBuilder('git');
 
         // setup mocks
-        $this->builderFactory->expects(self::once())->method('createDiffTree')->willReturn($commandBuilder);
+        $this->builderFactory->expects($this->once())->method('createDiffTree')->willReturn($commandBuilder);
         $gitRepository = $this->createMock(GitRepository::class);
-        $gitRepository->expects(static::once())->method('execute')->with($commandBuilder)->willReturn("foo\nbar\n  ");
-        $this->repositoryService->expects(static::once())->method('getRepository')->with($repository)->willReturn($gitRepository);
+        $gitRepository->expects($this->once())->method('execute')->with($commandBuilder)->willReturn("foo\nbar\n  ");
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($gitRepository);
 
         $files = $this->service->getFilesInRevision($revision);
         static::assertSame(['foo', 'bar'], $files);

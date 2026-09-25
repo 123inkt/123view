@@ -29,7 +29,7 @@ class FetchRevisionsCommand extends Command implements LoggerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->repositoryRepository->findByUpdateRevisions() as $repository) {
-            $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
+            $this->bus->dispatch(new FetchRepositoryRevisionsMessage($repository->getId()));
 
             $repository->setUpdateRevisionsTimestamp(time());
             $this->repositoryRepository->save($repository, true);

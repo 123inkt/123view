@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
-use CzProject\GitPhp\Git;
-use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
+use DR\Review\ApiPlatform\Extension\CommentVisibilityExtension;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
 use DR\Review\ApiPlatform\OpenApi\OperationParameterDocumentor;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
+use DR\Review\Form\User\UserSettingType;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Comment\CommentReplyUpdated;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
@@ -21,9 +26,9 @@ use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
 use DR\Review\Model\Api\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
-use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Router\ReviewRouter;
 use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
@@ -34,20 +39,25 @@ use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\Api\Gitlab\OAuth2ProviderFactory;
 use DR\Review\Service\CodeReview\CodeReviewFileService;
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
-use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
+use DR\Review\Service\Git\GitRepositoryLocationService;
 use DR\Review\Service\Git\GitRepositoryLockManager;
-use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Git\Review\ReviewDiffService\CacheableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\LockableReviewDiffService;
+use DR\Review\Service\Git\Review\ReviewDiffService\RecoverableReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffService;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
 use DR\Review\Service\Git\Review\Strategy\BasicCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\HesitantCherryPickStrategy;
 use DR\Review\Service\Git\Review\Strategy\PersistentCherryPickStrategy;
+use DR\Review\Service\Health\DoctrineDbal;
+use DR\Review\Service\Health\MercureHub;
+use DR\Review\Service\Health\OpcacheInternedStrings;
 use DR\Review\Service\Notification\RuleNotificationTokenGenerator;
 use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
+use DR\Review\Service\Parser\PrunableDiffParser;
+use DR\Review\Service\RemoteEvent\Gitlab\ApprovedMergeRequestEventHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEventHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
@@ -58,20 +68,25 @@ use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 use DR\Review\Service\Report\Coverage\CodeCoverageParserProvider;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
 use DR\Review\Service\Revision\RevisionPatternMatcher;
+use DR\Review\Service\Search\RipGrep\GitFileSearcher;
+use DR\Review\Service\Search\RipGrep\SearchResultLineParser;
+use DR\Review\Service\User\IdeUrlPatternProvider;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Service\Webhook\WebhookExecutionService;
 use DR\Review\Twig\IdeButtonExtension;
 use DR\Review\Twig\InlineCss\CssToInlineStyles;
-use Highlight\Highlighter;
+use DR\Review\ViewModelProvider\Appender\Review\BranchReviewViewModelAppender;
+use DR\Review\ViewModelProvider\Appender\Review\FileDiffViewModelAppender;
+use DR\Review\ViewModelProvider\Appender\Review\FileTreeViewModelAppender;
+use DR\Review\ViewModelProvider\Appender\Review\ReviewSummaryViewModelAppender;
+use DR\Review\ViewModelProvider\Appender\Review\RevisionViewModelAppender;
+use DR\Review\ViewModelProvider\ReviewViewModelProvider;
 use League\CommonMark\MarkdownConverter;
 use League\OAuth2\Client\Provider\GenericProvider;
-use Monolog\Formatter\LineFormatter;
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpClient\NativeHttpClient;
 use Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use TheNetworg\OAuth2\Client\Provider\Azure;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
@@ -89,8 +104,11 @@ return static function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->bind('$allowCustomRecipients', '%env(bool:ALLOW_CUSTOM_RECIPIENTS_PER_RULE)%')
         ->bind('$gitlabCommentSyncEnabled', '%env(bool:GITLAB_COMMENT_SYNC)%')
+        ->bind('$gitlabReviewerSyncEnabled', '%env(bool:GITLAB_REVIEWER_SYNC)%')
+        ->bind('$gitlabSyncMandatory', '%env(bool:GITLAB_SYNC_MANDATORY)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
+        ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
         ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%')
         ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));
 
@@ -101,6 +119,7 @@ return static function (ContainerConfigurator $container): void {
     $services->load('DR\Review\ApiPlatform\Factory\\', __DIR__ . '/../src/ApiPlatform/Factory');
     $services->load('DR\Review\ApiPlatform\Provider\\', __DIR__ . '/../src/ApiPlatform/Provider');
     $services->load('DR\Review\ApiPlatform\StateProcessor\\', __DIR__ . '/../src/ApiPlatform/StateProcessor');
+    $services->load('DR\Review\ApiPlatform\Extension\\', __DIR__ . '/../src/ApiPlatform/Extension');
     $services->load('DR\Review\Command\\', __DIR__ . '/../src/Command');
     $services->load('DR\Review\EventSubscriber\\', __DIR__ . '/../src/EventSubscriber');
     $services->load('DR\Review\Form\\', __DIR__ . '/../src/Form');
@@ -123,15 +142,11 @@ return static function (ContainerConfigurator $container): void {
     $services->set(InputValidator::class);
     $services->set(LoginService::class);
     $services->set(UserChecker::class);
-    $services->set(User::class)->public()->factory([service(Security::class), 'getUser']);
+    $services->set(UserEntityProvider::class);
+    $services->set(User::class)->public()->factory([service(UserEntityProvider::class), 'getUser']);
     $services->set(ContentSecurityPolicyResponseSubscriber::class)
         ->arg('$hostname', '%env(APP_HOSTNAME)%')
-        ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%')
-        ->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
-    $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
-    $services->set('monolog.formatter.line', LineFormatter::class)
-        ->arg('$format', "[%%datetime%%] %%channel%%.%%level_name%%: %%message%% %%extra%%\n")
-        ->arg('$dateFormat', "Y-m-d\TH:i:s");
+        ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%');
 
     // Configure Api
     $services->set(OperationParameterDocumentor::class);
@@ -157,30 +172,31 @@ return static function (ContainerConfigurator $container): void {
     $services->set(AzureAdUserBadgeFactory::class);
     $services->set(AzureAdAuthenticator::class)->arg('$authenticationEnabled', '%env(bool:APP_AUTH_AZURE_AD)%');
 
+    $services->set(PrunableDiffParser::class);
     $services->set(DiffParser::class);
     $services->set(DiffFileParser::class);
     $services->set(JBDiff::class);
     $services->set(CssToInlineStyles::class);
-    $services->set(IdeButtonExtension::class)->args(['%env(bool:IDE_URL_ENABLED)%', '%env(IDE_URL_PATTERN)%', '%env(IDE_URL_TITLE)%']);
-    $services->set(Highlighter::class);
+    $services->set(IdeButtonExtension::class)->args(['%env(bool:IDE_URL_ENABLED)%', '%env(IDE_URL_TITLE)%']);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+
+    // Register Git
     $services->set(ParserHasFailedFormatter::class);
     $services->set(RuleNotificationTokenGenerator::class)->arg('$appSecret', '%env(APP_SECRET)%');
+    $services->set(UserSettingType::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
+    $services->set(IdeUrlPatternProvider::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
 
     // custom register cache dir
-    $services->set(CacheableGitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
-    $services->set(GitRepositoryService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
     $services->set(GitRepositoryLockManager::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitRepositoryLocationService::class)->arg('$cacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(GitFileSearcher::class)->arg('$gitCacheDirectory', "%kernel.project_dir%/var/git/");
+    $services->set(SearchResultLineParser::class)->arg('$gitCacheDirectory', "%kernel.project_dir%/var/git/");
 
     // custom register with matching pattern
     $services->set(RevisionPatternMatcher::class)
         ->arg('$matchingPattern', '%env(CODE_REVIEW_MATCHING_PATTERN)%')
         ->arg('$matchingGroups', '%env(CODE_REVIEW_MATCHING_GROUPS)%');
-
-    // Register Git
-    $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
-    $services->set(Git::class)->arg('$runner', service(CliRunner::class));
 
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
@@ -188,7 +204,8 @@ return static function (ContainerConfigurator $container): void {
     $services->set(HesitantCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 10]);
     $services->set('review.diff.service', ReviewDiffService::class)->arg('$reviewDiffStrategies', tagged_iterator('review_diff_strategy'));
 
-    $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
+    $services->set('recoverable.review.diff.service', RecoverableReviewDiffService::class)->arg('$diffService', service('review.diff.service'));
+    $services->set('lock.review.diff.service', LockableReviewDiffService::class)->arg('$diffService', service('recoverable.review.diff.service'));
     $services->set(ReviewDiffServiceInterface::class, CacheableReviewDiffService::class)->arg('$diffService', service('lock.review.diff.service'));
     $services->set(ReviewRouter::class)->decorate('router')->args([service('.inner')]);
     $services->set(CodeReviewFileService::class)->arg('$revisionCache', service(CacheInterface::class . ' $revisionCache'));
@@ -204,15 +221,16 @@ return static function (ContainerConfigurator $container): void {
     $services->set(CodeCoverageParserProvider::class)->arg('$parsers', tagged_iterator('code_coverage_parser', 'key'));
 
     // Mail Notification Message handlers
-    $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentReplyAddedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentReplyUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', null, 'accepts')]);
+    $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentAdded::class]);
+    $services->set(CommentUpdatedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentUpdated::class]);
+    $services->set(CommentReplyAddedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentReplyAdded::class]);
+    $services->set(CommentReplyUpdatedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentReplyUpdated::class]);
+    $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentResolved::class]);
+    $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', 'key')]);
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
 
     // Webhook handlers
+    $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler', ['key' => MergeRequestEvent::class]);
     $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
     $services->set(NoteEventHandler::class)->tag('webhook_handler', ['key' => NoteEvent::class]);
     $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
@@ -220,13 +238,24 @@ return static function (ContainerConfigurator $container): void {
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 
     // Gitlab integration
-    $services->set(GitlabService::class)->arg(
-        '$gitlabApi',
-        inline_service(GitlabApi::class)->args([service(LoggerInterface::class), service('gitlab.client'), service(SerializerInterface::class)])
-    );
+    $services->set(GitlabApi::class);
+    $services->set(GitlabService::class);
+
     $services->set(OAuth2ProviderFactory::class)
         ->arg('$gitlabApplicationId', '%env(GITLAB_APPLICATION_ID)%')
         ->arg('$gitlabApplicationSecret', '%env(GITLAB_APPLICATION_SECRET)%');
     $services->set(GenericProvider::class . ' $gitlabOAuth2Provider', GenericProvider::class)
         ->factory([service(OAuth2ProviderFactory::class), 'create']);
+
+    $services->set(DoctrineDbal::class)->tag('liip_monitor.check');
+    $services->set(OpcacheInternedStrings::class)->tag('liip_monitor.check');
+    $services->set(MercureHub::class)->tag('liip_monitor.check');
+
+    // view model appenders
+    $services->set(FileTreeViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(RevisionViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(ReviewSummaryViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(FileDiffViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(BranchReviewViewModelAppender::class)->tag('review.view_model_appender');
+    $services->set(ReviewViewModelProvider::class)->arg('$reviewViewModelAppenders', tagged_iterator('review.view_model_appender'));
 };

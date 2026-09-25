@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Form\Repository;
 
-use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\Controller\App\Admin\Credentials\CredentialsController;
 use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\Repository\Repository;
@@ -19,8 +18,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Repository>
+ */
 class RepositoryType extends AbstractType
 {
     public function __construct(
@@ -47,7 +50,7 @@ class RepositoryType extends AbstractType
         $builder->add(
             'url',
             UrlType::class,
-            ['label' => 'url', 'required' => true, 'attr' => ['maxlength' => 255], 'constraints' => new Assert\Url()]
+            ['label' => 'url', 'required' => true, 'attr' => ['maxlength' => 255], 'constraints' => new Assert\Url(requireTld: true)]
         );
         $builder->add(
             'credential',
@@ -91,6 +94,11 @@ class RepositoryType extends AbstractType
 
         if ($this->gitlabApiUrl !== '') {
             $builder->add('gitlabProjectId', GitlabProjectIdType::class);
+            $builder->add(
+                'gitApprovalSync',
+                CheckboxType::class,
+                ['required' => false, 'label' => 'git.approval.sync.label.checkbox']
+            );
         }
 
         $builder->get('url')->addModelTransformer(new RepositoryUrlTransformer());

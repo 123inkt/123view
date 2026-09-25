@@ -27,12 +27,17 @@ class GitCheckoutCommandBuilderTest extends AbstractTestCase
 
     public function testSetPath(): void
     {
-        static::assertSame(['git', 'checkout', '-b branchName', 'point'], $this->builder->branch('branchName')->startPoint('point')->build());
+        static::assertSame(['git', 'checkout', '-b', 'branchName', 'point'], $this->builder->branch('branchName')->startPoint('point')->build());
     }
 
     public function testCommand(): void
     {
         static::assertSame('checkout', $this->builder->command());
+    }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
     }
 
     public function testToString(): void

@@ -17,6 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<AddCommentReactionController>
+ */
 #[CoversClass(AddCommentReactionController::class)]
 class AddCommentReactionControllerTest extends AbstractControllerTestCase
 {
@@ -32,20 +35,21 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $request = $this->createMock(Request::class);
+        $request = static::createStub(Request::class);
         $request->method('getContent')->willReturn('message');
 
-        $user    = (new User())->setId(123);
-        $comment = new Comment();
-        $comment->setReview(new CodeReview());
+        $user    = new User()->setId(123);
+        $comment = new Comment()->setFilePath('file');
+        $comment->setReview(new CodeReview()->setId(123));
 
         $this->expectGetUser($user);
         $this->commentRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(
                     static function (CommentReply $reply) use ($user, $comment): bool {
+                        $reply->setId(123);
                         static::assertSame($user, $reply->getUser());
                         static::assertSame($comment, $reply->getComment());
                         static::assertSame('message', $reply->getMessage());
@@ -54,7 +58,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
                     }
                 )
             );
-        $this->bus->expects(self::once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
+        $this->bus->expects($this->once())->method('dispatch')->with(self::isInstanceOf(CommentReplyAdded::class))->willReturn($this->envelope);
 
         ($this->controller)($request, $comment);
     }

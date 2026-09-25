@@ -16,12 +16,12 @@ class CommentVoterTest extends AbstractTestCase
 {
     public function testSupports(): void
     {
-        $user    = (new User())->setId(789);
+        $user    = new User()->setId(789);
         $comment = new Comment();
         $comment->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::once())->method('getUser')->willReturn($user);
+        $token->expects($this->once())->method('getUser')->willReturn($user);
 
         $voter = new CommentVoter();
         static::assertSame(VoterInterface::ACCESS_GRANTED, $voter->vote($token, $comment, [CommentVoter::EDIT]));
@@ -34,7 +34,7 @@ class CommentVoterTest extends AbstractTestCase
         $comment->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::never())->method('getUser');
+        $token->expects($this->never())->method('getUser');
 
         $voter = new CommentVoter();
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, $comment, ['foobar']));
@@ -43,7 +43,7 @@ class CommentVoterTest extends AbstractTestCase
     public function testSupportsInvalidSubject(): void
     {
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::never())->method('getUser');
+        $token->expects($this->never())->method('getUser');
 
         $voter = new CommentVoter();
         static::assertSame(VoterInterface::ACCESS_ABSTAIN, $voter->vote($token, false, [CommentVoter::EDIT]));
@@ -57,7 +57,7 @@ class CommentVoterTest extends AbstractTestCase
         $comment->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::once())->method('getUser')->willReturn(null);
+        $token->expects($this->once())->method('getUser')->willReturn(null);
 
         $voter = new CommentVoter();
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $comment, [CommentVoter::EDIT]));
@@ -71,7 +71,7 @@ class CommentVoterTest extends AbstractTestCase
         $comment->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects(self::once())->method('getUser')->willReturn((new User())->setId(5));
+        $token->expects($this->once())->method('getUser')->willReturn(new User()->setId(5));
 
         $voter = new CommentVoter();
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $comment, [CommentVoter::EDIT]));

@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<CredentialController>
+ */
 #[CoversClass(CredentialController::class)]
 class CredentialControllerTest extends AbstractControllerTestCase
 {
@@ -38,6 +41,9 @@ class CredentialControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNotFound(): void
     {
+        $this->credentialRepository->expects($this->never())->method('save');
+        $this->repositoryRepository->expects($this->never())->method('findBy');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request = new Request(attributes: ['id' => 5]);
 
         $this->expectException(NotFoundHttpException::class);
@@ -47,10 +53,13 @@ class CredentialControllerTest extends AbstractControllerTestCase
 
     public function testInvokeEditCredential(): void
     {
+        $this->credentialRepository->expects($this->never())->method('save');
+        $this->repositoryRepository->expects($this->never())->method('findBy');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $request    = new Request();
         $credential = new RepositoryCredential();
 
-        $form = $this->createMock(FormView::class);
+        $form = static::createStub(FormView::class);
 
         $this->expectCreateForm(EditCredentialFormType::class, ['credential' => $credential])
             ->handleRequest($request)
@@ -66,16 +75,16 @@ class CredentialControllerTest extends AbstractControllerTestCase
         $request    = new Request();
         $credential = new RepositoryCredential();
         $credential->setId(123);
-        $repository = (new Repository())->setId(456);
+        $repository = new Repository()->setId(456);
 
         $this->expectCreateForm(EditCredentialFormType::class, ['credential' => $credential])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
 
-        $this->credentialRepository->expects(static::once())->method('save')->with($credential, true);
-        $this->repositoryRepository->expects(static::once())->method('findBy')->with(['credential' => $credential])->willReturn([$repository]);
-        $this->messageBus->expects(static::once())->method('dispatch')->with(new RepositoryUpdatedMessage(456))->willReturn($this->envelope);
+        $this->credentialRepository->expects($this->once())->method('save')->with($credential, true);
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with(['credential' => $credential])->willReturn([$repository]);
+        $this->messageBus->expects($this->once())->method('dispatch')->with(new RepositoryUpdatedMessage(456))->willReturn($this->envelope);
         $this->expectAddFlash('success', 'credential.successful.saved');
         $this->expectRedirectToRoute(CredentialsController::class)->willReturn('url');
 

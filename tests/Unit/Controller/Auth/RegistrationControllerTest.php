@@ -18,6 +18,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+/**
+ * @extends AbstractControllerTestCase<RegistrationController>
+ */
 #[CoversClass(RegistrationController::class)]
 class RegistrationControllerTest extends AbstractControllerTestCase
 {
@@ -35,8 +38,11 @@ class RegistrationControllerTest extends AbstractControllerTestCase
 
     public function testRegisterShowForm(): void
     {
+        $this->passwordHasher->expects($this->never())->method('hashPassword');
+        $this->userRepository->expects($this->never())->method('getUserCount');
+        $this->security->expects($this->never())->method('login');
         $request = new Request();
-        $view    = $this->createMock(FormView::class);
+        $view    = static::createStub(FormView::class);
 
         $this->expectCreateForm(RegistrationFormType::class, new User())
             ->handleRequest($request)
@@ -62,10 +68,10 @@ class RegistrationControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true)
             ->getWillReturn(['plainPassword' => 'plain']);
-        $this->passwordHasher->expects(self::once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
-        $this->userRepository->expects(self::once())->method('getUserCount')->willReturn($userCount);
-        $this->userRepository->expects(self::once())->method('save')->with($userB, true);
-        $this->security->expects(self::once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
+        $this->passwordHasher->expects($this->once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
+        $this->userRepository->expects($this->once())->method('getUserCount')->willReturn($userCount);
+        $this->userRepository->expects($this->once())->method('save')->with($userB, true);
+        $this->security->expects($this->once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
 
         ($this->controller)($request);
@@ -85,10 +91,10 @@ class RegistrationControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true)
             ->getWillReturn(['plainPassword' => 'plain']);
-        $this->passwordHasher->expects(self::once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
-        $this->userRepository->expects(self::once())->method('getUserCount')->willReturn($userCount);
-        $this->userRepository->expects(self::once())->method('save')->with($userB, true);
-        $this->security->expects(self::once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
+        $this->passwordHasher->expects($this->once())->method('hashPassword')->with($userA, 'plain')->willReturn('pass');
+        $this->userRepository->expects($this->once())->method('getUserCount')->willReturn($userCount);
+        $this->userRepository->expects($this->once())->method('save')->with($userB, true);
+        $this->security->expects($this->once())->method('login')->with($userB, "security.authenticator.form_login.main", "main");
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('url');
 
         ($this->controller)($request);

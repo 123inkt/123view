@@ -5,11 +5,13 @@ namespace DR\Review\Service\Git\Review;
 
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Review\CodeReviewerRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Utils\Assert;
 
@@ -18,6 +20,7 @@ class CodeReviewService
     public function __construct(
         private readonly RevisionRepository $revisionRepository,
         private readonly CodeReviewRepository $reviewRepository,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly CodeReviewerRepository $reviewerRepository,
         private readonly RevisionVisibilityService $visibilityService,
     ) {
@@ -28,12 +31,14 @@ class CodeReviewService
      */
     public function addRevisions(CodeReview $review, array $revisions): void
     {
-        $previousRevisions = $review->getRevisions()->toArray();
+        $previousRevisions = $this->revisionService->getRevisions($review);
 
-        foreach ($revisions as $revision) {
-            $revision->setReview($review);
-            $review->getRevisions()->add($revision);
-            $this->revisionRepository->save($revision, true);
+        if ($review->getType() === CodeReviewType::COMMITS) {
+            foreach ($revisions as $revision) {
+                $revision->setReview($review);
+                $review->getRevisions()->add($revision);
+                $this->revisionRepository->save($revision, true);
+            }
         }
 
         $review->setState(CodeReviewStateType::OPEN);

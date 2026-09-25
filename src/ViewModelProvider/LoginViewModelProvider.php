@@ -30,7 +30,10 @@ class LoginViewModelProvider
 
         return new LoginViewModel(
             $form,
-            $this->urlGenerator->generate(AzureAdAuthController::class, array_filter(['next' => $request->query->get('next', '')]))
+            $this->urlGenerator->generate(
+                AzureAdAuthController::class,
+                array_filter(['next' => $request->query->get('next', '')], static fn($val) => $val !== '' && $val !== null)
+            )
         );
     }
 }

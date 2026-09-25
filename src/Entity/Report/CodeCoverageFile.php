@@ -9,13 +9,13 @@ use DR\Review\Doctrine\Type\LineCoverageType;
 use DR\Review\Repository\Report\CodeCoverageFileRepository;
 
 #[ORM\Entity(repositoryClass: CodeCoverageFileRepository::class)]
-#[ORM\Index(columns: ['report_id', 'file'], name: 'report_filepath')]
+#[ORM\Index(name: 'report_filepath', columns: ['report_id', 'file'])]
 class CodeCoverageFile
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     private string $file;
@@ -29,16 +29,16 @@ class CodeCoverageFile
     #[ORM\Column(type: LineCoverageType::TYPE, length: 60000)]
     private LineCoverage $coverage;
 
-    #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class)]
+    #[ORM\ManyToOne(targetEntity: CodeCoverageReport::class, inversedBy: 'files')]
     #[ORM\JoinColumn(nullable: false)]
     private CodeCoverageReport $report;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

@@ -42,8 +42,8 @@ class CodeReviewActivityOutputFactoryTest extends AbstractTestCase
         $activity->setData(['data' => 'data']);
         $activity->setCreateTimestamp(135);
 
-        $this->userOutputFactory->expects(self::once())->method('create')->with($user);
-        $this->reviewOutputFactory->expects(self::once())->method('create')->with($review);
+        $this->userOutputFactory->expects($this->once())->method('create')->with($user);
+        $this->reviewOutputFactory->expects($this->once())->method('create')->with($review);
 
         $output = $this->outputFactory->create($activity);
         static::assertSame(789, $output->id);

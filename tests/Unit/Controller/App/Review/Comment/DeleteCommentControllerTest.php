@@ -10,7 +10,6 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\User\User;
-use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentReplyRemoved;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Voter\CommentVoter;
@@ -22,8 +21,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
-use function DR\PHPUnitExtensions\Mock\consecutive;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteCommentController>
+ */
 #[CoversClass(DeleteCommentController::class)]
 class DeleteCommentControllerTest extends AbstractControllerTestCase
 {
@@ -41,6 +42,9 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
 
     public function testInvokeCommentMissing(): void
     {
+        $this->commentRepository->expects($this->never())->method('remove');
+        $this->messageFactory->expects($this->never())->method('createReplyRemoved');
+        $this->bus->expects($this->never())->method('dispatch');
         $this->expectException(NotFoundHttpException::class);
         ($this->controller)(null);
     }
@@ -55,19 +59,15 @@ class DeleteCommentControllerTest extends AbstractControllerTestCase
         $comment->setLineReference(new LineReference('file', 'file', 1, 2, 3));
         $comment->setReview($review);
         $comment->getReplies()->add($reply);
-        $commentEvent = new CommentRemoved(1, 2, 3, 'file', 'message', null);
-        $replyEvent   = new CommentReplyRemoved(1, 2, 3, 4, 5, 'message', null);
+        $replyEvent = new CommentReplyRemoved(1, 2, 3, 4, 5, 'message', null);
 
         $user = new User();
         $this->expectGetUser($user);
 
         $this->expectDenyAccessUnlessGranted(CommentVoter::DELETE, $comment);
-        $this->commentRepository->expects(self::once())->method('remove')->with($comment, true);
-        $this->messageFactory->expects(self::once())->method('createRemoved')->willReturn($commentEvent);
-        $this->messageFactory->expects(self::once())->method('createReplyRemoved')->willReturn($replyEvent);
-        $this->bus->expects(self::exactly(2))->method('dispatch')
-            ->with(...consecutive([$commentEvent], [$replyEvent]))
-            ->willReturn($this->envelope);
+        $this->commentRepository->expects($this->once())->method('remove')->with($comment, true);
+        $this->messageFactory->expects($this->once())->method('createReplyRemoved')->willReturn($replyEvent);
+        $this->bus->expects($this->once())->method('dispatch')->with($replyEvent)->willReturn($this->envelope);
 
         $response = ($this->controller)($comment);
         static::assertInstanceOf(JsonResponse::class, $response);

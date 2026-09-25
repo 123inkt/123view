@@ -9,30 +9,33 @@ use DR\Review\Controller\App\User\UserApprovalPendingController;
 use DR\Review\Controller\Auth\LoginController;
 use DR\Review\Entity\User\User;
 use DR\Review\Security\Role\Roles;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Review\ViewModel\Authentication\LoginViewModel;
 use DR\Review\ViewModelProvider\LoginViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<LoginController>
+ */
 #[CoversClass(LoginController::class)]
 class LoginControllerTest extends AbstractControllerTestCase
 {
     private TranslatorInterface&MockObject    $translator;
-    private Security&MockObject               $security;
+    private UserEntityProvider&MockObject     $userEntityProvider;
     private AuthenticationUtils&MockObject    $authenticationUtils;
     private LoginViewModelProvider&MockObject $viewModelProvider;
 
     public function setUp(): void
     {
         $this->translator          = $this->createMock(TranslatorInterface::class);
-        $this->security            = $this->createMock(Security::class);
+        $this->userEntityProvider  = $this->createMock(UserEntityProvider::class);
         $this->authenticationUtils = $this->createMock(AuthenticationUtils::class);
         $this->viewModelProvider   = $this->createMock(LoginViewModelProvider::class);
         parent::setUp();
@@ -43,14 +46,14 @@ class LoginControllerTest extends AbstractControllerTestCase
         $user = new User();
         $user->setRoles([Roles::ROLE_USER]);
         $request   = new Request();
-        $viewModel = $this->createMock(LoginViewModel::class);
+        $viewModel = static::createStub(LoginViewModel::class);
 
-        $this->security->expects(self::once())->method('getUser')->willReturn(null);
+        $this->userEntityProvider->expects($this->once())->method('getUser')->willReturn(null);
 
-        $this->authenticationUtils->expects(self::once())->method('getLastAuthenticationError')->willReturn(new AuthenticationException());
-        $this->translator->expects(self::exactly(2))->method('trans')->willReturn('message', 'page_title');
+        $this->authenticationUtils->expects($this->once())->method('getLastAuthenticationError')->willReturn(new AuthenticationException());
+        $this->translator->expects($this->exactly(2))->method('trans')->willReturn('message', 'page_title');
         $this->expectAddFlash('error', 'message');
-        $this->viewModelProvider->expects(self::once())->method('getLoginViewModel')->with($request)->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getLoginViewModel')->with($request)->willReturn($viewModel);
 
         $result = ($this->controller)($request);
         static::assertSame(['page_title' => 'page_title', 'loginModel' => $viewModel], $result);
@@ -63,8 +66,10 @@ class LoginControllerTest extends AbstractControllerTestCase
         $request = new Request();
 
         $this->expectRedirectToRoute(ProjectsController::class)->willReturn('redirect-url');
-        $this->security->expects(self::exactly(2))->method('getUser')->willReturn($user);
-        $this->translator->expects(self::never())->method('trans');
+        $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
+        $this->translator->expects($this->never())->method('trans');
+        $this->authenticationUtils->expects($this->never())->method('getLastAuthenticationError');
+        $this->viewModelProvider->expects($this->never())->method('getLoginViewModel');
 
         $result = ($this->controller)($request);
         static::assertInstanceOf(RedirectResponse::class, $result);
@@ -76,8 +81,10 @@ class LoginControllerTest extends AbstractControllerTestCase
         $request = new Request();
 
         $this->expectRedirectToRoute(UserApprovalPendingController::class)->willReturn('redirect-url');
-        $this->security->expects(self::exactly(2))->method('getUser')->willReturn($user);
-        $this->translator->expects(self::never())->method('trans');
+        $this->userEntityProvider->expects($this->exactly(2))->method('getUser')->willReturn($user);
+        $this->translator->expects($this->never())->method('trans');
+        $this->authenticationUtils->expects($this->never())->method('getLastAuthenticationError');
+        $this->viewModelProvider->expects($this->never())->method('getLoginViewModel');
 
         $result = ($this->controller)($request);
         static::assertInstanceOf(RedirectResponse::class, $result);
@@ -85,6 +92,6 @@ class LoginControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new LoginController($this->translator, $this->security, $this->authenticationUtils, $this->viewModelProvider);
+        return new LoginController($this->translator, $this->userEntityProvider, $this->authenticationUtils, $this->viewModelProvider);
     }
 }

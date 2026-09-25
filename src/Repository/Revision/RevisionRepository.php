@@ -53,7 +53,7 @@ class RevisionRepository extends ServiceEntityRepository
         /** @var Revision[] $revisions */
         $revisions = $em->wrapInTransaction(function () use ($repository, $revisions): array {
             foreach ($revisions as $index => $revision) {
-                $entityExists = $this->findOneBy(['repository' => (int)$repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
+                $entityExists = $this->findOneBy(['repository' => $repository->getId(), 'commitHash' => $revision->getCommitHash()]) !== null;
                 if ($entityExists) {
                     unset($revisions[$index]);
                     continue;
@@ -85,8 +85,6 @@ class RevisionRepository extends ServiceEntityRepository
     public function getPaginatorForSearchQuery(int $repositoryId, int $page, string $searchQuery, ?bool $attached): Paginator
     {
         $query = $this->createQueryBuilder('r')
-            ->select('r', 'c')
-            ->leftJoin('r.review', 'c')
             ->where('r.repository = :repositoryId')
             ->setParameter('repositoryId', $repositoryId)
             ->orderBy('r.createTimestamp', 'DESC')
@@ -105,7 +103,8 @@ class RevisionRepository extends ServiceEntityRepository
         }
 
         /** @var Paginator<Revision> $paginator */
-        $paginator = new Paginator($query->getQuery(), true);
+        $paginator = new Paginator($query->getQuery(), false);
+        $paginator->setUseOutputWalkers(false);
 
         return $paginator;
     }

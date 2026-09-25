@@ -24,7 +24,7 @@ class FileTreeGenerator
 
             $filepath = explode('/', trim((string)$fileClone->getFile()?->getPathname(), '/'));
 
-            $node->addNode($filepath, $file);
+            $node->addNode($filepath, $fileClone);
         }
 
         return $node;

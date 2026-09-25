@@ -45,4 +45,9 @@ class GitFetchCommandBuilderTest extends AbstractTestCase
             (string)$this->builder->verbose()->prune()->all()
         );
     }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
 }

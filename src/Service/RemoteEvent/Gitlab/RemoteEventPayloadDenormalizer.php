@@ -4,10 +4,12 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Model\Api\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Exception\PartialDenormalizationException;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -29,7 +31,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
      *
      * @throws ExceptionInterface
      */
-    public function denormalize(string $eventType, array $data): PushEvent|NoteEvent|null
+    public function denormalize(string $eventType, array $data): PushEvent|NoteEvent|MergeRequestEvent|null
     {
         $eventClass = self::getEventClass($eventType);
         if ($eventClass === null) {
@@ -40,7 +42,27 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
 
         $this->logger?->info('RemoteEventPayloadDenormalizer: Denormalizing event type: {eventType}', ['eventType' => $eventType]);
 
-        return $this->objectDenormalizer->denormalize($data, $eventClass, null, self::DENORMALIZE_CONTEXT);
+        try {
+            return $this->objectDenormalizer->denormalize($data, $eventClass, null, self::DENORMALIZE_CONTEXT);
+        } catch (ExceptionInterface $exception) {
+            throw $this->handleException($eventType, $exception);
+        }
+    }
+
+    private function handleException(string $eventType, ExceptionInterface $exception): ExceptionInterface
+    {
+        $context = [
+            'eventType' => $eventType,
+            'exception' => $exception
+        ];
+
+        if ($exception instanceof PartialDenormalizationException) {
+            $context['errors'] = array_map(static fn($error) => $error->getMessage(), $exception->getNotNormalizableValueErrors());
+        }
+
+        $this->logger?->error('Failed to denormalize {eventType}', $context);
+
+        return $exception;
     }
 
     /**
@@ -50,9 +72,10 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
     private static function getEventClass(string $eventType): ?string
     {
         return match ($eventType) {
-            'Push Hook' => PushEvent::class,
-            'Note Hook' => NoteEvent::class,
-            default     => null,
+            'Push Hook'          => PushEvent::class,
+            'Note Hook'          => NoteEvent::class,
+            'Merge Request Hook' => MergeRequestEvent::class,
+            default              => null,
         };
     }
 }

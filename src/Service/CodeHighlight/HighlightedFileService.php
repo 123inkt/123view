@@ -8,6 +8,7 @@ use DR\Review\Model\Review\Highlight\HighlightedFile;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -22,8 +23,9 @@ class HighlightedFileService implements LoggerAwareInterface
 
     public function __construct(
         private readonly FilenameToLanguageTranslator $translator,
-        private readonly HttpClientInterface $highlightjsClient,
-        private readonly HighlightHtmlLineSplitter $splitter
+        #[Target('highlightjsClient')] private readonly HttpClientInterface $highlightjsClient,
+        private readonly HighlightHtmlLineSplitter $splitter,
+        private readonly HighlightedFilePreprocessor $preprocessor
     ) {
     }
 
@@ -37,10 +39,13 @@ class HighlightedFileService implements LoggerAwareInterface
             return null;
         }
 
-        $lines = $diffFile->getLines();
+        $content = implode("\n", $diffFile->getLines());
+
+        // preprocess certain contents that breaks the highlightjs formatter
+        $content = $this->preprocessor->process($languageName, $content);
 
         try {
-            $response = $this->highlightjsClient->request('POST', '', ['query' => ['language' => $languageName], 'body' => implode("\n", $lines)]);
+            $response = $this->highlightjsClient->request('POST', '', ['query' => ['language' => $languageName], 'body' => $content]);
         } catch (Throwable $exception) {
             $this->logger?->info('Failed to get code highlighting: ' . $exception->getMessage());
 

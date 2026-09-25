@@ -10,6 +10,7 @@ class DiffLine
     public const STATE_CHANGED   = 3;
     public const STATE_UNCHANGED = 4;
     public const STATE_EMPTY     = 5;
+    public const STATE_INLINED   = 6; // line was changed, but in inline diff unchanged
 
     public ?int                 $lineNumberBefore = null;
     public ?int                 $lineNumberAfter  = null;

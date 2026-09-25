@@ -6,10 +6,6 @@ export default class extends Controller<HTMLElement> {
     public static values = {file: String};
     private readonly declare fileValue: string;
 
-    public connect(): void {
-        console.log('connected1');
-    }
-
     public viewFile(event: Event): void {
         event.preventDefault();
         event.stopPropagation();
@@ -17,7 +13,7 @@ export default class extends Controller<HTMLElement> {
         this.element.innerHTML = '';
         this.element.classList.add('comment__markdown');
         axios.get(this.fileValue)
-            .then(response => this.element.innerHTML = response.data)
+            .then(response => this.element.innerHTML = (response.data as string))
             .catch(Function.empty);
     }
 }

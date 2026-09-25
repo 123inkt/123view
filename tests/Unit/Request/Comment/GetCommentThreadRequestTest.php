@@ -28,8 +28,8 @@ class GetCommentThreadRequestTest extends AbstractRequestTestCase
 
     public function testGetAction(): void
     {
-        $action = $this->createMock(AbstractReviewAction::class);
-        $this->actionFactory->expects(self::once())->method('createFromRequest')->with($this->request)->willReturn($action);
+        $action = static::createStub(AbstractReviewAction::class);
+        $this->actionFactory->expects($this->once())->method('createFromRequest')->with($this->request)->willReturn($action);
 
         $this->request->query->set('action', 'my-action');
         static::assertSame($action, $this->validatedRequest->getAction());
@@ -40,6 +40,7 @@ class GetCommentThreadRequestTest extends AbstractRequestTestCase
      */
     public function testGetValidationRules(): void
     {
+        $this->actionFactory->expects($this->never())->method('createFromRequest');
         $expected = new ValidationRules(['query' => ['action' => 'string']]);
         $this->expectGetValidationRules($expected);
 

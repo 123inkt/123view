@@ -23,6 +23,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteCommentReplyController>
+ */
 #[CoversClass(DeleteCommentReplyController::class)]
 class DeleteCommentReplyControllerTest extends AbstractControllerTestCase
 {
@@ -40,6 +43,9 @@ class DeleteCommentReplyControllerTest extends AbstractControllerTestCase
 
     public function testInvokeCommentMissing(): void
     {
+        $this->commentRepository->expects($this->never())->method('remove');
+        $this->messageFactory->expects($this->never())->method('createReplyRemoved');
+        $this->bus->expects($this->never())->method('dispatch');
         $this->expectException(NotFoundHttpException::class);
         ($this->controller)(null);
     }
@@ -60,9 +66,9 @@ class DeleteCommentReplyControllerTest extends AbstractControllerTestCase
 
         $this->expectGetUser($user);
         $this->expectDenyAccessUnlessGranted(CommentReplyVoter::DELETE, $reply);
-        $this->messageFactory->expects(self::once())->method('createReplyRemoved')->with($reply, $user)->willReturn($event);
-        $this->commentRepository->expects(self::once())->method('remove')->with($reply, true);
-        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn(new Envelope(new stdClass()));
+        $this->messageFactory->expects($this->once())->method('createReplyRemoved')->with($reply, $user)->willReturn($event);
+        $this->commentRepository->expects($this->once())->method('remove')->with($reply, true);
+        $this->bus->expects($this->once())->method('dispatch')->with($event)->willReturn(new Envelope(new stdClass()));
 
         $response = ($this->controller)($reply);
         static::assertInstanceOf(JsonResponse::class, $response);

@@ -1,11 +1,10 @@
 ## overrides for development
-
-version: '3'
-
 services:
     nginx:
-        build:
-            target: dev
+        volumes:
+            - ./docker/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
+            - ./docker/ssl/development/development-self-signed.crt:/etc/ssl/certs/123view-cert.crt:ro
+            - ./docker/ssl/development/development-self-signed.key:/etc/ssl/private/123view-cert.key:ro
 
     php-fpm:
         build:
@@ -26,8 +25,8 @@ services:
 
     rabbitmq:
         environment:
-            RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-rabbitmq}
-            RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-rabbitmq}
+            RABBITMQ_DEFAULT_USER: ${RABBITMQ_USERNAME:-rabbitmq}
+            RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-rabbitmq}
         ports:
             - ${RABBITMQ_CLIENT_PORT:-5672}:5672
             - ${RABBITMQ_API_PORT:-15672}:15672
@@ -38,7 +37,8 @@ services:
         ports:
             - ${HIGHLIGHTJS_PORT}:${HIGHLIGHTJS_PORT}
 
-    mercure:
-        build:
-            target: dev
-        command: /usr/bin/caddy run --config /etc/caddy/Caddyfile.dev
+    my_mercure:
+        volumes:
+            - ./docker/ssl/development/development-self-signed.crt:/etc/ssl/certs/123view-cert.crt:ro
+            - ./docker/ssl/development/development-self-signed.key:/etc/ssl/private/123view-cert.key:ro
+        command: /usr/bin/caddy run --config /etc/caddy/dev.Caddyfile

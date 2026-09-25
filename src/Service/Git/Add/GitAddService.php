@@ -7,13 +7,9 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
-class GitAddService implements LoggerAwareInterface
+class GitAddService
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $commandFactory,
@@ -23,13 +19,11 @@ class GitAddService implements LoggerAwareInterface
     /**
      * @throws RepositoryException
      */
-    public function add(Repository $repository, string $path): void
+    public function add(Repository $repository, string ...$paths): void
     {
-        $commandBuilder = $this->commandFactory->createAdd()->setPath($path);
+        $commandBuilder = $this->commandFactory->createAdd()->paths(...$paths);
 
         // create branch
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 }

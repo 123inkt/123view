@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Branch;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\Review\Service\Git\Branch\GitBranchService;
 use DR\Review\Service\Git\Branch\GitRemoteBranchParser;
@@ -41,15 +41,15 @@ class GitBranchServiceTest extends AbstractTestCase
         $repository = new Repository();
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
-        $builder->expects(self::once())->method('remote')->willReturnSelf();
-        $builder->expects(self::never())->method('merged');
-        $this->builderFactory->expects(self::once())->method('createBranch')->willReturn($builder);
+        $builder->expects($this->once())->method('remote')->willReturnSelf();
+        $builder->expects($this->never())->method('merged');
+        $this->builderFactory->expects($this->once())->method('createBranch')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
 
-        $this->branchParser->expects(self::once())->method('parse')->with('output')->willReturn(['branch']);
+        $this->branchParser->expects($this->once())->method('parse')->with('output')->willReturn(['branch']);
 
         static::assertSame(['branch'], $this->service->getRemoteBranches($repository));
     }
@@ -62,15 +62,15 @@ class GitBranchServiceTest extends AbstractTestCase
         $repository = new Repository();
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
-        $builder->expects(self::once())->method('remote')->willReturnSelf();
-        $builder->expects(self::once())->method('merged')->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createBranch')->willReturn($builder);
+        $builder->expects($this->once())->method('remote')->willReturnSelf();
+        $builder->expects($this->once())->method('merged')->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createBranch')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
 
-        $this->branchParser->expects(self::once())->method('parse')->with('output')->willReturn(['branch']);
+        $this->branchParser->expects($this->once())->method('parse')->with('output')->willReturn(['branch']);
 
         static::assertSame(['branch'], $this->service->getRemoteBranches($repository, true));
     }
@@ -85,12 +85,13 @@ class GitBranchServiceTest extends AbstractTestCase
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
-        $builder->expects(self::once())->method('delete')->with($path)->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createBranch')->willReturn($builder);
+        $builder->expects($this->once())->method('delete')->with($path)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createBranch')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
+        $this->branchParser->expects($this->never())->method('parse');
 
         $this->service->deleteBranch($repository, $path);
     }
@@ -102,12 +103,13 @@ class GitBranchServiceTest extends AbstractTestCase
         $path = '/foo/bar/';
 
         $builder = $this->createMock(GitBranchCommandBuilder::class);
-        $builder->expects(self::once())->method('delete')->with($path)->willReturnSelf();
-        $this->builderFactory->expects(self::once())->method('createBranch')->willReturn($builder);
+        $builder->expects($this->once())->method('delete')->with($path)->willReturnSelf();
+        $this->builderFactory->expects($this->once())->method('createBranch')->willReturn($builder);
 
         $git = $this->createMock(GitRepository::class);
-        $git->expects(self::once())->method('execute')->with($builder)->willReturn('output');
-        $this->repositoryService->expects(self::once())->method('getRepository')->with($repository)->willReturn($git);
+        $git->expects($this->once())->method('execute')->with($builder)->willReturn('output');
+        $this->repositoryService->expects($this->once())->method('getRepository')->with($repository)->willReturn($git);
+        $this->branchParser->expects($this->never())->method('parse');
 
         static::assertTrue($this->service->tryDeleteBranch($repository, $path));
     }
@@ -118,7 +120,9 @@ class GitBranchServiceTest extends AbstractTestCase
         $repository->setUrl(Uri::new('https://url/'));
         $path = '/foo/bar/';
 
-        $this->builderFactory->expects(self::once())->method('createBranch')->willThrowException(new RepositoryException());
+        $this->builderFactory->expects($this->once())->method('createBranch')->willThrowException(new RepositoryException());
+        $this->repositoryService->expects($this->never())->method('getRepository');
+        $this->branchParser->expects($this->never())->method('parse');
 
         static::assertFalse($this->service->tryDeleteBranch($repository, $path));
     }

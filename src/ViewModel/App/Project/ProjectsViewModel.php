@@ -15,7 +15,8 @@ class ProjectsViewModel
     public function __construct(
         public readonly array $repositories,
         public readonly array $revisionCount,
-        public readonly TimelineViewModel $timeline
+        public readonly TimelineViewModel $timeline,
+        public readonly string $searchQuery
     ) {
     }
 

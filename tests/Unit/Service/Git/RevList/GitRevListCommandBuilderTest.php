@@ -50,4 +50,9 @@ class GitRevListCommandBuilderTest extends AbstractTestCase
     {
         static::assertSame('git rev-list start...end --left-right', (string)$this->builder->commitRange('start', 'end')->leftRight());
     }
+
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
 }

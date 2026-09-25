@@ -30,17 +30,13 @@ class CommentAddedMailNotificationHandlerTest extends AbstractTestCase
         $this->handler           = new CommentAddedMailNotificationHandler($this->mailService, $this->commentRepository);
     }
 
-    public function testAccepts(): void
-    {
-        static::assertSame(CommentAdded::class, CommentAddedMailNotificationHandler::accepts());
-    }
-
     /**
      * @throws Throwable
      */
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->mailService->expects($this->never())->method('sendNewCommentMail');
         $this->handler->handle(new CommentAdded(5, 123, 456, 'file', 'message'));
     }
 
@@ -52,7 +48,8 @@ class CommentAddedMailNotificationHandlerTest extends AbstractTestCase
         $comment = new Comment();
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_CREATED);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->mailService->expects($this->never())->method('sendNewCommentMail');
         $this->handler->handle(new CommentAdded(5, 123, 456, 'file', 'message'));
     }
 
@@ -65,9 +62,9 @@ class CommentAddedMailNotificationHandlerTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setReview($review);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
-        $this->mailService->expects(self::once())->method('sendNewCommentMail')->with($review, $comment);
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->mailService->expects($this->once())->method('sendNewCommentMail')->with($review, $comment);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $this->handler->handle(new CommentAdded(5, 123, 456, 'file', 'message'));
 

@@ -8,8 +8,8 @@ use DR\Review\Tests\AbstractFunctionalTestCase;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
-use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Symfony\Component\HttpFoundation\Request;
 
 #[CoversNothing]
 class UserMeControllerTest extends AbstractFunctionalTestCase
@@ -22,10 +22,10 @@ class UserMeControllerTest extends AbstractFunctionalTestCase
         $user = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']));
 
         $this->client->loginUser($user);
-        $this->client->request('GET', '/api/users/me');
+        $this->client->request(Request::METHOD_GET, '/api/users/me');
         self::assertResponseIsSuccessful();
 
-        $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
+        $data = $this->getResponseArray();
         static::assertSame(['id' => $user->getId(), 'name' => 'Sherlock Holmes', 'email' => 'sherlock@example.com'], $data);
     }
 

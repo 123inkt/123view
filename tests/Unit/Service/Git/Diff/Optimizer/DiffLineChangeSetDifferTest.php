@@ -33,6 +33,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
 
     public function testDiffShouldSkipAdditionOrRemovalOnly(): void
     {
+        $this->jbdiff->expects($this->never())->method('compareToIterator');
         $set = new DiffLineChangeSet([], []);
         static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
@@ -43,9 +44,9 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
         $set   = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $iterator = $this->createMock(LineBlockTextIterator::class);
+        $iterator = static::createStub(LineBlockTextIterator::class);
 
-        $this->jbdiff->expects(self::once())
+        $this->jbdiff->expects($this->once())
             ->method('compareToIterator')
             ->with("bar\n", "foo\n", ComparisonPolicy::IGNORE_WHITESPACES, true)
             ->willReturn($iterator);
@@ -59,12 +60,10 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
         $set   = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $this->jbdiff->expects(self::once())
+        $this->jbdiff->expects($this->once())
             ->method('compareToIterator')
             ->with("bar\n", "foo\n", ComparisonPolicy::IGNORE_WHITESPACES, true)
             ->willThrowException(new InvalidArgumentException('foobar'));
-
-        $this->logger->expects(self::once())->method('warning')->with('foobar');
 
         static::assertNull($this->differ->diff($set, DiffComparePolicy::IGNORE));
     }
@@ -75,7 +74,7 @@ class DiffLineChangeSetDifferTest extends AbstractTestCase
         $lineB = new DiffLine(DiffLine::STATE_ADDED, [new DiffChange(DiffChange::ADDED, 'foo')]);
         $set   = new DiffLineChangeSet([$lineA], [$lineB]);
 
-        $this->jbdiff->expects(self::once())
+        $this->jbdiff->expects($this->once())
             ->method('compareToIterator')
             ->with("bar\n", "foo\n", ComparisonPolicy::IGNORE_WHITESPACES, true)
             ->willThrowException(new DiffToBigException());

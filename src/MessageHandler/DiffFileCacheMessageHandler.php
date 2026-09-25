@@ -11,6 +11,7 @@ use DR\Review\Message\Revision\ReviewRevisionRemoved;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Review\FileDiffOptions;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Service\Util\SystemLoadService;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -21,8 +22,11 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly CodeReviewRepository $reviewRepository, private readonly ReviewDiffServiceInterface $diffService)
-    {
+    public function __construct(
+        private readonly CodeReviewRepository $reviewRepository,
+        private readonly ReviewDiffServiceInterface $diffService,
+        private readonly SystemLoadService $systemLoadService
+    ) {
     }
 
     /**
@@ -42,17 +46,14 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
             return;
         }
 
-        // @codeCoverageIgnoreStart
-        $systemLoad = function_exists('sys_getloadavg') ? (sys_getloadavg()[1] ?? 0) : 0; // system load in the last 5 minutes
-        if ($systemLoad >= 1.1) {
+        if ($this->systemLoadService->getLoad() >= 1.1) {
             $this->logger?->info(
                 'DiffFileCacheMessageHandler: system load too high, skipping cache of review {review}',
-                ['review' => $event->getReviewId()]
+                ['review' => $review->getId()]
             );
 
             return;
         }
-        // @codeCoverageIgnoreEnd
 
         $revisions = $review->getRevisions();
         if (count($revisions) === 0) {
@@ -66,6 +67,6 @@ class DiffFileCacheMessageHandler implements LoggerAwareInterface
             new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::ALL)
         );
 
-        $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $event->getReviewId()]);
+        $this->logger?->info('DiffFileCacheMessageHandler: diff file cache warmed up for id: {review}', ['review' => $review->getId()]);
     }
 }

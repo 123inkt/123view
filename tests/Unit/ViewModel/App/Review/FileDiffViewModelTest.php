@@ -23,16 +23,16 @@ class FileDiffViewModelTest extends AbstractTestCase
 
     public function testGetDiffModes(): void
     {
-        $file = new FileDiffViewModel(new Difffile(), ReviewDiffModeEnum::INLINE);
+        $file = new FileDiffViewModel(new Difffile(), ReviewDiffModeEnum::INLINE, 6);
         static::assertSame(['side-by-side', 'unified', 'inline'], $file->getDiffModes());
     }
 
     public function testGetHeadSha(): void
     {
-        $revisionA = (new Revision())->setCommitHash('shaA');
-        $revisionB = (new Revision())->setCommitHash('shaB');
+        $revisionA = new Revision()->setCommitHash('shaA');
+        $revisionB = new Revision()->setCommitHash('shaB');
 
-        $file = new FileDiffViewModel(new Difffile(), ReviewDiffModeEnum::INLINE);
+        $file = new FileDiffViewModel(new Difffile(), ReviewDiffModeEnum::INLINE, 6);
         $file->setRevisions([$revisionA, $revisionB]);
 
         static::assertSame('shaB', $file->getHeadSha());

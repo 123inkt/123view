@@ -18,7 +18,7 @@ class InExclusionFilterTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(2))
+        $builder->expects($this->exactly(2))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -26,7 +26,7 @@ class InExclusionFilterTypeTest extends AbstractTestCase
                     ['exclusions', FilterCollectionType::class],
                 )
             )->willReturnSelf();
-        $builder->expects(self::once())->method('addModelTransformer')->with(self::isInstanceOf(FilterCollectionTransformer::class));
+        $builder->expects($this->once())->method('addModelTransformer')->with(self::isInstanceOf(FilterCollectionTransformer::class));
 
         $type = new InExclusionFilterType();
         $type->buildForm($builder, []);

@@ -30,7 +30,7 @@ class RuleRepositoryTest extends AbstractRepositoryTestCase
         $rule->setRuleOptions(new RuleOptions());
         $rule->setName('rule');
         $rule->setActive(true);
-        $rule->setRuleOptions((new RuleOptions())->setFrequency(Frequency::ONCE_PER_DAY));
+        $rule->setRuleOptions(new RuleOptions()->setFrequency(Frequency::ONCE_PER_DAY));
         $repository->save($rule, true);
 
         static::assertCount(1, $repository->getActiveRulesForFrequency(true, Frequency::ONCE_PER_DAY));

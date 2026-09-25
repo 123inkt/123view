@@ -3,14 +3,15 @@ declare(strict_types=1);
 
 namespace DR\Review\Doctrine\Type;
 
+use BackedEnum;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
 
 abstract class AbstractEnumType extends Type
 {
-    public const    TYPE   = '';
-    protected const VALUES = [];
+    public const string TYPE = '';
+    public const array VALUES = [];
 
     /**
      * @inheritDoc
@@ -34,8 +35,12 @@ abstract class AbstractEnumType extends Type
             return null;
         }
 
+        if ($value instanceof BackedEnum) {
+            $value = $value->value;
+        }
+
         if (is_string($value) === false || in_array($value, static::VALUES, true) === false) {
-            throw new InvalidArgumentException("Invalid value '" . $value . "' for type '" . static::TYPE . "'.");
+            throw new InvalidArgumentException("Invalid value '" . get_debug_type($value) . "' for type '" . static::TYPE . "'.");
         }
 
         return $value;

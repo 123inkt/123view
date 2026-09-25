@@ -12,6 +12,9 @@ use DR\Review\ViewModel\App\Admin\RepositoriesViewModel;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<RepositoriesController>
+ */
 #[CoversClass(RepositoriesController::class)]
 class RepositoriesControllerTest extends AbstractControllerTestCase
 {
@@ -28,7 +31,7 @@ class RepositoriesControllerTest extends AbstractControllerTestCase
         $repository = new Repository();
         $repository->setId(123);
 
-        $this->repositoryRepository->expects(self::once())->method('findBy')->with([], ['displayName' => 'ASC'])->willReturn([$repository]);
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with([], ['displayName' => 'ASC'])->willReturn([$repository]);
 
         $actual = ($this->controller)();
         static::assertEquals(['repositoriesViewModel' => new RepositoriesViewModel([$repository])], $actual);

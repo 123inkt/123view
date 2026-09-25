@@ -45,7 +45,9 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
      */
     public function testInvokeSkipIfDisabled(): void
     {
-        $this->commentRepository->expects(self::never())->method('find');
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->commentService->expects($this->never())->method('update');
 
         $handler = new CommentUpdatedMessageHandler(
             false,
@@ -71,8 +73,9 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
+        $this->commentService->expects($this->never())->method('update');
 
         ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
     }
@@ -92,11 +95,11 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setUser($user);
 
-        $api = $this->createMock(GitlabApi::class);
+        $api = static::createStub(GitlabApi::class);
 
-        $this->commentRepository->expects(self::once())->method('find')->with(222)->willReturn($comment);
-        $this->apiProvider->expects(self::once())->method('create')->with($repository, $user)->willReturn($api);
-        $this->commentService->expects(self::once())->method('update')->with($api, $comment);
+        $this->commentRepository->expects($this->once())->method('find')->with(222)->willReturn($comment);
+        $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
+        $this->commentService->expects($this->once())->method('update')->with($api, $comment);
 
         ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
     }

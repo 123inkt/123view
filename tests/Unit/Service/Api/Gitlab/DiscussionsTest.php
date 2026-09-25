@@ -11,6 +11,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(Discussions::class)]
 class DiscussionsTest extends AbstractTestCase
@@ -28,6 +29,42 @@ class DiscussionsTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testGetDiscussions(): void
+    {
+        $discussionA = ['id' => 333, 'notes' => [['id' => 444]]];
+        $discussionB = ['id' => 555, 'notes' => [['id' => 666]]];
+
+        $response = static::createStub(ResponseInterface::class);
+        $response->method('getHeaders')->willReturn(['x-next-page' => ['2']], ['x-next-page' => []]);
+        $response->method('toArray')->willReturn([$discussionA], [$discussionB]);
+
+        $this->client->expects($this->exactly(2))
+            ->method('request')
+            ->with(
+                ...consecutive(
+                    [
+                        'GET',
+                        'projects/111/merge_requests/222/discussions',
+                        ['query' => ['per_page' => 20, 'page' => 1]]
+                    ],
+                    [
+                        'GET',
+                        'projects/111/merge_requests/222/discussions',
+                        ['query' => ['per_page' => 20, 'page' => 2]]
+                    ]
+                )
+            )->willReturn($response);
+
+        $discussions = [];
+        foreach ($this->discussions->getDiscussions(111, 222) as $discussion) {
+            $discussions[] = $discussion;
+        }
+        static::assertSame([$discussionA, $discussionB], $discussions);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testCreateDiscussion(): void
     {
         $position               = new Position();
@@ -38,10 +75,10 @@ class DiscussionsTest extends AbstractTestCase
         $position->oldPath      = 'old';
         $position->oldLine      = 1;
 
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('toArray')->willReturn(['id' => 333, 'notes' => [['id' => 444]]]);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with(
                 'POST',
@@ -68,10 +105,10 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testCreateNote(): void
     {
-        $response = $this->createMock(ResponseInterface::class);
+        $response = static::createStub(ResponseInterface::class);
         $response->method('toArray')->willReturn(['id' => 444]);
 
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('POST', 'projects/111/merge_requests/222/discussions/333/notes', ['query' => ['body' => 'body']])
             ->willReturn($response);
@@ -85,7 +122,7 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testUpdateNote(): void
     {
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('PUT', 'projects/111/merge_requests/222/discussions/333/notes/444', ['query' => ['body' => 'body']]);
 
@@ -97,7 +134,7 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testResolve(): void
     {
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('PUT', 'projects/111/merge_requests/222/discussions/333', ['query' => ['resolved' => 'true']]);
 
@@ -109,7 +146,7 @@ class DiscussionsTest extends AbstractTestCase
      */
     public function testDeleteNote(): void
     {
-        $this->client->expects(self::once())
+        $this->client->expects($this->once())
             ->method('request')
             ->with('DELETE', 'projects/111/merge_requests/222/discussions/333/notes/444');
 

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\MessageHandler\Mail;
 
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentResolved;
@@ -35,17 +35,14 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
         $this->handler           = new CommentResolvedMailNotificationHandler($this->mailService, $this->commentRepository, $this->userRepository);
     }
 
-    public function testAccepts(): void
-    {
-        static::assertSame(CommentResolved::class, CommentResolvedMailNotificationHandler::accepts());
-    }
-
     /**
      * @throws Throwable
      */
     public function testHandleAbsentCommentShouldReturnEarly(): void
     {
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->mailService->expects($this->never())->method('sendCommentResolvedMail');
+        $this->userRepository->expects($this->once())->method('find');
         $this->handler->handle(new CommentResolved(4, 123, 5, 'file'));
     }
 
@@ -56,12 +53,12 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
     {
         $comment = new Comment();
         $comment->getNotificationStatus()->addStatus(NotificationStatus::STATUS_RESOLVED);
-        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setState(CommentStateEnum::Resolved);
         $user = new User();
 
-        $this->userRepository->expects(self::once())->method('find')->with(6)->willReturn($user);
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
-        $this->mailService->expects(self::never())->method('sendCommentResolvedMail');
+        $this->userRepository->expects($this->once())->method('find')->with(6)->willReturn($user);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->mailService->expects($this->never())->method('sendCommentResolvedMail');
         $this->handler->handle(new CommentResolved(5, 123, 6, 'file'));
     }
 
@@ -73,14 +70,14 @@ class CommentResolvedMailNotificationHandlerTest extends AbstractTestCase
         $review  = new CodeReview();
         $comment = new Comment();
         $comment->setReview($review);
-        $comment->setState(CommentStateType::RESOLVED);
+        $comment->setState(CommentStateEnum::Resolved);
 
         $user = new User();
 
-        $this->userRepository->expects(self::once())->method('find')->with(6)->willReturn($user);
-        $this->commentRepository->expects(self::once())->method('find')->with(123)->willReturn($comment);
-        $this->mailService->expects(self::once())->method('sendCommentResolvedMail')->with($review, $comment);
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
+        $this->userRepository->expects($this->once())->method('find')->with(6)->willReturn($user);
+        $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
+        $this->mailService->expects($this->once())->method('sendCommentResolvedMail')->with($review, $comment);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $this->handler->handle(new CommentResolved(5, 123, 6, 'file'));
 

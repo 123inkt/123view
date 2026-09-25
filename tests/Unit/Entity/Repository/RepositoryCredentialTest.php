@@ -17,8 +17,16 @@ class RepositoryCredentialTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getCredentials', 'setCredentials']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getCredentials', 'setCredentials']);
         static::assertAccessorPairs(RepositoryCredential::class, $config);
+    }
+
+    public function testId(): void
+    {
+        $credential = new RepositoryCredential();
+        static::assertFalse($credential->hasId());
+        $credential->setId(123);
+        static::assertTrue($credential->hasId());
     }
 
     public function testGetSetCredentials(): void
@@ -41,7 +49,7 @@ class RepositoryCredentialTest extends AbstractTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unknown credential type');
         $repositoryCredential = new RepositoryCredential();
-        $repositoryCredential->setCredentials($this->createMock(CredentialInterface::class));
+        $repositoryCredential->setCredentials(static::createStub(CredentialInterface::class));
     }
 
     public function testGetInvalidCredentials(): void

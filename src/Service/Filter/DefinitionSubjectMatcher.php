@@ -12,7 +12,6 @@ class DefinitionSubjectMatcher
 {
     /**
      * @param ReadableCollection<int, Filter> $filters
-     * @suppressWarnings(PHPMD.ErrorControlOperator)
      */
     public function matches(Commit $commit, ReadableCollection $filters): bool
     {

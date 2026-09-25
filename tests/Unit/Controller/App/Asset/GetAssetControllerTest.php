@@ -13,16 +13,11 @@ class GetAssetControllerTest extends AbstractTestCase
 {
     public function testInvoke(): void
     {
-        /** @var resource $stream */
-        $stream = fopen('php://memory', 'rb+');
-        fwrite($stream, 'image-data');
-        rewind($stream);
-
         $asset = new Asset();
         $asset->setMimeType('image/png');
-        $asset->setData($stream);
+        $asset->setData('image-data');
 
-        $response = (new GetAssetController())($asset);
+        $response = new GetAssetController()($asset);
 
         static::assertSame('image-data', $response->getContent());
 

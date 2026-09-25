@@ -7,7 +7,7 @@ use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
 use DR\Review\Repository\Config\RepositoryRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class FetchRevisionsController
 {
@@ -30,7 +30,7 @@ class FetchRevisionsController
             return new Response('Rejected', Response::HTTP_BAD_REQUEST);
         }
 
-        $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
+        $this->bus->dispatch(new FetchRepositoryRevisionsMessage($repository->getId()));
 
         return new Response('Accepted');
     }

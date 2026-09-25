@@ -7,6 +7,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentDraftAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentReplyRemoved;
 use DR\Review\Message\Comment\CommentResolved;
@@ -18,8 +19,19 @@ class CommentEventMessageFactory
     public function createAdded(Comment $comment, User $user): CommentAdded
     {
         return new CommentAdded(
-            (int)$comment->getReview()->getId(),
-            (int)$comment->getId(),
+            $comment->getReview()->getId(),
+            $comment->getId(),
+            $user->getId(),
+            $comment->getFilePath(),
+            $comment->getMessage()
+        );
+    }
+
+    public function createDraftAdded(Comment $comment, User $user): CommentDraftAdded
+    {
+        return new CommentDraftAdded(
+            $comment->getReview()->getId(),
+            $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
             $comment->getMessage()
@@ -29,8 +41,8 @@ class CommentEventMessageFactory
     public function createUpdated(Comment $comment, User $user, string $originalComment): CommentUpdated
     {
         return new CommentUpdated(
-            (int)$comment->getReview()->getId(),
-            (int)$comment->getId(),
+            $comment->getReview()->getId(),
+            $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
             $comment->getMessage(),
@@ -41,8 +53,8 @@ class CommentEventMessageFactory
     public function createResolved(Comment $comment, User $user): CommentResolved
     {
         return new CommentResolved(
-            (int)$comment->getReview()->getId(),
-            (int)$comment->getId(),
+            $comment->getReview()->getId(),
+            $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
         );
@@ -51,8 +63,8 @@ class CommentEventMessageFactory
     public function createUnresolved(Comment $comment, User $user): CommentUnresolved
     {
         return new CommentUnresolved(
-            (int)$comment->getReview()->getId(),
-            (int)$comment->getId(),
+            $comment->getReview()->getId(),
+            $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
         );
@@ -61,8 +73,8 @@ class CommentEventMessageFactory
     public function createRemoved(Comment $comment, User $user): CommentRemoved
     {
         return new CommentRemoved(
-            (int)$comment->getReview()->getId(),
-            (int)$comment->getId(),
+            $comment->getReview()->getId(),
+            $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
             $comment->getMessage(),
@@ -73,9 +85,9 @@ class CommentEventMessageFactory
     public function createReplyRemoved(CommentReply $reply, User $user): CommentReplyRemoved
     {
         return new CommentReplyRemoved(
-            (int)$reply->getComment()->getReview()->getId(),
-            (int)$reply->getComment()->getId(),
-            (int)$reply->getId(),
+            $reply->getComment()->getReview()->getId(),
+            $reply->getComment()->getId(),
+            $reply->getId(),
             $reply->getUser()->getId(),
             $user->getId(),
             $reply->getMessage(),

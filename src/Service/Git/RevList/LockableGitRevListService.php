@@ -17,8 +17,8 @@ class LockableGitRevListService
      * @return string[]
      * @throws RepositoryException
      */
-    public function getCommitsAheadOfMaster(Repository $repository, string $branchName): array
+    public function getCommitsAheadOf(Repository $repository, string $branchName, ?string $targetBranch = null): array
     {
-        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsAheadOfMaster($repository, $branchName));
+        return $this->lockManager->start($repository, fn() => $this->logService->getCommitsAheadOf($repository, $branchName, $targetBranch));
     }
 }

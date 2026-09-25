@@ -32,7 +32,7 @@ class AddExternalLinkInputTest extends AbstractTestCase
 
     public function testGetValidationRules(): void
     {
-        $validatedInput = new AddExternalLinkInput($this->createMock(InputInterface::class), new ConstraintViolationList());
+        $validatedInput = new AddExternalLinkInput(static::createStub(InputInterface::class), new ConstraintViolationList());
 
         $definitions = $validatedInput->getValidationRules()->getDefinitions();
         static::assertArrayHasKey('arguments', $definitions);

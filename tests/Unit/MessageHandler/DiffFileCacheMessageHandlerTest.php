@@ -12,6 +12,7 @@ use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\MessageHandler\DiffFileCacheMessageHandler;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Git\Review\ReviewDiffService\ReviewDiffServiceInterface;
+use DR\Review\Service\Util\SystemLoadService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -23,6 +24,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
 {
     private CodeReviewRepository&MockObject       $reviewRepository;
     private ReviewDiffServiceInterface&MockObject $diffService;
+    private SystemLoadService&MockObject          $loadService;
     private DiffFileCacheMessageHandler           $messageHandler;
 
     public function setUp(): void
@@ -30,8 +32,9 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         parent::setUp();
         $this->reviewRepository = $this->createMock(CodeReviewRepository::class);
         $this->diffService      = $this->createMock(ReviewDiffServiceInterface::class);
-        $this->messageHandler   = new DiffFileCacheMessageHandler($this->reviewRepository, $this->diffService);
-        $this->messageHandler->setLogger($this->createMock(LoggerInterface::class));
+        $this->loadService      = $this->createMock(SystemLoadService::class);
+        $this->messageHandler   = new DiffFileCacheMessageHandler($this->reviewRepository, $this->diffService, $this->loadService);
+        $this->messageHandler->setLogger(static::createStub(LoggerInterface::class));
     }
 
     /**
@@ -39,8 +42,9 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
      */
     public function testHandleEventMissingReview(): void
     {
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn(null);
-        $this->diffService->expects(self::never())->method('getDiffForRevisions');
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->diffService->expects($this->never())->method('getDiffForRevisions');
+        $this->loadService->expects($this->never())->method('getLoad');
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
@@ -52,8 +56,23 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
     {
         $review = new CodeReview();
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
-        $this->diffService->expects(self::never())->method('getDiffForRevisions');
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects($this->never())->method('getDiffForRevisions');
+        $this->loadService->expects($this->once())->method('getLoad')->willReturn(0.0);
+
+        $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testHandleEventHighLoad(): void
+    {
+        $review = new CodeReview()->setId(123);
+
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects($this->never())->method('getDiffForRevisions');
+        $this->loadService->expects($this->once())->method('getLoad')->willReturn(1.2);
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
@@ -66,8 +85,9 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setType(CodeReviewType::BRANCH);
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
-        $this->diffService->expects(self::never())->method('getDiffForRevisions');
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects($this->never())->method('getDiffForRevisions');
+        $this->loadService->expects($this->never())->method('getLoad');
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
@@ -89,8 +109,9 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $file                = new DiffFile();
         $file->filePathAfter = 'file-path-after';
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->loadService->expects($this->once())->method('getLoad')->willReturn(0.0);
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
@@ -112,8 +133,9 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $file                = new DiffFile();
         $file->filePathAfter = 'file-path-after';
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->loadService->expects($this->once())->method('getLoad')->willReturn(0.0);
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }
@@ -135,8 +157,9 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
         $file                 = new DiffFile();
         $file->filePathBefore = 'file-path-before';
 
-        $this->reviewRepository->expects(self::once())->method('find')->with(123)->willReturn($review);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->loadService->expects($this->once())->method('getLoad')->willReturn(0.0);
 
         $this->messageHandler->handleEvent(new ReviewCreated(123, 456));
     }

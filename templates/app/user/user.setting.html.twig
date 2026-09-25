@@ -38,9 +38,15 @@
         </small>
     </div>
 
+    <h3 class="mb-4 mt-4">{{ 'form.header.ide.url'|trans }}</h3>
+    {{ form_widget(settingViewModel.settingForm.setting.ideUrl) }}
+    {{ form_help(settingViewModel.settingForm.setting.ideUrl) }}
+
     <h3 class="mb-4 mt-4">{{ 'mail.settings'|trans }}</h3>
 
     {{ form_rest(settingViewModel.settingForm) }}
     {{ form_end(settingViewModel.settingForm) }}
+
+
 
 {% endblock %}

@@ -17,6 +17,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteRuleController>
+ */
 #[CoversClass(DeleteRuleController::class)]
 class DeleteRuleControllerTest extends AbstractControllerTestCase
 {
@@ -34,8 +37,10 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
 
     public function testInvokeUserIsNotRuleOwner(): void
     {
+        $this->ruleRepository->expects($this->never())->method('remove');
+        $this->translator->expects($this->never())->method('trans');
         $userB = new User();
-        $rule  = (new Rule())->setUser($userB);
+        $rule  = new Rule()->setUser($userB);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::DELETE, $rule, false);
         $this->expectException(AccessDeniedException::class);
@@ -45,11 +50,11 @@ class DeleteRuleControllerTest extends AbstractControllerTestCase
 
     public function testInvokeWithUser(): void
     {
-        $rule = (new Rule())->setUser($this->user)->setName('name');
+        $rule = new Rule()->setUser($this->user)->setName('name');
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::DELETE, $rule);
-        $this->ruleRepository->expects(self::once())->method('remove')->with($rule, true);
-        $this->translator->expects(self::once())->method('trans')->willReturn('removed');
+        $this->ruleRepository->expects($this->once())->method('remove')->with($rule, true);
+        $this->translator->expects($this->once())->method('trans')->willReturn('removed');
         $this->expectAddFlash('success', 'removed');
         $this->expectGenerateUrl(RulesController::class)->willReturn('redirect');
 

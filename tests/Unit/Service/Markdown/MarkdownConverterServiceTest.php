@@ -35,7 +35,7 @@ class MarkdownConverterServiceTest extends AbstractTestCase
         $renderedContent = $this->createMock(RenderedContentInterface::class);
         $renderedContent->expects(once())->method('getContent')->willReturn("markdown: " . $string);
 
-        $this->markdownConverter->expects(self::once())->method('convert')->with($string)->willReturn($renderedContent);
+        $this->markdownConverter->expects($this->once())->method('convert')->with($string)->willReturn($renderedContent);
 
         static::assertSame("markdown: string", $this->service->convert($string));
     }

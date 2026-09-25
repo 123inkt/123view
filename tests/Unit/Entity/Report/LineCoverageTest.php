@@ -24,10 +24,10 @@ class LineCoverageTest extends AbstractTestCase
 
     public function testGetPercentage(): void
     {
-        static::assertSame(100.0, (new LineCoverage())->getPercentage());
-        static::assertSame(100.0, (new LineCoverage())->setCoverage(5, 1)->setCoverage(6, 1)->getPercentage());
-        static::assertSame(50.0, (new LineCoverage())->setCoverage(5, 1)->setCoverage(6, 0)->getPercentage());
-        static::assertSame(0.0, (new LineCoverage())->setCoverage(5, 0)->setCoverage(6, 0)->getPercentage());
+        static::assertSame(100.0, new LineCoverage()->getPercentage());
+        static::assertSame(100.0, new LineCoverage()->setCoverage(5, 1)->setCoverage(6, 1)->getPercentage());
+        static::assertSame(50.0, new LineCoverage()->setCoverage(5, 1)->setCoverage(6, 0)->getPercentage());
+        static::assertSame(0.0, new LineCoverage()->setCoverage(5, 0)->setCoverage(6, 0)->getPercentage());
     }
 
     /**

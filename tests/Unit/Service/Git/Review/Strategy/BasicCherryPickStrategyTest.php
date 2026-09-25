@@ -10,7 +10,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\ParseException;
 use DR\Review\Exception\RepositoryException;
-use DR\Review\Service\Git\Checkout\GitCheckoutService;
+use DR\Review\Service\Git\Checkout\RecoverableGitCheckoutService;
 use DR\Review\Service\Git\CherryPick\GitCherryPickService;
 use DR\Review\Service\Git\Diff\GitDiffService;
 use DR\Review\Service\Git\GitRepositoryResetManager;
@@ -23,7 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(BasicCherryPickStrategy::class)]
 class BasicCherryPickStrategyTest extends AbstractTestCase
 {
-    private GitCheckoutService&MockObject        $checkoutService;
+    private RecoverableGitCheckoutService&MockObject        $checkoutService;
     private GitCherryPickService&MockObject      $cherryPickService;
     private GitDiffService&MockObject            $diffService;
     private GitRepositoryResetManager&MockObject $resetManager;
@@ -32,7 +32,7 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->checkoutService   = $this->createMock(GitCheckoutService::class);
+        $this->checkoutService   = $this->createMock(RecoverableGitCheckoutService::class);
         $this->cherryPickService = $this->createMock(GitCherryPickService::class);
         $this->diffService       = $this->createMock(GitDiffService::class);
         $this->resetManager      = $this->createMock(GitRepositoryResetManager::class);
@@ -54,13 +54,13 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
         $diffFile   = new DiffFile();
         $branchName = 'branchName';
 
-        $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revision)->willReturn($branchName);
-        $this->resetManager->expects(self::once())
+        $this->checkoutService->expects($this->once())->method('checkoutRevision')->with($revision)->willReturn($branchName);
+        $this->resetManager->expects($this->once())
             ->method('start')
             ->with($repository, $branchName)
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
-        $this->cherryPickService->expects(self::once())->method('cherryPickRevisions')->with([$revision])->willReturn(new CherryPickResult(true));
-        $this->diffService->expects(self::once())->method('getBundledDiffFromRevisions')->with($repository)->willReturn([$diffFile]);
+        $this->cherryPickService->expects($this->once())->method('cherryPickRevisions')->with([$revision])->willReturn(new CherryPickResult(true));
+        $this->diffService->expects($this->once())->method('getBundledDiffFromRevisions')->with($repository)->willReturn([$diffFile]);
 
         $this->strategy->getDiffFiles($repository, [$revision], new FileDiffOptions(20, DiffComparePolicy::IGNORE));
     }
@@ -74,16 +74,17 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
         $revision   = new Revision();
         $branchName = 'branchName';
 
-        $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revision)->willReturn($branchName);
-        $this->resetManager->expects(self::once())
+        $this->checkoutService->expects($this->once())->method('checkoutRevision')->with($revision)->willReturn($branchName);
+        $this->resetManager->expects($this->once())
             ->method('start')
             ->with($repository, $branchName)
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
-        $this->cherryPickService->expects(self::once())
+        $this->cherryPickService->expects($this->once())
             ->method('cherryPickRevisions')
             ->with([$revision])
             ->willReturn(new CherryPickResult(false));
-        $this->cherryPickService->expects(self::once())->method('cherryPickAbort')->with($repository);
+        $this->cherryPickService->expects($this->once())->method('cherryPickAbort')->with($repository);
+        $this->diffService->expects($this->never())->method('getBundledDiffFromRevisions');
 
         $this->expectException(RepositoryException::class);
         $this->strategy->getDiffFiles($repository, [$revision]);
@@ -98,16 +99,17 @@ class BasicCherryPickStrategyTest extends AbstractTestCase
         $revision   = new Revision();
         $branchName = 'branchName';
 
-        $this->checkoutService->expects(self::once())->method('checkoutRevision')->with($revision)->willReturn($branchName);
-        $this->resetManager->expects(self::once())
+        $this->checkoutService->expects($this->once())->method('checkoutRevision')->with($revision)->willReturn($branchName);
+        $this->resetManager->expects($this->once())
             ->method('start')
             ->with($repository, $branchName)
             ->willReturnCallback(static fn($repository, $branchName, $callback) => $callback());
-        $this->cherryPickService->expects(self::once())
+        $this->cherryPickService->expects($this->once())
             ->method('cherryPickRevisions')
             ->with([$revision])
             ->willThrowException(new RepositoryException());
-        $this->cherryPickService->expects(self::once())->method('cherryPickAbort')->with($repository);
+        $this->cherryPickService->expects($this->once())->method('cherryPickAbort')->with($repository);
+        $this->diffService->expects($this->never())->method('getBundledDiffFromRevisions');
 
         $this->expectException(RepositoryException::class);
         $this->strategy->getDiffFiles($repository, [$revision]);

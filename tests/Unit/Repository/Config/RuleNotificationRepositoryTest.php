@@ -9,7 +9,6 @@ use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\RuleNotificationFixtures;
 use DR\Utils\Assert;
-use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Throwable;
 
@@ -17,7 +16,20 @@ use Throwable;
 class RuleNotificationRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
-     * @throws Exception
+     * @throws Throwable
+     */
+    public function testMarkAsRead(): void
+    {
+        $rule = Assert::notNull(self::getService(RuleRepository::class)->findOneBy(['name' => 'name']));
+
+        self::getService(RuleNotificationRepository::class)->markAsRead($rule);
+
+        $notification = self::getService(RuleNotificationRepository::class)->findOneBy(['rule' => $rule, 'read' => false]);
+        static::assertNull($notification);
+    }
+
+    /**
+     * @throws Throwable
      */
     public function testGetUnreadNotificationCountForUser(): void
     {

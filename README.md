@@ -1,9 +1,9 @@
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.1-8892BF)](https://php.net/)
-[![Symfony Version](https://img.shields.io/badge/symfony-6.2-4BC51D)](https://symfony.com/releases)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.4-8892BF)](https://php.net/)
+[![Symfony Version](https://img.shields.io/badge/symfony-8.1-4BC51D)](https://symfony.com/releases)
 [![PHPStan](https://img.shields.io/badge/phpstan-enabled-4BC51D)](https://www.phpstan.com/)
 [![codecov](https://codecov.io/gh/123inkt/123view/branch/master/graph/badge.svg)](https://app.codecov.io/gh/123inkt/123view)
-[![Build Status](https://github.com/123inkt/123view/workflows/Check/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
-[![Build Status](https://github.com/123inkt/123view/workflows/Test/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
+[![Build Status](https://github.com/123inkt/123view/actions/workflows/check.yml/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
+[![Build Status](https://github.com/123inkt/123view/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/123inkt/123view/actions)
 
 # 123view - code review and commit notifications
 A symfony application to create code reviews for a specific set of revisions not tied to a branch and to allow receiving commit notification for all commits in a certain time period.

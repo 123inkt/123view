@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,51 +26,44 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource(
-    operations: [
-        new GetCollection(
-            order   : ['updateTimestamp' => 'DESC'],
-            security: 'is_granted("' . Roles::ROLE_USER . '")',
-            output  : CodeReviewOutput::class,
-            provider: CodeReviewProvider::class
-        ),
-        new Patch(
-            normalizationContext  : ['groups' => ['code_review_write']],
-            denormalizationContext: ['groups' => ['code_review_write']],
-            security              : 'is_granted("' . Roles::ROLE_USER . '")',
-            processor             : CodeReviewProcessor::class
-        )
+#[Get(
+    security: 'is_granted("' . Roles::ROLE_USER . '")',
+    output  : CodeReviewOutput::class,
+    provider: CodeReviewProvider::class
+)]
+#[GetCollection(
+    order     : ['updateTimestamp' => 'DESC'],
+    security  : 'is_granted("' . Roles::ROLE_USER . '")',
+    output    : CodeReviewOutput::class,
+    provider  : CodeReviewProvider::class,
+    parameters: [
+        'id'                     => new QueryParameter(filter: new ExactFilter()),
+        'title'                  => new QueryParameter(filter: new PartialSearchFilter()),
+        'repository.id'          => new QueryParameter(filter: new ExactFilter(), property: 'repository.id',),
+        'state'                  => new QueryParameter(filter: new ExactFilter()),
+        'createTimestamp'        => new QueryParameter(filter: new RangeFilter()),
+        'updateTimestamp'        => new QueryParameter(filter: new RangeFilter()),
+        'order[id]'              => new QueryParameter(filter: new SortFilter(), property: 'id'),
+        'order[title]'           => new QueryParameter(filter: new SortFilter(), property: 'title'),
+        'order[repository.id]'   => new QueryParameter(filter: new SortFilter(), property: 'repository.id'),
+        'order[createTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
+        'order[updateTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),
     ]
 )]
-#[ApiFilter(
-    SearchFilter::class,
-    properties: [
-        'id'            => 'exact',
-        'title'         => 'partial',
-        'repository.id' => 'exact',
-        'state'         => 'exact',
-        'reviewerState' => 'exact'
-    ]
-)]
-#[ApiFilter(RangeFilter::class, properties: ['createTimestamp', 'updateTimestamp'])]
-#[ApiFilter(
-    OrderFilter::class,
-    properties: [
-        'id',
-        'title',
-        'repository.id',
-        'createTimestamp',
-        'updateTimestamp'
-    ],
-    arguments : ['orderParameterName' => 'order']
+#[Patch(
+    normalizationContext  : ['groups' => ['code_review_write']],
+    denormalizationContext: ['groups' => ['code_review_write']],
+    security              : 'is_granted("' . Roles::ROLE_USER . '")',
+    processor             : CodeReviewProcessor::class
 )]
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
-#[ORM\Index(['repository_id', 'title'], name: 'IDX_REPOSITORY_TITLE')]
-#[ORM\Index(['repository_id', 'state'], name: 'IDX_REPOSITORY_STATE')]
-#[ORM\Index(['create_timestamp', 'repository_id'], name: 'IDX_CREATE_TIMESTAMP_REPOSITORY')]
-#[ORM\Index(['update_timestamp', 'repository_id'], name: 'IDX_UPDATE_TIMESTAMP_REPOSITORY')]
+#[ORM\Index(name: 'IDX_TITLE', columns: ['title'])]
+#[ORM\Index(name: 'IDX_REPOSITORY_TITLE', columns: ['repository_id', 'title'])]
+#[ORM\Index(name: 'IDX_REPOSITORY_STATE', columns: ['repository_id', 'state'])]
+#[ORM\Index(name: 'IDX_CREATE_TIMESTAMP_REPOSITORY', columns: ['create_timestamp', 'repository_id'])]
+#[ORM\Index(name: 'IDX_UPDATE_TIMESTAMP_REPOSITORY', columns: ['repository_id', 'update_timestamp'])]
 #[ORM\UniqueConstraint('IDX_REFERENCE_ID_REPOSITORY_ID', ['reference_id', 'repository_id'])]
 #[ORM\UniqueConstraint('IDX_REPOSITORY_ID_PROJECT_ID', ['project_id', 'repository_id'])]
 class CodeReview
@@ -81,7 +75,7 @@ class CodeReview
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     /** Unique key per project to have a incremental sequence per repository instead of a global sequence */
     #[ORM\Column]
@@ -96,8 +90,12 @@ class CodeReview
     #[ORM\Column(length: 255)]
     private string $description;
 
+    /** @var CodeReviewType::COMMITS|CodeReviewType::BRANCH */
     #[ORM\Column(type: CodeReviewType::TYPE, options: ["default" => CodeReviewType::COMMITS])]
     private string $type = CodeReviewType::COMMITS;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $targetBranch = null;
 
     #[ORM\Column(type: CodeReviewStateType::TYPE, options: ["default" => CodeReviewStateType::OPEN])]
     #[Groups(['code_review_write'])]
@@ -105,6 +103,9 @@ class CodeReview
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
+
+    #[ORM\Column]
+    private bool $aiReviewRequested = false;
 
     /** @var int[] */
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
@@ -121,16 +122,16 @@ class CodeReview
     private Repository $repository;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Revision::class, cascade: ['persist'], orphanRemoval: false, indexBy: 'id')]
+    #[ORM\OneToMany(targetEntity: Revision::class, mappedBy: 'review', cascade: ['persist'], orphanRemoval: false, indexBy: 'id')]
     #[ORM\OrderBy(["createTimestamp" => "ASC"])]
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReviewer> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: CodeReviewer::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CodeReviewer::class, mappedBy: 'review', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $reviewers;
 
     /** @phpstan-var Collection<int, Comment> */
-    #[ORM\OneToMany(mappedBy: 'review', targetEntity: Comment::class, cascade: ['persist', 'remove'], orphanRemoval: false, indexBy: 'id')]
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'review', cascade: ['persist', 'remove'], orphanRemoval: false, indexBy: 'id')]
     private Collection $comments;
 
     public function __construct()
@@ -147,7 +148,12 @@ class CodeReview
         return $this;
     }
 
-    public function getId(): ?int
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }
@@ -200,14 +206,35 @@ class CodeReview
         return $this;
     }
 
+    /**
+     * @return CodeReviewType::COMMITS|CodeReviewType::BRANCH
+     */
     public function getType(): string
     {
         return $this->type;
     }
 
+    /**
+     * @param CodeReviewType::COMMITS|CodeReviewType::BRANCH $type
+     */
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getTargetBranch(): ?string
+    {
+        return $this->targetBranch;
+    }
+
+    /**
+     * The target branch if the type=BranchReview
+     */
+    public function setTargetBranch(?string $targetBranch): self
+    {
+        $this->targetBranch = $targetBranch;
 
         return $this;
     }
@@ -232,6 +259,18 @@ class CodeReview
     public function setExtReferenceId(?string $extReferenceId): self
     {
         $this->extReferenceId = $extReferenceId;
+
+        return $this;
+    }
+
+    public function isAiReviewRequested(): bool
+    {
+        return $this->aiReviewRequested;
+    }
+
+    public function setAiReviewRequested(bool $aiReviewRequested): self
+    {
+        $this->aiReviewRequested = $aiReviewRequested;
 
         return $this;
     }
@@ -300,41 +339,6 @@ class CodeReview
         return $this;
     }
 
-    public function isAccepted(): bool
-    {
-        return $this->getReviewersState() === CodeReviewerStateType::ACCEPTED;
-    }
-
-    public function isRejected(): bool
-    {
-        return $this->getReviewersState() === CodeReviewerStateType::REJECTED;
-    }
-
-    /**
-     * Review is rejected when atleast 1 reviewer rejected
-     * Review is accepted when _all_ reviewers accepted
-     * Review is open in other cases
-     */
-    public function getReviewersState(): string
-    {
-        if (count($this->getReviewers()) === 0) {
-            return CodeReviewerStateType::OPEN;
-        }
-
-        $accepted = true;
-        foreach ($this->reviewers as $reviewer) {
-            if ($reviewer->getState() !== CodeReviewerStateType::ACCEPTED) {
-                $accepted = false;
-            }
-
-            if ($reviewer->getState() === CodeReviewerStateType::REJECTED) {
-                return CodeReviewerStateType::REJECTED;
-            }
-        }
-
-        return $accepted ? CodeReviewerStateType::ACCEPTED : CodeReviewerStateType::OPEN;
-    }
-
     public function getReviewer(User $user): ?CodeReviewer
     {
         foreach ($this->reviewers as $reviewer) {
@@ -380,6 +384,31 @@ class CodeReview
         $this->reviewers = $reviewers;
 
         return $this;
+    }
+
+    /**
+     * Review is rejected when atleast 1 reviewer rejected
+     * Review is accepted when _all_ reviewers accepted
+     * Review is open in other cases
+     */
+    public function getReviewersState(): string
+    {
+        if (count($this->getReviewers()) === 0) {
+            return CodeReviewerStateType::OPEN;
+        }
+
+        $accepted = true;
+        foreach ($this->reviewers as $reviewer) {
+            if ($reviewer->getState() !== CodeReviewerStateType::ACCEPTED) {
+                $accepted = false;
+            }
+
+            if ($reviewer->getState() === CodeReviewerStateType::REJECTED) {
+                return CodeReviewerStateType::REJECTED;
+            }
+        }
+
+        return $accepted ? CodeReviewerStateType::ACCEPTED : CodeReviewerStateType::OPEN;
     }
 
     /**

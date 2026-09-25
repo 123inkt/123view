@@ -1,0 +1,16 @@
+MAILTO=""
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+HOME=/app
+0 */1 * * *     www-data     php bin/console mail --frequency=once-per-hour             2>&1
+0 */2 * * *     www-data     php bin/console mail --frequency=once-per-two-hours        2>&1
+0 */3 * * *     www-data     php bin/console mail --frequency=once-per-three-hours      2>&1
+0 */4 * * *     www-data     php bin/console mail --frequency=once-per-four-hours       2>&1
+0 0 * * *       www-data     php bin/console mail --frequency=once-per-day              2>&1
+0 0 * * 1       www-data     php bin/console mail --frequency=once-per-week             2>&1
+*/5 * * * *     www-data     php bin/console revisions:fetch                            2>&1
+*/5 * * * *     www-data     php -dmax_execution_time=0 bin/console revisions:validate  2>&1
+15 4 * * *      www-data     php bin/console code-inspection:cleanup                    2>&1
+30 4 * * *      www-data     php bin/console code-coverage:cleanup                      2>&1
+45 4 * * *      www-data     php bin/console webhook:cleanup                            2>&1
+0  5 * * *      www-data     php bin/console review:close-branch-reviews                2>&1
+10 5 * * *      www-data     php -dmax_execution_time=0 bin/console git:garbage-collect 2>&1

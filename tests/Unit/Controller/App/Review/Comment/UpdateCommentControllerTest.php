@@ -7,40 +7,38 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\UpdateCommentController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\User\User;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Form\Review\EditCommentFormType;
-use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Security\Voter\CommentVoter;
-use DR\Review\Service\CodeReview\Comment\CommentEventMessageFactory;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<UpdateCommentController>
+ */
 #[CoversClass(UpdateCommentController::class)]
 class UpdateCommentControllerTest extends AbstractControllerTestCase
 {
-    private CommentRepository&MockObject          $commentRepository;
-    private CommentEventMessageFactory&MockObject $messageFactory;
-    private TranslatorInterface&MockObject        $translator;
-    private MessageBusInterface&MockObject        $bus;
+    private CommentRepository&MockObject   $commentRepository;
+    private TranslatorInterface&Stub $translator;
 
     public function setUp(): void
     {
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->messageFactory    = $this->createMock(CommentEventMessageFactory::class);
-        $this->translator        = $this->createMock(TranslatorInterface::class);
-        $this->bus               = $this->createMock(MessageBusInterface::class);
+        $this->translator        = static::createStub(TranslatorInterface::class);
         parent::setUp();
     }
 
     public function testInvokeCommentMissing(): void
     {
+        $this->commentRepository->expects($this->never())->method('save');
         $response = ($this->controller)(new Request(), null);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
@@ -48,6 +46,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
 
     public function testInvokeIsNotSubmitted(): void
     {
+        $this->commentRepository->expects($this->never())->method('save');
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);
@@ -71,6 +70,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $review  = new CodeReview();
         $review->setId(123);
         $comment = new Comment();
+        $comment->setId(456);
         $comment->setMessage('message');
         $comment->setReview($review);
 
@@ -80,8 +80,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
 
-        $this->commentRepository->expects(self::once())->method('save')->with($comment, true);
-        $this->bus->expects(self::never())->method('dispatch');
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
@@ -99,9 +98,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $comment->setId(456);
         $comment->setMessage('message');
         $comment->setReview($review);
-        $event = new CommentUpdated(1, 2, 3, 'file', 'message', 'original');
 
-        $this->expectGetUser((new User())->setId(789));
         $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
         $this->expectCreateForm(EditCommentFormType::class, $comment, ['comment' => $comment])
             ->handleRequest($request)
@@ -109,7 +106,7 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true);
 
         $this->commentRepository
-            ->expects(self::once())
+            ->expects($this->once())
             ->method('save')
             ->with(
                 self::callback(
@@ -121,8 +118,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
                 ),
                 true
             );
-        $this->messageFactory->expects(self::once())->method('createUpdated')->willReturn($event);
-        $this->bus->expects(self::once())->method('dispatch')->with($event)->willReturn($this->envelope);
 
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
@@ -131,8 +126,33 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         static::assertEqualsWithDelta(time(), $comment->getUpdateTimestamp(), 10);
     }
 
+    public function testInvokePublishDraftComment(): void
+    {
+        $request = new Request(query: ['mode' => 'final']);
+        $review  = new CodeReview();
+        $review->setId(123);
+        $comment = new Comment();
+        $comment->setId(456);
+        $comment->setMessage('message');
+        $comment->setType(CommentTypeEnum::Draft);
+        $comment->setReview($review);
+
+        $this->expectDenyAccessUnlessGranted(CommentVoter::EDIT, $comment);
+        $this->expectCreateForm(EditCommentFormType::class, $comment, ['comment' => $comment])
+            ->handleRequest($request)
+            ->isSubmittedWillReturn(true)
+            ->isValidWillReturn(true);
+
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
+
+        $response = ($this->controller)($request, $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame(CommentTypeEnum::Final, $comment->getType());
+    }
+
     public function getController(): AbstractController
     {
-        return new UpdateCommentController($this->commentRepository, $this->messageFactory, $this->translator, $this->bus);
+        return new UpdateCommentController($this->commentRepository, $this->translator);
     }
 }

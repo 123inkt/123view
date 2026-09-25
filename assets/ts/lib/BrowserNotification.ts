@@ -9,11 +9,11 @@ export default class BrowserNotification {
         }
 
         // strip html from the message
-        const el     = document.createElement('div');
-        el.innerHTML = message.replace(/(<([^>]+)>)/gi, '');
-        message      = el.innerText;
+        const el          = document.createElement('div');
+        el.innerHTML      = message.replace(/(<([^>]+)>)/gi, '');
+        const textMessage = el.innerText;
 
-        const notification = new Notification(title, {tag, body: message});
+        const notification = new Notification(title, {tag, body: textMessage});
         if (url !== undefined) {
             notification.addEventListener('click', () => window.location.href = url);
         }

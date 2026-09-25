@@ -28,18 +28,18 @@ class GitlabIntegrationTest extends AbstractTestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
         static::assertSame([CommitEvent::class => ['onCommitEvent']], GitlabIntegration::getSubscribedEvents());
     }
 
     public function testOnCommitEventShouldSkipOnMissingGitlabApiUrl(): void
     {
-        $this->gitlabService = $this->createMock(GitlabService::class);
-        $this->integration   = new GitlabIntegration('', $this->gitlabService);
+        $this->integration = new GitlabIntegration('', $this->gitlabService);
 
         // setup mock
-        $this->gitlabService->expects(static::never())->method('getMergeRequestUrl');
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
 
-        $this->integration->onCommitEvent(new CommitEvent($this->createMock(Commit::class)));
+        $this->integration->onCommitEvent(new CommitEvent(static::createStub(Commit::class)));
     }
 
     public function testOnCommitEventShouldSkipOnMissingGitlabProjectId(): void
@@ -50,7 +50,7 @@ class GitlabIntegrationTest extends AbstractTestCase
         $commit->repository = $repository;
 
         // setup mock
-        $this->gitlabService->expects(static::never())->method('getMergeRequestUrl');
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
 
         $this->integration->onCommitEvent(new CommitEvent($commit));
         static::assertEmpty($commit->integrationLinks);
@@ -66,11 +66,11 @@ class GitlabIntegrationTest extends AbstractTestCase
         $commit->refs       = 'refs/remotes/origin/remote-ref';
 
         // setup mocks
-        $this->gitlabService->expects(static::once())
+        $this->gitlabService->expects($this->once())
             ->method('getMergeRequestUrl')
             ->with("123", $commit->getRemoteRef())
             ->willReturn(null);
-        $this->gitlabService->expects(static::once())
+        $this->gitlabService->expects($this->once())
             ->method('getBranchUrl')
             ->with("123", $commit->getRemoteRef())
             ->willReturn(null);
@@ -89,7 +89,7 @@ class GitlabIntegrationTest extends AbstractTestCase
         $commit->refs       = 'refs/remotes/origin/remote-ref';
 
         // setup mock
-        $this->gitlabService->expects(static::once())->method('getMergeRequestUrl')->willThrowException(new Exception());
+        $this->gitlabService->expects($this->once())->method('getMergeRequestUrl')->willThrowException(new Exception());
 
         $this->integration->onCommitEvent(new CommitEvent($commit));
         static::assertEmpty($commit->integrationLinks);
@@ -105,7 +105,7 @@ class GitlabIntegrationTest extends AbstractTestCase
         $commit->refs       = 'refs/remotes/origin/remote-ref';
 
         // setup mock
-        $this->gitlabService->expects(static::once())
+        $this->gitlabService->expects($this->once())
             ->method('getMergeRequestUrl')
             ->with("123", $commit->getRemoteRef())
             ->willReturn('https://gitlab.example.com/merge-request/1');

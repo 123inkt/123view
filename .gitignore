@@ -7,6 +7,10 @@
 /config.xml
 /docker/db
 /.eslintcache
+/.claude/settings.local.json
+/*_PLAN.md
+/docs/plan/
+/.opencode/
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -24,6 +28,7 @@
 
 ###> phpunit/phpunit ###
 /phpunit.xml
+/.phpunit.cache
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
@@ -33,3 +38,4 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+.hermes/

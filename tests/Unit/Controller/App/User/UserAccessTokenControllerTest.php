@@ -15,6 +15,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<UserAccessTokenController>
+ */
 #[CoversClass(UserAccessTokenController::class)]
 class UserAccessTokenControllerTest extends AbstractControllerTestCase
 {
@@ -31,14 +34,15 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
     public function testInvokeNonSubmitted(): void
     {
         $request   = new Request();
-        $viewModel = $this->createMock(UserAccessTokenViewModel::class);
+        $viewModel = static::createStub(UserAccessTokenViewModel::class);
 
         $this->expectCreateForm(AddAccessTokenFormType::class)
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(false);
         $this->expectAddFlash('error', 'access.token.creation.failed');
-        $this->viewModelProvider->expects(self::once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
+        $this->accessTokenIssuer->expects($this->never())->method('issue');
 
         $result = ($this->controller)($request);
         static::assertSame(['accessTokenModel' => $viewModel], $result);
@@ -48,7 +52,7 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
     {
         $request   = new Request();
         $user      = new User();
-        $viewModel = $this->createMock(UserAccessTokenViewModel::class);
+        $viewModel = static::createStub(UserAccessTokenViewModel::class);
 
         $this->expectGetUser($user);
         $this->expectCreateForm(AddAccessTokenFormType::class)
@@ -57,8 +61,8 @@ class UserAccessTokenControllerTest extends AbstractControllerTestCase
             ->isValidWillReturn(true)
             ->getDataWillReturn(['name' => 'name']);
         $this->expectAddFlash('success', 'access.token.creation.success');
-        $this->accessTokenIssuer->expects(self::once())->method('issue')->with($user, 'name');
-        $this->viewModelProvider->expects(self::once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
+        $this->accessTokenIssuer->expects($this->once())->method('issue')->with($user, 'name');
+        $this->viewModelProvider->expects($this->once())->method('getUserAccessTokenViewModel')->willReturn($viewModel);
 
         $result = ($this->controller)($request);
         static::assertSame(['accessTokenModel' => $viewModel], $result);

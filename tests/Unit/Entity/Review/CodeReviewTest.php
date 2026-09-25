@@ -23,6 +23,15 @@ class CodeReviewTest extends AbstractTestCase
         static::assertAccessorPairs(CodeReview::class, $config);
     }
 
+    public function testId(): void
+    {
+        $review = new CodeReview();
+        static::assertFalse($review->hasId());
+
+        $review->setId(123);
+        static::assertSame(123, $review->getId());
+    }
+
     public function testRevisions(): void
     {
         /** @var ArrayCollection<int, Revision> $collection */
@@ -47,10 +56,10 @@ class CodeReviewTest extends AbstractTestCase
 
         $reviewer = new CodeReviewer();
         $review->getReviewers()->add($reviewer);
-        static::assertFalse($review->isAccepted());
+        static::assertSame(CodeReviewerStateType::OPEN, $review->getReviewersState());
 
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
-        static::assertTrue($review->isAccepted());
+        static::assertSame(CodeReviewerStateType::ACCEPTED, $review->getReviewersState());
     }
 
     public function testIsRejected(): void
@@ -60,10 +69,9 @@ class CodeReviewTest extends AbstractTestCase
 
         $reviewer = new CodeReviewer();
         $review->getReviewers()->add($reviewer);
-        static::assertFalse($review->isRejected());
+        static::assertSame(CodeReviewerStateType::OPEN, $review->getReviewersState());
 
         $reviewer->setState(CodeReviewerStateType::REJECTED);
-        static::assertTrue($review->isRejected());
         static::assertSame(CodeReviewerStateType::REJECTED, $review->getReviewersState());
     }
 

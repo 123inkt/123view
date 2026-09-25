@@ -24,6 +24,8 @@ class DiffFile
     public bool $hasMergeConflict = false;
     public bool $binary           = false;
 
+    public ?string $raw = null;
+
     /** @var DiffBlock[] */
     private array $blocks = [];
 
@@ -221,7 +223,7 @@ class DiffFile
         return $length;
     }
 
-    private function updateLinesChanged(): void
+    public function updateLinesChanged(): void
     {
         $this->linesAdded   = 0;
         $this->linesRemoved = 0;

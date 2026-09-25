@@ -27,6 +27,7 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
 
     public function testGetSubscribedEvents(): void
     {
+        $this->reviewRepository->expects($this->never())->method('findOneByCommitHash');
         $expected = [CommitEvent::class => ['onCommitEvent']];
         $result   = AddReviewToCommitSubscriber::getSubscribedEvents();
         static::assertSame($expected, $result);
@@ -37,7 +38,7 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
      */
     public function testOnCommitEventShouldSkipReviewWithoutRepository(): void
     {
-        $this->reviewRepository->expects(self::never())->method('findOneByCommitHash');
+        $this->reviewRepository->expects($this->never())->method('findOneByCommitHash');
         $event = new CommitEvent($this->createCommit());
 
         $this->subscriber->onCommitEvent($event);
@@ -56,7 +57,7 @@ class AddReviewToCommitSubscriberTest extends AbstractTestCase
 
         $event = new CommitEvent($commit);
 
-        $this->reviewRepository->expects(self::once())->method('findOneByCommitHash')->with(5, 'commit-hash');
+        $this->reviewRepository->expects($this->once())->method('findOneByCommitHash')->with(5, 'commit-hash');
 
         $this->subscriber->onCommitEvent($event);
     }

@@ -33,7 +33,7 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
         $repository->setId(123);
         $repository->setName('foobar');
 
-        $this->filesystem->expects(self::once())
+        $this->filesystem->expects($this->once())
             ->method('mkdir')
             ->willReturnCallback(static fn($dir) => mkdir($dir, 0777, true));
 
@@ -48,13 +48,14 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
 
         mkdir($this->cacheDirectory . '/git/', 0777, true);
 
-        $this->filesystem->expects(self::never())->method('mkdir');
+        $this->filesystem->expects($this->never())->method('mkdir');
 
         static::assertSame('result', $this->lockManager->start($repository, static fn() => 'result'));
     }
 
     public function testStartShouldBubbleExceptions(): void
     {
+        $this->filesystem->expects($this->never())->method('mkdir');
         $repository = new Repository();
         $repository->setId(123);
         $repository->setName('foobar');
@@ -63,5 +64,34 @@ class GitRepositoryLockManagerTest extends AbstractTestCase
 
         $this->expectException(RuntimeException::class);
         $this->lockManager->start($repository, static fn() => throw new RuntimeException());
+    }
+
+    public function testLockAcquiredWhileInsideStart(): void
+    {
+        $repository = new Repository();
+        $repository->setId(456);
+        $repository->setName('test-repo');
+
+        mkdir($this->cacheDirectory . '/git/', 0777, true);
+
+        // filesystem->mkdir should not be called since the directory already exists
+        $this->filesystem->expects($this->never())->method('mkdir');
+
+        $acquiredInsideLock = $this->lockManager->start($repository, fn(): bool => $this->lockManager->lockAcquired($repository));
+
+        static::assertTrue($acquiredInsideLock);
+        // After start() returns, lock should no longer be active
+        static::assertFalse($this->lockManager->lockAcquired($repository));
+    }
+
+    public function testLockAcquiredReturnsFalseBeforeStart(): void
+    {
+        $this->filesystem->expects($this->never())->method('mkdir');
+
+        $repository = new Repository();
+        $repository->setId(789);
+        $repository->setName('other-repo');
+
+        static::assertFalse($this->lockManager->lockAcquired($repository));
     }
 }

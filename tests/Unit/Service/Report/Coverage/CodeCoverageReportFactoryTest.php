@@ -31,8 +31,8 @@ class CodeCoverageReportFactoryTest extends AbstractTestCase
         $file       = new CodeCoverageFile();
         $parser     = $this->createMock(CodeCoverageParserInterface::class);
 
-        $this->parserProvider->expects(self::once())->method('getParser')->with('format')->willReturn($parser);
-        $parser->expects(self::once())->method('parse')->with('basePath', 'data')->willReturn([$file]);
+        $this->parserProvider->expects($this->once())->method('getParser')->with('format')->willReturn($parser);
+        $parser->expects($this->once())->method('parse')->with('basePath', 'data')->willReturn([$file]);
 
         $report = $this->factory->parse($repository, 'commitHash', 'branchId', 'format', 'basePath', 'data');
         static::assertSame($repository, $report->getRepository());

@@ -7,18 +7,17 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\User\User;
+use DR\Review\Model\Mercure\UpdateMessage;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityPublisher;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
+use DR\Review\Service\Mercure\MessagePublisher;
 use DR\Review\Tests\AbstractTestCase;
-use Nette\Utils\Json;
+use League\Uri\Http;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Mercure\HubInterface;
-use Symfony\Component\Mercure\Update;
 use Throwable;
-use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(CodeReviewActivityPublisher::class)]
 class CodeReviewActivityPublisherTest extends AbstractTestCase
@@ -26,7 +25,7 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
     private CodeReviewActivityFormatter&MockObject    $formatter;
     private UserRepository&MockObject                 $userRepository;
     private CodeReviewActivityUrlGenerator&MockObject $urlGenerator;
-    private HubInterface&MockObject                   $mercureHub;
+    private MessagePublisher&MockObject               $publisher;
     private CodeReviewActivityPublisher               $service;
 
     public function setUp(): void
@@ -35,8 +34,8 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
         $this->formatter      = $this->createMock(CodeReviewActivityFormatter::class);
         $this->userRepository = $this->createMock(UserRepository::class);
         $this->urlGenerator   = $this->createMock(CodeReviewActivityUrlGenerator::class);
-        $this->mercureHub     = $this->createMock(HubInterface::class);
-        $this->service        = new CodeReviewActivityPublisher($this->formatter, $this->userRepository, $this->urlGenerator, $this->mercureHub);
+        $this->publisher      = $this->createMock(MessagePublisher::class);
+        $this->service        = new CodeReviewActivityPublisher($this->formatter, $this->userRepository, $this->urlGenerator, $this->publisher);
     }
 
     /**
@@ -46,8 +45,11 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
     {
         $activity = new CodeReviewActivity();
 
-        $this->formatter->expects(self::once())->method('format')->with($activity)->willReturn(null);
-        $this->mercureHub->expects(self::never())->method('publish');
+        $this->formatter->expects($this->once())->method('format')->with($activity)->willReturn(null);
+        $this->publisher->expects($this->never())->method('publishToReview');
+        $this->publisher->expects($this->never())->method('publishToUsers');
+        $this->userRepository->expects($this->never())->method('findBy');
+        $this->urlGenerator->expects($this->never())->method('generate');
 
         $this->service->publish($activity);
     }
@@ -57,58 +59,32 @@ class CodeReviewActivityPublisherTest extends AbstractTestCase
      */
     public function testPublish(): void
     {
-        $user  = (new User())->setId(123);
-        $actor = (new User())->setId(987);
+        $user  = new User()->setId(123);
+        $actor = new User()->setId(987);
         $actor->getSetting()->setBrowserNotificationEvents(['event']);
-        $repository = (new Repository())->setId(789)->setDisplayName('RP');
-        $review     = (new CodeReview())->setId(456)->setProjectId(321)->setActors([567])->setTitle('title')->setRepository($repository);
+        $repository = new Repository()->setId(789)->setDisplayName('RP');
+        $review     = new CodeReview()->setId(456)->setProjectId(321)->setActors([567])->setTitle('title')->setRepository($repository);
         $activity   = new CodeReviewActivity();
         $activity->setId(135);
         $activity->setEventName('event');
         $activity->setUser($user);
         $activity->setReview($review);
 
-        $reviewUpdate = new Update(
-            '/review/456',
-            Json::encode(
-                [
-                    'topic'     => '/review/456',
-                    'eventId'   => 135,
-                    'userId'    => 123,
-                    'reviewId'  => 456,
-                    'eventName' => 'event',
-                    'title'     => 'CR-321 - RP - title',
-                    'message'   => 'message',
-                    'url'       => 'url',
-                ]
-            ),
-            true
+        $reviewUpdate = new UpdateMessage(
+            135,
+            123,
+            456,
+            'event',
+            'CR-321 - RP - title',
+            'message',
+            Http::new('url')
         );
 
-        $userUpdate = new Update(
-            '/user/987',
-            Json::encode(
-                [
-                    'topic'     => '/user/987',
-                    'eventId'   => 135,
-                    'userId'    => 123,
-                    'reviewId'  => 456,
-                    'eventName' => 'event',
-                    'title'     => 'CR-321 - RP - title',
-                    'message'   => 'message',
-                    'url'       => 'url',
-                ]
-            ),
-            true
-        );
-
-        $this->formatter->expects(self::once())->method('format')->with($activity)->willReturn('message');
-        $this->userRepository->expects(self::once())->method('findBy')->with(['id' => [567]])->willReturn([$actor]);
-        $this->urlGenerator->expects(self::once())->method('generate')->with($activity)->willReturn('url');
-        $this->mercureHub->expects(self::exactly(2))
-            ->method('publish')
-            ->with(...consecutive([$reviewUpdate], [$userUpdate]))
-            ->willReturn('success');
+        $this->formatter->expects($this->once())->method('format')->with($activity)->willReturn('message');
+        $this->userRepository->expects($this->once())->method('findBy')->with(['id' => [567]])->willReturn([$actor]);
+        $this->urlGenerator->expects($this->once())->method('generate')->with($activity)->willReturn('url');
+        $this->publisher->expects($this->once())->method('publishToReview')->with($reviewUpdate);
+        $this->publisher->expects($this->once())->method('publishToUsers')->with($reviewUpdate);
 
         $this->service->publish($activity);
     }

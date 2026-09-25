@@ -41,6 +41,6 @@ class PushEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         }
 
         $this->logger?->info('PushEventHandler: fetching new revisions for {name}', ['name' => $repository->getName()]);
-        $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
+        $this->bus->dispatch(new FetchRepositoryRevisionsMessage($repository->getId()));
     }
 }

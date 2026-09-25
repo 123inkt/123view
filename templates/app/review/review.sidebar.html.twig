@@ -21,16 +21,22 @@
                     {% endif %}
                 </a>
             </li>
+            {% if reviewModel.visibleRevisionCount != reviewModel.revisions|length %}
+                <li class="nav-item" title="{{ 'show.all.revisions'|trans }}">
+                    <form method="post"
+                          action="{{ path('DR\\Review\\Controller\\App\\Revision\\ResetRevisionVisibilityController', {id: review.id}) }}">
+                        <button type="submit" class="nav-link" {{ stimulus_controller('button') }}>
+                            <i class="bi-eye-fill"></i> {{ 'all'|trans }}
+                        </button>
+                    </form>
+                </li>
+            {% endif %}
         </ul>
     </div>
 
     <div class="review-grid-sidebar--grid-bottom">
         {% if reviewModel.sidebarTabMode == 'revisions' %}
-            {% if review.type == 'branch' %}
-                {% include 'app/review/review.revisions.branch.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
-            {% else %}
-                {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
-            {% endif %}
+            {% include 'app/review/review.revisions.html.twig' with {review: review, revisionViewModel: reviewModel.revisionViewModel} %}
         {% endif %}
 
         {% if reviewModel.sidebarTabMode == 'overview' %}

@@ -5,11 +5,12 @@ namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
 use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\FileSeenStatusCollection;
+use DR\Review\Entity\Review\FolderCollapseStatusCollection;
 use DR\Review\Model\Review\DirectoryTreeNode;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModel\App\Review\FileTreeViewModel;
@@ -21,7 +22,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(FileTreeViewModel::class)]
 class FileTreeViewModelTest extends AbstractTestCase
 {
-    private FileSeenStatusCollection&MockObject $statusCollection;
+    private FileSeenStatusCollection&MockObject       $statusCollection;
+    private FolderCollapseStatusCollection&MockObject $folderCollection;
     /** @var DirectoryTreeNode<DiffFile>&MockObject */
     private MockObject&DirectoryTreeNode $directoryNode;
     private FileTreeViewModel            $viewModel;
@@ -32,12 +34,14 @@ class FileTreeViewModelTest extends AbstractTestCase
     {
         parent::setUp();
         $this->statusCollection  = $this->createMock(FileSeenStatusCollection::class);
+        $this->folderCollection  = $this->createMock(FolderCollapseStatusCollection::class);
         $this->directoryNode     = $this->createMock(DirectoryTreeNode::class);
         $this->commentCollection = new ArrayCollection();
         $this->viewModel         = new FileTreeViewModel(
             new CodeReview(),
             $this->directoryNode,
             $this->commentCollection,
+            $this->folderCollection,
             $this->statusCollection,
             new DiffFile()
         );
@@ -46,24 +50,41 @@ class FileTreeViewModelTest extends AbstractTestCase
     public function testGetChangeSummary(): void
     {
         $fileA = $this->createMock(DiffFile::class);
-        $fileA->expects(self::once())->method('getNrOfLinesAdded')->willReturn(1);
-        $fileA->expects(self::once())->method('getNrOfLinesRemoved')->willReturn(2);
+        $fileA->expects($this->once())->method('getNrOfLinesAdded')->willReturn(1);
+        $fileA->expects($this->once())->method('getNrOfLinesRemoved')->willReturn(2);
         $fileB = $this->createMock(DiffFile::class);
-        $fileB->expects(self::once())->method('getNrOfLinesAdded')->willReturn(3);
-        $fileB->expects(self::once())->method('getNrOfLinesRemoved')->willReturn(4);
+        $fileB->expects($this->once())->method('getNrOfLinesAdded')->willReturn(3);
+        $fileB->expects($this->once())->method('getNrOfLinesRemoved')->willReturn(4);
 
-        $this->directoryNode->expects(self::once())->method('getFileIterator')->willReturn(new ArrayIterator([$fileA, $fileB]));
+        $this->directoryNode->expects($this->once())->method('getFileIterator')->willReturn(new ArrayIterator([$fileA, $fileB]));
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
 
         static::assertSame(['files' => 2, 'added' => 4, 'removed' => 6], $this->viewModel->getChangeSummary());
+    }
+
+    public function testIsFolderCollapsed(): void
+    {
+        $node = static::createStub(DirectoryTreeNode::class);
+        $node->method('getPathname')->willReturn('folder');
+
+        $this->folderCollection->expects($this->once())->method('isCollapsed')->with('folder')->willReturn(true);
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
+        static::assertTrue($this->viewModel->isFolderCollapsed($node));
     }
 
     #[DataProvider('fileSelectedDataProvider')]
     public function testIsFileSelected(?DiffFile $selectedFile, DiffFile $file, bool $selected): void
     {
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
         $viewModel = new FileTreeViewModel(
             new CodeReview(),
             $this->directoryNode,
             $this->commentCollection,
+            $this->folderCollection,
             $this->statusCollection,
             $selectedFile
         );
@@ -94,7 +115,9 @@ class FileTreeViewModelTest extends AbstractTestCase
 
     public function testIsFileSeen(): void
     {
-        $this->statusCollection->expects(self::once())->method('isSeen')->with('filepath')->willReturn(true);
+        $this->statusCollection->expects($this->once())->method('isSeen')->with('filepath')->willReturn(true);
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
 
         $file                = new DiffFile();
         $file->filePathAfter = 'filepath';
@@ -104,6 +127,9 @@ class FileTreeViewModelTest extends AbstractTestCase
 
     public function testGetCommentsForFile(): void
     {
+        $this->statusCollection->expects($this->never())->method('isSeen');
+        $this->folderCollection->expects($this->never())->method('isCollapsed');
+        $this->directoryNode->expects($this->never())->method('getFileIterator');
         $commentA = new Comment();
         $commentB = new Comment();
         $commentC = new Comment();
@@ -112,9 +138,9 @@ class FileTreeViewModelTest extends AbstractTestCase
         $commentB->setFilePath('filepathB');
         $commentC->setFilePath('filepathB');
 
-        $commentA->setState(CommentStateType::OPEN);
-        $commentB->setState(CommentStateType::OPEN);
-        $commentC->setState(CommentStateType::RESOLVED);
+        $commentA->setState(CommentStateEnum::Open);
+        $commentB->setState(CommentStateEnum::Open);
+        $commentC->setState(CommentStateEnum::Resolved);
 
         $this->commentCollection->add($commentA);
         $this->commentCollection->add($commentB);

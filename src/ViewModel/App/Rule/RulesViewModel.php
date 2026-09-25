@@ -10,16 +10,16 @@ use IteratorAggregate;
 class RulesViewModel
 {
     /**
-     * @param Countable|IteratorAggregate<Rule> $rules
+     * @param Countable&IteratorAggregate<Rule> $rules
      */
-    public function __construct(private Countable|IteratorAggregate $rules)
+    public function __construct(private Countable&IteratorAggregate $rules)
     {
     }
 
     /**
-     * @return Countable|IteratorAggregate<Rule>
+     * @return Countable&IteratorAggregate<Rule>
      */
-    public function getRules(): Countable|IteratorAggregate
+    public function getRules(): Countable&IteratorAggregate
     {
         return $this->rules;
     }

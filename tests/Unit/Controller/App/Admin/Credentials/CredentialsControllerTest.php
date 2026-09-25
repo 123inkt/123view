@@ -11,6 +11,9 @@ use DR\Review\ViewModelProvider\CredentialsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<CredentialsController>
+ */
 #[CoversClass(CredentialsController::class)]
 class CredentialsControllerTest extends AbstractControllerTestCase
 {
@@ -24,9 +27,9 @@ class CredentialsControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $viewModel = $this->createMock(CredentialsViewModel::class);
+        $viewModel = static::createStub(CredentialsViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getCredentialsViewModel')->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getCredentialsViewModel')->willReturn($viewModel);
 
         static::assertSame(['credentialsViewModel' => $viewModel], ($this->controller)());
     }

@@ -11,7 +11,9 @@ use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
@@ -31,39 +33,62 @@ class BearerAuthenticatorTest extends AbstractTestCase
 
     public function testSupports(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/test', 'HTTP_AUTHORIZATION' => 'Bearer 123view']);
         static::assertTrue($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldSkipDocs(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/docs', 'HTTP_AUTHORIZATION' => 'Bearer 123view']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldSkipNonApiRequests(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/app/test']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldSkipAbsentAuthHeader(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/test']);
         static::assertFalse($this->authenticator->supports($request));
     }
 
     public function testSupportsShouldOnlyAcceptBearerAuthHeader(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         $request = new Request(server: ['REQUEST_URI' => '/api/test', 'HTTP_AUTHORIZATION' => 'JWT 123view']);
         static::assertFalse($this->authenticator->supports($request));
+    }
+
+    public function testSupportsMcpShouldAlwaysReturnTrue(): void
+    {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
+        $request = new Request(server: ['REQUEST_URI' => '/_mcp']);
+        static::assertTrue($this->authenticator->supports($request));
+    }
+
+    public function testAuthenticateShouldThrowExceptionOnNonBearerToken(): void
+    {
+        $request = new Request(server: ['HTTP_AUTHORIZATION' => 'JWT 123view']);
+
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
+
+        $this->expectException(AuthenticationException::class);
+        $this->expectExceptionMessage('Access denied');
+        $this->authenticator->authenticate($request);
     }
 
     public function testAuthenticateShouldThrowExceptionOnAbsentToken(): void
     {
         $request = new Request(server: ['HTTP_AUTHORIZATION' => 'Bearer 123view']);
 
-        $this->tokenRepository->expects(self::once())->method('findOneBy')->with(['token' => '123view'])->willReturn(null);
+        $this->tokenRepository->expects($this->once())->method('findOneBy')->with(['token' => '123view'])->willReturn(null);
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Access denied');
@@ -78,7 +103,7 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $token = new UserAccessToken();
         $token->setUser($user);
 
-        $this->tokenRepository->expects(self::once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
+        $this->tokenRepository->expects($this->once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
 
         $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Access denied');
@@ -96,8 +121,8 @@ class BearerAuthenticatorTest extends AbstractTestCase
         $token->setUsages(5);
         $token->setUser($user);
 
-        $this->tokenRepository->expects(self::once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
-        $this->tokenRepository->expects(self::once())->method('save')->with($token, true);
+        $this->tokenRepository->expects($this->once())->method('findOneBy')->with(['token' => '123view'])->willReturn($token);
+        $this->tokenRepository->expects($this->once())->method('save')->with($token, true);
 
         $passport = $this->authenticator->authenticate($request);
         static::assertInstanceOf(SelfValidatingPassport::class, $passport);
@@ -109,11 +134,30 @@ class BearerAuthenticatorTest extends AbstractTestCase
 
     public function testOnAuthenticationSuccess(): void
     {
-        static::assertNull($this->authenticator->onAuthenticationSuccess(new Request(), $this->createMock(TokenInterface::class), 'main'));
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
+        static::assertNull($this->authenticator->onAuthenticationSuccess(new Request(), static::createStub(TokenInterface::class), 'main'));
     }
 
     public function testOnAuthenticationFailure(): void
     {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
         static::assertNull($this->authenticator->onAuthenticationFailure(new Request(), new AuthenticationException()));
+    }
+
+    public function testOnAuthenticationFailureForMcpShouldReturnUnauthorized(): void
+    {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
+        $request  = new Request(server: ['REQUEST_URI' => '/_mcp']);
+        $response = $this->authenticator->onAuthenticationFailure($request, new AuthenticationException());
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
+    }
+
+    public function testStart(): void
+    {
+        $this->tokenRepository->expects($this->never())->method('findOneBy');
+        $response = $this->authenticator->start(new Request());
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_UNAUTHORIZED, $response->getStatusCode());
     }
 }

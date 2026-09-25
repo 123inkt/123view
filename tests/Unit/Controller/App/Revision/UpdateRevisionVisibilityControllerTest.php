@@ -12,6 +12,7 @@ use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Revision\RevisionVisibilityService;
 use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -19,16 +20,21 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<UpdateRevisionVisibilityController>
+ */
 #[CoversClass(UpdateRevisionVisibilityController::class)]
 class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
 {
     private RevisionVisibilityService&MockObject    $visibilityService;
     private RevisionVisibilityRepository&MockObject $visibilityRepository;
+    private CodeReviewRevisionService&MockObject    $revisionService;
 
     protected function setUp(): void
     {
         $this->visibilityService    = $this->createMock(RevisionVisibilityService::class);
         $this->visibilityRepository = $this->createMock(RevisionVisibilityRepository::class);
+        $this->revisionService      = $this->createMock(CodeReviewRevisionService::class);
         parent::setUp();
     }
 
@@ -43,15 +49,16 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
 
         $review = new CodeReview();
         $review->setId(123);
-        $review->getRevisions()->add($revision);
 
         $request = new Request();
 
         $this->expectGetUser($user);
-        $this->visibilityService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
-            ->with($review, $review->getRevisions(), $user)
+            ->with($review, [$revision], $user)
             ->willReturn([$visibility]);
+        $this->visibilityRepository->expects($this->never())->method('saveAll');
         $this->expectCreateForm(RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
@@ -72,20 +79,20 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
 
         $review = new CodeReview();
         $review->setId(123);
-        $review->getRevisions()->add($revision);
 
         $request = new Request();
 
         $this->expectGetUser($user);
-        $this->visibilityService->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->visibilityService->expects($this->once())
             ->method('getRevisionVisibilities')
-            ->with($review, $review->getRevisions(), $user)
+            ->with($review, [$revision], $user)
             ->willReturn([$visibility]);
         $this->expectCreateForm(RevisionVisibilityFormType::class, ['visibilities' => [$visibility]], ['reviewId' => 123])
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $this->visibilityRepository->expects(self::once())->method('saveAll')->with([$visibility], true);
+        $this->visibilityRepository->expects($this->once())->method('saveAll')->with([$visibility], true);
         $this->expectRefererRedirect(ReviewController::class, ['review' => $review]);
 
         ($this->controller)($request, $review);
@@ -94,6 +101,6 @@ class UpdateRevisionVisibilityControllerTest extends AbstractControllerTestCase
 
     public function getController(): AbstractController
     {
-        return new UpdateRevisionVisibilityController($this->visibilityService, $this->visibilityRepository);
+        return new UpdateRevisionVisibilityController($this->visibilityService, $this->visibilityRepository, $this->revisionService);
     }
 }

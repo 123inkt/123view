@@ -19,6 +19,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<AttachRevisionController>
+ */
 #[CoversClass(AttachRevisionController::class)]
 class AttachRevisionControllerTest extends AbstractControllerTestCase
 {
@@ -52,14 +55,14 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $user->setId(456);
 
         $this->expectGetUser($user);
-        $this->revisionRepository->expects(self::once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
+        $this->revisionRepository->expects($this->once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
 
         // expect revision to be attached, saved and dispatched
-        $this->reviewService->expects(self::once())->method('addRevisions')->with($review, [$revision]);
-        $this->eventService->expects(self::once())->method('revisionsAdded')->with($review, [$revision], 456);
+        $this->reviewService->expects($this->once())->method('addRevisions')->with($review, [$revision]);
+        $this->eventService->expects($this->once())->method('revisionsAdded')->with($review, [$revision], 456);
 
         // expect flash message
-        $this->translator->expects(self::once())->method('trans')->with('revisions.added.to.review')->willReturn('message');
+        $this->translator->expects($this->once())->method('trans')->with('revisions.added.to.review')->willReturn('message');
         $this->expectAddFlash('success', 'message');
 
         // expect redirect
@@ -82,13 +85,13 @@ class AttachRevisionControllerTest extends AbstractControllerTestCase
         $revision->setRepository(new Repository());
         $revision->setId(123);
 
-        $this->revisionRepository->expects(self::once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
+        $this->revisionRepository->expects($this->once())->method('findBy')->with(['id' => [123]])->willReturn([$revision]);
 
-        $this->reviewService->expects(self::never())->method('addRevisions');
-        $this->eventService->expects(self::never())->method('revisionsAdded');
+        $this->reviewService->expects($this->never())->method('addRevisions');
+        $this->eventService->expects($this->never())->method('revisionsAdded');
 
         // expect flash message
-        $this->translator->expects(self::once())->method('trans')->with('revisions.skipped.to.add.to.review')->willReturn('message');
+        $this->translator->expects($this->once())->method('trans')->with('revisions.skipped.to.add.to.review')->willReturn('message');
         $this->expectAddFlash('warning', 'message');
 
         // expect redirect

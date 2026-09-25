@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace DR\Review\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
 use League\Uri\Contracts\UriInterface;
 use League\Uri\Uri;
 
 class UriType extends Type
 {
-    public const TYPE = "uri_type";
+    public const string TYPE = "uri_type";
 
     /**
      * @inheritDoc
@@ -31,7 +32,7 @@ class UriType extends Type
         }
 
         if ($value instanceof UriInterface === false) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'Uri']);
+            throw ValueNotConvertible::new($value, 'string');
         }
 
         return (string)$value;
@@ -47,7 +48,7 @@ class UriType extends Type
         }
 
         if (is_string($value) === false) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string']);
+            throw InvalidType::new($value, 'string', ['null', 'string']);
         }
 
         return Uri::new($value);

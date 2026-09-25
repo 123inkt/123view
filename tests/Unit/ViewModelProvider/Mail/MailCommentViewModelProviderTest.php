@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModelProvider\Mail;
 
+use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Repository\Repository;
@@ -36,7 +37,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $this->diffService     = $this->createMock(ReviewDiffServiceInterface::class);
         $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
         $this->diffFinder      = $this->createMock(DiffFinder::class);
-        $translator            = $this->createMock(TranslatorInterface::class);
+        $translator            = static::createStub(TranslatorInterface::class);
         $translator->method('trans')->willReturnArgument(0);
         $this->provider = new MailCommentViewModelProvider($this->diffService, $this->revisionService, $this->diffFinder, $translator);
     }
@@ -47,21 +48,22 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
     public function testCreateCommentViewModelCommentCreated(): void
     {
         $reference = new LineReference(null, 'reference', 1, 2, 3);
-        $comment   = (new Comment())->setUser((new User())->setName('name'));
+        $comment   = new Comment()->setUser(new User()->setName('name'));
         $comment->setFilePath('reference');
         $comment->setLineReference($reference);
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getComments()->add($comment);
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
-        $this->diffFinder->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
             ->method('findLinesAround')
             ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
@@ -82,7 +84,7 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
      */
     public function testCreateCommentViewModelCommentReplied(): void
     {
-        $reply     = (new CommentReply())->setUser((new User())->setName('name'));
+        $reply     = new CommentReply()->setUser(new User()->setName('name'));
         $reference = new LineReference(null, 'reference', 1, 2, 3);
         $comment   = new Comment();
         $comment->setFilePath('reference');
@@ -91,15 +93,16 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getComments()->add($comment);
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
-        $this->diffFinder->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
             ->method('findLinesAround')
             ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
@@ -129,16 +132,17 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         $revision   = new Revision();
         $repository = new Repository();
         $review     = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
         $review->setRepository($repository);
         $review->getComments()->add($comment);
-        $user = (new User())->setName('name');
+        $user = new User()->setName('name');
         $file = new DiffFile();
         $line = new DiffLine(0, []);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->diffService->expects(self::once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
-        $this->diffFinder->expects(self::once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
-        $this->diffFinder->expects(self::once())
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->diffService->expects($this->once())->method('getDiffForRevisions')->with($repository, [$revision])->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
             ->method('findLinesAround')
             ->with($file, $reference, 6)
             ->willReturn(['before' => [$line], 'after' => []]);
@@ -152,5 +156,40 @@ class MailCommentViewModelProviderTest extends AbstractTestCase
         static::assertSame([$line], $viewModel->linesBefore);
         static::assertSame([], $viewModel->linesAfter);
         static::assertSame($user, $viewModel->resolvedBy);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testCreateCommentViewModelBranchReview(): void
+    {
+        $reference  = new LineReference(null, 'reference', 1, 2, 3);
+        $comment    = new Comment()->setUser(new User()->setName('name'))->setFilePath('reference')->setLineReference($reference);
+        $repository = new Repository();
+        $review     = new CodeReview()->setType(CodeReviewType::BRANCH)->setRepository($repository)->setReferenceId('feature-branch');
+        $review->getComments()->add($comment);
+        $file = new DiffFile();
+        $line = new DiffLine(0, []);
+
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->diffService->expects($this->once())
+            ->method('getDiffForBranch')
+            ->with($review, [], 'feature-branch')
+            ->willReturn([$file]);
+        $this->diffFinder->expects($this->once())->method('findFileByPath')->with([$file], 'reference')->willReturn($file);
+        $this->diffFinder->expects($this->once())
+            ->method('findLinesAround')
+            ->with($file, $reference, 6)
+            ->willReturn(['before' => [$line], 'after' => []]);
+
+        $viewModel = $this->provider->createCommentViewModel($review, $comment);
+        static::assertSame('mail.new.comment.by.user.on', $viewModel->headingTitle);
+        static::assertSame($review, $viewModel->review);
+        static::assertSame($comment, $viewModel->comment);
+        static::assertSame([], $viewModel->replies);
+        static::assertSame($file, $viewModel->file);
+        static::assertSame([$line], $viewModel->linesBefore);
+        static::assertSame([], $viewModel->linesAfter);
+        static::assertNull($viewModel->resolvedBy);
     }
 }

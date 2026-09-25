@@ -7,13 +7,9 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Exception\RepositoryException;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 
-class GitCommitService implements LoggerAwareInterface
+class GitCommitService
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly CacheableGitRepositoryService $repositoryService,
         private readonly GitCommandBuilderFactory $commandFactory,
@@ -28,8 +24,6 @@ class GitCommitService implements LoggerAwareInterface
         $commandBuilder = $this->commandFactory->createCommit()->allowEmpty()->message($message);
 
         // commit
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 }

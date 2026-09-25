@@ -20,7 +20,7 @@ export default class extends Controller<HTMLButtonElement> {
         this.updateUI(this.openCommentsValue);
         this.element.addEventListener('click', this.load.bind(this));
         this.notificationService.subscribe(
-            '/review/' + String(this.reviewIdValue),
+            `/review/${String(this.reviewIdValue)}`,
             ['comment-added', 'comment-removed', 'comment-resolved', 'comment-unresolved'],
             this.updateCommentCount.bind(this),
             this.reviewIdValue
@@ -28,7 +28,7 @@ export default class extends Controller<HTMLButtonElement> {
     }
 
     public disconnect(): void {
-        this.notificationService.unsubscribe('/review/' + String(this.reviewIdValue));
+        this.notificationService.unsubscribe(`/review/${String(this.reviewIdValue)}`);
     }
 
     private load(event: Event): void {

@@ -42,14 +42,20 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
             return false;
         }
 
+        if ($revision->getRepository()->isActive() === false) {
+            $this->logger?->info('Matcher: revision repository is inactive: {id}', ['id' => $revision->getId()]);
+
+            return false;
+        }
+
         if ($revision->getCreateTimestamp() < $revision->getRepository()->getCreateTimestamp()) {
-            $this->logger?->info('Matcher: revision was created before the repository was added to the project: ' . $revision->getId());
+            $this->logger?->info('Matcher: revision was created before the repository was added to the project: {id}', ['id' => $revision->getId()]);
 
             return false;
         }
 
         if (in_array($revision->getAuthorEmail(), $this->excludeAuthors, true)) {
-            $this->logger?->notice('Matcher: revision is excluded by author: ' . $revision->getAuthorEmail());
+            $this->logger?->notice('Matcher: revision is excluded by author: {email}', ['email' => $revision->getAuthorEmail()]);
 
             return false;
         }

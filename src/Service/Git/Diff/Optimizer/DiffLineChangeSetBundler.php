@@ -10,12 +10,9 @@ use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Git\Diff\DiffLineChangeSet;
 use DR\Review\Entity\Git\Diff\DiffLineNumberPair;
 use DR\Utils\Assert;
-use Psr\Log\LoggerAwareTrait;
 
 class DiffLineChangeSetBundler
 {
-    use LoggerAwareTrait;
-
     public function __construct(private readonly DiffLineChangeSetDiffer $differ, private readonly DiffLineStateDeterminator $stateDeterminator)
     {
     }

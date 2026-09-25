@@ -22,6 +22,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @extends AbstractControllerTestCase<CreateBranchReviewController>
+ */
 #[CoversClass(CreateBranchReviewController::class)]
 class CreateBranchReviewControllerTest extends AbstractControllerTestCase
 {
@@ -41,6 +44,10 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeBranchIsRequired(): void
     {
+        $this->reviewCreationService->expects($this->never())->method('createFromBranch');
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->reviewRepository->expects($this->never())->method('findOneBy');
+        $this->messageBus->expects($this->never())->method('dispatch');
         $repository = new Repository();
         $request    = new Request();
 
@@ -55,10 +62,13 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
         $request    = new Request(request: ['branch' => 'branch']);
         $review     = new CodeReview();
 
-        $this->reviewRepository->expects(self::once())
+        $this->reviewRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => 'branch'])
             ->willReturn($review);
+        $this->reviewCreationService->expects($this->never())->method('createFromBranch');
+        $this->revisionService->expects($this->never())->method('getRevisions');
+        $this->messageBus->expects($this->never())->method('dispatch');
 
         $this->expectRedirectToRoute(ReviewController::class, ['review' => $review])->willReturn('url');
         ($this->controller)($request, $repository);
@@ -73,15 +83,15 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
         $revision = new Revision();
         $revision->setId(456);
 
-        $this->expectGetUser((new User())->setId(789));
-        $this->reviewRepository->expects(self::once())
+        $this->expectGetUser(new User()->setId(789));
+        $this->reviewRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => 'branch'])
             ->willReturn(null);
-        $this->reviewCreationService->expects(self::once())->method('createFromBranch')->with($repository, 'branch')->willReturn($review);
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->reviewRepository->expects(self::once())->method('save')->with($review, true);
-        $this->messageBus->expects(self::once())->method('dispatch')->with(new ReviewCreated(123, 456, 789))->willReturn($this->envelope);
+        $this->reviewCreationService->expects($this->once())->method('createFromBranch')->with($repository, 'branch')->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
+        $this->messageBus->expects($this->once())->method('dispatch')->with(new ReviewCreated(123, 456, 789))->willReturn($this->envelope);
         $this->expectRedirectToRoute(ReviewController::class, ['review' => $review])->willReturn('url');
 
         ($this->controller)($request, $repository);

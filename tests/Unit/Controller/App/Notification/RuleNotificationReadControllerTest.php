@@ -13,6 +13,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
+/**
+ * @extends AbstractControllerTestCase<RuleNotificationReadController>
+ */
 #[CoversClass(RuleNotificationReadController::class)]
 class RuleNotificationReadControllerTest extends AbstractControllerTestCase
 {
@@ -31,8 +34,8 @@ class RuleNotificationReadControllerTest extends AbstractControllerTestCase
         $notification = new RuleNotification();
         $notification->setRead(false);
 
-        $this->tokenGenerator->expects(self::once())->method('generate')->with($notification)->willReturn('token');
-        $this->notificationRepository->expects(self::once())->method('save')->with($notification, true);
+        $this->tokenGenerator->expects($this->once())->method('generate')->with($notification)->willReturn('token');
+        $this->notificationRepository->expects($this->once())->method('save')->with($notification, true);
 
         ($this->controller)($notification, 'token');
     }
@@ -42,8 +45,8 @@ class RuleNotificationReadControllerTest extends AbstractControllerTestCase
         $notification = new RuleNotification();
         $notification->setRead(true);
 
-        $this->tokenGenerator->expects(self::once())->method('generate')->with($notification)->willReturn('token');
-        $this->notificationRepository->expects(self::never())->method('save');
+        $this->tokenGenerator->expects($this->once())->method('generate')->with($notification)->willReturn('token');
+        $this->notificationRepository->expects($this->never())->method('save');
 
         ($this->controller)($notification, 'token');
     }
@@ -52,8 +55,8 @@ class RuleNotificationReadControllerTest extends AbstractControllerTestCase
     {
         $notification = new RuleNotification();
 
-        $this->tokenGenerator->expects(self::once())->method('generate')->with($notification)->willReturn('token');
-        $this->notificationRepository->expects(self::never())->method('save');
+        $this->tokenGenerator->expects($this->once())->method('generate')->with($notification)->willReturn('token');
+        $this->notificationRepository->expects($this->never())->method('save');
 
         $this->expectException(BadRequestHttpException::class);
         $this->expectExceptionMessage('Invalid token');

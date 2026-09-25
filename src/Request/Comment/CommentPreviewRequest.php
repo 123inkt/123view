@@ -5,6 +5,7 @@ namespace DR\Review\Request\Comment;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
+use DR\Review\Entity\Review\Comment;
 
 class CommentPreviewRequest extends AbstractValidatedRequest
 {
@@ -15,6 +16,6 @@ class CommentPreviewRequest extends AbstractValidatedRequest
 
     protected function getValidationRules(): ?ValidationRules
     {
-        return new ValidationRules(['query' => ['message' => 'required|string|filled|max:2000']]);
+        return new ValidationRules(['query' => ['message' => 'required|string|filled|max:' . Comment::MAX_COMMENT_LENGTH]]);
     }
 }

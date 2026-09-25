@@ -14,9 +14,9 @@ class Filter
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist', 'remove'], inversedBy: 'filters')]
+    #[ORM\ManyToOne(targetEntity: Rule::class, cascade: ['persist'], inversedBy: 'filters')]
     #[ORM\JoinColumn(nullable: false)]
     private Rule $rule;
 
@@ -30,9 +30,14 @@ class Filter
     #[Assert\Length(min: 1, max: 255)]
     private string $pattern;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function getRule(): Rule
@@ -81,5 +86,11 @@ class Filter
         $this->pattern = $pattern;
 
         return $this;
+    }
+
+    public function __clone(): void
+    {
+        unset($this->id);
+        unset($this->rule);
     }
 }

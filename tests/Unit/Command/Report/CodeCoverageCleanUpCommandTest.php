@@ -25,7 +25,7 @@ class CodeCoverageCleanUpCommandTest extends AbstractTestCase
 
     public function testExecute(): void
     {
-        $this->reportRepository->expects(self::once())->method('cleanUp')->willReturn(5);
+        $this->reportRepository->expects($this->once())->method('cleanUp')->willReturn(5);
 
         $tester = new CommandTester($this->command);
         $tester->execute([]);

@@ -8,6 +8,6 @@ export default class AssetService {
             '/app/assets',
             {mimeType, data: base64data},
             {headers: {'Content-Type': 'multipart/form-data'}}
-        ).then(response => response.data.url);
+        ).then(response => (response.data as {url: string}).url);
     }
 }

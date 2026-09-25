@@ -14,7 +14,8 @@ class CommentReplyAdded implements AsyncMessageInterface, MailNotificationInterf
         public readonly int $reviewId,
         public readonly int $commentReplyId,
         public readonly int $byUserId,
-        public readonly string $message
+        public readonly string $message,
+        public readonly string $file
     ) {
     }
 
@@ -43,6 +44,6 @@ class CommentReplyAdded implements AsyncMessageInterface, MailNotificationInterf
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentReplyId, 'message' => $this->message];
+        return ['commentId' => $this->commentReplyId, 'message' => $this->message, 'file' => $this->file];
     }
 }

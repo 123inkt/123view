@@ -11,8 +11,11 @@ use DR\Utils\Assert;
 use Exception;
 use Liip\TestFixturesBundle\Services\DatabaseToolCollection;
 use Liip\TestFixturesBundle\Services\DatabaseTools\AbstractDatabaseTool;
+use Nette\Utils\Json;
+use Nette\Utils\JsonException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractFunctionalTestCase extends WebTestCase
 {
@@ -54,7 +57,6 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
 
     /**
      * @template T of object
-     *
      * @param class-string<T> $serviceId
      *
      * @return T
@@ -68,8 +70,22 @@ abstract class AbstractFunctionalTestCase extends WebTestCase
         return $service;
     }
 
+    protected function getResponseContent(): string
+    {
+        return Assert::notFalse(Assert::isInstanceOf($this->client->getResponse(), Response::class)->getContent());
+    }
+
     /**
-     * @return class-string[]
+     * @return array<array-key, mixed>
+     * @throws JsonException
+     */
+    protected function getResponseArray(): array
+    {
+        return Assert::isArray(Json::decode($this->getResponseContent(), true));
+    }
+
+    /**
+     * @return list<class-string>
      */
     abstract protected function getFixtures(): array;
 }

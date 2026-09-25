@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\Service\Asset;
 use DR\Review\Entity\User\User;
 use DR\Review\Service\Asset\AssetFactory;
 use DR\Review\Tests\AbstractTestCase;
-use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(AssetFactory::class)]
@@ -27,7 +26,7 @@ class AssetFactoryTest extends AbstractTestCase
 
         static::assertSame($user, $asset->getUser());
         static::assertSame('mime-type', $asset->getMimeType());
-        static::assertSame('data', stream_get_contents(Assert::notNull($asset->getData())));
+        static::assertSame('data', $asset->getData());
         static::assertEqualsWithDelta(time(), $asset->getCreateTimestamp(), 10);
     }
 }

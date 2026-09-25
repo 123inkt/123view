@@ -22,7 +22,7 @@ class RepositoryCredentialTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(3))
+        $builder->expects($this->exactly(3))
             ->method('add')
             ->with(
                 ...consecutive(

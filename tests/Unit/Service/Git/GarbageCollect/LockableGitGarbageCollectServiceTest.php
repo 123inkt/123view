@@ -34,11 +34,11 @@ class LockableGitGarbageCollectServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
 
-        $this->lockManager->expects(self::once())
+        $this->lockManager->expects($this->once())
             ->method('start')
             ->with($repository)
             ->willReturnCallback(static fn($repository, $callback) => $callback());
-        $this->garbageCollectService->expects(self::once())->method('garbageCollect')->with($repository, 'date');
+        $this->garbageCollectService->expects($this->once())->method('garbageCollect')->with($repository, 'date');
 
         $this->service->garbageCollect($repository, 'date');
     }

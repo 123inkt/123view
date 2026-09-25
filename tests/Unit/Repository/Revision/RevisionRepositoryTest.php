@@ -25,7 +25,7 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
         $repository    = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
         $revisionCount = self::getService(RevisionRepository::class)->getRepositoryRevisionCount();
 
-        static::assertSame([(int)$repository->getId() => 2], $revisionCount);
+        static::assertSame([$repository->getId() => 2], $revisionCount);
     }
 
     /**
@@ -48,7 +48,7 @@ class RevisionRepositoryTest extends AbstractRepositoryTestCase
         static::assertCount(1, $revisionRepository->saveAll($repository, [$revision]));
         static::assertCount(0, $revisionRepository->saveAll($repository, [$revision]));
 
-        static::assertNotNull($revision->getId());
+        static::assertTrue($revision->hasId());
     }
 
     /**

@@ -32,9 +32,9 @@ class CodeInspectionReportFactoryTest extends AbstractTestCase
         $issue      = new CodeInspectionIssue();
 
         $parser = $this->createMock(CodeInspectionIssueParserInterface::class);
-        $parser->expects(self::once())->method('parse')->with('basePath', 'subDir', 'content')->willReturn([$issue]);
+        $parser->expects($this->once())->method('parse')->with('basePath', 'subDir', 'content')->willReturn([$issue]);
 
-        $this->parserProvider->expects(self::once())->method('getParser')->with('format')->willReturn($parser);
+        $this->parserProvider->expects($this->once())->method('getParser')->with('format')->willReturn($parser);
 
         $report = $this->reportFactory->parse($repository, 'hash', 'inspectionId', 'branchId', 'format', 'basePath', 'subDir', 'content');
 

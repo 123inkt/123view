@@ -46,6 +46,10 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
 
     public function testGetCodeQualityViewModelEmptyFilePath(): void
     {
+        $this->coverageReportRepository->expects($this->never())->method('findOneByRevisions');
+        $this->reportRepository->expects($this->never())->method('findByRevisions');
+        $this->issueRepository->expects($this->never())->method('findBy');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $review = new CodeReview();
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, '');
@@ -59,8 +63,10 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         $review     = new CodeReview();
         $review->setRepository($repository);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->reportRepository->expects(self::once())->method('findByRevisions')->with($repository, [$revision])->willReturn([]);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->reportRepository->expects($this->once())->method('findByRevisions')->with($repository, [$revision])->willReturn([]);
+        $this->coverageReportRepository->expects($this->once())->method('findOneByRevisions');
+        $this->issueRepository->expects($this->never())->method('findBy');
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, 'filepath');
         static::assertEquals(new CodeQualityViewModel([], null), $viewModel);
@@ -74,16 +80,16 @@ class CodeQualityViewModelProviderTest extends AbstractTestCase
         $review->setRepository($repository);
 
         $report       = new CodeInspectionReport();
-        $issue        = (new CodeInspectionIssue())->setLineNumber(123);
+        $issue        = new CodeInspectionIssue()->setLineNumber(123);
         $lineCoverage = new LineCoverage();
-        $coverage     = (new CodeCoverageFile())->setCoverage($lineCoverage);
+        $coverage     = new CodeCoverageFile()->setCoverage($lineCoverage);
 
-        $this->coverageReportRepository->expects(self::once())->method('findOneByRevisions')
+        $this->coverageReportRepository->expects($this->once())->method('findOneByRevisions')
             ->with($repository, [$revision], 'filepath')
             ->willReturn($coverage);
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->reportRepository->expects(self::once())->method('findByRevisions')->with($repository, [$revision])->willReturn([$report]);
-        $this->issueRepository->expects(self::once())->method('findBy')->with(['report' => [$report], 'file' => 'filepath'])->willReturn([$issue]);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->reportRepository->expects($this->once())->method('findByRevisions')->with($repository, [$revision])->willReturn([$report]);
+        $this->issueRepository->expects($this->once())->method('findBy')->with(['report' => [$report], 'file' => 'filepath'])->willReturn([$issue]);
 
         $viewModel = $this->provider->getCodeQualityViewModel($review, 'filepath');
         static::assertEquals(new CodeQualityViewModel([$issue], $coverage), $viewModel);

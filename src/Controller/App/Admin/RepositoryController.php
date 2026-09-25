@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RepositoryController extends AbstractController
@@ -37,7 +37,7 @@ class RepositoryController extends AbstractController
             throw new NotFoundHttpException('Repository not found');
         }
 
-        $repository ??= (new Repository())->setCreateTimestamp(time());
+        $repository ??= new Repository()->setCreateTimestamp(time());
 
         $form = $this->createForm(EditRepositoryFormType::class, ['repository' => $repository]);
         $form->handleRequest($request);
@@ -46,7 +46,7 @@ class RepositoryController extends AbstractController
         }
 
         $this->repositoryRepository->save($repository, true);
-        $this->bus->dispatch(new RepositoryUpdatedMessage((int)$repository->getId()));
+        $this->bus->dispatch(new RepositoryUpdatedMessage($repository->getId()));
 
         $this->addFlash('success', 'repository.successful.saved');
 

@@ -27,7 +27,7 @@ class WebhooksViewModelProviderTest extends AbstractTestCase
     {
         $webhook = new Webhook();
 
-        $this->webhookRepository->expects(self::once())->method('findBy')->with([], ['id' => 'ASC'])->willReturn([$webhook]);
+        $this->webhookRepository->expects($this->once())->method('findBy')->with([], ['id' => 'ASC'])->willReturn([$webhook]);
 
         $viewModel = $this->viewModelProvider->getWebhooksViewModel();
         static::assertSame([$webhook], $viewModel->webhooks);

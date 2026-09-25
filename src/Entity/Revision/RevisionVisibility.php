@@ -9,22 +9,19 @@ use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
 
 #[ORM\Entity(repositoryClass: RevisionVisibilityRepository::class)]
-#[ORM\Index(columns: ['review_id', 'user_id'], name: 'review_user_idx')]
+#[ORM\Index(name: 'review_user_idx', columns: ['review_id', 'user_id'])]
 class RevisionVisibility
 {
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Revision::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
     private Revision $revision;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: CodeReview::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
     private CodeReview $review;
 
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
-    #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
     #[ORM\Column(nullable: false)]

@@ -11,7 +11,6 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Review\ReviewAccepted;
 use DR\Review\Message\Review\ReviewClosed;
-use DR\Review\Message\Review\ReviewCreated;
 use DR\Review\Message\Review\ReviewOpened;
 use DR\Review\Message\Review\ReviewRejected;
 use DR\Review\Message\Review\ReviewResumed;
@@ -20,25 +19,27 @@ use DR\Review\Message\Reviewer\ReviewerRemoved;
 use DR\Review\Message\Reviewer\ReviewerStateChanged;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Message\Revision\ReviewRevisionRemoved;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
 use DR\Review\Service\Webhook\ReviewEventService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(ReviewEventService::class)]
 class ReviewEventServiceTest extends AbstractTestCase
 {
-    private MessageBusInterface&MockObject $bus;
-    private ReviewEventService             $service;
+    private CodeReviewerStateResolver&MockObject $reviewerStateResolver;
+    private MessageBusInterface&MockObject       $bus;
+    private ReviewEventService                   $service;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->bus = $this->createMock(MessageBusInterface::class);
-        $this->service = new ReviewEventService($this->bus);
+        $this->reviewerStateResolver = $this->createMock(CodeReviewerStateResolver::class);
+        $this->bus                   = $this->createMock(MessageBusInterface::class);
+        $this->service               = new ReviewEventService($this->reviewerStateResolver, $this->bus);
     }
 
     public function testReviewerAdded(): void
@@ -53,7 +54,8 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->getReviewers()->add($reviewer);
 
-        $this->bus->expects(self::once())->method('dispatch')->with(new ReviewerAdded(123, 456, 5))->willReturn($this->envelope);
+        $this->bus->expects($this->once())->method('dispatch')->with(new ReviewerAdded(123, 456, 5))->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->reviewerAdded($review, $reviewer, 5, false);
         $this->service->reviewerAdded($review, $reviewer, 5, true);
@@ -71,7 +73,8 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->getReviewers()->add($reviewer);
 
-        $this->bus->expects(self::once())->method('dispatch')->with(new ReviewerRemoved(123, 456, 5))->willReturn($this->envelope);
+        $this->bus->expects($this->once())->method('dispatch')->with(new ReviewerRemoved(123, 456, 5))->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->reviewerRemoved($review, $reviewer, 5);
     }
@@ -88,7 +91,17 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review->setId(123);
         $review->getReviewers()->add($reviewer);
 
-        $this->bus->expects(self::exactly(3))
+        $this->reviewerStateResolver->expects($this->exactly(4))
+            ->method('getReviewersState')
+            ->with($review)
+            ->willReturn(
+                CodeReviewerStateType::REJECTED,
+                CodeReviewerStateType::REJECTED,
+                CodeReviewerStateType::ACCEPTED,
+                CodeReviewerStateType::OPEN
+            );
+
+        $this->bus->expects($this->exactly(3))
             ->method('dispatch')
             ->with(
                 ...consecutive(
@@ -99,16 +112,9 @@ class ReviewEventServiceTest extends AbstractTestCase
             )
             ->willReturn($this->envelope);
 
-        $reviewer->setState(CodeReviewerStateType::REJECTED);
         $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
-
-        $reviewer->setState(CodeReviewerStateType::REJECTED);
         $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::OPEN, 5);
-
-        $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::OPEN, 5);
-
-        $reviewer->setState(CodeReviewerStateType::OPEN);
         $this->service->reviewReviewerStateChanged($review, CodeReviewerStateType::REJECTED, 5);
     }
 
@@ -123,10 +129,11 @@ class ReviewEventServiceTest extends AbstractTestCase
         $reviewer->setState(CodeReviewerStateType::ACCEPTED);
         $reviewer->setUser($user);
 
-        $this->bus->expects(self::once())
+        $this->bus->expects($this->once())
             ->method('dispatch')
             ->with(new ReviewerStateChanged(123, 456, 789, CodeReviewerStateType::REJECTED, CodeReviewerStateType::ACCEPTED))
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         // first test without state change
         $this->service->reviewerStateChanged($review, $reviewer, CodeReviewerStateType::ACCEPTED);
@@ -140,7 +147,7 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->bus->expects(self::exactly(2))
+        $this->bus->expects($this->exactly(2))
             ->method('dispatch')
             ->with(
                 ...consecutive(
@@ -149,6 +156,7 @@ class ReviewEventServiceTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $review->setState(CodeReviewStateType::OPEN);
         $this->service->reviewStateChanged($review, CodeReviewStateType::OPEN, 5);
@@ -172,7 +180,7 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->bus->expects(self::exactly(2))
+        $this->bus->expects($this->exactly(2))
             ->method('dispatch')
             ->with(
                 ...consecutive(
@@ -181,6 +189,7 @@ class ReviewEventServiceTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->revisionsAdded($review, [$revisionA, $revisionB], 5);
     }
@@ -197,7 +206,7 @@ class ReviewEventServiceTest extends AbstractTestCase
         $review = new CodeReview();
         $review->setId(123);
 
-        $this->bus->expects(self::exactly(2))
+        $this->bus->expects($this->exactly(2))
             ->method('dispatch')
             ->with(
                 ...consecutive(
@@ -206,87 +215,8 @@ class ReviewEventServiceTest extends AbstractTestCase
                 )
             )
             ->willReturn($this->envelope);
+        $this->reviewerStateResolver->expects($this->never())->method('getReviewersState');
 
         $this->service->revisionsDetached($review, [$revisionA, $revisionB], 5);
-    }
-
-    public function testRevisionAddedToReview(): void
-    {
-        $revision = new Revision();
-        $revision->setId(456);
-        $revision->setTitle('title');
-        $review = new CodeReview();
-        $review->setId(123);
-        $review->setState(CodeReviewStateType::OPEN);
-
-        $this->bus->expects(self::exactly(4))
-            ->method('dispatch')
-            ->with(
-                ...consecutive(
-                    [new Envelope(new ReviewCreated(123, 456))],
-                    [new Envelope(new ReviewOpened(123, null))],
-                    [new Envelope(new ReviewResumed(123, null))],
-                    [new Envelope(new ReviewRevisionAdded(123, 456, null, 'title'))],
-                )
-            )
-            ->willReturn($this->envelope);
-
-        $this->service->revisionAddedToReview($review, $revision, true, CodeReviewStateType::CLOSED, CodeReviewerStateType::ACCEPTED);
-    }
-
-    public function testRevisionAddedToReviewWithMinimalEvents(): void
-    {
-        $revision = new Revision();
-        $revision->setId(456);
-        $revision->setTitle('title');
-        $review = new CodeReview();
-        $review->setId(123);
-        $review->setState(CodeReviewStateType::OPEN);
-
-        $this->bus->expects(self::once())
-            ->method('dispatch')
-            ->with(new Envelope(new ReviewRevisionAdded(123, 456, null, 'title')))
-            ->willReturn($this->envelope);
-
-        $this->service->revisionAddedToReview($review, $revision, false, CodeReviewStateType::OPEN, CodeReviewerStateType::OPEN);
-    }
-
-    public function testRevisionRemovedFromReview(): void
-    {
-        $revision = new Revision();
-        $revision->setId(456);
-        $revision->setTitle('title');
-        $review = new CodeReview();
-        $review->setId(123);
-        $review->setState(CodeReviewStateType::OPEN);
-
-        $this->bus->expects(self::exactly(2))
-            ->method('dispatch')
-            ->with(
-                ...consecutive(
-                    [new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title'))],
-                    [new Envelope(new ReviewClosed(123, null))]
-                )
-            )
-            ->willReturn($this->envelope);
-
-        $this->service->revisionRemovedFromReview($review, $revision, CodeReviewStateType::CLOSED);
-    }
-
-    public function testRevisionRemovedFromReviewWithMinimalEvents(): void
-    {
-        $revision = new Revision();
-        $revision->setId(456);
-        $revision->setTitle('title');
-        $review = new CodeReview();
-        $review->setId(123);
-        $review->setState(CodeReviewStateType::OPEN);
-
-        $this->bus->expects(self::once())
-            ->method('dispatch')
-            ->with(new Envelope(new ReviewRevisionRemoved(123, 456, null, 'title')))
-            ->willReturn($this->envelope);
-
-        $this->service->revisionRemovedFromReview($review, $revision, CodeReviewStateType::OPEN);
     }
 }

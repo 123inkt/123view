@@ -24,7 +24,7 @@ class WebhookTypeTest extends AbstractTestCase
     {
         $builder = $this->createMock(FormBuilderInterface::class);
 
-        $builder->expects(self::exactly(6))
+        $builder->expects($this->exactly(6))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -36,7 +36,7 @@ class WebhookTypeTest extends AbstractTestCase
                     ['repositories', RepositoryChoiceType::class],
                 )
             )->willReturnSelf();
-        $builder->expects(self::once())->method('get')->with('repositories')->willReturnSelf();
+        $builder->expects($this->once())->method('get')->with('repositories')->willReturnSelf();
 
         $type = new WebhookType();
         $type->buildForm($builder, []);
@@ -56,7 +56,7 @@ class WebhookTypeTest extends AbstractTestCase
     public function testGetAuthorization(): void
     {
         $webhookA = new Webhook();
-        $webhookB = (new Webhook())->setHeader('Authorization', 'Bearer 123view');
+        $webhookB = new Webhook()->setHeader('Authorization', 'Bearer 123view');
 
         $type = new WebhookType();
         static::assertSame('', $type->getAuthorization($webhookA));
@@ -66,7 +66,7 @@ class WebhookTypeTest extends AbstractTestCase
     public function testSetAuthorization(): void
     {
         $webhookA = new Webhook();
-        $webhookB = (new Webhook())->setHeader('Authorization', 'Bearer 123view');
+        $webhookB = new Webhook()->setHeader('Authorization', 'Bearer 123view');
 
         $type = new WebhookType();
         $type->setAuthorization($webhookA, 'bearer');

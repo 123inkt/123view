@@ -11,21 +11,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(HtmlMailExtension::class)]
 class HtmlMailExtensionTest extends AbstractTestCase
 {
-    public function testGetFilters(): void
-    {
-        $extension = new HtmlMailExtension();
-        $filters   = $extension->getFilters();
-
-        static::assertCount(1, $filters);
-
-        $filter = $filters[0];
-        static::assertSame('html_mail', $filter->getName());
-    }
-
     #[DataProvider('dataProvider')]
     public function testConvert(string $html, string $expected): void
     {
-        static::assertSame($expected, (new HtmlMailExtension())->convert($html));
+        static::assertSame($expected, new HtmlMailExtension()->convert($html));
     }
 
     /**

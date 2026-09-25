@@ -6,6 +6,7 @@ namespace DR\Review\QueryParser;
 use DR\Review\QueryParser\Term\Operator\AndOperator;
 use DR\Review\QueryParser\Term\Operator\NotOperator;
 use DR\Review\QueryParser\Term\Operator\OrOperator;
+use DR\Review\QueryParser\Term\TermInterface;
 use Exception;
 use Parsica\Parsica\Parser;
 use function Parsica\Parsica\atLeastOne;
@@ -28,7 +29,6 @@ class ParserFactory
 {
     /**
      * @template T
-     *
      * @param Parser<T> $parser
      *
      * @return Parser<T>
@@ -43,7 +43,6 @@ class ParserFactory
 
     /**
      * @template T
-     *
      * @param Parser<T> $parser
      *
      * @return Parser<T>
@@ -58,7 +57,6 @@ class ParserFactory
 
     /**
      * @template T
-     *
      * @param callable(): Parser<T> $term
      *
      * @return Parser<T>
@@ -68,6 +66,9 @@ class ParserFactory
     {
         /** @var Parser<T> $expr */
         $expr = recursive();
+
+        $andCallable = static fn(TermInterface $left, TermInterface $right) => new AndOperator($left, $right);
+        $orCallable  = static fn(TermInterface $left, TermInterface $right) => new OrOperator($left, $right);
 
         // When the parser encounters NOT, AND, or OR, it returns a NotOperator, AndOperator, or OrOperator object.
         // The $val, $left and $right arguments can be TermInterface objects themselves, creating the tree.
@@ -79,8 +80,8 @@ class ParserFactory
                     // The NOT operator is a prefix operator, so it only has one argument.
                     prefix(unaryOperator(ParserFactory::tokens(stringI("NOT")), static fn($val) => new NotOperator($val))),
                     // The AND and OR operators are infix operators, so they have two arguments.
-                    leftAssoc(binaryOperator(ParserFactory::tokens(stringI("AND")), static fn($left, $right) => new AndOperator($left, $right))),
-                    leftAssoc(binaryOperator(ParserFactory::tokens(stringI("OR")), static fn($left, $right) => new OrOperator($left, $right)))
+                    leftAssoc(binaryOperator(ParserFactory::tokens(stringI("AND")), $andCallable)),
+                    leftAssoc(binaryOperator(ParserFactory::tokens(stringI("OR")), $orCallable))
                 ]
             )
         );

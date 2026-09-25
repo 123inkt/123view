@@ -9,10 +9,12 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Model\Review\Action\AbstractReviewAction;
 use DR\Review\Model\Review\Action\AddCommentReplyAction;
 use DR\Review\Service\CodeHighlight\CacheableHighlightedFileService;
+use DR\Review\Service\CodeOwner\CodeOwnerFinder;
 use DR\Review\Service\Git\Diff\UnifiedDiffBundler;
 use DR\Review\Service\Git\Diff\UnifiedDiffEmphasizer;
 use DR\Review\Service\Git\Diff\UnifiedDiffSplitter;
 use DR\Review\ViewModel\App\Review\FileDiffViewModel;
+use DR\Review\ViewModel\App\Review\HighlightFileViewModel;
 use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Utils\Assert;
 use Throwable;
@@ -27,6 +29,7 @@ class FileDiffViewModelProvider
         private readonly UnifiedDiffEmphasizer $emphasizer,
         private readonly UnifiedDiffSplitter $splitter,
         private readonly CodeQualityViewModelProvider $codeQualityViewModelProvider,
+        private readonly CodeOwnerFinder $codeOwnerFinder,
     ) {
     }
 
@@ -38,14 +41,15 @@ class FileDiffViewModelProvider
         DiffFile $selectedFile,
         ?AbstractReviewAction $reviewAction,
         DiffComparePolicy $comparePolicy,
-        ReviewDiffModeEnum $diffMode
+        ReviewDiffModeEnum $diffMode,
+        int $visibleLines
     ): FileDiffViewModel {
-        $viewModel = new FileDiffViewModel($selectedFile, $diffMode);
+        $viewModel = new FileDiffViewModel($selectedFile, $diffMode, $visibleLines);
 
         // create highlighted file
         if ($selectedFile->isDeleted() === false) {
             $highlightedFile = $this->hfService->fromDiffFile(Assert::notNull($review->getRepository()), $selectedFile);
-            $viewModel->setHighlightedFile($highlightedFile);
+            $viewModel->setHighlightedFileViewModel(new HighlightFileViewModel($highlightedFile));
         }
 
         // apply diff mode
@@ -69,6 +73,11 @@ class FileDiffViewModelProvider
 
         // gather code inspection issues
         $viewModel->setCodeQualityViewModel($this->codeQualityViewModelProvider->getCodeQualityViewModel($review, $selectedFile->getPathname()));
+
+        // gather code owners
+        if ($selectedFile->filePathBefore !== null) {
+            $viewModel->setCodeOwners($this->codeOwnerFinder->find($review->getRepository(), $selectedFile->filePathBefore));
+        }
 
         return $viewModel;
     }

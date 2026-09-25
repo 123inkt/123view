@@ -58,7 +58,6 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
 
     /**
      * @template T of object
-     *
      * @param class-string<T> $serviceId
      *
      * @return T
@@ -73,7 +72,7 @@ abstract class AbstractRepositoryTestCase extends KernelTestCase
     }
 
     /**
-     * @return class-string[]
+     * @return list<class-string>
      */
     abstract protected function getFixtures(): array;
 }

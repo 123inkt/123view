@@ -19,8 +19,12 @@ use DR\Review\ViewModel\Mail\CommitsViewModel;
 use DR\Review\ViewModelProvider\Mail\CommitsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * @extends AbstractControllerTestCase<RuleNotificationController>
+ */
 #[CoversClass(RuleNotificationController::class)]
 class RuleNotificationControllerTest extends AbstractControllerTestCase
 {
@@ -38,6 +42,9 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
 
     public function testInvokeShouldDenyAccess(): void
     {
+        $this->ruleProcessor->expects($this->never())->method('processRule');
+        $this->notificationRepository->expects($this->never())->method('save');
+        $this->viewModelProvider->expects($this->never())->method('getCommitsViewModel');
         $rule         = new Rule();
         $notification = new RuleNotification();
         $notification->setRule($rule);
@@ -58,20 +65,45 @@ class RuleNotificationControllerTest extends AbstractControllerTestCase
         $notification = new RuleNotification();
         $notification->setNotifyTimestamp(123456789);
         $notification->setRule($rule);
-        $commit = $this->createMock(Commit::class);
+        $commit = static::createStub(Commit::class);
 
         $viewModel = new CommitsViewModel([$commit], MailThemeType::DARCULA);
 
         $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
-        $this->ruleProcessor->expects(self::once())->method('processRule')->with()->willReturn([$commit]);
-        $this->viewModelProvider->expects(self::once())->method('getCommitsViewModel')->with([$commit], $rule, $notification)->willReturn($viewModel);
+        $this->ruleProcessor->expects($this->once())->method('processRule')->willReturn([$commit]);
+        $this->viewModelProvider->expects($this->once())
+            ->method('getCommitsViewModel')
+            ->with([$commit], $rule, $notification)
+            ->willReturn($viewModel);
         $this->expectRender('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
-        $this->notificationRepository->expects(self::once())->method('save')->with($notification);
+        $this->notificationRepository->expects($this->once())->method('save')->with($notification);
 
         $response = ($this->controller)($notification);
 
         static::assertTrue($response->headers->has('Content-Security-Policy'));
         static::assertTrue($notification->isRead());
+    }
+
+    public function testInvokeNoCommits(): void
+    {
+        $options = new RuleOptions();
+        $options->setFrequency(Frequency::ONCE_PER_DAY);
+        $options->setTheme(MailThemeType::DARCULA);
+        $rule = new Rule();
+        $rule->setRuleOptions($options);
+        $notification = new RuleNotification();
+        $notification->setNotifyTimestamp(123456789);
+        $notification->setRule($rule);
+
+        $this->expectDenyAccessUnlessGranted(RuleVoter::EDIT, $rule);
+        $this->ruleProcessor->expects($this->once())->method('processRule')->willReturn([]);
+        $this->notificationRepository->expects($this->once())->method('save')->with($notification);
+        $this->viewModelProvider->expects($this->never())->method('getCommitsViewModel');
+
+        static::assertEquals(
+            new Response('No (more) revisions found for this notification rule', headers: ['Content-Type' => 'text/plain']),
+            ($this->controller)($notification)
+        );
     }
 
     public function getController(): AbstractController

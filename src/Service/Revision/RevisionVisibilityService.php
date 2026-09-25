@@ -4,16 +4,16 @@ declare(strict_types=1);
 namespace DR\Review\Service\Revision;
 
 use Doctrine\Common\Collections\Collection;
-use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\Revision\RevisionVisibility;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Revision\RevisionVisibilityRepository;
+use DR\Review\Service\User\UserEntityProvider;
 
-class RevisionVisibilityService
+readonly class RevisionVisibilityService
 {
-    public function __construct(private readonly ?User $user, private readonly RevisionVisibilityRepository $visibilityRepository)
+    public function __construct(private UserEntityProvider $userProvider, private RevisionVisibilityRepository $visibilityRepository)
     {
     }
 
@@ -24,11 +24,10 @@ class RevisionVisibilityService
      */
     public function getVisibleRevisions(CodeReview $review, array $revisions): array
     {
-        if ($review->getType() === CodeReviewType::BRANCH) {
+        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => (int)$this->userProvider->getUser()?->getId()]);
+        if (count($visibilities) === 0) {
             return $revisions;
         }
-
-        $visibilities = $this->visibilityRepository->findBy(['review' => $review->getId(), 'user' => (int)$this->user?->getId()]);
 
         $result = [];
         foreach ($revisions as $revision) {
@@ -66,7 +65,7 @@ class RevisionVisibilityService
                 }
             }
 
-            $result[] = (new RevisionVisibility())
+            $result[] = new RevisionVisibility()
                 ->setReview($review)
                 ->setUser($user)
                 ->setRevision($revision)

@@ -14,6 +14,7 @@ use Exception;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
@@ -34,11 +35,11 @@ class GitlabWebhookTest extends AbstractFunctionalTestCase
     {
         // setup repository en property
         $repository = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $property   = (new RepositoryProperty('gitlab-project-id', '123'))->setRepository($repository);
+        $property   = new RepositoryProperty('gitlab-project-id', '123')->setRepository($repository);
         self::getService(RepositoryPropertyRepository::class)->save($property, true);
 
         // setup mock
-        $this->eventHandler->expects(self::once())->method('handle');
+        $this->eventHandler->expects($this->once())->method('handle');
         self::getContainer()->set(RemoteEventHandler::class, $this->eventHandler);
 
         // setup request
@@ -46,10 +47,11 @@ class GitlabWebhookTest extends AbstractFunctionalTestCase
         $server = ['HTTP_X_GITLAB_EVENT' => 'Push Hook', 'HTTP_X_GITLAB_TOKEN' => '123test'];
 
         // execute
-        $this->client->request('POST', '/webhook/gitlab', [], [], $server, Json::encode($body));
+        $this->client->request(Request::METHOD_POST, '/webhook/gitlab', [], [], $server, Json::encode($body));
         self::assertResponseIsSuccessful();
 
         $response = $this->client->getResponse();
+        static::assertInstanceOf(Response::class, $response);
         static::assertSame(Response::HTTP_ACCEPTED, $response->getStatusCode());
     }
 

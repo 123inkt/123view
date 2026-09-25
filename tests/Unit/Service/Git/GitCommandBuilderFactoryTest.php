@@ -25,6 +25,7 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createCheckout();
         $this->factory->createCherryPick();
         $this->factory->createClean();
+        $this->factory->createClone();
         $this->factory->createCommit();
         $this->factory->createDiff();
         $this->factory->createDiffTree();
@@ -36,6 +37,8 @@ class GitCommandBuilderFactoryTest extends AbstractTestCase
         $this->factory->createRevList();
         $this->factory->createShow();
         $this->factory->createStatus();
+        $this->factory->createGrep();
+        $this->factory->createLsTree();
         $this->addToAssertionCount(1);
     }
 }

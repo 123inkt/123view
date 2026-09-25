@@ -14,7 +14,7 @@ class Recipient
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     #[Assert\Length(max: 255)]
@@ -28,9 +28,14 @@ class Recipient
     #[ORM\JoinColumn(nullable: false)]
     private Rule $rule;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function getName(): ?string
@@ -67,5 +72,11 @@ class Recipient
         $this->rule = $rule;
 
         return $this;
+    }
+
+    public function __clone(): void
+    {
+        unset($this->id);
+        unset($this->rule);
     }
 }

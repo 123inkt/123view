@@ -19,7 +19,7 @@ class CodeReviewActivityOutputFactory
         $review = $this->reviewOutputFactory->create(Assert::notNull($activity->getReview()));
 
         return new CodeReviewActivityOutput(
-            (int)$activity->getId(),
+            $activity->getId(),
             $user,
             $review,
             $activity->getEventName(),

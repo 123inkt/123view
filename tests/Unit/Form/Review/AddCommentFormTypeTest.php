@@ -5,8 +5,10 @@ namespace DR\Review\Tests\Unit\Form\Review;
 
 use DR\Review\Controller\App\Review\Comment\AddCommentController;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Form\Review\AddCommentFormType;
+use DR\Review\Form\Review\CommentTagType;
 use DR\Review\Form\Review\CommentType;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -34,6 +36,7 @@ class AddCommentFormTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -52,24 +55,36 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $review->setId(123);
         $lineReference = new LineReference('path', 'path', 1, 2, 3);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(AddCommentController::class, ['id' => 123])
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(3))
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(5))
             ->method('add')
             ->with(
                 ...consecutive(
-                    ['lineReference', HiddenType::class, static::isType('array')],
-                    ['message', CommentType::class, static::isType('array')],
+                    ['lineReference', HiddenType::class, static::isArray()],
+                    ['message', CommentType::class, static::isArray()],
+                    ['tag', CommentTagType::class, static::isArray()],
                     ['save', SubmitType::class, ['label' => 'add.comment']],
+                    ['saveDraft', SubmitType::class, ['label' => 'save.as.draft']],
                 )
             )->willReturnSelf();
 
         $this->type->buildForm($builder, ['review' => $review, 'lineReference' => $lineReference]);
+    }
+
+    public function testSetter(): void
+    {
+        $this->urlGenerator->expects($this->never())->method('generate');
+        $reference = 'old/path:new/path:1:2:3:commitSha:A';
+        $comment   = new Comment();
+        $this->type->setter($comment, $reference);
+        static::assertEquals(LineReference::fromString($reference), $comment->getLineReference());
+        static::assertSame('old/path', $comment->getFilePath());
     }
 }

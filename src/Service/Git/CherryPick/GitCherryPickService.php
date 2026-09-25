@@ -117,8 +117,6 @@ class GitCherryPickService implements LoggerAwareInterface
             ->abort();
 
         // abort cherry-pick
-        $output = $this->repositoryService->getRepository($repository)->execute($commandBuilder);
-
-        $this->logger?->info($output);
+        $this->repositoryService->getRepository($repository)->execute($commandBuilder);
     }
 }

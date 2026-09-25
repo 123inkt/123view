@@ -17,6 +17,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Throwable;
 
+/**
+ * @extends AbstractControllerTestCase<GetMergeRequestForReviewController>
+ */
 #[CoversClass(GetMergeRequestForReviewController::class)]
 class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 {
@@ -35,6 +38,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
      */
     public function testInvokeNoGitlabUrl(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $controller = new GetMergeRequestForReviewController('', $this->gitlabService, $this->revisionService);
         $review     = new CodeReview();
 
@@ -44,6 +49,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNoProjectId(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $repository = new Repository();
         $review     = new CodeReview();
         $review->setRepository($repository);
@@ -55,6 +62,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
 
     public function testInvokeNoRemoteRef(): void
     {
+        $this->gitlabService->expects($this->never())->method('getMergeRequestUrl');
+        $this->revisionService->expects($this->once())->method('getRevisions');
         $repository = new Repository();
         $repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '1'));
         $review = new CodeReview();
@@ -74,8 +83,8 @@ class GetMergeRequestForReviewControllerTest extends AbstractControllerTestCase
         $review = new CodeReview();
         $review->setRepository($repository);
 
-        $this->revisionService->expects(self::once())->method('getRevisions')->with($review)->willReturn([$revision]);
-        $this->gitlabService->expects(self::once())->method('getMergeRequestUrl')->with(123, 'remote-ref')->willReturn('url');
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->gitlabService->expects($this->once())->method('getMergeRequestUrl')->with(123, 'remote-ref')->willReturn('url');
 
         $expected = new JsonResponse(
             ['url' => 'url', 'icon' => 'bi-gitlab', 'title' => 'Go to merge request in gitlab'],

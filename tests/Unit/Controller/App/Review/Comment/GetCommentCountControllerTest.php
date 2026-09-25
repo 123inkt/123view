@@ -5,9 +5,9 @@ namespace DR\Review\Tests\Unit\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
 use DR\Review\Controller\App\Review\Comment\GetCommentCountController;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Tests\AbstractControllerTestCase;
 use DR\Utils\Assert;
 use Nette\Utils\Json;
@@ -15,6 +15,9 @@ use Nette\Utils\JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * @extends AbstractControllerTestCase<GetCommentCountController>
+ */
 #[CoversClass(GetCommentCountController::class)]
 class GetCommentCountControllerTest extends AbstractControllerTestCase
 {
@@ -23,8 +26,8 @@ class GetCommentCountControllerTest extends AbstractControllerTestCase
      */
     public function testInvoke(): void
     {
-        $commentA = (new Comment())->setState(CommentStateType::OPEN);
-        $commentB = (new Comment())->setState(CommentStateType::RESOLVED);
+        $commentA = new Comment()->setState(CommentStateEnum::Open);
+        $commentB = new Comment()->setState(CommentStateEnum::Resolved);
         $review   = new CodeReview();
         $review->getComments()->add($commentA);
         $review->getComments()->add($commentB);

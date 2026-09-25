@@ -35,7 +35,7 @@ class CommentAddedMessageHandler implements LoggerAwareInterface
     public function __invoke(CommentAdded $event): void
     {
         if ($this->gitlabCommentSyncEnabled === false) {
-            $this->logger?->info('Gitlab comment sync disabled');
+            $this->logger?->info('Gitlab comment sync disabled. Comment id: {id}', ['id' => $event->commentId]);
 
             return;
         }
@@ -43,18 +43,23 @@ class CommentAddedMessageHandler implements LoggerAwareInterface
         $comment = Assert::notNull($this->commentRepository->find($event->getCommentId()));
         $api     = $this->apiProvider->create($comment->getReview()->getRepository(), $comment->getUser());
         if ($api === null) {
-            $this->logger?->info('No api configuration found for comment {comment}', ['comment' => $comment->getId()]);
+            $this->logger?->info('No api configuration found for comment {id}', ['id' => $comment->getId()]);
 
             return;
         }
 
         $mergeRequestIId = $this->mergeRequestService->retrieveMergeRequestIID($api, $comment->getReview());
         if ($mergeRequestIId === null) {
-            $this->logger?->info('No mergeRequestIdd found for for comment {comment}', ['comment' => $comment->getId()]);
+            $this->logger?->info('No mergeRequestIdd found for for comment {id}', ['id' => $comment->getId()]);
 
             return;
         }
 
-        $this->commentService->create($api, $comment, $mergeRequestIId);
+        try {
+            $this->commentService->create($api, $comment, $mergeRequestIId);
+        } catch (Throwable $exception) {
+            $this->commentService->updateExtReferenceId($api, $comment, $mergeRequestIId);
+            $this->logger?->warning("Gitlab comment added but with error", ['exception' => $exception]);
+        }
     }
 }

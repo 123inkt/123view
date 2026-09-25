@@ -14,7 +14,7 @@ class RuleConfigurationTest extends AbstractTestCase
 {
     public function testConstruct(): void
     {
-        $period = $this->createMock(DatePeriod::class);
+        $period = static::createStub(DatePeriod::class);
         $rule   = new Rule();
 
         $config = new RuleConfiguration($period, $rule);

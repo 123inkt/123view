@@ -15,7 +15,7 @@ class Webhook
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $enabled = true;
@@ -38,7 +38,7 @@ class Webhook
     private Collection $repositories;
 
     /** @phpstan-var Collection<int, WebhookActivity> */
-    #[ORM\OneToMany(mappedBy: 'webhook', targetEntity: WebhookActivity::class, cascade: ['persist', 'remove'], orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: WebhookActivity::class, mappedBy: 'webhook', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $activities;
 
     public function __construct()
@@ -54,7 +54,12 @@ class Webhook
         return $this;
     }
 
-    public function getId(): ?int
+    public function hasId(): bool
+    {
+        return isset($this->id);
+    }
+
+    public function getId(): int
     {
         return $this->id;
     }

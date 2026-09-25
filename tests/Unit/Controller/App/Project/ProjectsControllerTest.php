@@ -10,8 +10,12 @@ use DR\Review\ViewModel\App\Project\ProjectsViewModel;
 use DR\Review\ViewModelProvider\ProjectsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+/**
+ * @extends AbstractControllerTestCase<ProjectsController>
+ */
 #[CoversClass(ProjectsController::class)]
 class ProjectsControllerTest extends AbstractControllerTestCase
 {
@@ -27,12 +31,13 @@ class ProjectsControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $viewModel = $this->createMock(ProjectsViewModel::class);
+        $request   = new Request(['search' => 'search']);
+        $viewModel = static::createStub(ProjectsViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getProjectsViewModel')->willReturn($viewModel);
-        $this->translator->expects(self::once())->method('trans')->with('projects')->willReturn('Projects');
+        $this->viewModelProvider->expects($this->once())->method('getProjectsViewModel')->with('search')->willReturn($viewModel);
+        $this->translator->expects($this->once())->method('trans')->with('projects')->willReturn('Projects');
 
-        $result = ($this->controller)();
+        $result = ($this->controller)($request);
         static::assertSame('Projects', $result['page_title']);
         static::assertSame($viewModel, $result['projectsModel']);
     }

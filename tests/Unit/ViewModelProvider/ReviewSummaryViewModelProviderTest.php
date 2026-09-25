@@ -49,17 +49,17 @@ class ReviewSummaryViewModelProviderTest extends AbstractTestCase
         $file                 = new DiffFile();
         $file->filePathBefore = 'file/path/before';
         $file->filePathAfter  = 'file/path/after';
-        $tree                 = new DirectoryTreeNode('name', [], [$file]);
+        $tree                 = new DirectoryTreeNode('name', null, [], [$file]);
 
         $report = new CodeInspectionReport();
         $issue  = new CodeInspectionIssue();
 
-        $this->reportRepository->expects(self::once())->method('findByRevisions')->with($repository, [$revision])->willReturn([$report]);
-        $this->issueRepository->expects(self::once())
+        $this->reportRepository->expects($this->once())->method('findByRevisions')->with($repository, [$revision])->willReturn([$report]);
+        $this->issueRepository->expects($this->once())
             ->method('findBy')
             ->with(['report' => [$report], 'file' => ['file/path/after']], ['file' => 'ASC'])
             ->willReturn([$issue]);
-        $this->timelineModelProvider->expects(self::once())->method('getTimelineViewModel')->with($review);
+        $this->timelineModelProvider->expects($this->once())->method('getTimelineViewModel')->with($review);
 
         $this->provider->getSummaryViewModel($review, [$revision], $tree);
     }

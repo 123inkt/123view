@@ -26,7 +26,7 @@ class RepositoryUtilTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setUrl(Uri::new('https://example.com'));
-        $repository->setCredential((new RepositoryCredential())->setCredentials(new BasicAuthCredential('username', 'password')));
+        $repository->setCredential(new RepositoryCredential()->setCredentials(new BasicAuthCredential('username', 'password')));
 
         static::assertSame('https://username:password@example.com', (string)RepositoryUtil::getUriWithCredentials($repository));
     }

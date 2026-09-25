@@ -14,9 +14,9 @@ $name  = 'Sherlock Holmes';
 $email = 'sherlock@example.com';
 
 return [
-    (new Rule())
+    new Rule()
         ->setUser(
-            (new User())
+            new User()
                 ->setId(123)
                 ->setName($name)
                 ->setEmail($email)
@@ -25,17 +25,17 @@ return [
         ->setName('Detectives')
         ->setActive(true)
         ->setRuleOptions(
-            (new RuleOptions())
+            new RuleOptions()
                 ->setSubject('My commits')
                 ->setTheme(MailThemeType::DARCULA)
         )
         ->addRecipient(
-            (new Recipient())
+            new Recipient()
                 ->setEmail($email)
                 ->setName($name)
         )
         ->addRepository(
-            (new Repository())
+            new Repository()
                 ->setName('sherlock')
                 ->setUrl(Uri::new('https://example.com/detectives/sherlock.git'))
         )

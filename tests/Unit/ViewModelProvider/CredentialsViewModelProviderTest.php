@@ -27,7 +27,7 @@ class CredentialsViewModelProviderTest extends AbstractTestCase
     {
         $webhook = new RepositoryCredential();
 
-        $this->webhookRepository->expects(self::once())->method('findBy')->with([], ['id' => 'ASC'])->willReturn([$webhook]);
+        $this->webhookRepository->expects($this->once())->method('findBy')->with([], ['id' => 'ASC'])->willReturn([$webhook]);
 
         $viewModel = $this->viewModelProvider->getCredentialsViewModel();
         static::assertSame([$webhook], $viewModel->credentials);

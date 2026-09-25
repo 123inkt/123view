@@ -7,6 +7,7 @@ use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\User\User;
+use DR\Review\Entity\User\UserReviewSetting;
 use DR\Review\Entity\User\UserSetting;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -20,6 +21,15 @@ class UserTest extends AbstractTestCase
         $config->setExcludedMethods(['getRules', 'addRule', 'getReviewers', 'getComments', 'getReplies', 'getMentions', 'getGitAccessTokens']);
 
         static::assertAccessorPairs(User::class, $config);
+    }
+
+    public function testHasId(): void
+    {
+        $user = new User();
+        static::assertFalse($user->hasId());
+
+        $user->setId(123);
+        static::assertTrue($user->hasId());
     }
 
     public function testHasRole(): void
@@ -55,6 +65,21 @@ class UserTest extends AbstractTestCase
         $user    = new User();
         $user->setSetting($setting);
         static::assertSame($setting, $user->getSetting());
+    }
+
+    public function testGetReviewSetting(): void
+    {
+        $setting = new UserReviewSetting();
+        $user = new User()->setReviewSetting($setting);
+
+        static::assertSame($setting, $user->getReviewSetting());
+    }
+
+    public function testGetReviewSettingCreatesInstanceIfNull(): void
+    {
+        $user          = new User();
+        $reviewSetting = $user->getReviewSetting();
+        static::assertSame($user, $reviewSetting->getUser());
     }
 
     public function testGitAccessTokens(): void

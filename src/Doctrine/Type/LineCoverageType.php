@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace DR\Review\Doctrine\Type;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\ConversionException;
+use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Doctrine\DBAL\Types\Type;
 use DR\Review\Entity\Report\LineCoverage;
 use Nette\Utils\JsonException;
 
 class LineCoverageType extends Type
 {
-    public const TYPE = "line_coverage_type";
+    public const string TYPE = "line_coverage_type";
 
     /**
      * @inheritDoc
@@ -32,7 +33,7 @@ class LineCoverageType extends Type
         }
 
         if ($value instanceof LineCoverage === false) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'LineCoverage']);
+            throw ValueNotConvertible::new($value, 'LineCoverage');
         }
 
         return $value->toBinaryString();
@@ -49,7 +50,7 @@ class LineCoverageType extends Type
         }
 
         if (is_string($value) === false) {
-            throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', 'string']);
+            throw InvalidType::new($value, 'string', ['string']);
         }
 
         return LineCoverage::fromBinaryString($value);

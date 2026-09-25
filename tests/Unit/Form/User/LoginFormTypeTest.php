@@ -35,8 +35,8 @@ class LoginFormTypeTest extends AbstractTestCase
     public function testBuildForm(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(4))
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(4))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -55,8 +55,8 @@ class LoginFormTypeTest extends AbstractTestCase
     public function testBuildFormWithoutTargetPath(): void
     {
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(3))
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(3))
             ->method('add')
             ->with(
                 ...consecutive(

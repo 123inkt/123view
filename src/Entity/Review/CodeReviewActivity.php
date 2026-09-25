@@ -47,16 +47,16 @@ use DR\Review\Security\Role\Roles;
     arguments : ['orderParameterName' => 'order']
 )]
 #[ORM\Entity(repositoryClass: CodeReviewActivityRepository::class)]
-#[ORM\Index(['create_timestamp', 'user_id', 'event_name'], name: 'IDX_CREATE_TIMESTAMP_USER_EVENT')]
-#[ORM\Index(['review_id'], name: 'IDX_REVIEW_ID')]
-#[ORM\Index(['event_name'], name: 'IDX_EVENT_REPOSITORY')]
-#[ORM\Index(['user_id'], name: 'IDX_USER_ID')]
+#[ORM\Index(name: 'IDX_CREATE_TIMESTAMP_USER_EVENT', columns: ['create_timestamp', 'user_id', 'event_name'])]
+#[ORM\Index(name: 'IDX_REVIEW_ID', columns: ['review_id'])]
+#[ORM\Index(name: 'IDX_EVENT_REPOSITORY', columns: ['event_name'])]
+#[ORM\Index(name: 'IDX_USER_ID', columns: ['user_id'])]
 class CodeReviewActivity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: true)]
@@ -76,7 +76,7 @@ class CodeReviewActivity
     #[ORM\Column]
     private int $createTimestamp;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

@@ -14,6 +14,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<ChangeUserProfileController>
+ */
 #[CoversClass(ChangeUserProfileController::class)]
 class ChangeUserProfileControllerTest extends AbstractControllerTestCase
 {
@@ -33,7 +36,7 @@ class ChangeUserProfileControllerTest extends AbstractControllerTestCase
         $this->expectCreateForm(UserProfileFormType::class, $user, ['user' => $user])
             ->handleRequest($request)
             ->isSubmittedWillReturn(false);
-        $this->userRepository->expects(self::never())->method('save');
+        $this->userRepository->expects($this->never())->method('save');
         $this->expectRefererRedirect(UsersController::class);
 
         ($this->controller)($request, $user);
@@ -48,7 +51,7 @@ class ChangeUserProfileControllerTest extends AbstractControllerTestCase
             ->handleRequest($request)
             ->isSubmittedWillReturn(true)
             ->isValidWillReturn(true);
-        $this->userRepository->expects(self::once())->method('save')->with($user, true);
+        $this->userRepository->expects($this->once())->method('save')->with($user, true);
         $this->expectAddFlash('success', 'user.profile.saved.successful');
         $this->expectRefererRedirect(UsersController::class);
 

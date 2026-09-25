@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Form\Review;
 use DR\Review\Controller\App\Review\Comment\AddCommentReplyController;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Form\Review\AddCommentReplyFormType;
+use DR\Review\Form\Review\CommentTagType;
 use DR\Review\Form\Review\CommentType;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,6 +33,7 @@ class AddCommentReplyFormTypeTest extends AbstractTestCase
 
     public function testConfigureOptions(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $resolver     = new OptionsResolver();
         $introspector = new OptionsResolverIntrospector($resolver);
 
@@ -47,19 +49,20 @@ class AddCommentReplyFormTypeTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setId(123);
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(AddCommentReplyController::class, ['id' => 123])
             ->willReturn($url);
 
         $builder = $this->createMock(FormBuilderInterface::class);
-        $builder->expects(self::once())->method('setAction')->with($url);
-        $builder->expects(self::once())->method('setMethod')->with('POST');
-        $builder->expects(self::exactly(2))
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(3))
             ->method('add')
             ->with(
                 ...consecutive(
                     ['message', CommentType::class],
+                    ['tag', CommentTagType::class],
                     ['save', SubmitType::class, ['label' => 'reply']],
                 )
             )->willReturnSelf();

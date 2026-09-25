@@ -36,7 +36,7 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
         $comment->setReview($review);
         $comment->setFilePath('filepath');
 
-        $this->urlGenerator->expects(self::once())
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review, 'filePath' => 'filepath'])
             ->willReturn('https://url/');
@@ -49,6 +49,7 @@ class CodeReviewActivityVariableFactoryTest extends AbstractTestCase
 
     public function testCreateParams(): void
     {
+        $this->urlGenerator->expects($this->never())->method('generate');
         $variableA = new ActivityVariable('escape', 'foo & bar');
         $variableB = new ActivityVariable('not-escape', 'foo &amp; bar', true);
 

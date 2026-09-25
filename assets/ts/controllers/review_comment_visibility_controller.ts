@@ -26,7 +26,7 @@ export default class extends Controller<HTMLElement> {
         this.dropdownTarget.style.display = '';
 
         // update icon class
-        this.iconTarget.className = DataSet.string(this.iconTarget, 'iconClass' + Strings.capitalize(visibility));
+        this.iconTarget.className = DataSet.string(this.iconTarget, `iconClass${Strings.capitalize(visibility)}`);
 
         // update comment visibility
         switch (visibility) {

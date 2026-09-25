@@ -44,11 +44,19 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
     public function testIsSupportedNullIsNot(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         static::assertFalse($this->matcher->isSupported(null));
     }
 
     public function testIsSupportedRepositoryTimestampShouldBeGreaterThanRevisionTimestamp(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         $repository = new Repository();
         $repository->setCreateTimestamp(20000);
 
@@ -59,8 +67,26 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         static::assertFalse($this->matcher->isSupported($revision));
     }
 
+    public function testIsSupportedShouldBeActive(): void
+    {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
+        $repository = new Repository();
+        $repository->setActive(false);
+        $revision   = new Revision();
+        $revision->setRepository($repository);
+
+        static::assertFalse($this->matcher->isSupported($revision));
+    }
+
     public function testIsSupportedAuthorShouldBeExcluded(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         $repository = new Repository();
         $repository->setCreateTimestamp(10000);
 
@@ -74,6 +100,10 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
 
     public function testIsSupported(): void
     {
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
         $repository = new Repository();
         $repository->setCreateTimestamp(10000);
 
@@ -93,8 +123,10 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         $revision = new Revision();
         $revision->setTitle('foobar');
 
-        $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
-        $this->patternMatcher->expects(self::once())->method('match')->with('foobar')->willReturn(null);
+        $this->titleNormalizer->expects($this->once())->method('normalize')->willReturnArgument(0);
+        $this->patternMatcher->expects($this->once())->method('match')->with('foobar')->willReturn(null);
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
 
         static::assertNull($this->matcher->match($revision));
     }
@@ -106,17 +138,17 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
     {
         $revision = new Revision();
         $revision->setTitle('F#123 US#456 T#890 Task');
-        $revision->setRepository((new Repository())->setId(5));
+        $revision->setRepository(new Repository()->setId(5));
 
         $review = new CodeReview();
 
-        $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
-        $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
-        $this->reviewRepository->expects(self::once())
+        $this->titleNormalizer->expects($this->once())->method('normalize')->willReturnArgument(0);
+        $this->patternMatcher->expects($this->once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
+        $this->reviewRepository->expects($this->once())
             ->method('findOneByReferenceId')
             ->with(5, 'T#890', CodeReviewType::COMMITS)
             ->willReturn($review);
-        $this->reviewCreationService->expects(self::never())->method('createFromRevision');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
 
         static::assertSame($review, $this->matcher->match($revision));
     }
@@ -128,14 +160,14 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
     {
         $revision = new Revision();
         $revision->setTitle('F#123 US#456 T#890 Task');
-        $revision->setRepository((new Repository())->setId(5));
+        $revision->setRepository(new Repository()->setId(5));
 
         $review = new CodeReview();
 
-        $this->titleNormalizer->expects(self::once())->method('normalize')->willReturnArgument(0);
-        $this->patternMatcher->expects(self::once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
-        $this->reviewRepository->expects(self::once())->method('findOneByReferenceId')->with(5, 'T#890', CodeReviewType::COMMITS)->willReturn(null);
-        $this->reviewCreationService->expects(self::once())->method('createFromRevision')->with($revision)->willReturn($review);
+        $this->titleNormalizer->expects($this->once())->method('normalize')->willReturnArgument(0);
+        $this->patternMatcher->expects($this->once())->method('match')->with('F#123 US#456 T#890 Task')->willReturn('T#890');
+        $this->reviewRepository->expects($this->once())->method('findOneByReferenceId')->with(5, 'T#890', CodeReviewType::COMMITS)->willReturn(null);
+        $this->reviewCreationService->expects($this->once())->method('createFromRevision')->with($revision)->willReturn($review);
 
         static::assertSame($review, $this->matcher->match($revision));
     }

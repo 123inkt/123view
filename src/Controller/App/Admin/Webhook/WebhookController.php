@@ -14,7 +14,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class WebhookController extends AbstractController
@@ -35,7 +35,7 @@ class WebhookController extends AbstractController
             throw new NotFoundHttpException('Webhook not found');
         }
 
-        $webhook ??= (new Webhook())->setEnabled(true)->setRetries(3)->setVerifySsl(true);
+        $webhook ??= new Webhook()->setEnabled(true)->setRetries(3)->setVerifySsl(true);
 
         $form = $this->createForm(EditWebhookFormType::class, ['webhook' => $webhook]);
         $form->handleRequest($request);

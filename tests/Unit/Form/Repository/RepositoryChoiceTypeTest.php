@@ -30,7 +30,7 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         $introspector = new OptionsResolverIntrospector($resolver);
         $repositories = [new Repository()];
 
-        $this->repository->expects(self::once())->method('findBy')->with([], ['name' => 'ASC'])->willReturn($repositories);
+        $this->repository->expects($this->once())->method('findBy')->with(['active' => 1], ['name' => 'ASC'])->willReturn($repositories);
 
         $type = new RepositoryChoiceType($this->repository);
         $type->configureOptions($resolver);
@@ -45,7 +45,7 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
         $choiceLabel = $introspector->getDefault('choice_label');
         static::assertIsCallable($choiceLabel);
         static::assertSame('', $choiceLabel(null));
-        static::assertSame('name', $choiceLabel((new Repository())->setName('name')));
+        static::assertSame('name', $choiceLabel(new Repository()->setName('name')));
 
         $constraints = $introspector->getDefault('constraints');
         static::assertIsArray($constraints);
@@ -54,6 +54,7 @@ class RepositoryChoiceTypeTest extends AbstractTestCase
 
     public function testGetParent(): void
     {
+        $this->repository->expects($this->never())->method('findBy');
         $type = new RepositoryChoiceType($this->repository);
         static::assertSame(ChoiceType::class, $type->getParent());
     }

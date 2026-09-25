@@ -4,8 +4,14 @@
     {% if directory.directories|length %}
         <ul class="review-file-tree--directories text-nowrap">
             {% for subdirectory in directory.directories %}
-                <li class="review-file-tree--directory">
-                    <i class="bi bi-folder-fill icon-directory"></i> {{ subdirectory.name }}
+                {% set collapsed = fileTreeModel.isFolderCollapsed(subdirectory) %}
+                <li class="review-file-tree--directory {{ collapsed ? 'collapsed' : '' }}"
+                        {{ stimulus_controller('collapsable-folder', {reviewId: fileTreeModel.review.id, path: subdirectory.pathname}) }}>
+                    <span class="review-file-tree--directory-label" {{ stimulus_action('collapsable-folder', 'toggle', 'click') }}>
+                        <i class="bi bi-folder-fill icon-directory icon-directory-default"></i>
+                        <i class="bi bi-folder icon-directory icon-directory-collapsed"></i>
+                        {{ subdirectory.name }}
+                    </span>
                     {{ self.recursiveFileTree(fileTreeModel, subdirectory, treeDepth + 1) }}
                 </li>
             {% endfor %}
@@ -24,6 +30,7 @@
                     {%- if fileTreeModel.fileSelected(file) %}{{ stimulus_target('review-file-tree', 'activeFile') }}{% endif %}
                 >
                     <a href="?filePath={{ file|review_file_path|e('url') }}"
+                       data-review-file-path="{{ file|review_file_path }}"
                        data-role="file-tree-url"
                        data-selected="{{ fileTreeModel.fileSelected(file) ? 1 : 0 }}"
                        data-unseen="{{ isFileSeen ? 0 : 1 }}"
@@ -65,6 +72,7 @@
                               data-review-id="{{ fileTreeModel.review.id }}"
                               data-file-path="{{ file.file.pathname }}"
                               data-seen-status="{% if isFileSeen %}1{% else %}0{% endif %}"
+                              data-role="file-seen-status"
                               data-action="click->review-file-tree#toggleFileSeenStatus"
                         ></span>
                     </span>
@@ -78,10 +86,8 @@
 <div class="review-file-tree--directories-root"
         {{ stimulus_controller('review-file-tree') }}
         data-url="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewFileTreeController', {id: fileTreeModel.review.id}) }}"
+        {{ stimulus_target('review-navigation', 'reviewFileTree') }}
         data-review-id="{{ fileTreeModel.review.id }}"
-        {% if fileTreeModel.selectedFile is not same as (null) -%}
-            data-selected-file="{{ fileTreeModel.selectedFile|review_file_path }}"
-        {%- endif -%}
 >
     {{ recursiveFileTree(fileTreeModel, fileTreeModel.fileTree, 0) }}
 </div>

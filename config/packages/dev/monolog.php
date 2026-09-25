@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\MonologConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
 /**
  * Setup summary:
@@ -14,65 +14,90 @@ use Symfony\Config\MonologConfig;
  * - Level: DEBUG - stderr - !event, !deprecation, !console
  * - Level: DEBUG - console - !event, !deprecation
  */
-return static function (MonologConfig $monolog) {
-    $monolog->handler('main')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/%kernel.environment%.log')
-        ->level('info')
-        ->maxFiles(1)
-        ->formatter('monolog.formatter.line')
-        ->channels()->elements(["!event", "!console", "!deprecation"]);
-
-    $monolog->handler('error')
-        ->type('stream')
-        ->path('%kernel.logs_dir%/error.%kernel.environment%.log')
-        ->level('error')
-        ->formatter('monolog.formatter.line')
-        ->includeStacktraces(true)
-        ->channels()->elements(["!event"]);
-
-    $monolog->handler('doctrine')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/doctrine.%kernel.environment%.log')
-        ->level('debug')
-        ->formatter('monolog.formatter.line')
-        ->maxFiles(1)
-        ->channels()->elements(["doctrine"]);
-
-    $monolog->handler('git')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/git.%kernel.environment%.log')
-        ->level('debug')
-        ->formatter('monolog.formatter.line')
-        ->maxFiles(1)
-        ->channels()->elements(["git"]);
-
-    $monolog->handler('app')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/app.%kernel.environment%.log')
-        ->level('debug')
-        ->formatter('monolog.formatter.line')
-        ->maxFiles(1)
-        ->channels()->elements(["app"]);
-
-    $monolog->handler('deprecations')
-        ->type('rotating_file')
-        ->path('%kernel.logs_dir%/deprecations.%kernel.environment%.log')
-        ->level('debug')
-        ->formatter('monolog.formatter.line')
-        ->maxFiles(1)
-        ->channels()->elements(["deprecation"]);
-
-    $monolog->handler('docker')
-        ->type('stream')
-        ->level('debug')
-        ->path('php://stderr')
-        ->formatter('monolog.formatter.line')
-        ->channels()->elements(["!event", "!deprecation", "!console"]);
-
-    $monolog->handler('console')
-        ->type('console')
-        ->level('debug')
-        ->formatter('monolog.formatter.line')
-        ->channels()->elements(["!event", "!deprecation"]);
-};
+return App::config([
+    'monolog' => [
+        'handlers' => [
+            'main' => [
+                'type'     => 'rotating_file',
+                'path'     => '%kernel.logs_dir%/%kernel.environment%.log',
+                'level'    => 'info',
+                'max_files' => 1,
+                'channels' => ['!event', '!console', '!deprecation'],
+                'process_psr_3_messages' => [
+                    'remove_used_context_fields' => true,
+                ],
+            ],
+            'ai' => [
+                'type'     => 'rotating_file',
+                'path'     => '%kernel.logs_dir%/%kernel.environment%.ai.log',
+                'level'    => 'info',
+                'max_files' => 10,
+                'channels' => ['ai'],
+            ],
+            'error' => [
+                'type'                 => 'stream',
+                'path'                 => '%kernel.logs_dir%/error.%kernel.environment%.log',
+                'level'                => 'error',
+                'include_stacktraces' => true,
+                'channels'             => ['!event'],
+                'process_psr_3_messages' => [
+                    'remove_used_context_fields' => true,
+                ],
+            ],
+            'doctrine' => [
+                'type'     => 'rotating_file',
+                'path'     => '%kernel.logs_dir%/doctrine.%kernel.environment%.log',
+                'level'    => 'debug',
+                'max_files' => 1,
+                'channels' => ['doctrine'],
+                'process_psr_3_messages' => [
+                    'remove_used_context_fields' => true,
+                ],
+            ],
+            'git' => [
+                'type'     => 'rotating_file',
+                'path'     => '%kernel.logs_dir%/git.%kernel.environment%.log',
+                'level'    => 'debug',
+                'max_files' => 1,
+                'channels' => ['git'],
+                'process_psr_3_messages' => [
+                    'remove_used_context_fields' => true,
+                ],
+            ],
+            'app' => [
+                'type'     => 'rotating_file',
+                'path'     => '%kernel.logs_dir%/app.%kernel.environment%.log',
+                'level'    => 'debug',
+                'max_files' => 1,
+                'channels' => ['app'],
+                'process_psr_3_messages' => [
+                    'remove_used_context_fields' => true,
+                ],
+            ],
+            'deprecations' => [
+                'type'     => 'rotating_file',
+                'path'     => '%kernel.logs_dir%/deprecations.%kernel.environment%.log',
+                'level'    => 'debug',
+                'max_files' => 1,
+                'channels' => ['deprecation'],
+                'process_psr_3_messages' => [
+                    'remove_used_context_fields' => true,
+                ],
+            ],
+            'docker' => [
+                'type'     => 'error_log',
+                'level'    => 'debug',
+                'channels' => ['!event', '!deprecation'],
+                'process_psr_3_messages' => [
+                    'remove_used_context_fields' => true,
+                ],
+            ],
+            'console' => [
+                'type'                   => 'console',
+                'level'                  => 'debug',
+                'process_psr_3_messages' => false,
+                'channels' => ['!event', '!deprecation', '!console'],
+            ],
+        ],
+    ],
+]);

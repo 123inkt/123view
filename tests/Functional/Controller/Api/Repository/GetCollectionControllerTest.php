@@ -9,8 +9,8 @@ use DR\Review\Tests\DataFixtures\RepositoryFixtures;
 use DR\Review\Tests\DataFixtures\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
-use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Symfony\Component\HttpFoundation\Request;
 
 #[CoversNothing]
 class GetCollectionControllerTest extends AbstractFunctionalTestCase
@@ -23,11 +23,10 @@ class GetCollectionControllerTest extends AbstractFunctionalTestCase
         $user = Assert::notNull(self::getService(UserRepository::class)->findOneBy(['name' => 'Sherlock Holmes']));
 
         $this->client->loginUser($user);
-        $this->client->request('GET', '/api/repositories');
+        $this->client->request(Request::METHOD_GET, '/api/repositories');
         self::assertResponseIsSuccessful();
 
-        $data = Json::decode(Assert::notFalse($this->client->getResponse()->getContent()), true);
-        static::assertIsArray($data);
+        $data = $this->getResponseArray();
         static::assertCount(1, $data);
         static::assertSame('repository', $data[0]['name']);
     }

@@ -33,7 +33,7 @@ class UnifiedDiffBundler
     {
         $result = [];
 
-        foreach ((new DiffLineCollection($lines))->getDiffLineSet() as $set) {
+        foreach (new DiffLineCollection($lines)->getDiffLineSet() as $set) {
             if ($set instanceof DiffLine) {
                 $result[] = [$set];
                 continue;

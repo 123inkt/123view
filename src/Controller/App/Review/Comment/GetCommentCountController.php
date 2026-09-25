@@ -4,12 +4,12 @@ declare(strict_types=1);
 namespace DR\Review\Controller\App\Review\Comment;
 
 use DR\Review\Controller\AbstractController;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class GetCommentCountController extends AbstractController
@@ -22,7 +22,7 @@ class GetCommentCountController extends AbstractController
 
         foreach ($review->getComments() as $comment) {
             ++$data['total'];
-            if ($comment->getState() === CommentStateType::RESOLVED) {
+            if ($comment->getState() === CommentStateEnum::Resolved) {
                 ++$data['resolved'];
             } else {
                 ++$data['open'];

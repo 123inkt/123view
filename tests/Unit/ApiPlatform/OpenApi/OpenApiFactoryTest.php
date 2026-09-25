@@ -55,9 +55,9 @@ class OpenApiFactoryTest extends AbstractTestCase
 
         $openApi = new OpenApi(new Info('title', '1.0.0'), [], $paths, $components);
 
-        $this->openApiFactory->expects(self::once())->method('__invoke')->with($context)->willReturn($openApi);
-        $this->urlGenerator->expects(self::once())->method('generate')->willReturn('url');
-        $this->parameterDocumentor->expects(self::once())->method('getDescription')->with($operation, $parameter)->willReturn('description');
+        $this->openApiFactory->expects($this->once())->method('__invoke')->with($context)->willReturn($openApi);
+        $this->urlGenerator->expects($this->once())->method('generate')->willReturn('url');
+        $this->parameterDocumentor->expects($this->once())->method('getDescription')->with($operation, $parameter)->willReturn('description');
 
         // run test
         ($this->factory)($context);

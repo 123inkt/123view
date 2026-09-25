@@ -5,6 +5,7 @@ namespace DR\Review\Security\Api;
 
 use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Security\Role\Roles;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -13,8 +14,9 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
-class BearerAuthenticator extends AbstractAuthenticator
+class BearerAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
     public function __construct(private readonly UserAccessTokenRepository $accessTokenRepository)
     {
@@ -29,7 +31,14 @@ class BearerAuthenticator extends AbstractAuthenticator
             return false;
         }
 
-        if (str_starts_with($request->getPathInfo(), '/api/') === false) {
+        $path = $request->getPathInfo();
+
+        // For /_mcp always run authentication so that onAuthenticationFailure can return 401 directly.
+        if ($path === '/_mcp') {
+            return true;
+        }
+
+        if (str_starts_with($path, '/api/') === false) {
             return false;
         }
 
@@ -45,7 +54,12 @@ class BearerAuthenticator extends AbstractAuthenticator
      */
     public function authenticate(Request $request): Passport
     {
-        $identifier = preg_replace('/^Bearer /', '', (string)$request->headers->get('authorization'));
+        $authorization = (string)$request->headers->get('authorization', '');
+        if (str_starts_with($authorization, 'Bearer ') === false) {
+            throw new AuthenticationException('Access denied');
+        }
+
+        $identifier = preg_replace('/^Bearer /', '', $authorization);
 
         $token = $this->accessTokenRepository->findOneBy(['token' => $identifier]);
         $user  = $token?->getUser();
@@ -77,6 +91,18 @@ class BearerAuthenticator extends AbstractAuthenticator
      */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
+        if ($request->getPathInfo() === '/_mcp') {
+            return new JsonResponse(['error' => 'Authentication required'], Response::HTTP_UNAUTHORIZED);
+        }
+
         return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function start(Request $request, ?AuthenticationException $authException = null): Response
+    {
+        return new JsonResponse(['error' => 'Authentication required'], Response::HTTP_UNAUTHORIZED);
     }
 }

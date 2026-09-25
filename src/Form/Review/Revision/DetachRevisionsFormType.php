@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -44,7 +45,7 @@ class DetachRevisionsFormType extends AbstractType
         $reviewId = $options['reviewId'];
 
         $builder->setAction($this->urlGenerator->generate(DetachRevisionController::class, ['id' => $reviewId]));
-        $builder->setMethod('POST');
+        $builder->setMethod(Request::METHOD_POST);
 
         foreach ($revisions as $revision) {
             $builder->add(

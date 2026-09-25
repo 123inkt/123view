@@ -38,7 +38,7 @@
 
         <div>
             {% if notificationViewModel.selectedRule %}
-                <div class="ps-2 pb-2">
+                <div class="ps-2 pb-2 clearfix">
                     {{ 'show'|trans|capitalize }}:
                     {% if  notificationViewModel.unread %}
                         <a href="{{ url_query_params({ruleId: notificationViewModel.selectedRule.id, filter: ''}) }}">{{ 'all'|trans }}</a>
@@ -47,6 +47,9 @@
                         <span>{{ 'all'|trans }}</span>
                         <a href="{{ url_query_params({ruleId: notificationViewModel.selectedRule.id, filter: 'unread'}) }}">{{ 'unread'|trans }}</a>
                     {% endif %}
+
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Notification\\RuleNotificationMarkAsReadController', {id: notificationViewModel.selectedRule.id}) }}"
+                       class="btn btn-sm btn-outline-success float-end">{{ 'mark.all.as.read'|trans }}</a>
                 </div>
             {% endif %}
 

@@ -33,7 +33,8 @@ class CommentMentionServiceTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setMessage('foobar');
 
-        $this->mentionRepository->expects(self::once())->method('saveAll')->with($comment, []);
+        $this->mentionRepository->expects($this->once())->method('saveAll')->with($comment, []);
+        $this->userRepository->expects($this->never())->method('findAll');
 
         $this->mentionService->updateMentions($comment);
     }
@@ -52,8 +53,8 @@ class CommentMentionServiceTest extends AbstractTestCase
         $userB = new User();
         $userB->setId(456);
 
-        $this->userRepository->expects(self::once())->method('findAll')->willReturn([$userA, $userB]);
-        $this->mentionRepository->expects(self::once())
+        $this->userRepository->expects($this->once())->method('findAll')->willReturn([$userA, $userB]);
+        $this->mentionRepository->expects($this->once())
             ->method('saveAll')
             ->with(
                 $comment,
@@ -69,6 +70,8 @@ class CommentMentionServiceTest extends AbstractTestCase
 
     public function testGetMentionedUsersNoMentionNoUser(): void
     {
+        $this->userRepository->expects($this->never())->method('findAll');
+        $this->mentionRepository->expects($this->never())->method('saveAll');
         static::assertSame([], $this->mentionService->getMentionedUsers('foobar'));
     }
 
@@ -77,7 +80,8 @@ class CommentMentionServiceTest extends AbstractTestCase
         $user = new User();
         $user->setId(123);
 
-        $this->userRepository->expects(self::once())->method('findAll')->willReturn([$user]);
+        $this->userRepository->expects($this->once())->method('findAll')->willReturn([$user]);
+        $this->mentionRepository->expects($this->never())->method('saveAll');
 
         static::assertSame(
             ['@user:123[Sherlock holmes]' => $user],
@@ -87,13 +91,16 @@ class CommentMentionServiceTest extends AbstractTestCase
 
     public function testGetMentionedUsersUnknownUserShouldNotMatch(): void
     {
-        $this->userRepository->expects(self::once())->method('findAll')->willReturn([]);
+        $this->userRepository->expects($this->once())->method('findAll')->willReturn([]);
+        $this->mentionRepository->expects($this->never())->method('saveAll');
 
         static::assertSame([], $this->mentionService->getMentionedUsers('foobar @user:123[Sherlock holmes] foobar'));
     }
 
     public function testReplaceMentionedUsers(): void
     {
+        $this->userRepository->expects($this->never())->method('findAll');
+        $this->mentionRepository->expects($this->never())->method('saveAll');
         $user = new User();
         $user->setId(123);
         $user->setName('Sherlock Holmes');

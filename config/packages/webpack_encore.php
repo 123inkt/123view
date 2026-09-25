@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-use Symfony\Config\WebpackEncoreConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (WebpackEncoreConfig $config): void {
-    $config->outputPath('%kernel.project_dir%/public/build');
-    $config->scriptAttributes('defer', true);
-};
+return App::config([
+    'webpack_encore' => [
+        'output_path'       => '%kernel.project_dir%/public/build',
+        'script_attributes' => ['defer' => true],
+    ],
+]);

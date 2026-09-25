@@ -21,7 +21,7 @@ use DR\Review\Security\Role\Roles;
 use DR\Utils\Assert;
 use DR\Utils\EquatableInterface;
 use League\Uri\Contracts\UriInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Constraint;
 
 #[ApiResource(
@@ -33,14 +33,14 @@ use Symfony\Component\Validator\Constraints as Constraint;
 #[ApiFilter(BooleanFilter::class, properties: ['active'])]
 #[ApiFilter(OrderFilter::class, properties: ['id', 'name', 'createTimestamp'], arguments: ['orderParameterName' => 'order'])]
 #[ORM\Entity(repositoryClass: RepositoryRepository::class)]
-#[ORM\Index(columns: ['active'], name: 'active_idx')]
+#[ORM\Index(name: 'active_idx', columns: ['active'])]
 class Repository implements EquatableInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     #[Groups(['repository:read'])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'boolean', options: ['default' => 1])]
     #[Groups(['repository:read'])]
@@ -72,6 +72,9 @@ class Repository implements EquatableInterface
     #[ORM\Column(type: RepositoryGitType::TYPE, length: 20, nullable: true)]
     private ?string $gitType = null;
 
+    #[ORM\Column(options: ['default' => '1'])]
+    private bool $gitApprovalSync = true;
+
     #[ORM\Column]
     private bool $favorite = false;
 
@@ -95,8 +98,8 @@ class Repository implements EquatableInterface
 
     /** @phpstan-var Collection<string, RepositoryProperty> */
     #[ORM\OneToMany(
-        mappedBy     : 'repository',
         targetEntity : RepositoryProperty::class,
+        mappedBy     : 'repository',
         cascade      : ['persist', 'remove'],
         orphanRemoval: true,
         indexBy      : 'name'
@@ -104,11 +107,11 @@ class Repository implements EquatableInterface
     private Collection $repositoryProperties;
 
     /** @phpstan-var Collection<int, Revision> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: Revision::class, cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Revision::class, mappedBy: 'repository', cascade: ['remove'], orphanRemoval: true)]
     private Collection $revisions;
 
     /** @phpstan-var Collection<int, CodeReview> */
-    #[ORM\OneToMany(mappedBy: 'repository', targetEntity: CodeReview::class, cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CodeReview::class, mappedBy: 'repository', cascade: ['remove'], orphanRemoval: true)]
     private Collection $reviews;
 
     public function __construct()
@@ -125,9 +128,14 @@ class Repository implements EquatableInterface
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function isActive(): bool
@@ -221,6 +229,18 @@ class Repository implements EquatableInterface
     public function setGitType(?string $gitType): self
     {
         $this->gitType = $gitType;
+
+        return $this;
+    }
+
+    public function isGitApprovalSync(): bool
+    {
+        return $this->gitApprovalSync;
+    }
+
+    public function setGitApprovalSync(bool $gitApprovalSync): self
+    {
+        $this->gitApprovalSync = $gitApprovalSync;
 
         return $this;
     }

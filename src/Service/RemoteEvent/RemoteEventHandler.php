@@ -4,14 +4,15 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent;
 
 use DR\Review\Model\Api\Gitlab\NoteEvent;
+use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Traversable;
 
 /**
- * @phpstan-type HandlerKey class-string<PushEvent|NoteEvent>
- * @phpstan-type HandlerValue RemoteEventHandlerInterface<PushEvent|NoteEvent>
+ * @phpstan-type HandlerKey class-string<PushEvent|NoteEvent|MergeRequestEvent>
+ * @phpstan-type HandlerValue RemoteEventHandlerInterface<PushEvent|NoteEvent|MergeRequestEvent>
  */
 class RemoteEventHandler implements LoggerAwareInterface
 {
@@ -39,7 +40,7 @@ class RemoteEventHandler implements LoggerAwareInterface
 
         $this->logger?->info('RemoteEventHandler: handling event for {class}', ['class' => $class]);
 
-        /** @phpstan-var PushEvent|NoteEvent $object */
+        /** @phpstan-var PushEvent|NoteEvent|MergeRequestEvent $object */
         $this->handlers[$class]->handle($object);
     }
 }

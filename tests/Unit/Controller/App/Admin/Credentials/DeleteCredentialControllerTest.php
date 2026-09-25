@@ -12,6 +12,9 @@ use DR\Review\Tests\AbstractControllerTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<DeleteCredentialController>
+ */
 #[CoversClass(DeleteCredentialController::class)]
 class DeleteCredentialControllerTest extends AbstractControllerTestCase
 {
@@ -27,7 +30,7 @@ class DeleteCredentialControllerTest extends AbstractControllerTestCase
     {
         $credential = new RepositoryCredential();
 
-        $this->credentialRepository->expects(self::once())->method('remove')->with($credential, true);
+        $this->credentialRepository->expects($this->once())->method('remove')->with($credential, true);
         $this->expectAddFlash('success', 'credential.successful.removed');
         $this->expectRefererRedirect(CredentialsController::class);
 

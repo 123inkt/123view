@@ -39,7 +39,7 @@ class UnifiedDiffEmphasizerTest extends AbstractTestCase
         $file         = new DiffFile();
         $file->addBlock($block);
 
-        $this->optimizer->expects(self::once())->method('optimize');
+        $this->optimizer->expects($this->once())->method('optimize');
 
         $this->emphasizer->emphasizeFile($file, DiffComparePolicy::IGNORE);
         static::assertEquals([$line1, $line2, $line3, $line4], $block->lines);

@@ -21,14 +21,13 @@ class Asset
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 255)]
     private string $mimeType;
 
-    /** @var resource|null */
     #[ORM\Column(type: 'binary', length: 16777215)]
-    private $data = null;
+    private string $data;
 
     #[ORM\Column(type: 'integer')]
     private int $createTimestamp;
@@ -43,7 +42,7 @@ class Asset
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -60,22 +59,21 @@ class Asset
         return $this;
     }
 
-    /**
-     * @return resource|null
-     */
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }
 
-    /**
-     * @param resource|null $data
-     */
-    public function setData($data): Asset
+    public function setData(string $data): Asset
     {
         $this->data = $data;
 
         return $this;
+    }
+
+    public function getHash(): string
+    {
+        return substr(hash('sha256', $this->data), 0, 8);
     }
 
     public function getCreateTimestamp(): int

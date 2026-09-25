@@ -8,22 +8,22 @@ export default class CommentService {
     public getMarkdownPreview(comment: string): Promise<string> {
         return this.client
             .get('/app/reviews/comment/markdown', {params: {message: comment}})
-            .then((response) => response.data);
+            .then((response) => response.data as string);
     }
 
     public getAddCommentForm(url: string, oldPath: string, newPath: string, line: number, offset: number, lineAfter: number, headSha: string, state: string): Promise<HTMLElement> {
         return this.client
             .get(url, {params: {oldPath, newPath, line, offset, lineAfter, state, headSha}})
-            .then(response => response.data)
+            .then(response => (response.data as string))
             .then(html => Elements.create(html));
     }
 
-    public submitAddCommentForm(form: HTMLFormElement): Promise<string> {
-        return this.client.form(form).then(response => response.data.commentUrl);
+    public submitAddCommentForm(form: HTMLFormElement, mode: string): Promise<string> {
+        return this.client.form(form, {mode}).then(response => (response.data as {commentUrl: string}).commentUrl);
     }
 
-    public submitCommentForm(form: HTMLFormElement): Promise<number> {
-        return this.client.form(form).then(response => response.data.commentId);
+    public submitCommentForm(form: HTMLFormElement, mode: string): Promise<number> {
+        return this.client.form(form, {mode}).then(response => (response.data as {commentId: number}).commentId);
     }
 
     public getCommentThread(url: string, action?: string): Promise<HTMLElement> {
@@ -34,28 +34,29 @@ export default class CommentService {
 
         return this.client
             .get(url, params)
-            .then(response => response.data)
+            .then(response => (response.data as string))
             .then(html => Elements.create(html));
     }
 
     public deleteComment(url: string): Promise<void> {
-        return this.client.delete(url);
+        return this.client.delete(url).then(() => undefined);
     }
 
     public changeCommentState(url: string, state: string): Promise<void> {
-        return this.client.post(url, {state}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+        return this.client.post(url, {state}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(() => undefined);
     }
 
     public addCommentReaction(url: string, message: string): Promise<void> {
-        return this.client.post(url, message, {headers: {'Content-Type': 'application/text'}});
+        return this.client.post(url, message, {headers: {'Content-Type': 'application/text'}}).then(() => undefined);
     }
 
     public deleteCommentReply(url: string): Promise<void> {
-        return this.client.delete(url);
+        return this.client.delete(url).then(() => undefined);
     }
 
     public setCommentVisibility(visibility: string): Promise<void> {
-        return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+        return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+            .then(() => undefined);
     }
 
     public getCommentCount(reviewId: number): Promise<CommentCount> {

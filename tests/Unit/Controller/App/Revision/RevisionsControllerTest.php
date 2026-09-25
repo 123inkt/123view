@@ -15,6 +15,9 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @extends AbstractControllerTestCase<RevisionsController>
+ */
 #[CoversClass(RevisionsController::class)]
 class RevisionsControllerTest extends AbstractControllerTestCase
 {
@@ -33,10 +36,10 @@ class RevisionsControllerTest extends AbstractControllerTestCase
         $request    = new Request(['search' => 'search', 'page' => '10']);
         $repository = new Repository();
         $breadcrumb = new Breadcrumb('label', 'url');
-        $viewModel  = $this->createMock(RevisionsViewModel::class);
+        $viewModel  = static::createStub(RevisionsViewModel::class);
 
-        $this->breadcrumbFactory->expects(self::once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
-        $this->viewModelProvider->expects(self::once())
+        $this->breadcrumbFactory->expects($this->once())->method('createForReviews')->with($repository)->willReturn([$breadcrumb]);
+        $this->viewModelProvider->expects($this->once())
             ->method('getRevisionsViewModel')
             ->with($repository, 10, 'search')
             ->willReturn($viewModel);

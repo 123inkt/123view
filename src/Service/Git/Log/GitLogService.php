@@ -6,7 +6,7 @@ namespace DR\Review\Service\Git\Log;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\FormatPattern;
+use DR\Review\Model\Git\FormatPattern;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryLockManager;
@@ -39,6 +39,10 @@ class GitLogService implements LoggerAwareInterface
         $result = [];
 
         foreach ($rule->getRepositories() as $repositoryConfig) {
+            if ($repositoryConfig->isActive() === false) {
+                continue;
+            }
+
             $output = $this->lockManager->start($repositoryConfig, function () use ($ruleConfig, $repositoryConfig) {
                 // clone or pull the repository for the given rule.
                 $repository = $this->cachedRepositoryService->getRepository($repositoryConfig);

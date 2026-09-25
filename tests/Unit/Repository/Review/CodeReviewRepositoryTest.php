@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Repository\Review;
 
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Doctrine\Type\CodeReviewType;
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\User\User;
@@ -44,7 +45,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         self::getContainer()->set(User::class, $this->user);
 
         $this->repository = static::getService(CodeReviewRepository::class);
-        $this->parser     = (new ReviewSearchQueryParserFactory())->createParser();
+        $this->parser     = new ReviewSearchQueryParserFactory()->createParser();
     }
 
     /**
@@ -55,7 +56,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
         $review     = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
 
-        $projectId = $this->repository->getCreateProjectId((int)$repository->getId());
+        $projectId = $this->repository->getCreateProjectId($repository->getId());
         static::assertSame((int)$review->getProjectId() + 1, $projectId);
     }
 
@@ -66,7 +67,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     {
         $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
 
-        static::assertNotNull($this->repository->findOneByReferenceId((int)$repository->getId(), 'reference', CodeReviewType::COMMITS));
+        static::assertNotNull($this->repository->findOneByReferenceId($repository->getId(), 'reference', CodeReviewType::COMMITS));
     }
 
     /**
@@ -83,7 +84,24 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $revision->setReview($review);
         $revisionRepository->save($revision, true);
 
-        static::assertNotNull($this->repository->findOneByCommitHash((int)$repository->getId(), RevisionFixtures::COMMIT_HASH_A));
+        static::assertNotNull($this->repository->findOneByCommitHash($repository->getId(), RevisionFixtures::COMMIT_HASH_A));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testFindByBranchName(): void
+    {
+        $revisionRepository = static::getService(RevisionRepository::class);
+
+        $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+        $revision   = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
+        $review     = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
+
+        $revision->setReview($review);
+        $revisionRepository->save($revision, true);
+
+        static::assertSame([$review], $this->repository->findByBranchName($repository->getId(), 'first-branch'));
     }
 
     /**
@@ -104,7 +122,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     public function testGetPaginatorForSearchQuery(): void
     {
         $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $repositoryId = (int)$repository->getId();
+        $repositoryId = $repository->getId();
 
         $revisionRepository = static::getService(RevisionRepository::class);
         $revision           = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
@@ -146,7 +164,7 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     public function testGetPaginatorForSearchQueryOneReviewTwoRevisions(): void
     {
         $repository   = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $repositoryId = (int)$repository->getId();
+        $repositoryId = $repository->getId();
 
         $revisionRepository = static::getService(RevisionRepository::class);
         $revisionA          = Assert::notNull($revisionRepository->findOneBy(['title' => 'title']));
@@ -167,6 +185,30 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @throws Exception
+     */
+    public function testFindByTitle(): void
+    {
+        $repository = Assert::notNull(static::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
+
+        // Get the existing review with title 'title'
+        $existingReview = Assert::notNull($this->repository->findOneBy(['title' => 'title']));
+
+        $this->createAdditionalReviews($repository);
+
+        // Test findByTitle
+        $results = $this->repository->findByTitle($existingReview);
+
+        // Should return both reviews with title 'title', ordered by repository name
+        static::assertCount(2, $results);
+
+        // Verify all results have the same title
+        foreach ($results as $result) {
+            static::assertSame('title', $result->getTitle());
+        }
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getFixtures(): array
@@ -183,5 +225,28 @@ class CodeReviewRepositoryTest extends AbstractRepositoryTestCase
         $terms = $query === '' ? new EmptyMatch() : $this->parser->tryString($query)->output();
 
         return $this->repository->getPaginatorForSearchQuery($repositoryId, 1, $terms, $orderBy);
+    }
+
+    private function createAdditionalReviews(Repository $repository): void
+    {
+        // Create a second review with the same title
+        $review2 = new CodeReview();
+        $review2->setProjectId(7328);
+        $review2->setTitle('title');
+        $review2->setDescription('another review with same title');
+        $review2->setCreateTimestamp(12346790);
+        $review2->setUpdateTimestamp(12346790);
+        $review2->setRepository($repository);
+        $this->repository->save($review2, true);
+
+        // Create a review with different title to ensure it's not included
+        $review3 = new CodeReview();
+        $review3->setProjectId(7330);
+        $review3->setTitle('different title');
+        $review3->setDescription('review with different title');
+        $review3->setCreateTimestamp(12346792);
+        $review3->setUpdateTimestamp(12346792);
+        $review3->setRepository($repository);
+        $this->repository->save($review3, true);
     }
 }

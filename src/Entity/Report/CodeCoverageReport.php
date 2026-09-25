@@ -11,15 +11,15 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Repository\Report\CodeCoverageReportRepository;
 
 #[ORM\Entity(repositoryClass: CodeCoverageReportRepository::class)]
-#[ORM\Index(columns: ['create_timestamp'], name: 'create_timestamp')]
-#[ORM\Index(columns: ['repository_id', 'create_timestamp'], name: 'repository_create_timestamp')]
-#[ORM\Index(columns: ['repository_id', 'commit_hash'], name: 'repository_commit_hash')]
+#[ORM\Index(name: 'create_timestamp', columns: ['create_timestamp'])]
+#[ORM\Index(name: 'repository_create_timestamp', columns: ['repository_id', 'create_timestamp'])]
+#[ORM\Index(name: 'repository_commit_hash', columns: ['repository_id', 'commit_hash'])]
 class CodeCoverageReport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     private string $commitHash;
@@ -35,7 +35,7 @@ class CodeCoverageReport
     private Repository $repository;
 
     /** @phpstan-var Collection<int, CodeCoverageFile> */
-    #[ORM\OneToMany(mappedBy: 'report', targetEntity: CodeCoverageFile::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CodeCoverageFile::class, mappedBy: 'report', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $files;
 
     public function __construct()
@@ -43,12 +43,12 @@ class CodeCoverageReport
         $this->files = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

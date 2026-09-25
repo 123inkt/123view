@@ -3,38 +3,131 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Input\CreateCommentInput;
+use DR\Review\ApiPlatform\Input\UpdateCommentInput;
+use DR\Review\ApiPlatform\Output\CommentOutput;
+use DR\Review\ApiPlatform\Provider\CommentCollectionProvider;
+use DR\Review\ApiPlatform\Provider\CommentProvider;
+use DR\Review\ApiPlatform\StateProcessor\CreateCommentProcessor;
+use DR\Review\ApiPlatform\StateProcessor\DeleteCommentProcessor;
+use DR\Review\ApiPlatform\StateProcessor\UpdateCommentProcessor;
 use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Doctrine\Type\CommentTagType;
+use DR\Review\Doctrine\Type\CommentTypeType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Security\Role\Roles;
+use DR\Review\Security\Voter\CommentVoter;
+use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
+#[Get(
+    uriTemplate : '/comments/{id}',
+    requirements: ['id' => '\d+'],
+    security    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output      : CommentOutput::class,
+    provider    : CommentProvider::class,
+)]
+#[GetCollection(
+    paginationEnabled           : true,
+    paginationClientEnabled     : false,
+    paginationClientItemsPerPage: true,
+    order                       : ['createTimestamp' => 'ASC', 'id' => 'ASC'],
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output                      : CommentOutput::class,
+    provider                    : CommentCollectionProvider::class,
+    parameters                  : [
+        'user.id'                => new QueryParameter(filter: new ExactFilter(), property: 'user.id'),
+        'review.id'              => new QueryParameter(filter: new ExactFilter(), property: 'review.id'),
+        'exact[filepath]'        => new QueryParameter(filter: new ExactFilter(), property: 'filePath'),
+        'order[id]'              => new QueryParameter(filter: new SortFilter(), property: 'id'),
+        'order[user.id]'         => new QueryParameter(filter: new SortFilter(), property: 'user.id'),
+        'order[review.id]'       => new QueryParameter(filter: new SortFilter(), property: 'review.id'),
+        'order[filepath]'        => new QueryParameter(filter: new SortFilter(), property: 'filePath'),
+        'order[state]'           => new QueryParameter(filter: new SortFilter(), property: 'state'),
+        'order[createTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
+        'order[updateTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),
+    ],
+)]
+#[Post(
+    uriTemplate                 : '/code-reviews/{reviewId}/comments',
+    uriVariables                : ['reviewId' => new Link(fromClass: CodeReview::class, identifiers: ['id'])],
+    requirements                : ['reviewId' => '\\d+'],
+    status                      : 201,
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    collectDenormalizationErrors: true,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : CreateCommentInput::class,
+    output                      : CommentOutput::class,
+    read                        : false,
+    processor                   : CreateCommentProcessor::class,
+)]
+#[Patch(
+    uriTemplate                 : '/comments/{id}',
+    requirements                : ['id' => '\\d+'],
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    collectDenormalizationErrors: true,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : UpdateCommentInput::class,
+    output                      : CommentOutput::class,
+    read                        : false,
+    processor                   : UpdateCommentProcessor::class,
+)]
+#[Delete(
+    uriTemplate: '/comments/{id}',
+    requirements: ['id' => '\\d+'],
+    status: 204,
+    security: 'is_granted("' . Roles::ROLE_USER . '") and is_granted("' . CommentVoter::DELETE . '", object)',
+    output: false,
+    read: true,
+    processor: DeleteCommentProcessor::class,
+)]
 #[ORM\Entity(repositoryClass: CommentRepository::class)]
-#[ORM\Index(['review_id', 'file_path'], name: 'IDX_REVIEW_ID_FILE_PATH')]
+#[ORM\Index(name: 'IDX_REVIEW_ID_FILE_PATH', columns: ['review_id', 'file_path'])]
 class Comment
 {
+    public const int MAX_COMMENT_LENGTH = 2000;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'string', length: 500)]
     private string $filePath;
 
-    #[ORM\Column(type: 'string', length: 2000)]
+    #[ORM\Column(type: 'string', length: self::MAX_COMMENT_LENGTH)]
     private string $lineReference;
 
-    // todo change to CommentStateType.
-    #[ORM\Column(type: 'string', length: 20, options: ['default' => CommentStateType::OPEN])]
-    private string $state = CommentStateType::OPEN;
+    #[ORM\Column(type: CommentStateType::TYPE, enumType: CommentStateEnum::class, options: ['default' => CommentStateEnum::Open->value])]
+    private CommentStateEnum $state = CommentStateEnum::Open;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private string $message;
+
+    #[ORM\Column(type: CommentTagType::TYPE, nullable: true, enumType: CommentTagEnum::class)]
+    private ?CommentTagEnum $tag;
+
+    #[ORM\Column(type: CommentTypeType::TYPE, enumType: CommentTypeEnum::class, options: ['default' => 'final'])]
+    private CommentTypeEnum $type = CommentTypeEnum::Final;
 
     #[ORM\Column]
     private int $createTimestamp;
@@ -54,11 +147,11 @@ class Comment
     private User $user;
 
     /** @phpstan-var Collection<int, CommentReply> */
-    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: CommentReply::class, cascade: ['persist', 'remove'], fetch: 'EAGER', orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: CommentReply::class, mappedBy: 'comment', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $replies;
 
     /** @phpstan-var Collection<int, UserMention> */
-    #[ORM\OneToMany(mappedBy: 'comment', targetEntity: UserMention::class, cascade: ['persist', 'remove'], fetch: 'LAZY', orphanRemoval: false)]
+    #[ORM\OneToMany(targetEntity: UserMention::class, mappedBy: 'comment', cascade: ['persist', 'remove'], orphanRemoval: false)]
     private Collection $mentions;
 
     public function __construct()
@@ -74,7 +167,7 @@ class Comment
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -84,9 +177,11 @@ class Comment
         return $this->filePath;
     }
 
-    public function setFilePath(string $filePath): void
+    public function setFilePath(string $filePath): self
     {
         $this->filePath = $filePath;
+
+        return $this;
     }
 
     public function getLineReference(): LineReference
@@ -101,12 +196,12 @@ class Comment
         return $this;
     }
 
-    public function getState(): string
+    public function getState(): CommentStateEnum
     {
         return $this->state;
     }
 
-    public function setState(string $state): self
+    public function setState(CommentStateEnum $state): self
     {
         $this->state = $state;
 
@@ -133,6 +228,30 @@ class Comment
     public function setMessage(string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function getTag(): ?CommentTagEnum
+    {
+        return $this->tag;
+    }
+
+    public function setTag(?CommentTagEnum $tag): self
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+
+    public function getType(): CommentTypeEnum
+    {
+        return $this->type;
+    }
+
+    public function setType(CommentTypeEnum $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
@@ -178,9 +297,11 @@ class Comment
         return $this->review;
     }
 
-    public function setReview(CodeReview $review): void
+    public function setReview(CodeReview $review): self
     {
         $this->review = $review;
+
+        return $this;
     }
 
     public function getUser(): User

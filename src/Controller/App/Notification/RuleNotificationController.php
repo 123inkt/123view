@@ -17,7 +17,7 @@ use DR\Review\ViewModelProvider\Mail\CommitsViewModelProvider;
 use DR\Utils\Assert;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
 
@@ -42,15 +42,19 @@ class RuleNotificationController extends AbstractController
 
         $options     = Assert::notNull($rule->getRuleOptions());
         $frequency   = Assert::notNull($options->getFrequency());
-        $currentTime = DateTimeImmutable::createFromMutable((new DateTime())->setTimestamp($notification->getNotifyTimestamp()));
+        $currentTime = DateTimeImmutable::createFromMutable(new DateTime()->setTimestamp($notification->getNotifyTimestamp()));
 
         // gather commits
         $commits = $this->ruleProcessor->processRule(new RuleConfiguration(Frequency::getPeriod($currentTime, $frequency), $rule));
 
-        // render mail
-        $viewModel = $this->viewModelProvider->getCommitsViewModel($commits, $rule, $notification);
-        $response  = $this->render('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
-        $response->headers->set('Content-Security-Policy', "");
+        if (count($commits) === 0) {
+            $response = new Response('No (more) revisions found for this notification rule', headers: ['Content-Type' => 'text/plain']);
+        } else {
+            // render mail
+            $viewModel = $this->viewModelProvider->getCommitsViewModel($commits, $rule, $notification);
+            $response  = $this->render('mail/mail.commits.html.twig', ['viewModel' => $viewModel]);
+            $response->headers->set('Content-Security-Policy', "");
+        }
 
         // mark notification as read
         $this->notificationRepository->save($notification->setRead(true), true);

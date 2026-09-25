@@ -3,43 +3,61 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ApiPlatform\Factory;
 
-use ApiPlatform\Api\UrlGeneratorInterface;
 use DR\Review\ApiPlatform\Factory\CodeReviewOutputFactory;
 use DR\Review\ApiPlatform\Factory\UserOutputFactory;
 use DR\Review\ApiPlatform\Output\UserOutput;
 use DR\Review\Controller\App\Review\ReviewController;
+use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
+use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
+use DR\Review\Service\CodeReview\CodeReviewerStateResolver;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
+use DR\Review\Service\User\UserService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use function DR\PHPUnitExtensions\Mock\consecutive;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[CoversClass(CodeReviewOutputFactory::class)]
 class CodeReviewOutputFactoryTest extends AbstractTestCase
 {
-    private UrlGeneratorInterface&MockObject $urlGenerator;
-    private UserOutputFactory&MockObject     $userOutputFactory;
-    private CodeReviewOutputFactory          $factory;
+    private UrlGeneratorInterface&MockObject     $urlGenerator;
+    private UserOutputFactory&MockObject         $userOutputFactory;
+    private CodeReviewerStateResolver&MockObject $reviewerStateResolver;
+    private CodeReviewRevisionService&MockObject $reviewRevisionService;
+    private UserService&MockObject               $userService;
+    private CodeReviewOutputFactory              $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->urlGenerator      = $this->createMock(UrlGeneratorInterface::class);
-        $this->userOutputFactory = $this->createMock(UserOutputFactory::class);
-        $this->factory           = new CodeReviewOutputFactory($this->urlGenerator, $this->userOutputFactory);
+        $this->urlGenerator          = $this->createMock(UrlGeneratorInterface::class);
+        $this->userOutputFactory     = $this->createMock(UserOutputFactory::class);
+        $this->reviewerStateResolver = $this->createMock(CodeReviewerStateResolver::class);
+        $this->reviewRevisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->userService           = $this->createMock(UserService::class);
+        $this->factory               = new CodeReviewOutputFactory(
+            $this->urlGenerator,
+            $this->userOutputFactory,
+            $this->reviewerStateResolver,
+            $this->reviewRevisionService,
+            $this->userService,
+        );
     }
 
     public function testCreate(): void
     {
         // setup dependencies
-        $userA      = (new User())->setId(123)->setName('name A')->setEmail('email A');
-        $userB      = (new User())->setId(234)->setName('name B')->setEmail('email B');
-        $reviewer   = (new CodeReviewer())->setUser($userA);
-        $repository = (new Repository())->setId(789);
+        $userA      = new User()->setId(123)->setName('name A')->setEmail('email A');
+        $userB      = new User()->setId(234)->setName('name B')->setEmail('email B');
+        $reviewer   = new CodeReviewer()->setUser($userA);
+        $repository = new Repository()->setId(789);
+        $revisionA  = new Revision()->setCommitHash('start-sha');
+        $revisionB  = new Revision()->setCommitHash('end-sha');
 
         // setup review
         $review = new CodeReview();
@@ -51,17 +69,22 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         $review->setState('open');
         $review->setCreateTimestamp(1000);
         $review->setUpdateTimestamp(2000);
+        $review->getReviewers()->add($reviewer);
 
-        $this->userOutputFactory->expects(self::exactly(2))
+        $this->reviewRevisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revisionA, $revisionB]);
+        $this->userService->expects($this->once())->method('getUsersForRevisions')->with([$revisionA, $revisionB])->willReturn([$userB]);
+        $reviewerOutput = static::createStub(UserOutput::class);
+        $authorOutput   = static::createStub(UserOutput::class);
+        $this->userOutputFactory->expects($this->exactly(2))
             ->method('create')
-            ->with(...consecutive([$userA], [$userB]))
-            ->willReturn($this->createMock(UserOutput::class));
-        $this->urlGenerator->expects(self::once())
+            ->willReturnMap([[$userA, $reviewerOutput], [$userB, $authorOutput]]);
+        $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(ReviewController::class, ['review' => $review], UrlGenerator::ABSOLUTE_URL)
             ->willReturn('url');
+        $this->reviewerStateResolver->expects($this->once())->method('getReviewersState')->with($review)->willReturn(CodeReviewerStateType::OPEN);
 
-        $output = $this->factory->create($review, [$reviewer], [$userB]);
+        $output = $this->factory->create($review);
 
         static::assertSame(456, $output->id);
         static::assertSame(789, $output->repositoryId);
@@ -70,11 +93,10 @@ class CodeReviewOutputFactoryTest extends AbstractTestCase
         static::assertSame('description', $output->description);
         static::assertSame('url', $output->url);
         static::assertSame('open', $output->state);
-        static::assertSame('open', $output->reviewerState);
-        static::assertNotNull($output->reviewers);
-        static::assertCount(1, $output->reviewers);
-        static::assertNotNull($output->authors);
-        static::assertCount(1, $output->authors);
+        static::assertSame(CodeReviewerStateType::OPEN, $output->reviewerState);
+        static::assertSame(['startSha' => 'start-sha', 'endSha' => 'end-sha'], $output->revisions);
+        static::assertSame([$reviewerOutput], $output->reviewers);
+        static::assertSame([$authorOutput], $output->authors);
         static::assertSame(1000, $output->createTimestamp);
         static::assertSame(2000, $output->updateTimestamp);
     }

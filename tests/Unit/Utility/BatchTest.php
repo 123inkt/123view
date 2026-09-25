@@ -20,7 +20,7 @@ class BatchTest extends AbstractTestCase
         $classC = new stdClass();
 
         $shouldBeCalled = $this->createMock(MockCallableClass::class);
-        $shouldBeCalled->expects(static::exactly(2))
+        $shouldBeCalled->expects($this->exactly(2))
             ->method('__invoke')
             ->with(...consecutive([[$classA, $classB]], [[$classC]]));
 

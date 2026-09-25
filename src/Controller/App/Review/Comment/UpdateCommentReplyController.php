@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -51,8 +51,8 @@ class UpdateCommentReplyController extends AbstractController
         if ($reply->getMessage() !== $originalComment) {
             $this->bus->dispatch(
                 new CommentReplyUpdated(
-                    (int)$reply->getComment()->getReview()->getId(),
-                    (int)$reply->getId(),
+                    $reply->getComment()->getReview()->getId(),
+                    $reply->getId(),
                     $this->getUser()->getId(),
                     $originalComment
                 )

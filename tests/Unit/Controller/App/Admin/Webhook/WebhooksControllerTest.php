@@ -11,6 +11,9 @@ use DR\Review\ViewModelProvider\WebhooksViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 
+/**
+ * @extends AbstractControllerTestCase<WebhooksController>
+ */
 #[CoversClass(WebhooksController::class)]
 class WebhooksControllerTest extends AbstractControllerTestCase
 {
@@ -24,9 +27,9 @@ class WebhooksControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $viewModel = $this->createMock(WebhooksViewModel::class);
+        $viewModel = static::createStub(WebhooksViewModel::class);
 
-        $this->viewModelProvider->expects(self::once())->method('getWebhooksViewModel')->willReturn($viewModel);
+        $this->viewModelProvider->expects($this->once())->method('getWebhooksViewModel')->willReturn($viewModel);
 
         static::assertSame(['webhooksViewModel' => $viewModel], ($this->controller)());
     }

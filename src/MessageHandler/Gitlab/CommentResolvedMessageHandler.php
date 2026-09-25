@@ -36,16 +36,17 @@ class CommentResolvedMessageHandler implements LoggerAwareInterface
     public function __invoke(CommentResolved|CommentUnresolved $event): void
     {
         if ($this->gitlabCommentSyncEnabled === false) {
-            $this->logger?->info('Gitlab comment sync disabled');
+            $this->logger?->info('Gitlab comment sync disabled. Comment id: {id}', ['id' => $event->commentId]);
 
             return;
         }
 
-        $comment = Assert::notNull($this->commentRepository->find($event->getCommentId()));
-        $user    = Assert::notNull($this->userRepository->find($event->getUserId()));
-        $api     = $this->apiProvider->create($comment->getReview()->getRepository(), $user);
+        $comment    = Assert::notNull($this->commentRepository->find($event->getCommentId()));
+        $repository = $comment->getReview()->getRepository();
+        $user       = Assert::notNull($this->userRepository->find($event->getUserId()));
+        $api        = $this->apiProvider->create($repository, $user) ?? $this->apiProvider->create($repository, $comment->getUser());
         if ($api === null) {
-            $this->logger?->info('No api configuration found for comment {comment}', ['comment' => $event->getCommentId()]);
+            $this->logger?->info('No api configuration found for comment {id}', ['id' => $event->getCommentId()]);
 
             return;
         }

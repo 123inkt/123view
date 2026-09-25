@@ -16,7 +16,7 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RuleController extends AbstractController
@@ -44,7 +44,7 @@ class RuleController extends AbstractController
         $form = $this->createForm(EditRuleFormType::class, ['rule' => $rule]);
         $form->handleRequest($request);
         if ($form->isSubmitted() === false || $form->isValid() === false) {
-            return ['editRuleModel' => (new EditRuleViewModel())->setForm($form->createView())];
+            return ['editRuleModel' => new EditRuleViewModel()->setForm($form->createView())];
         }
 
         $this->ruleRepository->save($rule, true);

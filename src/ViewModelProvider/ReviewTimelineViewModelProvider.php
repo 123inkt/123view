@@ -11,9 +11,10 @@ use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
-use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
+use DR\Review\Service\CodeReview\Comment\ActivityCommentProvider;
+use DR\Review\Service\User\UserEntityProvider;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 
@@ -22,9 +23,9 @@ class ReviewTimelineViewModelProvider
     public function __construct(
         private readonly CodeReviewActivityRepository $activityRepository,
         private readonly CodeReviewActivityFormatter $activityFormatter,
-        private readonly CommentRepository $commentRepository,
+        private readonly ActivityCommentProvider $commentProvider,
         private readonly CodeReviewActivityUrlGenerator $urlGenerator,
-        private readonly User $user
+        private readonly UserEntityProvider $userProvider
     ) {
     }
 
@@ -38,14 +39,14 @@ class ReviewTimelineViewModelProvider
 
         // create TimelineEntryViewModel entries
         foreach ($activities as $activity) {
-            $message = $this->activityFormatter->format($activity, $this->user);
+            $message = $this->activityFormatter->format($activity, $this->userProvider->getCurrentUser());
             if ($message === null || $activity->getEventName() === CommentReplyAdded::NAME) {
                 continue;
             }
 
             $timelineEntries[] = $entry = new TimelineEntryViewModel([$activity], $message, null);
             if ($activity->getEventName() === CommentAdded::NAME) {
-                $entry->setComment($review->getComments()->get((int)$activity->getDataValue('commentId')));
+                $entry->setCommentOrReply($review->getComments()->get((int)$activity->getDataValue('commentId')));
             } elseif ($activity->getEventName() === ReviewRevisionAdded::NAME) {
                 $entry->setRevision($revisions[(int)$activity->getDataValue('revisionId')] ?? null);
             }
@@ -68,14 +69,11 @@ class ReviewTimelineViewModelProvider
             if ($message === null) {
                 continue;
             }
-            $comment = null;
-            if ($activity->getEventName() === CommentAdded::NAME) {
-                $comment = $this->commentRepository->find((int)$activity->getDataValue('commentId'));
-                if ($comment === null) {
-                    continue;
-                }
-            }
-            $timelineEntries[] = (new TimelineEntryViewModel([$activity], $message, $this->urlGenerator->generate($activity)))->setComment($comment);
+
+            $url   = $this->urlGenerator->generate($activity);
+            $entry = new TimelineEntryViewModel([$activity], $message, $url);
+            $entry->setCommentOrReply($this->commentProvider->getCommentFor($activity));
+            $timelineEntries[] = $entry;
         }
 
         return new TimelineViewModel($timelineEntries);

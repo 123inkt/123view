@@ -18,22 +18,22 @@ class MailSubjectFormatterTest extends AbstractTestCase
         $rule = new Rule();
         $rule->setName('name');
 
-        $repository         = (new Repository())->setName('repository');
+        $repository         = new Repository()->setName('repository');
         $commit             = $this->createCommit(new Author('Sherlock', 'sherlock@example.com'));
         $commit->repository = $repository;
 
         $subject = '{name} {authors} {repositories}';
 
-        $result = (new MailSubjectFormatter())->format($subject, $rule, [$commit]);
+        $result = new MailSubjectFormatter()->format($subject, $rule, [$commit]);
         static::assertSame('name Sherlock repository', $result);
     }
 
     public function testFormatEmptyVariables(): void
     {
-        $rule    = (new Rule())->setName('');
+        $rule    = new Rule()->setName('');
         $subject = '#{name}#{authors}#{repositories}#';
 
-        $result = (new MailSubjectFormatter())->format($subject, $rule, []);
+        $result = new MailSubjectFormatter()->format($subject, $rule, []);
         static::assertSame('####', $result);
     }
 }
