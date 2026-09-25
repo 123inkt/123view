@@ -8,6 +8,9 @@ use Symfony\Component\Serializer\Attribute\SerializedPath;
 
 class NoteEvent
 {
+    #[SerializedPath('[object_attributes][id]')]
+    public int $id;
+
     #[SerializedName('project_id')]
     public int $projectId;
 
@@ -28,6 +31,21 @@ class NoteEvent
 
     #[SerializedPath('[object_attributes][description]')]
     public string $description;
+
+    #[SerializedPath('[object_attributes][position][old_path]')]
+    public ?string $oldPath;
+
+    #[SerializedPath('[object_attributes][position][new_path]')]
+    public ?string $newPath;
+
+    #[SerializedPath('[object_attributes][position][old_line]')]
+    public ?int $oldLine;
+
+    #[SerializedPath('[object_attributes][position][new_line]')]
+    public ?int $newLine;
+
+    #[SerializedPath('[object_attributes][position][head_sha]')]
+    public string $headSha;
 
     #[SerializedPath('[user][id]')]
     public int $userId;

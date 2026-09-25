@@ -24,6 +24,7 @@ class BranchRevisionService implements LoggerAwareInterface
     }
 
     /**
+     * @return array<int, Revision>
      * @throws Throwable
      */
     public function getRevisionsFor(Repository $repository, string $sourceBranch, string $targetBranch): array
