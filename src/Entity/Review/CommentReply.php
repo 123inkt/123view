@@ -5,17 +5,26 @@ namespace DR\Review\Entity\Review;
 
 use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Output\CommentReplyOutput;
 use DR\Review\ApiPlatform\Provider\CommentReplyCollectionProvider;
+use DR\Review\ApiPlatform\Provider\CommentReplyProvider;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Security\Role\Roles;
 
+#[Get(
+    uriTemplate : '/comment-replies/{id}',
+    requirements : ['id' => '\\d+'],
+    security    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output      : CommentReplyOutput::class,
+    provider    : CommentReplyProvider::class,
+)]
 #[GetCollection(
     paginationEnabled           : true,
     paginationClientEnabled     : false,
