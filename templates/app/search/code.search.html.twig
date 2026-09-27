@@ -30,6 +30,15 @@
                 {% endif %}
                 <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
             </div>
+            <div class="form-check mt-2">
+                <input type="checkbox"
+                       id="regex"
+                       name="regex"
+                       value="true"
+                       class="form-check-input"
+                       {% if viewModel.regexEnabled %}checked{% endif %}>
+                <label class="form-check-label" for="regex">{{ 'search.enable.regex'|trans }}</label>
+            </div>
         </form>
     </div>
 
@@ -71,7 +80,7 @@
             {% endfor %}
             {% if viewModel.searchResults.moreResultsAvailable %}
                 <div class="mt-2">
-                    <a href="?search={{ viewModel.searchQuery|escape('url') }}&extension={{ viewModel.fileExtension|escape('url') }}&all=true"
+                    <a href="?search={{ viewModel.searchQuery|escape('url') }}&extension={{ viewModel.fileExtension|escape('url') }}&all=true&regex={{ viewModel.regexEnabled ? 'true' : 'false' }}"
                        type="button"
                        class="btn btn-outline-primary">{{ 'show.all'|trans }}</a>
                 </div>

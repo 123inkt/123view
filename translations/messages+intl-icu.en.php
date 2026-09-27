@@ -299,6 +299,7 @@ return [
     'save'                                        => 'Save',
     'save.as.draft'                               => 'Save as draft',
     'search'                                      => 'Search',
+    'search.enable.regex'                         => 'Enable regex',
     'search.extension'                            => 'Extension(s)',
     'search.file.extension'                       => 'Search in files with the given file extension. Separate multiple extensions by comma',
     'search.much.be.minimum.5.characters'         => 'Search query must be at least 5 characters long',

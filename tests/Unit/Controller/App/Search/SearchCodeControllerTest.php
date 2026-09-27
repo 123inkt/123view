@@ -41,6 +41,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $request->method('getSearchQuery')->willReturn('fail');
         $request->method('getExtensions')->willReturn(null);
         $request->method('isShowAll')->willReturn(false);
+        $request->method('isRegexEnabled')->willReturn(false);
 
         $this->translator->expects($this->exactly(2))->method('trans')
             ->with(...consecutive(['search.much.be.minimum.5.characters'], ['code.search']))
@@ -52,7 +53,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel(new SearchResultCollection([], false), 'fail', null)],
+            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel(new SearchResultCollection([], false), 'fail', null, false)],
             $result
         );
     }
@@ -63,6 +64,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $request->method('getSearchQuery')->willReturn('success');
         $request->method('getExtensions')->willReturn(['json', 'yaml']);
         $request->method('isShowAll')->willReturn(false);
+        $request->method('isRegexEnabled')->willReturn(false);
 
         $repository    = new Repository();
         $searchResults = static::createStub(SearchResultCollection::class);
@@ -70,13 +72,38 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->fileSearcher->expects($this->once())->method('find')
-            ->with('success', ['json', 'yaml'], [$repository], 100)
+            ->with('success', ['json', 'yaml'], [$repository], 100, false)
             ->willReturn($searchResults);
 
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'json,yaml')],
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'json,yaml', false)],
+            $result
+        );
+    }
+
+    public function testInvokeWithRegexEnabled(): void
+    {
+        $request = static::createStub(SearchCodeRequest::class);
+        $request->method('getSearchQuery')->willReturn('success');
+        $request->method('getExtensions')->willReturn(null);
+        $request->method('isShowAll')->willReturn(false);
+        $request->method('isRegexEnabled')->willReturn(true);
+
+        $repository    = new Repository();
+        $searchResults = static::createStub(SearchResultCollection::class);
+
+        $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
+        $this->fileSearcher->expects($this->once())->method('find')
+            ->with('success', null, [$repository], 100, true)
+            ->willReturn($searchResults);
+
+        $result = ($this->controller)($request);
+
+        static::assertEquals(
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', null, true)],
             $result
         );
     }

@@ -23,9 +23,18 @@ class GitFileSearcher
      * @param non-empty-array<string> $extensions
      * @param Repository[]            $repositories
      */
-    public function find(string $searchQuery, ?array $extensions, array $repositories, ?int $limit = null): SearchResultCollection
-    {
+    public function find(
+        string $searchQuery,
+        ?array $extensions,
+        array $repositories,
+        ?int $limit = null,
+        bool $regexEnabled = false
+    ): SearchResultCollection {
         $command = $this->commandBuilderFactory->default();
+        if ($regexEnabled === false) {
+            $command->fixedStrings();
+        }
+
         $command->search($searchQuery);
         if ($extensions !== null) {
             $command->glob('*.{' . implode(',', $extensions) . '}');

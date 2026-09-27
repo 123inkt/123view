@@ -33,6 +33,17 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
         static::assertTrue($this->validatedRequest->isShowAll());
     }
 
+    public function testGetIsRegexEnabled(): void
+    {
+        $this->request->query->set('regex', 'true');
+        static::assertTrue($this->validatedRequest->isRegexEnabled());
+    }
+
+    public function testGetIsRegexEnabledWithoutQuery(): void
+    {
+        static::assertFalse($this->validatedRequest->isRegexEnabled());
+    }
+
     public function testGetExtensionsWithEmptyQuery(): void
     {
         static::assertNull($this->validatedRequest->getExtensions());
@@ -49,6 +60,7 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
                     'search'    => 'required|string',
                     'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
                     'all'       => 'string',
+                    'regex'     => 'string',
                 ]
             ]
         );

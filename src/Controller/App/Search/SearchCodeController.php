@@ -38,6 +38,7 @@ class SearchCodeController extends AbstractController
     {
         $searchQuery = $request->getSearchQuery();
         $extensions  = $request->getExtensions();
+        $regexEnabled = $request->isRegexEnabled();
         if (strlen($searchQuery) < 5) {
             $this->addFlash('error', $this->translator->trans('search.much.be.minimum.5.characters'));
             $results = new SearchResultCollection([], false);
@@ -45,14 +46,14 @@ class SearchCodeController extends AbstractController
             $this->stopwatch?->start('file-search');
 
             $repositories = $this->repositoryRepository->findBy(['active' => true]);
-            $results      = $this->fileSearcher->find($searchQuery, $extensions, $repositories, $request->isShowAll() ? null : 100);
+            $results      = $this->fileSearcher->find($searchQuery, $extensions, $repositories, $request->isShowAll() ? null : 100, $regexEnabled);
 
             $this->stopwatch?->stop('file-search');
         }
 
         return [
             'page_title' => $this->translator->trans('code.search'),
-            'viewModel'  => new SearchCodeViewModel($results, $searchQuery, $extensions === null ? null : implode(',', $extensions))
+            'viewModel'  => new SearchCodeViewModel($results, $searchQuery, $extensions === null ? null : implode(',', $extensions), $regexEnabled)
         ];
     }
 }
