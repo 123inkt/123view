@@ -3,13 +3,14 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
-use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Doctrine\Orm\Filter\PartialSearchFilter;
 use ApiPlatform\Doctrine\Orm\Filter\RangeFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\QueryParameter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,43 +28,35 @@ use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Security\Role\Roles;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource(
-    operations: [
-        new GetCollection(
-            order   : ['updateTimestamp' => 'DESC'],
-            security: 'is_granted("' . Roles::ROLE_USER . '")',
-            output  : CodeReviewOutput::class,
-            provider: CodeReviewProvider::class
-        ),
-        new Patch(
-            normalizationContext  : ['groups' => ['code_review_write']],
-            denormalizationContext: ['groups' => ['code_review_write']],
-            security              : 'is_granted("' . Roles::ROLE_USER . '")',
-            processor             : CodeReviewProcessor::class
-        )
+#[Get(
+    security: 'is_granted("' . Roles::ROLE_USER . '")',
+    output  : CodeReviewOutput::class,
+    provider: CodeReviewProvider::class
+)]
+#[GetCollection(
+    order     : ['updateTimestamp' => 'DESC'],
+    security  : 'is_granted("' . Roles::ROLE_USER . '")',
+    output    : CodeReviewOutput::class,
+    provider  : CodeReviewProvider::class,
+    parameters: [
+        'id'                     => new QueryParameter(filter: new ExactFilter()),
+        'title'                  => new QueryParameter(filter: new PartialSearchFilter()),
+        'repository.id'          => new QueryParameter(filter: new ExactFilter(), property: 'repository.id',),
+        'state'                  => new QueryParameter(filter: new ExactFilter()),
+        'createTimestamp'        => new QueryParameter(filter: new RangeFilter()),
+        'updateTimestamp'        => new QueryParameter(filter: new RangeFilter()),
+        'order[id]'              => new QueryParameter(filter: new SortFilter(), property: 'id'),
+        'order[title]'           => new QueryParameter(filter: new SortFilter(), property: 'title'),
+        'order[repository.id]'   => new QueryParameter(filter: new SortFilter(), property: 'repository.id'),
+        'order[createTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
+        'order[updateTimestamp]' => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),
     ]
 )]
-#[ApiFilter(
-    SearchFilter::class,
-    properties: [
-        'id'            => 'exact',
-        'title'         => 'partial',
-        'repository.id' => 'exact',
-        'state'         => 'exact',
-        'reviewerState' => 'exact'
-    ]
-)]
-#[ApiFilter(RangeFilter::class, properties: ['createTimestamp', 'updateTimestamp'])]
-#[ApiFilter(
-    OrderFilter::class,
-    properties: [
-        'id',
-        'title',
-        'repository.id',
-        'createTimestamp',
-        'updateTimestamp'
-    ],
-    arguments : ['orderParameterName' => 'order']
+#[Patch(
+    normalizationContext  : ['groups' => ['code_review_write']],
+    denormalizationContext: ['groups' => ['code_review_write']],
+    security              : 'is_granted("' . Roles::ROLE_USER . '")',
+    processor             : CodeReviewProcessor::class
 )]
 #[ORM\Entity(repositoryClass: CodeReviewRepository::class)]
 #[ORM\Index(name: 'IDX_TITLE', columns: ['title'])]
