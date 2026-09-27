@@ -9,6 +9,11 @@ namespace DR\Review\Service\RemoteEvent;
 interface RemoteEventHandlerInterface
 {
     /**
+     * @phpstan-assert-if-true T $event
+     */
+    public function supports(object $event): bool;
+
+    /**
      * @param T $event
      */
     public function handle(object $event): void;
