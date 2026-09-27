@@ -23,6 +23,7 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateHandler;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
@@ -62,7 +63,11 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         );
     }
 
-    public function testSupportsCreateMergeRequestNotes(): void
+    #[TestWith([new NoteEvent(), 'create', 'MergeRequest', true])]
+    #[TestWith([new NoteEvent(), 'update', 'MergeRequest', false])]
+    #[TestWith([new NoteEvent(), 'create', 'Issue', false])]
+    #[TestWith([new stdClass(), '', '', false])]
+    public function testSupportsCreateMergeRequestNotes(object $event, string $action, string $noteType, bool $expected): void
     {
         $this->eventLogger->expects($this->never())->method(static::anything());
         $this->repositoryRepository->expects($this->never())->method(static::anything());
@@ -73,15 +78,12 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->commentFactory->expects($this->never())->method(static::anything());
         $this->commentRepository->expects($this->never())->method(static::anything());
 
-        $event = $this->createEvent();
+        if ($event instanceof NoteEvent) {
+            $event->action   = $action;
+            $event->noteType = $noteType;
+        }
 
-        static::assertTrue($this->handler->supports($event));
-        $event->action = 'update';
-        static::assertFalse($this->handler->supports($event));
-        $event->action   = 'create';
-        $event->noteType = 'Issue';
-        static::assertFalse($this->handler->supports($event));
-        static::assertFalse($this->handler->supports(new stdClass()));
+        static::assertSame($expected, $this->handler->supports($event));
     }
 
     public function testHandleSkipsExistingComment(): void
