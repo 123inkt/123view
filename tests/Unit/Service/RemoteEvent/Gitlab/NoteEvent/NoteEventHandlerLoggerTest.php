@@ -44,6 +44,45 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->eventLogger->logCommentAlreadyExists($event);
     }
 
+    public function testLogCommentNotFound(): void
+    {
+        $event = $this->createEvent();
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: comment not found in 123view',
+                ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
+            );
+
+        $this->eventLogger->logCommentNotFound($event, '7:discussion:42');
+    }
+
+    public function testLogCommentUnchanged(): void
+    {
+        $event = $this->createEvent();
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: comment message is unchanged in 123view',
+                ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
+            );
+
+        $this->eventLogger->logCommentUnchanged($event, '7:discussion:42');
+    }
+
+    public function testLogCommentUpdated(): void
+    {
+        $event = $this->createEvent();
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: updated comment in 123view',
+                ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
+            );
+
+        $this->eventLogger->logCommentUpdated($event, '7:discussion:42');
+    }
+
     public function testLogUserNotFound(): void
     {
         $event             = $this->createEvent();

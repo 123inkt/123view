@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ApiPlatform\Extension;
+namespace DR\Review\Tests\Unit\ApiPlatform\Extension;
 
 use ApiPlatform\Doctrine\Orm\Util\QueryNameGenerator;
 use Doctrine\ORM\EntityManagerInterface;

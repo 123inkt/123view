@@ -22,6 +22,30 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
         );
     }
 
+    public function logCommentNotFound(NoteEvent $event, string $referenceId): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: comment not found in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logCommentUnchanged(NoteEvent $event, string $referenceId): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: comment message is unchanged in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logCommentUpdated(NoteEvent $event, string $referenceId): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: updated comment in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
+        );
+    }
+
     public function logUserNotFound(NoteEvent $event, GitlabUser $gitlabUser): void
     {
         $this->logger?->info(

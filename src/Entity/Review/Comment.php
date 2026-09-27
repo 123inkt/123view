@@ -129,6 +129,9 @@ class Comment
     #[ORM\Column(type: CommentTypeType::TYPE, enumType: CommentTypeEnum::class, options: ['default' => 'final'])]
     private CommentTypeEnum $type = CommentTypeEnum::Final;
 
+    // entity is not persisted
+    private CommentModificationEnum $modifiedBy = CommentModificationEnum::Local;
+
     #[ORM\Column]
     private int $createTimestamp;
 
@@ -252,6 +255,18 @@ class Comment
     public function setType(CommentTypeEnum $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getModifiedBy(): CommentModificationEnum
+    {
+        return $this->modifiedBy;
+    }
+
+    public function setModifiedBy(CommentModificationEnum $modifiedBy): Comment
+    {
+        $this->modifiedBy = $modifiedBy;
 
         return $this;
     }
