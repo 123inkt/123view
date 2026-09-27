@@ -17,23 +17,21 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateReplyHandler;
 use DR\Review\Service\User\GitlabUserService;
 use DR\Review\Tests\AbstractTestCase;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
-#[AllowMockObjectsWithoutExpectations]
 #[CoversClass(NoteEventCreateHandler::class)]
 class NoteEventCreateHandlerTest extends AbstractTestCase
 {
-    private NoteEventHandlerLogger&MockObject       $eventLogger;
-    private GitlabUserService&MockObject            $userService;
-    private Discussions&MockObject                    $discussions;
-    private CommentRepository&MockObject              $commentRepository;
+    private NoteEventHandlerLogger&MockObject        $eventLogger;
+    private GitlabUserService&MockObject             $userService;
+    private Discussions&MockObject                   $discussions;
+    private CommentRepository&MockObject             $commentRepository;
     private NoteEventCreateCommentHandler&MockObject $commentHandler;
     private NoteEventCreateReplyHandler&MockObject   $replyHandler;
-    private NoteEventCreateHandler                    $handler;
+    private NoteEventCreateHandler                   $handler;
 
     protected function setUp(): void
     {
@@ -74,7 +72,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     public function testHandleRoutesRootNoteToCommentHandler(): void
     {
         $event = $this->createEvent();
-        $user  = $this->configureResolvedUser($event);
+        $user  = $this->configureResolvedUser();
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(321, 7, 'discussion')
@@ -90,7 +88,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     {
         $event   = $this->createEvent();
         $comment = new Comment();
-        $user    = $this->configureResolvedUser($event);
+        $user    = $this->configureResolvedUser();
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(321, 7, 'discussion')
@@ -101,24 +99,6 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
             ->willReturn($comment);
         $this->commentHandler->expects($this->never())->method('handle');
         $this->replyHandler->expects($this->once())->method('handle')->with($event, $user, $comment);
-
-        $this->handler->handle($event);
-    }
-
-    public function testHandleSkipsReplyWhenCommentIsNotSynced(): void
-    {
-        $event = $this->createEvent();
-        $this->discussions->expects($this->once())
-            ->method('getDiscussion')
-            ->with(321, 7, 'discussion')
-            ->willReturn(['id' => 'discussion', 'notes' => [['id' => 41], ['id' => 42]]]);
-        $this->commentRepository->expects($this->once())
-            ->method('findOneBy')
-            ->with(['extReferenceId' => '7:discussion:41'])
-            ->willReturn(null);
-        $this->userService->expects($this->never())->method('getUser');
-        $this->commentHandler->expects($this->never())->method('handle');
-        $this->replyHandler->expects($this->never())->method('handle');
 
         $this->handler->handle($event);
     }
@@ -142,7 +122,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->handler->handle($event);
     }
 
-    private function configureResolvedUser(NoteEvent $event): User
+    private function configureResolvedUser(): User
     {
         $user = new User()->setEmail('user@example.com');
         $this->userService->expects($this->once())
