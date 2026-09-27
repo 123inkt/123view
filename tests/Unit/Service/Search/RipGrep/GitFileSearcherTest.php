@@ -40,6 +40,7 @@ class GitFileSearcherTest extends AbstractTestCase
         $iterator         = $this->getIterator();
 
         $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
+        $commandBuilder->expects($this->once())->method('fixedStrings')->willReturnSelf();
         $commandBuilder->expects($this->once())->method('search')->with('searchQuery')->willReturnSelf();
         $commandBuilder->expects($this->once())->method('glob')->with('*.{json,yaml}')->willReturnSelf();
 
@@ -59,6 +60,7 @@ class GitFileSearcherTest extends AbstractTestCase
         $iterator         = $this->getIterator();
 
         $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
+        $commandBuilder->expects($this->once())->method('fixedStrings')->willReturnSelf();
         $commandBuilder->expects($this->once())->method('search')->with('searchQuery')->willReturnSelf();
         $commandBuilder->expects($this->never())->method('glob');
 

@@ -26,6 +26,7 @@ class GitFileSearcher
     public function find(string $searchQuery, ?array $extensions, array $repositories, ?int $limit = null): SearchResultCollection
     {
         $command = $this->commandBuilderFactory->default();
+        $command->fixedStrings();
         $command->search($searchQuery);
         if ($extensions !== null) {
             $command->glob('*.{' . implode(',', $extensions) . '}');
