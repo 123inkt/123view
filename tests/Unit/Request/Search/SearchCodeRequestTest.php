@@ -60,7 +60,7 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
                     'search'    => 'required|string',
                     'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
                     'all'       => 'string',
-                    'regex'     => 'string',
+                    'regex'     => 'string|in:true,false',
                 ]
             ]
         );
