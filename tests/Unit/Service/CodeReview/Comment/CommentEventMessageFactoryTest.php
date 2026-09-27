@@ -50,6 +50,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
+        $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setReview(new CodeReview()->setId(789));
 
         $event = $this->factory->createAdded($comment, $user);
@@ -57,6 +58,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         static::assertSame(123, $event->getUserId());
         static::assertSame('filepath', $event->file);
         static::assertSame('message', $event->message);
+        static::assertSame(CommentModificationEnum::Gitlab, $event->getModifiedBy());
         static::assertSame('comment-added', $event->getName());
     }
 

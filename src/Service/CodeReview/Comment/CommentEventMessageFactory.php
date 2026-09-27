@@ -23,7 +23,8 @@ class CommentEventMessageFactory
             $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
-            $comment->getMessage()
+            $comment->getMessage(),
+            $comment->getModifiedBy(),
         );
     }
 

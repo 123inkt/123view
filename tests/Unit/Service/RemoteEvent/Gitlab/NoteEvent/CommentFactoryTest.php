@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab\NoteEvent;
 use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
@@ -49,6 +50,7 @@ class CommentFactoryTest extends AbstractTestCase
         static::assertSame('7:discussion:42', $comment->getExtReferenceId());
         static::assertSame(self::time(), $comment->getCreateTimestamp());
         static::assertSame(self::time(), $comment->getUpdateTimestamp());
+        static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
         static::assertSame('old.php', $comment->getLineReference()->oldPath);
         static::assertSame('new.php', $comment->getLineReference()->newPath);
         static::assertSame(10, $comment->getLineReference()->line);

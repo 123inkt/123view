@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab\NoteEvent;
 
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
@@ -37,6 +38,7 @@ class CommentFactory
         $comment->setReview($review);
         $comment->setMessage($event->note);
         $comment->setUser($user);
+        $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequest->mergeRequestIId ?? 0, $event->discussionId, $event->id));
         $comment->setCreateTimestamp($now->getTimestamp());
         $comment->setUpdateTimestamp($now->getTimestamp());
