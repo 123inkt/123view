@@ -29,9 +29,9 @@ class Webhook
     #[ORM\Column(type: 'boolean', options: ['default' => true])]
     private bool $verifySsl = true;
 
-    /** @var array<string, string> */
+    /** @var array<string, string>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private array $headers = [];
+    private ?array $headers = null;
 
     /** @phpstan-var Collection<int, Repository> */
     #[ORM\ManyToMany(targetEntity: Repository::class)]
@@ -117,7 +117,7 @@ class Webhook
      */
     public function getHeaders(): array
     {
-        return $this->headers;
+        return $this->headers ?? [];
     }
 
     /**
@@ -133,8 +133,11 @@ class Webhook
     public function setHeader(string $key, ?string $value): self
     {
         if ($value === null) {
-            unset($this->headers[$key]);
+            if ($this->headers !== null) {
+                unset($this->headers[$key]);
+            }
         } else {
+            $this->headers ??= [];
             $this->headers[$key] = $value;
         }
 
