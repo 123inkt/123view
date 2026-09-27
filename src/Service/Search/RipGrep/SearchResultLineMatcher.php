@@ -19,6 +19,6 @@ class SearchResultLineMatcher
             return false;
         }
 
-        return $filenamePattern === null || @preg_match('~' . $filenamePattern . '~', $entry['data']['path']['text']) === 1;
+        return $filenamePattern === null || @preg_match('~' . $filenamePattern . '~', $entry['data']['path']['text']) !== 0;
     }
 }
