@@ -39,7 +39,8 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithTooShortQuery(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $request->method('getFilter')->willReturn(new SearchFilter('fail', null, false));
+        $filter = new SearchFilter('fail', null, false);
+        $request->method('getFilter')->willReturn($filter);
         $request->method('isShowAll')->willReturn(false);
 
         $this->translator->expects($this->exactly(2))->method('trans')
@@ -52,7 +53,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel(new SearchResultCollection([], false), 'fail', null, false)],
+            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel(new SearchResultCollection([], false), $filter)],
             $result
         );
     }
@@ -76,7 +77,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'composer\\.json', false)],
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, $filter)],
             $result
         );
     }
@@ -100,7 +101,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', null, true)],
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, $filter)],
             $result
         );
     }
