@@ -16,6 +16,17 @@ use Symfony\Component\Serializer\Serializer;
 #[CoversClass(NoteEvent::class)]
 class NoteEventTest extends TestCase
 {
+    public function testToString(): void
+    {
+        $event                  = new NoteEvent();
+        $event->id              = 789;
+        $event->mergeRequestIId = 456;
+        $event->noteType        = 'MergeRequest';
+        $event->action          = 'create';
+
+        static::assertSame('NoteEvent(id: 789, mergeRequestIID 456, type: MergeRequest, action: create)', (string)$event);
+    }
+
     public function testDenormalizeGitlabNotePayload(): void
     {
         $metadataFactory = new ClassMetadataFactory(new AttributeLoader());

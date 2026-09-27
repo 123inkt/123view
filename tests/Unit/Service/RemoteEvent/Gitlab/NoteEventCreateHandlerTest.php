@@ -62,7 +62,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         );
     }
 
-    public function testSupportsCreateNoteEventsOnly(): void
+    public function testSupportsCreateMergeRequestNotes(): void
     {
         $this->eventLogger->expects($this->never())->method(static::anything());
         $this->repositoryRepository->expects($this->never())->method(static::anything());
@@ -77,6 +77,9 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
 
         static::assertTrue($this->handler->supports($event));
         $event->action = 'update';
+        static::assertFalse($this->handler->supports($event));
+        $event->action   = 'create';
+        $event->noteType = 'Issue';
         static::assertFalse($this->handler->supports($event));
         static::assertFalse($this->handler->supports(new stdClass()));
     }
@@ -268,6 +271,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $event->targetBranch     = 'main';
         $event->discussionId     = 'discussion';
         $event->note      = 'Comment';
+        $event->noteType         = 'MergeRequest';
         $event->action            = 'create';
         $event->position         = new Position();
         $event->position->newPath = 'new.php';
