@@ -69,6 +69,9 @@ jobs:
             -   name: Install Composer dependencies
                 run: composer install --no-progress --prefer-dist --optimize-autoloader
 
+            -   name: Run database migrations
+                run: php bin/console doctrine:migrations:migrate --no-interaction --env=test
+
             -   name: Install npm dependencies
                 run: npm ci
 
