@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Search;
 use DR\PHPUnitExtensions\Symfony\AbstractControllerTestCase;
 use DR\Review\Controller\App\Search\SearchCodeController;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Model\Search\SearchFilter;
 use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Request\Search\SearchCodeRequest;
@@ -38,10 +39,8 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithTooShortQuery(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $request->method('getSearchQuery')->willReturn('fail');
-        $request->method('getExtensions')->willReturn(null);
+        $request->method('getFilter')->willReturn(new SearchFilter('fail', null, false));
         $request->method('isShowAll')->willReturn(false);
-        $request->method('isRegexEnabled')->willReturn(false);
 
         $this->translator->expects($this->exactly(2))->method('trans')
             ->with(...consecutive(['search.much.be.minimum.5.characters'], ['code.search']))
@@ -61,10 +60,9 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithSearch(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $request->method('getSearchQuery')->willReturn('success');
-        $request->method('getExtensions')->willReturn(['json', 'yaml']);
+        $filter = new SearchFilter('success', ['json', 'yaml'], false);
+        $request->method('getFilter')->willReturn($filter);
         $request->method('isShowAll')->willReturn(false);
-        $request->method('isRegexEnabled')->willReturn(false);
 
         $repository    = new Repository();
         $searchResults = static::createStub(SearchResultCollection::class);
@@ -72,7 +70,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->fileSearcher->expects($this->once())->method('find')
-            ->with('success', ['json', 'yaml'], [$repository], 100, false)
+            ->with($filter, [$repository], 100)
             ->willReturn($searchResults);
 
         $result = ($this->controller)($request);
@@ -86,10 +84,9 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithRegexEnabled(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $request->method('getSearchQuery')->willReturn('success');
-        $request->method('getExtensions')->willReturn(null);
+        $filter = new SearchFilter('success', null, true);
+        $request->method('getFilter')->willReturn($filter);
         $request->method('isShowAll')->willReturn(false);
-        $request->method('isRegexEnabled')->willReturn(true);
 
         $repository    = new Repository();
         $searchResults = static::createStub(SearchResultCollection::class);
@@ -97,7 +94,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->fileSearcher->expects($this->once())->method('find')
-            ->with('success', null, [$repository], 100, true)
+            ->with($filter, [$repository], 100)
             ->willReturn($searchResults);
 
         $result = ($this->controller)($request);

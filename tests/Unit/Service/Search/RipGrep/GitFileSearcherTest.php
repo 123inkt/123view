@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Search\RipGrep;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Model\Search\SearchFilter;
 use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilder;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilderFactory;
@@ -50,7 +51,7 @@ class GitFileSearcherTest extends AbstractTestCase
             ->with(new JsonDecodeIterator($iterator), [$repository], 100)
             ->willReturn($resultCollection);
 
-        static::assertSame($resultCollection, $this->searcher->find('searchQuery', ['json', 'yaml'], [$repository], 100));
+        static::assertSame($resultCollection, $this->searcher->find(new SearchFilter('searchQuery', ['json', 'yaml'], false), [$repository], 100));
     }
 
     public function testFindWithoutExtensions(): void
@@ -70,7 +71,7 @@ class GitFileSearcherTest extends AbstractTestCase
             ->with(new JsonDecodeIterator($iterator), [$repository], null)
             ->willReturn($resultCollection);
 
-        static::assertSame($resultCollection, $this->searcher->find('searchQuery', null, [$repository]));
+        static::assertSame($resultCollection, $this->searcher->find(new SearchFilter('searchQuery', null, false), [$repository]));
     }
 
     public function testFindWithRegex(): void
@@ -90,7 +91,7 @@ class GitFileSearcherTest extends AbstractTestCase
             ->with(new JsonDecodeIterator($iterator), [$repository], null)
             ->willReturn($resultCollection);
 
-        static::assertSame($resultCollection, $this->searcher->find('searchQuery', null, [$repository], null, true));
+        static::assertSame($resultCollection, $this->searcher->find(new SearchFilter('searchQuery', null, true), [$repository]));
     }
 
     /**

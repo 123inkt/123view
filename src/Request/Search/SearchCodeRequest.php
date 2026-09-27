@@ -5,33 +5,25 @@ namespace DR\Review\Request\Search;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
+use DR\Review\Model\Search\SearchFilter;
 use DR\Utils\Arrays;
 
 class SearchCodeRequest extends AbstractValidatedRequest
 {
-    public function getSearchQuery(): string
-    {
-        return trim($this->request->query->getString('search'));
-    }
-
-    /**
-     * @return non-empty-array<string>|null
-     */
-    public function getExtensions(): ?array
+    public function getFilter(): SearchFilter
     {
         $extensions = Arrays::explode(',', $this->request->query->getString('extension'));
 
-        return count($extensions) === 0 ? null : $extensions;
+        return new SearchFilter(
+            trim($this->request->query->getString('search')),
+            count($extensions) === 0 ? null : $extensions,
+            $this->request->query->getBoolean('regex'),
+        );
     }
 
     public function isShowAll(): bool
     {
         return $this->request->query->getBoolean('all');
-    }
-
-    public function isRegexEnabled(): bool
-    {
-        return $this->request->query->getBoolean('regex');
     }
 
     protected function getValidationRules(): ?ValidationRules
