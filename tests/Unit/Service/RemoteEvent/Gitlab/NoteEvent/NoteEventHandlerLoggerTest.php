@@ -65,7 +65,7 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->messageLogger->expects($this->once())
             ->method('info')
             ->with(
-                'NoteEventHandler: repository {id} doesnt exist or is inactive in 123view',
+                'NoteEventHandler: repository {id} doesn\'t exist or is inactive in 123view',
                 ['id' => 321, 'discussionId' => 'discussion']
             );
 

@@ -33,7 +33,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
     public function logRepositoryNotFound(NoteEvent $event): void
     {
         $this->logger?->info(
-            'NoteEventHandler: repository {id} doesnt exist or is inactive in 123view',
+            'NoteEventHandler: repository {id} doesn\'t exist or is inactive in 123view',
             ['id' => $event->projectId, 'discussionId' => $event->discussionId]
         );
     }

@@ -7,8 +7,6 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CommentRepository;
-use DR\Review\Repository\User\UserRepository;
-use DR\Review\Service\Api\Gitlab\GitlabApi;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentFactory;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
@@ -26,9 +24,7 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
     public function __construct(
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly RepositoryRepository $repository,
-        private readonly GitlabApi $api,
         private readonly GitlabUserService $userService,
-        private readonly UserRepository $userRepository,
         private readonly BranchRevisionService $branchRevisionService,
         private readonly RevisionFilepathMatcher $revisionMatcher,
         private readonly CommentFactory $commentFactory,
@@ -62,7 +58,7 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
         // find user
         $user = $this->userService->getUser($event->user->id, $event->user->name);
         if ($user === null) {
-            $this->eventLogger->logUserNotFound($event, $event->user->email);
+            $this->eventLogger->logUserNotFound($event, $event->user);
 
             return;
         }
