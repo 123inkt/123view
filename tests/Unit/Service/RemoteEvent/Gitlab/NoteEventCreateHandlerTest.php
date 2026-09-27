@@ -61,6 +61,13 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     #[TestWith([new stdClass(), 'create', 'Issue', false])]
     public function testSupportsCreateMergeRequestNotes(object $event, string $action, string $noteType, bool $expected): void
     {
+        $this->eventLogger->expects($this->never())->method(static::anything());
+        $this->userService->expects($this->never())->method(static::anything());
+        $this->discussions->expects($this->never())->method(static::anything());
+        $this->commentRepository->expects($this->never())->method(static::anything());
+        $this->commentHandler->expects($this->never())->method(static::anything());
+        $this->replyHandler->expects($this->never())->method(static::anything());
+
         if ($event instanceof NoteEvent) {
             $event->action   = $action;
             $event->noteType = $noteType;
@@ -77,6 +84,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
             ->method('getDiscussion')
             ->with(321, 7, 'discussion')
             ->willReturn(['id' => 'discussion', 'notes' => [['id' => 42]]]);
+        $this->eventLogger->expects($this->never())->method(static::anything());
         $this->commentRepository->expects($this->never())->method('findOneBy');
         $this->commentHandler->expects($this->once())->method('handle')->with($event, $user);
         $this->replyHandler->expects($this->never())->method('handle');
@@ -97,6 +105,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:41'])
             ->willReturn($comment);
+        $this->eventLogger->expects($this->never())->method(static::anything());
         $this->commentHandler->expects($this->never())->method('handle');
         $this->replyHandler->expects($this->once())->method('handle')->with($event, $user, $comment);
 

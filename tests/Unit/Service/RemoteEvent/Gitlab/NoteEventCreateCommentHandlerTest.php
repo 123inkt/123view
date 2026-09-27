@@ -62,6 +62,9 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             ->willReturn(new Comment());
         $this->eventLogger->expects($this->once())->method('logCommentAlreadyExists')->with($event);
         $this->repositoryRepository->expects($this->never())->method('findByProperty');
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event, $user);
     }
@@ -75,6 +78,8 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             ->willReturn(null);
         $this->eventLogger->expects($this->once())->method('logRepositoryNotFound')->with($event);
         $this->branchRevisionService->expects($this->never())->method('getRevisionsFor');
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event, $user);
     }
@@ -86,6 +91,8 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
         $this->eventLogger->expects($this->once())->method('logRepositoryNotFound')->with($event);
         $this->branchRevisionService->expects($this->never())->method('getRevisionsFor');
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event, $user);
     }
@@ -101,6 +108,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             ->willReturn([]);
         $this->eventLogger->expects($this->once())->method('logRevisionsNotFound')->with($event);
         $this->revisionMatcher->expects($this->never())->method('matchRevision');
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event, $user);
     }
@@ -114,6 +122,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $this->branchRevisionService->expects($this->once())->method('getRevisionsFor')->willReturn([$revision]);
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [])->willReturn([null, null]);
         $this->eventLogger->expects($this->once())->method('logRevisionForFilenameNotFound')->with($event);
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event, $user);
     }
@@ -129,6 +138,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $this->branchRevisionService->expects($this->once())->method('getRevisionsFor')->willReturn([$revision]);
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [$revision])->willReturn([null, null]);
         $this->eventLogger->expects($this->once())->method('logRevisionForFilenameNotFound')->with($event);
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event, $user);
     }

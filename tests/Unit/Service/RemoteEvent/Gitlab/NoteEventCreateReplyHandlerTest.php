@@ -29,17 +29,17 @@ class NoteEventCreateReplyHandlerTest extends AbstractTestCase
     private NoteEventHandlerLogger&MockObject $eventLogger;
     private CommentReplyFactory&MockObject    $commentReplyFactory;
     private CommentReplyRepository&MockObject $commentReplyRepository;
-    private MessageBusInterface&MockObject     $bus;
+    private MessageBusInterface&MockObject    $bus;
     private NoteEventCreateReplyHandler       $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->eventLogger           = $this->createMock(NoteEventHandlerLogger::class);
-        $this->commentReplyFactory   = $this->createMock(CommentReplyFactory::class);
+        $this->eventLogger            = $this->createMock(NoteEventHandlerLogger::class);
+        $this->commentReplyFactory    = $this->createMock(CommentReplyFactory::class);
         $this->commentReplyRepository = $this->createMock(CommentReplyRepository::class);
-        $this->bus                   = $this->createMock(MessageBusInterface::class);
-        $this->handler               = new NoteEventCreateReplyHandler(
+        $this->bus                    = $this->createMock(MessageBusInterface::class);
+        $this->handler                = new NoteEventCreateReplyHandler(
             $this->eventLogger,
             $this->commentReplyFactory,
             $this->commentReplyRepository,
