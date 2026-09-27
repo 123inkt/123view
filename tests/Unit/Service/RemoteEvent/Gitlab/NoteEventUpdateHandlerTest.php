@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
+use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
@@ -18,6 +19,8 @@ use stdClass;
 #[CoversClass(NoteEventUpdateHandler::class)]
 class NoteEventUpdateHandlerTest extends AbstractTestCase
 {
+    use ClockTestTrait;
+
     private NoteEventHandlerLogger&MockObject $eventLogger;
     private CommentRepository&MockObject      $commentRepository;
     private NoteEventUpdateHandler             $handler;
@@ -66,7 +69,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->handler->handle($event);
     }
 
-    public function testHandleSkipsWhenCommentMessageIsUnchanged(): void
+    public function testHandleSkipsUnchangedMessage(): void
     {
         $event   = $this->createEvent();
         $comment = new Comment()->setMessage('Comment')->setUpdateTimestamp(123);
@@ -101,6 +104,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->handler->handle($event);
 
         static::assertSame('Comment', $comment->getMessage());
+        static::assertSame(self::time(), $comment->getUpdateTimestamp());
     }
 
     private function createEvent(): NoteEvent
@@ -115,5 +119,10 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $event->mergeRequest->mergeRequestIId = 7;
 
         return $event;
+    }
+
+    protected function freezeTimeAt(): int
+    {
+        return 1_700_000_000;
     }
 }

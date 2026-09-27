@@ -8,12 +8,15 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Utils\Assert;
+use Symfony\Component\Clock\ClockAwareTrait;
 
 /**
  * @implements RemoteEventHandlerInterface<NoteEvent>
  */
 class NoteEventUpdateHandler implements RemoteEventHandlerInterface
 {
+    use ClockAwareTrait;
+
     public function __construct(private readonly NoteEventHandlerLogger $eventLogger, private readonly CommentRepository $commentRepository)
     {
     }
@@ -48,7 +51,7 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
         }
 
         $comment->setMessage($event->note);
-        $comment->setUpdateTimestamp(time());
+        $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);
         $this->eventLogger->logCommentUpdated($event, $referenceId);
     }
