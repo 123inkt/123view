@@ -14,6 +14,7 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Review\Service\Revision\BranchRevisionService;
+use DR\Review\Service\User\GitlabUserService;
 use DR\Utils\Assert;
 use Throwable;
 
@@ -26,6 +27,7 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly RepositoryRepository $repository,
         private readonly GitlabApi $api,
+        private readonly GitlabUserService $userService,
         private readonly UserRepository $userRepository,
         private readonly BranchRevisionService $branchRevisionService,
         private readonly RevisionFilepathMatcher $revisionMatcher,
@@ -50,25 +52,17 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
     {
         Assert::isInstanceOf($event, NoteEvent::class);
         $mergeRequest = Assert::notNull($event->mergeRequest);
-        $referenceId = sprintf('%d:%s:%d', $mergeRequest->mergeRequestIId, $event->discussionId, $event->id);
+        $referenceId  = sprintf('%d:%s:%d', $mergeRequest->mergeRequestIId, $event->discussionId, $event->id);
         if ($this->commentRepository->findOneBy(['extReferenceId' => $referenceId]) !== null) {
             $this->eventLogger->logCommentAlreadyExists($event);
 
             return;
         }
 
-        // find gitlab user
-        $gitlabUser = $this->api->users()->getUser($event->user->id);
-        if ($gitlabUser === null) {
-            $this->eventLogger->logGitlabUserNotFound($event);
-
-            return;
-        }
-
         // find user
-        $user = $this->userRepository->findOneBy(['email' => $gitlabUser->email]);
+        $user = $this->userService->getUser($event->user->id, $event->user->name);
         if ($user === null) {
-            $this->eventLogger->logUserNotFound($event, $gitlabUser);
+            $this->eventLogger->logUserNotFound($event, $event->user->email);
 
             return;
         }

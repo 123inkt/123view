@@ -22,11 +22,6 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
         );
     }
 
-    public function logGitlabUserNotFound(NoteEvent $event): void
-    {
-        $this->logger?->info('NoteEventHandler: user {id} not found in gitlab', ['id' => $event->user->id, 'discussionId' => $event->discussionId]);
-    }
-
     public function logUserNotFound(NoteEvent $event, GitlabUser $gitlabUser): void
     {
         $this->logger?->info(

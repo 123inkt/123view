@@ -44,19 +44,6 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->eventLogger->logCommentAlreadyExists($event);
     }
 
-    public function testLogGitlabUserNotFound(): void
-    {
-        $event = $this->createEvent();
-        $this->messageLogger->expects($this->once())
-            ->method('info')
-            ->with(
-                'NoteEventHandler: user {id} not found in gitlab',
-                ['id' => 123, 'discussionId' => 'discussion']
-            );
-
-        $this->eventLogger->logGitlabUserNotFound($event);
-    }
-
     public function testLogUserNotFound(): void
     {
         $event             = $this->createEvent();
@@ -113,7 +100,7 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
 
     public function testLogRevisionForFilenameNotFoundUsesOldPathWhenNewPathIsMissing(): void
     {
-        $event                    = $this->createEvent();
+        $event                                     = $this->createEvent();
         Assert::notNull($event->position)->newPath = null;
         $this->messageLogger->expects($this->once())
             ->method('info')
