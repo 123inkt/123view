@@ -10,7 +10,11 @@ readonly class SearchCodeViewModel
     /**
      * @codeCoverageIgnore Simple DTO
      */
-    public function __construct(public SearchResultCollection $searchResults, public string $searchQuery, public ?string $fileExtension)
-    {
+    public function __construct(
+        public SearchResultCollection $searchResults,
+        public string $searchQuery,
+        public ?string $fileExtension,
+        public bool $regexEnabled
+    ) {
     }
 }

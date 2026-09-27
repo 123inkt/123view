@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\Search\RipGrep;
 
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Model\Search\SearchFilter;
 use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepCommandBuilderFactory;
 use DR\Review\Service\Search\RipGrep\Command\RipGrepProcessExecutor;
@@ -20,15 +21,18 @@ class GitFileSearcher
     }
 
     /**
-     * @param non-empty-array<string> $extensions
-     * @param Repository[]            $repositories
+     * @param Repository[] $repositories
      */
-    public function find(string $searchQuery, ?array $extensions, array $repositories, ?int $limit = null): SearchResultCollection
+    public function find(SearchFilter $filter, array $repositories, ?int $limit = null): SearchResultCollection
     {
         $command = $this->commandBuilderFactory->default();
-        $command->search($searchQuery);
-        if ($extensions !== null) {
-            $command->glob('*.{' . implode(',', $extensions) . '}');
+        if ($filter->regexEnabled === false) {
+            $command->fixedStrings();
+        }
+
+        $command->search($filter->searchQuery);
+        if ($filter->extensions !== null) {
+            $command->glob('*.{' . implode(',', $filter->extensions) . '}');
         }
 
         $jsonIterator = new JsonDecodeIterator($this->executor->execute($command, $this->gitCacheDirectory));

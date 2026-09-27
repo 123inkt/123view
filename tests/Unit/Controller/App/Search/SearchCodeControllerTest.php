@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Controller\App\Search;
 use DR\PHPUnitExtensions\Symfony\AbstractControllerTestCase;
 use DR\Review\Controller\App\Search\SearchCodeController;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Model\Search\SearchFilter;
 use DR\Review\Model\Search\SearchResultCollection;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Request\Search\SearchCodeRequest;
@@ -38,8 +39,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithTooShortQuery(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $request->method('getSearchQuery')->willReturn('fail');
-        $request->method('getExtensions')->willReturn(null);
+        $request->method('getFilter')->willReturn(new SearchFilter('fail', null, false));
         $request->method('isShowAll')->willReturn(false);
 
         $this->translator->expects($this->exactly(2))->method('trans')
@@ -52,7 +52,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel(new SearchResultCollection([], false), 'fail', null)],
+            ['page_title' => 'translation2', 'viewModel' => new SearchCodeViewModel(new SearchResultCollection([], false), 'fail', null, false)],
             $result
         );
     }
@@ -60,8 +60,8 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithSearch(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $request->method('getSearchQuery')->willReturn('success');
-        $request->method('getExtensions')->willReturn(['json', 'yaml']);
+        $filter = new SearchFilter('success', ['json', 'yaml'], false);
+        $request->method('getFilter')->willReturn($filter);
         $request->method('isShowAll')->willReturn(false);
 
         $repository    = new Repository();
@@ -70,13 +70,37 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->fileSearcher->expects($this->once())->method('find')
-            ->with('success', ['json', 'yaml'], [$repository], 100)
+            ->with($filter, [$repository], 100)
             ->willReturn($searchResults);
 
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'json,yaml')],
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'json,yaml', false)],
+            $result
+        );
+    }
+
+    public function testInvokeWithRegexEnabled(): void
+    {
+        $request = static::createStub(SearchCodeRequest::class);
+        $filter = new SearchFilter('success', null, true);
+        $request->method('getFilter')->willReturn($filter);
+        $request->method('isShowAll')->willReturn(false);
+
+        $repository    = new Repository();
+        $searchResults = static::createStub(SearchResultCollection::class);
+
+        $this->translator->expects($this->once())->method('trans')->with('code.search')->willReturn('translation');
+        $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
+        $this->fileSearcher->expects($this->once())->method('find')
+            ->with($filter, [$repository], 100)
+            ->willReturn($searchResults);
+
+        $result = ($this->controller)($request);
+
+        static::assertEquals(
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', null, true)],
             $result
         );
     }

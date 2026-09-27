@@ -36,23 +36,27 @@ class SearchCodeController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(SearchCodeRequest $request): array
     {
-        $searchQuery = $request->getSearchQuery();
-        $extensions  = $request->getExtensions();
-        if (strlen($searchQuery) < 5) {
+        $filter = $request->getFilter();
+        if (strlen($filter->searchQuery) < 5) {
             $this->addFlash('error', $this->translator->trans('search.much.be.minimum.5.characters'));
             $results = new SearchResultCollection([], false);
         } else {
             $this->stopwatch?->start('file-search');
 
             $repositories = $this->repositoryRepository->findBy(['active' => true]);
-            $results      = $this->fileSearcher->find($searchQuery, $extensions, $repositories, $request->isShowAll() ? null : 100);
+            $results      = $this->fileSearcher->find($filter, $repositories, $request->isShowAll() ? null : 100);
 
             $this->stopwatch?->stop('file-search');
         }
 
         return [
             'page_title' => $this->translator->trans('code.search'),
-            'viewModel'  => new SearchCodeViewModel($results, $searchQuery, $extensions === null ? null : implode(',', $extensions))
+            'viewModel'  => new SearchCodeViewModel(
+                $results,
+                $filter->searchQuery,
+                $filter->extensions === null ? null : implode(',', $filter->extensions),
+                $filter->regexEnabled
+            )
         ];
     }
 }

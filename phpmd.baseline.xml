@@ -24,6 +24,7 @@
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/GitCommandBuilderFactory.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Log/GitLogCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Show/GitShowCommandBuilder.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Search/RipGrep/Command/RipGrepCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ApiPlatform/Provider/CodeReviewActivityProviderTest.php" method="testProvideShouldOnlySupportGetCollection"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ApiPlatform/Provider/CodeReviewProviderTest.php" method="testProvideShouldOnlySupportGetCollection"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="tests/Unit/ApiPlatform/StateProcessor/CreateCommentProcessorTest.php"/>
