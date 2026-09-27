@@ -36,7 +36,7 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
 
     public function supports(object $event): bool
     {
-        return $event instanceof NoteEvent && $event->action === 'create';
+        return $event instanceof NoteEvent && $event->action === 'create' && $event->noteType === 'MergeRequest';
     }
 
     /**

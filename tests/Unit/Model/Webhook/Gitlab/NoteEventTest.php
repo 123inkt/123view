@@ -25,11 +25,11 @@ class NoteEventTest extends TestCase
             null,
             new ReflectionExtractor()
         );
-        $event = new Serializer([$normalizer])->denormalize(
+        $event           = new Serializer([$normalizer])->denormalize(
             [
-                'project_id'     => 123,
-                'merge_request' => [
-                    'iid'          => 456,
+                'project_id'        => 123,
+                'merge_request'     => [
+                    'iid'           => 456,
                     'source_branch' => 'feature',
                     'target_branch' => 'master',
                 ],
@@ -37,6 +37,7 @@ class NoteEventTest extends TestCase
                     'id'            => 789,
                     'discussion_id' => 'discussion',
                     'note'          => 'Please update this line.',
+                    'noteable_type' => 'MergeRequest',
                     'action'        => 'create',
                     'position'      => [
                         'position_type' => 'text',
@@ -49,7 +50,7 @@ class NoteEventTest extends TestCase
                         'new_line'      => 12,
                     ],
                 ],
-                'user' => [
+                'user'              => [
                     'id'         => 42,
                     'name'       => 'User',
                     'username'   => 'user',
@@ -67,6 +68,7 @@ class NoteEventTest extends TestCase
         static::assertSame('master', $event->targetBranch);
         static::assertSame('discussion', $event->discussionId);
         static::assertSame('Please update this line.', $event->note);
+        static::assertSame('MergeRequest', $event->noteType);
         static::assertSame('create', $event->action);
         static::assertSame(42, $event->user->id);
         static::assertSame('head-sha', $event->position->headSha);

@@ -38,6 +38,6 @@ class RemoteEventHandler implements LoggerAwareInterface
             }
         }
 
-        $this->logger?->info('RemoteEventHandler: no supported event handler found for {class}', ['class' => get_class($object)]);
+        $this->logger?->info('RemoteEventHandler: no supported event handler found for {class}', ['class' => (string)$object]);
     }
 }
