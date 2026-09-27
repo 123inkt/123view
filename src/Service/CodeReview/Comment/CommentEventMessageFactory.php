@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeReview\Comment;
 
 use DR\Review\Entity\Review\Comment;
-use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
