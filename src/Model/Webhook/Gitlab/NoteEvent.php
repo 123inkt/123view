@@ -36,7 +36,7 @@ class NoteEvent implements Stringable
     public ?MergeRequest $mergeRequest;
 
     #[SerializedPath('[object_attributes][position]')]
-    public ?Position $position;
+    public ?Position $position = null;
 
     public User $user;
 

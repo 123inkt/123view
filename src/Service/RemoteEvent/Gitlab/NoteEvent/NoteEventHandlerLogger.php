@@ -14,10 +14,12 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function logCommentAlreadyExists(NoteEvent $event): void
+    public function logCommentAlreadyExists(NoteEvent $event, bool $reply = false): void
     {
         $this->logger?->info(
-            'NoteEventHandler: comment already exists in 123view',
+            $reply
+                ? 'NoteEventHandler: comment reply already exists in 123view'
+                : 'NoteEventHandler: comment already exists in 123view',
             ['discussionId' => $event->discussionId, 'message' => $event->note]
         );
     }
@@ -84,6 +86,19 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
             'NoteEventHandler: creating comment for {file} on {repository}: {review} by {user}',
             [
                 'file'         => $event->position->newPath ?? $event->position->oldPath ?? null,
+                'repository'   => $review->getRepository()->getDisplayName(),
+                'review'       => 'CR-' . $review->getProjectId(),
+                'user'         => $user->getName(),
+                'discussionId' => $event->discussionId
+            ]
+        );
+    }
+
+    public function logCommentReplyAddedSuccess(NoteEvent $event, CodeReview $review, User $user): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: creating comment reply on {repository}: {review} by {user}',
+            [
                 'repository'   => $review->getRepository()->getDisplayName(),
                 'review'       => 'CR-' . $review->getProjectId(),
                 'user'         => $user->getName(),

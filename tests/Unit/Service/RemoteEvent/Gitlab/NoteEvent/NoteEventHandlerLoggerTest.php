@@ -44,6 +44,19 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->eventLogger->logCommentAlreadyExists($event);
     }
 
+    public function testLogCommentReplyAlreadyExists(): void
+    {
+        $event = $this->createEvent();
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: comment reply already exists in 123view',
+                ['discussionId' => 'discussion', 'message' => 'Comment']
+            );
+
+        $this->eventLogger->logCommentAlreadyExists($event, true);
+    }
+
     public function testLogCommentNotFound(): void
     {
         $event = $this->createEvent();
@@ -171,6 +184,27 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
             );
 
         $this->eventLogger->logCommentAddedSuccess($event, $review, $user);
+    }
+
+    public function testLogCommentReplyAddedSuccess(): void
+    {
+        $event      = $this->createEvent();
+        $repository = new Repository()->setDisplayName('Review repository');
+        $review     = new CodeReview()->setProjectId(42)->setRepository($repository);
+        $user       = new User()->setName('Review user');
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: creating comment reply on {repository}: {review} by {user}',
+                [
+                    'repository'   => 'Review repository',
+                    'review'       => 'CR-42',
+                    'user'         => 'Review user',
+                    'discussionId' => 'discussion',
+                ]
+            );
+
+        $this->eventLogger->logCommentReplyAddedSuccess($event, $review, $user);
     }
 
     private function createEvent(): NoteEvent

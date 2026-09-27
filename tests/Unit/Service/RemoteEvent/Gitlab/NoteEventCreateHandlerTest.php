@@ -6,15 +6,19 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentFactory;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentReplyFactory;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateHandler;
@@ -25,7 +29,12 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
+use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\MessageBusInterface;
 
+/**
+ * @SuppressWarnings(CouplingBetweenObjects)
+ */
 #[CoversClass(NoteEventCreateHandler::class)]
 class NoteEventCreateHandlerTest extends AbstractTestCase
 {
@@ -35,7 +44,10 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     private BranchRevisionService&MockObject   $branchRevisionService;
     private RevisionFilepathMatcher&MockObject $revisionMatcher;
     private CommentFactory&MockObject          $commentFactory;
+    private CommentReplyFactory&MockObject     $commentReplyFactory;
     private CommentRepository&MockObject       $commentRepository;
+    private CommentReplyRepository&MockObject  $commentReplyRepository;
+    private MessageBusInterface&MockObject     $bus;
     private NoteEventCreateHandler             $handler;
 
     protected function setUp(): void
@@ -47,7 +59,10 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->branchRevisionService = $this->createMock(BranchRevisionService::class);
         $this->revisionMatcher       = $this->createMock(RevisionFilepathMatcher::class);
         $this->commentFactory        = $this->createMock(CommentFactory::class);
+        $this->commentReplyFactory   = $this->createMock(CommentReplyFactory::class);
         $this->commentRepository     = $this->createMock(CommentRepository::class);
+        $this->commentReplyRepository = $this->createMock(CommentReplyRepository::class);
+        $this->bus                    = $this->createMock(MessageBusInterface::class);
         $this->handler               = new NoteEventCreateHandler(
             $this->eventLogger,
             $this->repositoryRepository,
@@ -55,7 +70,10 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
             $this->branchRevisionService,
             $this->revisionMatcher,
             $this->commentFactory,
-            $this->commentRepository
+            $this->commentReplyFactory,
+            $this->commentRepository,
+            $this->commentReplyRepository,
+            $this->bus,
         );
     }
 
@@ -76,6 +94,9 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->revisionMatcher->expects($this->never())->method(static::anything());
         $this->commentFactory->expects($this->never())->method(static::anything());
         $this->commentRepository->expects($this->never())->method(static::anything());
+        $this->commentReplyFactory->expects($this->never())->method(static::anything());
+        $this->commentReplyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
 
         if ($event instanceof NoteEvent) {
             $event->action   = $action;
@@ -98,6 +119,9 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->branchRevisionService->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->never())->method(static::anything());
         $this->commentFactory->expects($this->never())->method(static::anything());
+        $this->commentReplyFactory->expects($this->never())->method(static::anything());
+        $this->commentReplyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -106,12 +130,16 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     {
         $event = $this->createEvent();
         $this->commentRepository->expects($this->once())->method('findOneBy')->with(['extReferenceId' => '7:discussion:42'])->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('findOneByExtReferenceIdPrefix')->with('7:discussion:')->willReturn(null);
         $this->userService->expects($this->once())->method('getUser')->with(123, 'name')->willReturn(null);
         $this->eventLogger->expects($this->once())->method('logUserNotFound')->with($event, $event->user);
         $this->repositoryRepository->expects($this->never())->method(static::anything());
         $this->branchRevisionService->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->never())->method(static::anything());
         $this->commentFactory->expects($this->never())->method(static::anything());
+        $this->commentReplyFactory->expects($this->never())->method(static::anything());
+        $this->commentReplyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -218,6 +246,54 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->handler->handle($event);
     }
 
+    public function testHandleCreatesCommentReply(): void
+    {
+        $event      = $this->createEvent();
+        $repository = new Repository()->setDisplayName('Repository');
+        $review     = new CodeReview()->setId(456)->setProjectId(123)->setRepository($repository);
+        $comment    = new Comment()->setFilePath('new.php')->setReview($review);
+        $user       = new User()->setId(789)->setName('User');
+        $reply      = new CommentReply()->setId(321);
+        $reply->setComment($comment);
+        $reply->setUser($user);
+        $reply->setMessage('Reply');
+
+        $this->commentRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn(null);
+        $this->commentRepository->expects($this->once())
+            ->method('findOneByExtReferenceIdPrefix')
+            ->with('7:discussion:')
+            ->willReturn($comment);
+        $this->commentReplyRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn(null);
+        $this->userService->expects($this->once())
+            ->method('getUser')
+            ->with(123, 'name')
+            ->willReturn($user);
+        $this->commentReplyFactory->expects($this->once())
+            ->method('create')
+            ->with($event, $user, $comment)
+            ->willReturn($reply);
+        $this->commentReplyRepository->expects($this->once())->method('save')->with($reply, true);
+        $this->bus->expects($this->once())
+            ->method('dispatch')
+            ->with(new CommentReplyAdded(456, 321, 789, 'Reply', 'new.php'))
+            ->willReturn(new Envelope(new stdClass()));
+        $this->eventLogger->expects($this->once())
+            ->method('logCommentReplyAddedSuccess')
+            ->with($event, $review, $user);
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
+
+        $this->handler->handle($event);
+    }
+
     /**
      * @return array{0: NoteEvent, 1: User}
      */
@@ -227,7 +303,11 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $user              = new User()->setEmail('user@example.com');
 
         $this->commentRepository->expects($this->once())->method('findOneBy')->with(['extReferenceId' => '7:discussion:42'])->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('findOneByExtReferenceIdPrefix')->with('7:discussion:')->willReturn(null);
         $this->userService->expects($this->once())->method('getUser')->with(123, 'name')->willReturn($user);
+        $this->commentReplyFactory->expects($this->never())->method(static::anything());
+        $this->commentReplyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
 
         return [$event, $user];
     }

@@ -46,6 +46,18 @@ class CommentRepository extends ServiceEntityRepository
         return $result;
     }
 
+    public function findOneByExtReferenceIdPrefix(string $prefix): ?Comment
+    {
+        /** @var Comment|null $comment */
+        $comment = $this->createQueryBuilder('c')
+            ->where('c.extReferenceId LIKE :prefix')
+            ->setParameter('prefix', $prefix . '%')
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $comment;
+    }
+
     /**
      * Returns all draft comments for the given user, ordered by review then comment id.
      * JOIN fetches review and repository to avoid N+1 queries.

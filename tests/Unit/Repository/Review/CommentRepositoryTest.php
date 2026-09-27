@@ -30,6 +30,19 @@ class CommentRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @throws Exception
+     */
+    public function testFindOneByExtReferenceIdPrefix(): void
+    {
+        $commentRepository = static::getService(CommentRepository::class);
+        $comment           = Assert::notNull($commentRepository->findOneBy(['message' => 'message']));
+        $commentRepository->save($comment->setExtReferenceId('7:discussion:42'), true);
+
+        static::assertSame($comment, $commentRepository->findOneByExtReferenceIdPrefix('7:discussion:'));
+        static::assertNull($commentRepository->findOneByExtReferenceIdPrefix('7:other-discussion:'));
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getFixtures(): array

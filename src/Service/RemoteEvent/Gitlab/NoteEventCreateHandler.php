@@ -3,17 +3,22 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
+use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Revision\Revision;
+use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
+use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentFactory;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentReplyFactory;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Review\Service\User\GitlabUserService;
 use DR\Utils\Assert;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 /**
@@ -21,6 +26,9 @@ use Throwable;
  */
 class NoteEventCreateHandler implements RemoteEventHandlerInterface
 {
+    /**
+     * @SuppressWarnings(ExcessiveParameterList)
+     */
     public function __construct(
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly RepositoryRepository $repository,
@@ -28,7 +36,10 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
         private readonly BranchRevisionService $branchRevisionService,
         private readonly RevisionFilepathMatcher $revisionMatcher,
         private readonly CommentFactory $commentFactory,
+        private readonly CommentReplyFactory $commentReplyFactory,
         private readonly CommentRepository $commentRepository,
+        private readonly CommentReplyRepository $commentReplyRepository,
+        private readonly MessageBusInterface $bus,
     ) {
     }
 
@@ -48,9 +59,17 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
     {
         Assert::isInstanceOf($event, NoteEvent::class);
         $mergeRequest = Assert::notNull($event->mergeRequest);
-        $referenceId  = sprintf('%d:%s:%d', $mergeRequest->mergeRequestIId, $event->discussionId, $event->id);
+        $referencePrefix = sprintf('%d:%s:', $mergeRequest->mergeRequestIId, $event->discussionId);
+        $referenceId     = $referencePrefix . $event->id;
         if ($this->commentRepository->findOneBy(['extReferenceId' => $referenceId]) !== null) {
             $this->eventLogger->logCommentAlreadyExists($event);
+
+            return;
+        }
+
+        $parentComment = $this->commentRepository->findOneByExtReferenceIdPrefix($referencePrefix);
+        if ($parentComment !== null) {
+            $this->createReply($event, $parentComment, $referenceId);
 
             return;
         }
@@ -93,5 +112,35 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
         // create comment and save
         $this->commentRepository->save($this->commentFactory->create($event, $user, $revision, $filepath), true);
         $this->eventLogger->logCommentAddedSuccess($event, Assert::notNull($revision->getReview()), $user);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function createReply(NoteEvent $event, Comment $comment, string $referenceId): void
+    {
+        if ($this->commentReplyRepository->findOneBy(['extReferenceId' => $referenceId]) !== null) {
+            $this->eventLogger->logCommentAlreadyExists($event, true);
+
+            return;
+        }
+
+        $user = $this->userService->getUser($event->user->id, $event->user->name);
+        if ($user === null) {
+            $this->eventLogger->logUserNotFound($event, $event->user);
+
+            return;
+        }
+
+        $reply = $this->commentReplyFactory->create($event, $user, $comment);
+        $this->commentReplyRepository->save($reply, true);
+        $this->bus->dispatch(new CommentReplyAdded(
+            $comment->getReview()->getId(),
+            $reply->getId(),
+            $user->getId(),
+            $reply->getMessage(),
+            $comment->getFilePath(),
+        ));
+        $this->eventLogger->logCommentReplyAddedSuccess($event, $comment->getReview(), $user);
     }
 }
