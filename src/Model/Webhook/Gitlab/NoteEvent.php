@@ -45,7 +45,7 @@ class NoteEvent implements Stringable
         return sprintf(
             'NoteEvent(id: %s, mergeRequestIID %s, type: %s, action: %s)',
             $this->id,
-            $this->mergeRequest->mergeRequestIId ?? '',
+            isset($this->mergeRequest) ? $this->mergeRequest->mergeRequestIId : '-',
             $this->noteType,
             $this->action
         );
