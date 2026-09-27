@@ -51,12 +51,7 @@ class SearchCodeController extends AbstractController
 
         return [
             'page_title' => $this->translator->trans('code.search'),
-            'viewModel'  => new SearchCodeViewModel(
-                $results,
-                $filter->searchQuery,
-                $filter->extensions === null ? null : implode(',', $filter->extensions),
-                $filter->regexEnabled
-            )
+            'viewModel'  => new SearchCodeViewModel($results, $filter)
         ];
     }
 }
