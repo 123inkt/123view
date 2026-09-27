@@ -10,12 +10,13 @@ use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
 /**
  * @phpstan-import-type SearchResultEntry from JsonDecodeIterator
  */
-class SearchResultLineParser
+readonly class SearchResultLineParser
 {
     public function __construct(
-        private readonly string $gitCacheDirectory,
-        private readonly SearchResultFactory $resultFactory,
-        private readonly SearchResultLineFactory $resultLineFactory
+        private string $gitCacheDirectory,
+        private SearchResultFactory $resultFactory,
+        private SearchResultLineFactory $resultLineFactory,
+        private SearchResultLineMatcher $resultLineMatcher,
     ) {
     }
 
@@ -29,14 +30,8 @@ class SearchResultLineParser
         $current              = null;
         $moreResultsAvailable = false;
         foreach ($iterator as $entry) {
-            if ($entry['type'] === 'begin') {
-                $filepath = $entry['data']['path']['text'];
-                if ($filenamePattern !== null && @preg_match('~' . $filenamePattern . '~', $filepath) !== 1) {
-                    $current = null;
-                    continue;
-                }
-
-                $current = $this->resultFactory->create($filepath, $this->gitCacheDirectory, $repositories);
+            if ($this->resultLineMatcher->matches($entry, $filenamePattern)) {
+                $current = $this->resultFactory->create($entry['data']['path']['text'], $this->gitCacheDirectory, $repositories);
                 continue;
             }
 
