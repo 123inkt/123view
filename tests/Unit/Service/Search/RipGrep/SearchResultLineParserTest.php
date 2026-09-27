@@ -11,6 +11,7 @@ use DR\Review\Model\Search\SearchResultLineTypeEnum;
 use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
 use DR\Review\Service\Search\RipGrep\SearchResultFactory;
 use DR\Review\Service\Search\RipGrep\SearchResultLineFactory;
+use DR\Review\Service\Search\RipGrep\SearchResultLineMatcher;
 use DR\Review\Service\Search\RipGrep\SearchResultLineParser;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,7 +33,12 @@ class SearchResultLineParserTest extends AbstractTestCase
         parent::setUp();
         $this->resultFactory     = $this->createMock(SearchResultFactory::class);
         $this->resultLineFactory = $this->createMock(SearchResultLineFactory::class);
-        $this->parser            = new SearchResultLineParser('/cache/', $this->resultFactory, $this->resultLineFactory);
+        $this->parser = new SearchResultLineParser(
+            '/cache/',
+            $this->resultFactory,
+            $this->resultLineFactory,
+            new SearchResultLineMatcher(),
+        );
     }
 
     public function testParse(): void
