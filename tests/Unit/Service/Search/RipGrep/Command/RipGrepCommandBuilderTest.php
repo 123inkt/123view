@@ -22,6 +22,7 @@ class RipGrepCommandBuilderTest extends AbstractTestCase
             ->afterContext(2)
             ->glob('!.git/')
             ->glob('*.json')
+            ->fixedStrings()
             ->search('searchQuery');
 
         static::assertSame(
@@ -36,6 +37,7 @@ class RipGrepCommandBuilderTest extends AbstractTestCase
                 escapeshellarg('--after-context=2'),
                 escapeshellarg('--glob=!.git/'),
                 escapeshellarg('--glob=*.json'),
+                escapeshellarg('--fixed-strings'),
                 escapeshellarg('searchQuery')
             ]),
             $builder->build()

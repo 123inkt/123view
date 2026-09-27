@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Request\Search;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
+use DR\Review\Model\Search\SearchFilter;
 use DR\Review\Request\Search\SearchCodeRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -15,27 +16,26 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(SearchCodeRequest::class)]
 class SearchCodeRequestTest extends AbstractRequestTestCase
 {
-    public function testGetSearchQuery(): void
+    public function testGetFilter(): void
     {
         $this->request->query->set('search', 'query');
-        static::assertSame('query', $this->validatedRequest->getSearchQuery());
+        $this->request->query->set('extension', 'json,yaml');
+        $this->request->query->set('regex', 'true');
+
+        static::assertEquals(new SearchFilter('query', ['json', 'yaml'], true), $this->validatedRequest->getFilter());
     }
 
-    public function testGetExtensions(): void
+    public function testGetFilterWithoutOptionalValues(): void
     {
-        $this->request->query->set('extension', 'json,yaml');
-        static::assertSame(['json', 'yaml'], $this->validatedRequest->getExtensions());
+        $this->request->query->set('search', 'query');
+
+        static::assertEquals(new SearchFilter('query', null, false), $this->validatedRequest->getFilter());
     }
 
     public function testGetIsShowAll(): void
     {
         $this->request->query->set('all', 'true');
         static::assertTrue($this->validatedRequest->isShowAll());
-    }
-
-    public function testGetExtensionsWithEmptyQuery(): void
-    {
-        static::assertNull($this->validatedRequest->getExtensions());
     }
 
     /**
@@ -49,6 +49,7 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
                     'search'    => 'required|string',
                     'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
                     'all'       => 'string',
+                    'regex'     => 'string|in:true,false',
                 ]
             ]
         );
