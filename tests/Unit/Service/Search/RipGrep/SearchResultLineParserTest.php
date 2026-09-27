@@ -11,6 +11,7 @@ use DR\Review\Model\Search\SearchResultLineTypeEnum;
 use DR\Review\Service\Search\RipGrep\Iterator\JsonDecodeIterator;
 use DR\Review\Service\Search\RipGrep\SearchResultFactory;
 use DR\Review\Service\Search\RipGrep\SearchResultLineFactory;
+use DR\Review\Service\Search\RipGrep\SearchResultLineMatcher;
 use DR\Review\Service\Search\RipGrep\SearchResultLineParser;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -32,7 +33,12 @@ class SearchResultLineParserTest extends AbstractTestCase
         parent::setUp();
         $this->resultFactory     = $this->createMock(SearchResultFactory::class);
         $this->resultLineFactory = $this->createMock(SearchResultLineFactory::class);
-        $this->parser            = new SearchResultLineParser('/cache/', $this->resultFactory, $this->resultLineFactory);
+        $this->parser = new SearchResultLineParser(
+            '/cache/',
+            $this->resultFactory,
+            $this->resultLineFactory,
+            new SearchResultLineMatcher(),
+        );
     }
 
     public function testParse(): void
@@ -90,5 +96,31 @@ class SearchResultLineParserTest extends AbstractTestCase
         $resultCollection = $this->parser->parse($iterator, [$repository], 1);
         static::assertCount(1, $resultCollection->results);
         static::assertTrue($resultCollection->moreResultsAvailable);
+    }
+
+    public function testParseWithFilenamePattern(): void
+    {
+        $repository = new Repository();
+        /** @var iterable<int, SearchResultEntry> $iterator */
+        $iterator = new ArrayIterator(
+            [
+                ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath/composer.json']]],
+                ['type' => 'end'],
+                ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath/composer.lock']]],
+                ['type' => 'end'],
+            ]
+        );
+
+        $searchResult = new SearchResult($repository, new SplFileInfo('filepath/composer.json', '', ''));
+
+        $this->resultFactory->expects($this->once())->method('create')
+            ->with('filepath/composer.json', '/cache/', [$repository])
+            ->willReturn($searchResult);
+        $this->resultLineFactory->expects($this->never())->method('createContextFromEntry');
+        $this->resultLineFactory->expects($this->never())->method('createMatchFromEntry');
+
+        $resultCollection = $this->parser->parse($iterator, [$repository], null, 'composer\\.json');
+        static::assertCount(1, $resultCollection->results);
+        static::assertFalse($resultCollection->moreResultsAvailable);
     }
 }

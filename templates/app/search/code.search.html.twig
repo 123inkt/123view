@@ -19,14 +19,13 @@
                         {{ stimulus_controller('search-field') }}
                        placeholder="{{ 'search.review'|trans }}"/>
                 <input type="text"
-                       name="extension"
-                       pattern="^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$"
-                       placeholder="{{ 'search.extension'|trans }}"
-                       title="{{ 'search.file.extension'|trans }}"
-                        value="{{ viewModel.filter.extensions|default([])|join(',') }}"
-                       class="form-control code-search-file-extension-input"/>
-                {% if viewModel.filter.searchQuery or viewModel.filter.extensions %}
-                    <a href="?search=&extension=" class="btn btn-secondary">&times;</a>
+                       name="filename"
+                       placeholder="{{ 'search.filename'|trans }}"
+                       title="{{ 'search.file.filename'|trans }}"
+                       value="{{ viewModel.filter.filename }}"
+                       class="form-control code-search-filename-input"/>
+                {% if viewModel.filter.searchQuery %}
+                    <a href="?search=&filename=" class="btn btn-secondary">&times;</a>
                 {% endif %}
                 <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>
             </div>
@@ -80,7 +79,7 @@
             {% endfor %}
             {% if viewModel.searchResults.moreResultsAvailable %}
                 <div class="mt-2">
-                    <a href="?search={{ viewModel.filter.searchQuery|escape('url') }}&extension={{ viewModel.filter.extensions|default([])|join(',')|escape('url') }}&all=true&regex={{ viewModel.filter.regexEnabled ? 'true' : 'false' }}"
+                    <a href="?search={{ viewModel.filter.searchQuery|escape('url') }}&filename={{ viewModel.filter.filename|escape('url') }}&all=true&regex={{ viewModel.filter.regexEnabled ? 'true' : 'false' }}"
                        type="button"
                        class="btn btn-outline-primary">{{ 'show.all'|trans }}</a>
                 </div>

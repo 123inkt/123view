@@ -19,10 +19,10 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
     public function testGetFilter(): void
     {
         $this->request->query->set('search', 'query');
-        $this->request->query->set('extension', 'json,yaml');
+        $this->request->query->set('filename', 'composer\\.json');
         $this->request->query->set('regex', 'true');
 
-        static::assertEquals(new SearchFilter('query', ['json', 'yaml'], true), $this->validatedRequest->getFilter());
+        static::assertEquals(new SearchFilter('query', 'composer\\.json', true), $this->validatedRequest->getFilter());
     }
 
     public function testGetFilterWithoutOptionalValues(): void
@@ -46,10 +46,10 @@ class SearchCodeRequestTest extends AbstractRequestTestCase
         $expected = new ValidationRules(
             [
                 'query' => [
-                    'search'    => 'required|string',
-                    'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
-                    'all'       => 'string',
-                    'regex'     => 'string|in:true,false',
+                    'search'   => 'required|string',
+                    'filename' => 'string',
+                    'all'      => 'string',
+                    'regex'    => 'string|in:true,false',
                 ]
             ]
         );

@@ -34,27 +34,7 @@ class GitFileSearcherTest extends AbstractTestCase
         $this->searcher              = new GitFileSearcher('/cache/', $this->commandBuilderFactory, $this->executor, $this->parser);
     }
 
-    public function testFindWithExtensions(): void
-    {
-        $repository       = new Repository();
-        $resultCollection = static::createStub(SearchResultCollection::class);
-        $iterator         = $this->getIterator();
-
-        $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
-        $commandBuilder->expects($this->once())->method('fixedStrings')->willReturnSelf();
-        $commandBuilder->expects($this->once())->method('search')->with('searchQuery')->willReturnSelf();
-        $commandBuilder->expects($this->once())->method('glob')->with('*.{json,yaml}')->willReturnSelf();
-
-        $this->commandBuilderFactory->expects($this->once())->method('default')->willReturn($commandBuilder);
-        $this->executor->expects($this->once())->method('execute')->with($commandBuilder, '/cache/')->willReturn($iterator);
-        $this->parser->expects($this->once())->method('parse')
-            ->with(new JsonDecodeIterator($iterator), [$repository], 100)
-            ->willReturn($resultCollection);
-
-        static::assertSame($resultCollection, $this->searcher->find(new SearchFilter('searchQuery', ['json', 'yaml'], false), [$repository], 100));
-    }
-
-    public function testFindWithoutExtensions(): void
+    public function testFindWithFilenamePattern(): void
     {
         $repository       = new Repository();
         $resultCollection = static::createStub(SearchResultCollection::class);
@@ -68,7 +48,27 @@ class GitFileSearcherTest extends AbstractTestCase
         $this->commandBuilderFactory->expects($this->once())->method('default')->willReturn($commandBuilder);
         $this->executor->expects($this->once())->method('execute')->with($commandBuilder, '/cache/')->willReturn($iterator);
         $this->parser->expects($this->once())->method('parse')
-            ->with(new JsonDecodeIterator($iterator), [$repository], null)
+            ->with(new JsonDecodeIterator($iterator), [$repository], 100, 'composer\\.json')
+            ->willReturn($resultCollection);
+
+        static::assertSame($resultCollection, $this->searcher->find(new SearchFilter('searchQuery', 'composer\\.json', false), [$repository], 100));
+    }
+
+    public function testFindWithoutFilenamePattern(): void
+    {
+        $repository       = new Repository();
+        $resultCollection = static::createStub(SearchResultCollection::class);
+        $iterator         = $this->getIterator();
+
+        $commandBuilder = $this->createMock(RipGrepCommandBuilder::class);
+        $commandBuilder->expects($this->once())->method('fixedStrings')->willReturnSelf();
+        $commandBuilder->expects($this->once())->method('search')->with('searchQuery')->willReturnSelf();
+        $commandBuilder->expects($this->never())->method('glob');
+
+        $this->commandBuilderFactory->expects($this->once())->method('default')->willReturn($commandBuilder);
+        $this->executor->expects($this->once())->method('execute')->with($commandBuilder, '/cache/')->willReturn($iterator);
+        $this->parser->expects($this->once())->method('parse')
+            ->with(new JsonDecodeIterator($iterator), [$repository], null, null)
             ->willReturn($resultCollection);
 
         static::assertSame($resultCollection, $this->searcher->find(new SearchFilter('searchQuery', null, false), [$repository]));
@@ -88,7 +88,7 @@ class GitFileSearcherTest extends AbstractTestCase
         $this->commandBuilderFactory->expects($this->once())->method('default')->willReturn($commandBuilder);
         $this->executor->expects($this->once())->method('execute')->with($commandBuilder, '/cache/')->willReturn($iterator);
         $this->parser->expects($this->once())->method('parse')
-            ->with(new JsonDecodeIterator($iterator), [$repository], null)
+            ->with(new JsonDecodeIterator($iterator), [$repository], null, null)
             ->willReturn($resultCollection);
 
         static::assertSame($resultCollection, $this->searcher->find(new SearchFilter('searchQuery', null, true), [$repository]));

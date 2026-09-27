@@ -7,10 +7,8 @@ readonly class SearchFilter
 {
     /**
      * @codeCoverageIgnore Simple DTO
-     *
-     * @param non-empty-array<string>|null $extensions
      */
-    public function __construct(public string $searchQuery, public ?array $extensions, public bool $regexEnabled)
+    public function __construct(public string $searchQuery, public ?string $filename, public bool $regexEnabled)
     {
     }
 }
