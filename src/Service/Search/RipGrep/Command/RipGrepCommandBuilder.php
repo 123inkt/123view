@@ -43,13 +43,6 @@ class RipGrepCommandBuilder
         return $this;
     }
 
-    public function fixedStrings(): self
-    {
-        $this->arguments['fixed-strings'] = '--fixed-strings';
-
-        return $this;
-    }
-
     public function lineNumber(): self
     {
         $this->arguments['line-number'] = '--line-number';
