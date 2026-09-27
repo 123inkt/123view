@@ -87,6 +87,8 @@ Tests are organized in three directories:
 
 Use the specific test suites when working on particular areas to speed up feedback loops.
 
+See [`docs/agents/mock-expectations.md`](docs/agents/mock-expectations.md) for PHPUnit mock expectation rules, including `AllowMockObjectsWithoutExpectations`.
+
 ## Configuration Files
 
 - `webpack.config.js` - Frontend build configuration

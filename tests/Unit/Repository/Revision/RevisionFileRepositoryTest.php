@@ -34,6 +34,20 @@ class RevisionFileRepositoryTest extends AbstractRepositoryTestCase
     }
 
     /**
+     * @throws Exception
+     */
+    public function testFindRevisionFileForPath(): void
+    {
+        $revision = self::getService(RevisionRepository::class)->findOneBy(['title' => 'title']);
+        static::assertNotNull($revision);
+
+        $files = self::getService(RevisionFileRepository::class)->findRevisionFileForPath([$revision], '/file/path/a');
+
+        static::assertCount(1, $files);
+        static::assertSame($revision, $files[0]->getRevision());
+    }
+
+    /**
      * @inheritDoc
      */
     protected function getFixtures(): array

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -30,7 +31,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
      *
      * @throws ExceptionInterface
      */
-    public function denormalize(string $eventType, array $data): PushEvent|MergeRequestEvent|null
+    public function denormalize(string $eventType, array $data): PushEvent|NoteEvent|MergeRequestEvent|null
     {
         $eventClass = self::getEventClass($eventType);
         if ($eventClass === null) {
@@ -42,6 +43,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
         $this->logger?->info('RemoteEventPayloadDenormalizer: Denormalizing event type: {eventType}', ['eventType' => $eventType]);
 
         try {
+            /** @phpstan-var PushEvent|NoteEvent|MergeRequestEvent */
             return $this->objectDenormalizer->denormalize($data, $eventClass, null, self::DENORMALIZE_CONTEXT);
         } catch (ExceptionInterface $exception) {
             throw $this->handleException($eventType, $exception);
@@ -67,11 +69,13 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
     /**
      * Convert Gitlab webhook event to related data class
      * @link https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html
+     * @return class-string<PushEvent|NoteEvent|MergeRequestEvent>|null
      */
     private static function getEventClass(string $eventType): ?string
     {
         return match ($eventType) {
             'Push Hook'          => PushEvent::class,
+            'Note Hook'          => NoteEvent::class,
             'Merge Request Hook' => MergeRequestEvent::class,
             default              => null,
         };

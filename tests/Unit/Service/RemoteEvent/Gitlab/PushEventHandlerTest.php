@@ -30,6 +30,15 @@ class PushEventHandlerTest extends AbstractTestCase
         $this->eventHandler = new PushEventHandler($this->repository, $this->bus);
     }
 
+    public function testSupportsPushEventOnly(): void
+    {
+        $this->repository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
+
+        static::assertTrue($this->eventHandler->supports(new PushEvent()));
+        static::assertFalse($this->eventHandler->supports(new stdClass()));
+    }
+
     public function testHandleInvalidEvent(): void
     {
         $this->repository->expects($this->never())->method('findByProperty');
