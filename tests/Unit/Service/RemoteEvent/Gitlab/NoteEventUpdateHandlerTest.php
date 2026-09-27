@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
 use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentRepository;
@@ -104,6 +105,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->handler->handle($event);
 
         static::assertSame('Comment', $comment->getMessage());
+        static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
         static::assertSame(self::time(), $comment->getUpdateTimestamp());
     }
 

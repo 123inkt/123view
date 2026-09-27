@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\MessageHandler\Gitlab;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\MessageHandler\Gitlab\CommentUpdatedMessageHandler;
@@ -55,7 +56,19 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
             $this->apiProvider,
             $this->commentService
         );
-        ($handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
+        ($handler)(new CommentUpdated(111, 222, 333, 'file', 'message', CommentModificationEnum::Local, 'message'));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testInvokeSkipsGitlabModifiedComment(): void
+    {
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->commentService->expects($this->never())->method('update');
+
+        ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', CommentModificationEnum::Gitlab, 'message'));
     }
 
     /**
@@ -77,7 +90,7 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
         $this->commentService->expects($this->never())->method('update');
 
-        ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
+        ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', CommentModificationEnum::Local, 'message'));
     }
 
     /**
@@ -101,6 +114,6 @@ class CommentUpdatedMessageHandlerTest extends AbstractTestCase
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($api);
         $this->commentService->expects($this->once())->method('update')->with($api, $comment);
 
-        ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', 'message'));
+        ($this->handler)(new CommentUpdated(111, 222, 333, 'file', 'message', CommentModificationEnum::Local, 'message'));
     }
 }
