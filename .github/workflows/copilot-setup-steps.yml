@@ -5,9 +5,6 @@ on:
     push:
         paths:
             - .github/workflows/copilot-setup-steps.yml
-    pull_request:
-        paths:
-            - .github/workflows/copilot-setup-steps.yml
 
 jobs:
     copilot-setup-steps:
@@ -41,10 +38,10 @@ jobs:
                     ini-values: zend.assertions=1
                     tools: composer
 
-            -   name: Setup Node.js 24
+            -   name: Setup Node.js 26
                 uses: actions/setup-node@v7
                 with:
-                    node-version: '24.x'
+                    node-version: '26.x'
                     cache: npm
 
             -   name: Configure test database
