@@ -10,7 +10,7 @@ use Throwable;
 
 readonly class GitlabCommentResolver
 {
-    public function __construct(private readonly Discussions $discussions, private readonly CommentRepository $commentRepository)
+    public function __construct(private Discussions $discussions, private CommentRepository $commentRepository)
     {
     }
 
