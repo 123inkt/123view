@@ -34,7 +34,7 @@ class RevisionFilepathMatcherTest extends AbstractTestCase
         $revisions = [$other, $preferred];
 
         $this->revisionFileRepository->expects($this->once())
-            ->method('findRevisionsForFile')
+            ->method('findRevisionFileForPath')
             ->with($revisions, 'new.php')
             ->willReturn([
                 new RevisionFile()->setRevision($other),
@@ -51,7 +51,7 @@ class RevisionFilepathMatcherTest extends AbstractTestCase
         $revisions = [$revision];
 
         $this->revisionFileRepository->expects($this->once())
-            ->method('findRevisionsForFile')
+            ->method('findRevisionFileForPath')
             ->willReturnCallback(static function (array $actualRevisions, string $filepath) use ($revisions, $revision): array {
                 static::assertSame($revisions, $actualRevisions);
 
@@ -68,7 +68,7 @@ class RevisionFilepathMatcherTest extends AbstractTestCase
         $revisions = [$revision];
 
         $this->revisionFileRepository->expects($this->exactly(2))
-            ->method('findRevisionsForFile')
+            ->method('findRevisionFileForPath')
             ->willReturn([]);
 
         static::assertSame([null, null], $this->matcher->matchRevision($event, $revisions));

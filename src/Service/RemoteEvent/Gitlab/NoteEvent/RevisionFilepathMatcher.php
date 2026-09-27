@@ -36,7 +36,7 @@ readonly class RevisionFilepathMatcher
      */
     private function findRevisionFor(string $filepath, array $revisions, string $preferSha): ?Revision
     {
-        $files = $this->revisionFileRepository->findRevisionsForFile($revisions, $filepath);
+        $files = $this->revisionFileRepository->findRevisionFileForPath($revisions, $filepath);
         foreach ($files as $file) {
             if ($file->getRevision()->getCommitHash() === $preferSha) {
                 return $file->getRevision();

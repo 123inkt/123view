@@ -57,7 +57,7 @@ class RevisionFileRepository extends ServiceEntityRepository
      *
      * @return list<RevisionFile>
      */
-    public function findRevisionsForFile(array $revisions, string $filepath): array
+    public function findRevisionFileForPath(array $revisions, string $filepath): array
     {
         /** @phpstan-var list<RevisionFile> */
         return $this->createQueryBuilder('f')
