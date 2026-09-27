@@ -54,6 +54,34 @@ class Discussions implements LoggerAwareInterface
     }
 
     /**
+     * @phpstan-return array{
+     *    id: string,
+     *    notes: array<array{
+     *      id: int,
+     *      body: string,
+     *      position: array{
+     *        base_sha: string,
+     *        start_sha: string,
+     *        head_sha: string,
+     *        old_path: string,
+     *        new_path: string,
+     *      }
+     *    }>
+     * }
+     * @throws Throwable
+     * @link https://docs.gitlab.com/ee/api/discussions.html#retrieve-a-merge-request-discussion-item
+     */
+    public function getDiscussion(int $projectId, int $mergeRequestIId, string $discussionId): array
+    {
+        $response = $this->client->request(
+            'GET',
+            sprintf('projects/%d/merge_requests/%d/discussions/%s', $projectId, $mergeRequestIId, $discussionId)
+        );
+
+        return $response->toArray();
+    }
+
+    /**
      * @throws Throwable
      * @link https://docs.gitlab.com/ee/api/discussions.html#create-a-new-thread-in-the-merge-request-diff
      */

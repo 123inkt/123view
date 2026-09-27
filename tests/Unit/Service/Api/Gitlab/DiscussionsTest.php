@@ -65,6 +65,23 @@ class DiscussionsTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testGetDiscussion(): void
+    {
+        $discussion = ['id' => 333, 'notes' => [['id' => 444]]];
+        $response   = static::createStub(ResponseInterface::class);
+        $response->method('toArray')->willReturn($discussion);
+
+        $this->client->expects($this->once())
+            ->method('request')
+            ->with('GET', 'projects/111/merge_requests/222/discussions/333')
+            ->willReturn($response);
+
+        static::assertSame($discussion, $this->discussions->getDiscussion(111, 222, '333'));
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testCreateDiscussion(): void
     {
         $position               = new Position();
