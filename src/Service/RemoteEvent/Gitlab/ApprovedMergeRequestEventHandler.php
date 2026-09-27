@@ -31,6 +31,9 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
     ) {
     }
 
+    /**
+     * @phpstan-impure
+     */
     public function supports(object $event): bool
     {
         return $event instanceof MergeRequestEvent && $event->action === 'approved';
