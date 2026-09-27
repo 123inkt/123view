@@ -9,7 +9,6 @@ use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
 use DR\Review\Tests\AbstractTestCase;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
@@ -17,7 +16,6 @@ use stdClass;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(PushEventHandler::class)]
-#[AllowMockObjectsWithoutExpectations]
 class PushEventHandlerTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject $repository;
@@ -34,6 +32,9 @@ class PushEventHandlerTest extends AbstractTestCase
 
     public function testSupportsPushEventOnly(): void
     {
+        $this->repository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
+
         static::assertTrue($this->eventHandler->supports(new PushEvent()));
         static::assertFalse($this->eventHandler->supports(new stdClass()));
     }

@@ -18,13 +18,11 @@ use DR\Review\Service\CodeReview\ChangeReviewerStateService;
 use DR\Review\Service\RemoteEvent\Gitlab\ApprovedMergeRequestEventHandler;
 use DR\Review\Service\User\GitlabUserService;
 use DR\Review\Tests\AbstractTestCase;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 #[CoversClass(ApprovedMergeRequestEventHandler::class)]
-#[AllowMockObjectsWithoutExpectations]
 class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject       $repositoryRepository;
@@ -53,6 +51,11 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
      */
     public function testSupportsOnlyApprovedMergeRequest(): void
     {
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
+        $this->reviewRepository->expects($this->never())->method(static::anything());
+        $this->userService->expects($this->never())->method(static::anything());
+        $this->changeReviewerStateService->expects($this->never())->method(static::anything());
+
         $event         = new MergeRequestEvent();
         $event->action = 'open';
 

@@ -22,13 +22,11 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateHandler;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Review\Tests\AbstractTestCase;
-use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
 
 #[CoversClass(NoteEventCreateHandler::class)]
-#[AllowMockObjectsWithoutExpectations]
 class NoteEventCreateHandlerTest extends AbstractTestCase
 {
     private NoteEventHandlerLogger&MockObject $eventLogger;
@@ -66,6 +64,15 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
 
     public function testSupportsCreateNoteEventsOnly(): void
     {
+        $this->eventLogger->expects($this->never())->method(static::anything());
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
+        $this->api->expects($this->never())->method(static::anything());
+        $this->userRepository->expects($this->never())->method(static::anything());
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
+        $this->commentRepository->expects($this->never())->method(static::anything());
+
         $event = $this->createEvent();
 
         static::assertTrue($this->handler->supports($event));
@@ -82,6 +89,12 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn(new Comment());
         $this->eventLogger->expects($this->once())->method('logCommentAlreadyExists')->with($event);
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
+        $this->api->expects($this->never())->method(static::anything());
+        $this->userRepository->expects($this->never())->method(static::anything());
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -90,10 +103,15 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     {
         $event = $this->createEvent();
         $users = $this->createMock(Users::class);
-        $this->commentRepository->method('findOneBy')->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('findOneBy')->with(['extReferenceId' => '7:discussion:42'])->willReturn(null);
         $this->api->expects($this->once())->method('users')->willReturn($users);
         $users->expects($this->once())->method('getUser')->with(123)->willReturn(null);
         $this->eventLogger->expects($this->once())->method('logGitlabUserNotFound')->with($event);
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
+        $this->userRepository->expects($this->never())->method(static::anything());
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -105,11 +123,15 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $gitlabUser->id = 123;
         $gitlabUser->email = 'user@example.com';
         $users = $this->createMock(Users::class);
-        $this->commentRepository->method('findOneBy')->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('findOneBy')->with(['extReferenceId' => '7:discussion:42'])->willReturn(null);
         $this->api->expects($this->once())->method('users')->willReturn($users);
         $users->expects($this->once())->method('getUser')->with(123)->willReturn($gitlabUser);
         $this->userRepository->expects($this->once())->method('findOneBy')->with(['email' => 'user@example.com'])->willReturn(null);
         $this->eventLogger->expects($this->once())->method('logUserNotFound')->with($event, $gitlabUser);
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -122,6 +144,9 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
             ->with('gitlab-project-id', '321')
             ->willReturn(null);
         $this->eventLogger->expects($this->once())->method('logRepositoryNotFound')->with($event);
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -130,8 +155,11 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     {
         [$event] = $this->configureResolvedUser();
         $repository = new Repository()->setActive(false);
-        $this->repositoryRepository->method('findByProperty')->willReturn($repository);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '321')->willReturn($repository);
         $this->eventLogger->expects($this->once())->method('logRepositoryNotFound')->with($event);
+        $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -140,12 +168,14 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
     {
         [$event] = $this->configureResolvedUser();
         $repository = new Repository()->setActive(true);
-        $this->repositoryRepository->method('findByProperty')->willReturn($repository);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '321')->willReturn($repository);
         $this->branchRevisionService->expects($this->once())
             ->method('getRevisionsFor')
             ->with($repository, 'origin/feature', 'main')
             ->willReturn([]);
         $this->eventLogger->expects($this->once())->method('logRevisionsNotFound')->with($event);
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -155,10 +185,14 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         [$event] = $this->configureResolvedUser();
         $repository = new Repository()->setActive(true);
         $revision   = new Revision()->setCommitHash('commit-sha');
-        $this->repositoryRepository->method('findByProperty')->willReturn($repository);
-        $this->branchRevisionService->method('getRevisionsFor')->willReturn([$revision]);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '321')->willReturn($repository);
+        $this->branchRevisionService->expects($this->once())
+            ->method('getRevisionsFor')
+            ->with($repository, 'origin/feature', 'main')
+            ->willReturn([$revision]);
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [])->willReturn([null, null]);
         $this->eventLogger->expects($this->once())->method('logRevisionForFilenameNotFound')->with($event);
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -170,10 +204,14 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $review     = new CodeReview();
         $revision   = new Revision()->setCommitHash('commit-sha');
         $revision->setReview($review);
-        $this->repositoryRepository->method('findByProperty')->willReturn($repository);
-        $this->branchRevisionService->method('getRevisionsFor')->willReturn([$revision]);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '321')->willReturn($repository);
+        $this->branchRevisionService->expects($this->once())
+            ->method('getRevisionsFor')
+            ->with($repository, 'origin/feature', 'main')
+            ->willReturn([$revision]);
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [$revision])->willReturn([null, null]);
         $this->eventLogger->expects($this->once())->method('logRevisionForFilenameNotFound')->with($event);
+        $this->commentFactory->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
     }
@@ -187,8 +225,11 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $revision->setReview($review);
         $comment = new Comment();
 
-        $this->repositoryRepository->method('findByProperty')->willReturn($repository);
-        $this->branchRevisionService->method('getRevisionsFor')->willReturn([$revision]);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', '321')->willReturn($repository);
+        $this->branchRevisionService->expects($this->once())
+            ->method('getRevisionsFor')
+            ->with($repository, 'origin/feature', 'main')
+            ->willReturn([$revision]);
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [$revision])->willReturn([$revision, 'new.php']);
         $this->commentFactory->expects($this->once())->method('create')->with($event, $user, $revision, 'new.php')->willReturn($comment);
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
@@ -209,7 +250,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $user = new User()->setEmail('user@example.com');
         $users = $this->createMock(Users::class);
 
-        $this->commentRepository->method('findOneBy')->willReturn(null);
+        $this->commentRepository->expects($this->once())->method('findOneBy')->with(['extReferenceId' => '7:discussion:42'])->willReturn(null);
         $this->api->expects($this->once())->method('users')->willReturn($users);
         $users->expects($this->once())->method('getUser')->with(123)->willReturn($gitlabUser);
         $this->userRepository->expects($this->once())->method('findOneBy')->with(['email' => 'user@example.com'])->willReturn($user);
