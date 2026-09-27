@@ -28,8 +28,8 @@ class NoteEvent
     #[SerializedPath('[object_attributes][discussion_id]')]
     public string $discussionId;
 
-    #[SerializedPath('[object_attributes][description]')]
-    public string $description;
+    #[SerializedPath('[object_attributes][note]')]
+    public string $note;
 
     #[SerializedPath('[object_attributes][action]')]
     public string $action;

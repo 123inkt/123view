@@ -15,8 +15,6 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Utils\Assert;
-use Symfony\Component\Clock\ClockAwareTrait;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Throwable;
 
 /**
@@ -24,15 +22,11 @@ use Throwable;
  */
 class NoteEventCreateHandler implements RemoteEventHandlerInterface
 {
-    use ClockAwareTrait;
-
     public function __construct(
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly RepositoryRepository $repository,
-        private readonly MessageBusInterface $bus,
         private readonly GitlabApi $api,
         private readonly UserRepository $userRepository,
-        private readonly RepositoryRepository $repositoryRepository,
         private readonly BranchRevisionService $branchRevisionService,
         private readonly RevisionFilepathMatcher $revisionMatcher,
         private readonly CommentFactory $commentFactory,
@@ -53,7 +47,7 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
     {
         Assert::isInstanceOf($event, NoteEvent::class);
         $referenceId = sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id);
-        if ($this->commentRepository->findOneBy(['extReferenceId' => $referenceId])) {
+        if ($this->commentRepository->findOneBy(['extReferenceId' => $referenceId]) !== null) {
             $this->eventLogger->logCommentAlreadyExists($event);
 
             return;

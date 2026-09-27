@@ -8,14 +8,10 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Service\Git\RevList\CacheableGitRevListService;
 use DR\Utils\Arrays;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Throwable;
 
-class BranchRevisionService implements LoggerAwareInterface
+class BranchRevisionService
 {
-    use LoggerAwareTrait;
-
     public function __construct(
         private readonly CacheableGitRevListService $revListService,
         private readonly RevisionRepository $revisionRepository,
@@ -24,7 +20,7 @@ class BranchRevisionService implements LoggerAwareInterface
     }
 
     /**
-     * @return array<int, Revision>
+     * @return Revision[]
      * @throws Throwable
      */
     public function getRevisionsFor(Repository $repository, string $sourceBranch, string $targetBranch): array

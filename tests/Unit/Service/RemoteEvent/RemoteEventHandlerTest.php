@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent;
 
 use ArrayIterator;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
@@ -16,7 +17,7 @@ use Traversable;
 #[CoversClass(RemoteEventHandler::class)]
 class RemoteEventHandlerTest extends AbstractTestCase
 {
-    /** @var RemoteEventHandlerInterface<PushEvent|MergeRequestEvent>&MockObject */
+    /** @var RemoteEventHandlerInterface<PushEvent|NoteEvent|MergeRequestEvent>&MockObject */
     private RemoteEventHandlerInterface&MockObject $handler;
     private RemoteEventHandler                     $eventHandler;
 
@@ -25,8 +26,8 @@ class RemoteEventHandlerTest extends AbstractTestCase
         parent::setUp();
         $this->handler = $this->createMock(RemoteEventHandlerInterface::class);
 
-        /** @var Traversable<class-string<PushEvent>|class-string<MergeRequestEvent>, RemoteEventHandlerInterface<PushEvent|MergeRequestEvent>> $iterator */
-        $iterator           = new ArrayIterator([PushEvent::class => $this->handler]);
+        /** @var Traversable<int, RemoteEventHandlerInterface<PushEvent|NoteEvent|MergeRequestEvent>> $iterator */
+        $iterator           = new ArrayIterator([$this->handler]);
         $this->eventHandler = new RemoteEventHandler($iterator);
     }
 
@@ -34,12 +35,14 @@ class RemoteEventHandlerTest extends AbstractTestCase
     {
         $object = new PushEvent();
 
+        $this->handler->expects($this->once())->method('supports')->with($object)->willReturn(true);
         $this->handler->expects($this->once())->method('handle')->with($object);
         $this->eventHandler->handle($object);
     }
 
     public function testHandleUnknownObject(): void
     {
+        $this->handler->expects($this->once())->method('supports')->with($this)->willReturn(false);
         $this->handler->expects($this->never())->method('handle');
         $this->eventHandler->handle($this);
     }

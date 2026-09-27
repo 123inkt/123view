@@ -18,7 +18,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
     {
         $this->logger?->info(
             'NoteEventHandler: comment already exists in 123view',
-            ['discussionId' => $event->discussionId, 'message' => $event->description]
+            ['discussionId' => $event->discussionId, 'message' => $event->note]
         );
     }
 

@@ -43,6 +43,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
         $this->logger?->info('RemoteEventPayloadDenormalizer: Denormalizing event type: {eventType}', ['eventType' => $eventType]);
 
         try {
+            /** @phpstan-var PushEvent|NoteEvent|MergeRequestEvent */
             return $this->objectDenormalizer->denormalize($data, $eventClass, null, self::DENORMALIZE_CONTEXT);
         } catch (ExceptionInterface $exception) {
             throw $this->handleException($eventType, $exception);
@@ -68,6 +69,7 @@ class RemoteEventPayloadDenormalizer implements LoggerAwareInterface
     /**
      * Convert Gitlab webhook event to related data class
      * @link https://docs.gitlab.com/ee/user/project/integrations/webhook_events.html
+     * @return class-string<PushEvent|NoteEvent|MergeRequestEvent>|null
      */
     private static function getEventClass(string $eventType): ?string
     {

@@ -45,5 +45,4 @@ readonly class RevisionFilepathMatcher
 
         return Arrays::firstOrNull($files)?->getRevision();
     }
-
 }

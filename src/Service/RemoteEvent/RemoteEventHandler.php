@@ -11,7 +11,6 @@ use Psr\Log\LoggerAwareTrait;
 use Traversable;
 
 /**
- * @phpstan-type HandlerKey class-string<PushEvent|NoteEvent|MergeRequestEvent>
  * @phpstan-type HandlerValue RemoteEventHandlerInterface<PushEvent|NoteEvent|MergeRequestEvent>
  */
 class RemoteEventHandler implements LoggerAwareInterface
@@ -19,7 +18,7 @@ class RemoteEventHandler implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @param Traversable<HandlerKey, HandlerValue> $handlers
+     * @param Traversable<int, HandlerValue> $handlers
      */
     public function __construct(private readonly Traversable $handlers)
     {

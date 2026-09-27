@@ -6,7 +6,6 @@ namespace DR\Review\Service\RemoteEvent\Gitlab;
 use DR\Review\Doctrine\Type\CodeReviewerStateType;
 use DR\Review\Doctrine\Type\CodeReviewStateType;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
-use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\ChangeReviewerStateService;

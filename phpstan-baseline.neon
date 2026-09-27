@@ -1219,12 +1219,6 @@ parameters:
 			path: src/Service/Notification/RuleNotificationService.php
 
 		-
-			message: '#^Method DR\\Review\\Service\\RemoteEvent\\Gitlab\\RemoteEventPayloadDenormalizer\:\:denormalize\(\) should return DR\\Review\\Model\\Webhook\\Gitlab\\MergeRequestEvent\|DR\\Review\\Model\\Webhook\\Gitlab\\PushEvent\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Service/RemoteEvent/Gitlab/RemoteEventPayloadDenormalizer.php
-
-		-
 			message: '#^Cannot access offset ''begin'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1

@@ -11,17 +11,20 @@ use DR\Review\Entity\User\User;
 use DR\Review\Model\Api\Gitlab\Project;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
+use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\ChangeReviewerStateService;
 use DR\Review\Service\RemoteEvent\Gitlab\ApprovedMergeRequestEventHandler;
 use DR\Review\Service\User\GitlabUserService;
 use DR\Review\Tests\AbstractTestCase;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Throwable;
 
 #[CoversClass(ApprovedMergeRequestEventHandler::class)]
+#[AllowMockObjectsWithoutExpectations]
 class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 {
     private RepositoryRepository&MockObject       $repositoryRepository;
@@ -48,16 +51,16 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testHandleShouldOnlyAcceptApprovedMergeRequest(): void
+    public function testSupportsOnlyApprovedMergeRequest(): void
     {
         $event         = new MergeRequestEvent();
         $event->action = 'open';
 
-        $this->repositoryRepository->expects($this->never())->method('findByProperty');
-        $this->reviewRepository->expects($this->never())->method('findByBranchName');
-        $this->userService->expects($this->never())->method('getUser');
-        $this->changeReviewerStateService->expects($this->never())->method('changeState');
-        $this->handler->handle($event);
+        static::assertFalse($this->handler->supports($event));
+
+        $event->action = 'approved';
+        static::assertTrue($this->handler->supports($event));
+        static::assertFalse($this->handler->supports(new PushEvent()));
     }
 
     /**

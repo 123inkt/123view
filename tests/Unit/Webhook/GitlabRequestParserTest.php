@@ -40,6 +40,22 @@ class GitlabRequestParserTest extends AbstractTestCase
         static::assertSame(['object_kind' => 'push'], $event->getPayload());
     }
 
+    public function testParserNoteEvent(): void
+    {
+        $request = new Request(
+            server : [
+                'REQUEST_METHOD'      => 'POST',
+                'HTTP_X_GITLAB_EVENT' => 'Note Hook',
+                'HTTP_X_GITLAB_TOKEN' => '1234567890',
+            ],
+            content: '{"object_kind":"note"}'
+        );
+
+        $event = $this->parser->parse($request, '1234567890');
+        static::assertInstanceOf(GitlabRemoteEvent::class, $event);
+        static::assertSame('Note Hook', $event->getName());
+    }
+
     public function testParserUnknownEvent(): void
     {
         $request = new Request(
