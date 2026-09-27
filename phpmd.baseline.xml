@@ -10,6 +10,7 @@
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\Naming\LongVariable" file="src/Entity/Repository/Repository.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Review/CodeReview.php"/>
+  <violation rule="PHPMD\Rule\Design\TooManyFields" file="src/Entity/Review/Comment.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/EventSubscriber/MandatoryGitlabSyncSubscriber.php"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/MessageHandler/Gitlab/ReviewerStateChangeMessageHandler.php"/>
   <violation rule="PHPMD\Rule\Design\ExcessiveParameterList" file="src/Model/Review/CodeReviewDto.php" method="__construct"/>
@@ -26,7 +27,6 @@
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Git/Show/GitShowCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\Design\TooManyPublicMethods" file="src/Service/Search/RipGrep/Command/RipGrepCommandBuilder.php"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ApiPlatform/Provider/CodeReviewActivityProviderTest.php" method="testProvideShouldOnlySupportGetCollection"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/ApiPlatform/Provider/CodeReviewProviderTest.php" method="testProvideShouldOnlySupportGetCollection"/>
   <violation rule="PHPMD\Rule\Design\CouplingBetweenObjects" file="tests/Unit/ApiPlatform/StateProcessor/CreateCommentProcessorTest.php"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Command/MailCommandTest.php" method="testCommandSuccessfulWithoutCommitsShouldNotMail"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Command/MailCommandTest.php" method="testCommandShouldExitWithFailureOnException"/>
@@ -170,7 +170,6 @@
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mail/CommentMailServiceTest.php" method="testSendCommentResolvedMailNoRecipientsNoMail"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Parser/DiffFileParserTest.php" method="testParseChangesWhereAllOriginalLinesWereRemoved"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Parser/DiffFileParserTest.php" method="testParseChangesWhereAllOnlyOneLineIsAdded"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/RemoteEvent/Gitlab/ApprovedMergeRequestEventHandlerTest.php" method="testHandleShouldOnlyAcceptApprovedMergeRequest"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/RemoteEvent/Gitlab/ApprovedMergeRequestEventHandlerTest.php" method="testHandleShouldAbortForUnknownRepository"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/RemoteEvent/Gitlab/ApprovedMergeRequestEventHandlerTest.php" method="testHandleShouldIgnoreInactiveRepositories"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Revision/RevisionFactoryTest.php" method="testCreateFromCommitShouldIgnoreRefIsHash"/>
