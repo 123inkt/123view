@@ -6,6 +6,7 @@ namespace DR\Review\Service\CodeReview\Search;
 use DR\Review\QueryParser\InvalidQueryException;
 use DR\Review\QueryParser\Term\EmptyMatch;
 use DR\Review\QueryParser\Term\TermInterface;
+use DR\Utils\Assert;
 use Exception;
 use Parsica\Parsica\Internal\Fail;
 use Parsica\Parsica\ParserHasFailed;
@@ -29,8 +30,8 @@ class ReviewSearchQueryTermFactory
         // too many final classes
         // @codeCoverageIgnoreStart
         $result = $this->parserFactory->createParser()->run(new StringStream($searchQuery));
-        if ($result instanceof Fail) {
-            throw new InvalidQueryException(new ParserHasFailed($result));
+        if ($result->isFail()) {
+            throw new InvalidQueryException(new ParserHasFailed(Assert::isInstanceOf($result, Fail::class)));
         }
 
         /** @var TermInterface $terms */

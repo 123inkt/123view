@@ -20,7 +20,7 @@ class WebhookActivity
 
     /** @var array<string, string>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $requestHeaders = [];
+    private ?array $requestHeaders = null;
 
     #[ORM\Column(type: 'integer')]
     private int $statusCode;
@@ -30,7 +30,7 @@ class WebhookActivity
 
     /** @var array<string, string|string[]>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $responseHeaders = [];
+    private ?array $responseHeaders = null;
 
     #[ORM\Column(type: 'integer')]
     private int $createTimestamp;

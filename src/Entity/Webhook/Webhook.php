@@ -31,7 +31,7 @@ class Webhook
 
     /** @var array<string, string>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $headers = [];
+    private ?array $headers = null;
 
     /** @phpstan-var Collection<int, Repository> */
     #[ORM\ManyToMany(targetEntity: Repository::class)]

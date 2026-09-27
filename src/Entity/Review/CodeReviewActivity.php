@@ -71,7 +71,7 @@ class CodeReviewActivity
 
     /** @var array<string, int|float|bool|string|null>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private ?array $data = [];
+    private ?array $data = null;
 
     #[ORM\Column]
     private int $createTimestamp;

@@ -57,11 +57,6 @@ class OperationParameterDocumentor
 
     public function getDescription(Operation $operation, Parameter $parameter): string
     {
-        $operationId = $operation->getOperationId();
-        if ($operationId === null) {
-            return '';
-        }
-
-        return self::DESCRIPTIONS[$operationId][$parameter->getName()] ?? '';
+        return self::DESCRIPTIONS[(string)$operation->getOperationId()][$parameter->getName()] ?? '';
     }
 }
