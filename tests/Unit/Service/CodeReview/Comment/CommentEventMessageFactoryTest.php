@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentReplyRemoved;
@@ -67,6 +68,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
+        $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setReview(new CodeReview()->setId(789));
 
         $event = $this->factory->createUpdated($comment, $user, 'original');
@@ -74,6 +76,7 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         static::assertSame(123, $event->getUserId());
         static::assertSame('filepath', $event->file);
         static::assertSame('message', $event->message);
+        static::assertSame(CommentModificationEnum::Gitlab, $event->getModifiedBy());
         static::assertSame('comment-updated', $event->getName());
     }
 

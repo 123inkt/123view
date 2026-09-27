@@ -12,6 +12,7 @@ class RipGrepCommandBuilder
     /** @var array{
      *     hidden?: string,
      *     color?: string,
+     *     'fixed-strings'?: string,
      *     'line-number'?: string,
      *     'before-context'?: string,
      *     'after-context'?: string,

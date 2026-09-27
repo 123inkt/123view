@@ -55,6 +55,7 @@ use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\Parser\PrunableDiffParser;
 use DR\Review\Service\RemoteEvent\Gitlab\ApprovedMergeRequestEventHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateHandler;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEventUpdateHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
@@ -229,6 +230,7 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler');
     $services->set(PushEventHandler::class)->tag('webhook_handler');
     $services->set(NoteEventCreateHandler::class)->tag('webhook_handler');
+    $services->set(NoteEventUpdateHandler::class)->tag('webhook_handler');
     $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler'));
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));

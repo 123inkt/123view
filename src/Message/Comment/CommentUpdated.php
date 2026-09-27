@@ -3,20 +3,22 @@ declare(strict_types=1);
 
 namespace DR\Review\Message\Comment;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Message\AsyncMessageInterface;
 use DR\Review\Message\MailNotificationInterface;
 
-class CommentUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
+readonly class CommentUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentEventInterface
 {
     public const NAME = 'comment-updated';
 
     public function __construct(
-        public readonly int $reviewId,
-        public readonly int $commentId,
-        public readonly int $byUserId,
-        public readonly string $file,
-        public readonly string $message,
-        public readonly string $originalComment
+        public int $reviewId,
+        public int $commentId,
+        public int $byUserId,
+        public string $file,
+        public string $message,
+        public CommentModificationEnum $modifiedBy,
+        public string $originalComment,
     ) {
     }
 
@@ -40,11 +42,22 @@ class CommentUpdated implements AsyncMessageInterface, MailNotificationInterface
         return $this->byUserId;
     }
 
+    public function getModifiedBy(): CommentModificationEnum
+    {
+        return $this->modifiedBy;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentId, 'file' => $this->file, 'message' => $this->message, 'originalComment' => $this->originalComment];
+        return [
+            'commentId'       => $this->commentId,
+            'file'            => $this->file,
+            'message'         => $this->message,
+            'originalComment' => $this->originalComment,
+            'modifiedBy'      => $this->modifiedBy->value,
+        ];
     }
 }
