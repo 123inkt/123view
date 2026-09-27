@@ -57,6 +57,6 @@ class OperationParameterDocumentor
 
     public function getDescription(Operation $operation, Parameter $parameter): string
     {
-        return self::DESCRIPTIONS[$operation->getOperationId()][$parameter->getName()] ?? '';
+        return self::DESCRIPTIONS[(string)$operation->getOperationId()][$parameter->getName()] ?? '';
     }
 }
