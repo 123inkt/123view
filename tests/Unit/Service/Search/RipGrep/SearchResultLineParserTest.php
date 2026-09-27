@@ -91,4 +91,30 @@ class SearchResultLineParserTest extends AbstractTestCase
         static::assertCount(1, $resultCollection->results);
         static::assertTrue($resultCollection->moreResultsAvailable);
     }
+
+    public function testParseWithFilenamePattern(): void
+    {
+        $repository = new Repository();
+        /** @var iterable<int, SearchResultEntry> $iterator */
+        $iterator = new ArrayIterator(
+            [
+                ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath/composer.json']]],
+                ['type' => 'end'],
+                ['type' => 'begin', 'data' => ['path' => ['text' => 'filepath/composer.lock']]],
+                ['type' => 'end'],
+            ]
+        );
+
+        $searchResult = new SearchResult($repository, new SplFileInfo('filepath/composer.json', '', ''));
+
+        $this->resultFactory->expects($this->once())->method('create')
+            ->with('filepath/composer.json', '/cache/', [$repository])
+            ->willReturn($searchResult);
+        $this->resultLineFactory->expects($this->never())->method('createContextFromEntry');
+        $this->resultLineFactory->expects($this->never())->method('createMatchFromEntry');
+
+        $resultCollection = $this->parser->parse($iterator, [$repository], null, 'composer\\.json');
+        static::assertCount(1, $resultCollection->results);
+        static::assertFalse($resultCollection->moreResultsAvailable);
+    }
 }

@@ -23,14 +23,20 @@ class SearchResultLineParser
      * @param iterable<int, SearchResultEntry> $iterator
      * @param Repository[]                     $repositories
      */
-    public function parse(iterable $iterator, array $repositories, ?int $limit = null): SearchResultCollection
+    public function parse(iterable $iterator, array $repositories, ?int $limit = null, ?string $filenamePattern = null): SearchResultCollection
     {
         $results              = [];
         $current              = null;
         $moreResultsAvailable = false;
         foreach ($iterator as $entry) {
             if ($entry['type'] === 'begin') {
-                $current = $this->resultFactory->create($entry['data']['path']['text'], $this->gitCacheDirectory, $repositories);
+                $filepath = $entry['data']['path']['text'];
+                if ($filenamePattern !== null && @preg_match('~' . $filenamePattern . '~', $filepath) !== 1) {
+                    $current = null;
+                    continue;
+                }
+
+                $current = $this->resultFactory->create($filepath, $this->gitCacheDirectory, $repositories);
                 continue;
             }
 

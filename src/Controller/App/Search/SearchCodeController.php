@@ -54,7 +54,7 @@ class SearchCodeController extends AbstractController
             'viewModel'  => new SearchCodeViewModel(
                 $results,
                 $filter->searchQuery,
-                $filter->extensions === null ? null : implode(',', $filter->extensions),
+                $filter->filename,
                 $filter->regexEnabled
             )
         ];

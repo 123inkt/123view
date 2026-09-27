@@ -31,12 +31,9 @@ class GitFileSearcher
         }
 
         $command->search($filter->searchQuery);
-        if ($filter->extensions !== null) {
-            $command->glob('*.{' . implode(',', $filter->extensions) . '}');
-        }
 
         $jsonIterator = new JsonDecodeIterator($this->executor->execute($command, $this->gitCacheDirectory));
 
-        return $this->parser->parse($jsonIterator, $repositories, $limit);
+        return $this->parser->parse($jsonIterator, $repositories, $limit, $filter->filename);
     }
 }

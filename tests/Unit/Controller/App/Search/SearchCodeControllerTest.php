@@ -60,7 +60,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithSearch(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $filter = new SearchFilter('success', ['json', 'yaml'], false);
+        $filter = new SearchFilter('success', 'composer\\.json', false);
         $request->method('getFilter')->willReturn($filter);
         $request->method('isShowAll')->willReturn(false);
 
@@ -76,7 +76,7 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
         $result = ($this->controller)($request);
 
         static::assertEquals(
-            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'json,yaml', false)],
+            ['page_title' => 'translation', 'viewModel' => new SearchCodeViewModel($searchResults, 'success', 'composer\\.json', false)],
             $result
         );
     }

@@ -13,7 +13,7 @@ readonly class SearchCodeViewModel
     public function __construct(
         public SearchResultCollection $searchResults,
         public string $searchQuery,
-        public ?string $fileExtension,
+        public ?string $filename,
         public bool $regexEnabled
     ) {
     }

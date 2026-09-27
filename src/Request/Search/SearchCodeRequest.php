@@ -6,17 +6,16 @@ namespace DR\Review\Request\Search;
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DR\Review\Model\Search\SearchFilter;
-use DR\Utils\Arrays;
 
 class SearchCodeRequest extends AbstractValidatedRequest
 {
     public function getFilter(): SearchFilter
     {
-        $extensions = Arrays::explode(',', $this->request->query->getString('extension'));
+        $filename = trim($this->request->query->getString('filename'));
 
         return new SearchFilter(
             trim($this->request->query->getString('search')),
-            count($extensions) === 0 ? null : $extensions,
+            $filename === '' ? null : $filename,
             $this->request->query->getBoolean('regex'),
         );
     }
@@ -31,10 +30,10 @@ class SearchCodeRequest extends AbstractValidatedRequest
         return new ValidationRules(
             [
                 'query' => [
-                    'search'    => 'required|string',
-                    'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
-                    'all'       => 'string',
-                    'regex'     => 'string|in:true,false',
+                    'search'   => 'required|string',
+                    'filename' => 'string',
+                    'all'      => 'string',
+                    'regex'    => 'string|in:true,false',
                 ]
             ]
         );
