@@ -27,10 +27,10 @@ jobs:
         steps:
             -   name: Checkout
                 uses: actions/checkout@v7
-            -   name: Use Node.js 22.x
+            -   name: Use Node.js 26.x
                 uses: actions/setup-node@v7
                 with:
-                    node-version: 22.x
+                    node-version: 26.x
                     cache: 'npm'
 
             # Docs: https://github.com/shivammathur/setup-php
