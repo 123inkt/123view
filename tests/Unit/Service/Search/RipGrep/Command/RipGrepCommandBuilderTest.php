@@ -15,7 +15,6 @@ class RipGrepCommandBuilderTest extends AbstractTestCase
         $builder = new RipGrepCommandBuilder();
         $builder->hidden()
             ->noColor()
-            ->fixedStrings()
             ->lineNumber()
             ->json()
             ->beforeContext(1)
@@ -30,7 +29,6 @@ class RipGrepCommandBuilderTest extends AbstractTestCase
                 '/usr/bin/rg',
                 escapeshellarg('--hidden'),
                 escapeshellarg('--color=never'),
-                escapeshellarg('--fixed-strings'),
                 escapeshellarg('--line-number'),
                 escapeshellarg('--json'),
                 escapeshellarg('--before-context=1'),
