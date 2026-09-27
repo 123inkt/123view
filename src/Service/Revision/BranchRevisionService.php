@@ -10,12 +10,12 @@ use DR\Review\Service\Git\RevList\CacheableGitRevListService;
 use DR\Utils\Arrays;
 use Throwable;
 
-class BranchRevisionService
+readonly class BranchRevisionService
 {
     public function __construct(
-        private readonly CacheableGitRevListService $revListService,
-        private readonly RevisionRepository $revisionRepository,
-        private readonly RevisionSorter $revisionSorter
+        private CacheableGitRevListService $revListService,
+        private RevisionRepository $revisionRepository,
+        private RevisionSorter $revisionSorter
     ) {
     }
 
