@@ -55,7 +55,7 @@ class CommentFactoryTest extends AbstractTestCase
         static::assertSame($comment, $review->getComments()->first());
     }
 
-    public function testCreateCommentUsesNewLineWhenOldLineIsNull(): void
+    public function testUsesNewLineWhenOldLineIsNull(): void
     {
         $event                   = new NoteEvent();
         $event->id               = 42;

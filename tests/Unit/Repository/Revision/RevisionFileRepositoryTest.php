@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Repository\Revision;
 
-use DR\Review\Entity\Revision\RevisionFile;
 use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
@@ -45,7 +44,6 @@ class RevisionFileRepositoryTest extends AbstractRepositoryTestCase
         $files = self::getService(RevisionFileRepository::class)->findRevisionsForFile([$revision], '/file/path/a');
 
         static::assertCount(1, $files);
-        static::assertInstanceOf(RevisionFile::class, $files[0]);
         static::assertSame($revision, $files[0]->getRevision());
     }
 

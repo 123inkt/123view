@@ -61,7 +61,7 @@ class RevisionFilepathMatcherTest extends AbstractTestCase
         static::assertSame([$revision, 'old.php'], $this->matcher->matchRevision($event, $revisions));
     }
 
-    public function testMatchRevisionReturnsNullWhenNoPathMatches(): void
+    public function testReturnsNullWhenNoPathMatches(): void
     {
         $event     = $this->createEvent('new.php', 'old.php', 'missing');
         $revision  = new Revision()->setCommitHash('commit');

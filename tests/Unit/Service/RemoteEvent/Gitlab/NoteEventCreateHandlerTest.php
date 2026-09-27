@@ -86,7 +86,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->handler->handle($event);
     }
 
-    public function testHandleSkipsWhenGitlabUserCannotBeFound(): void
+    public function testSkipsWhenGitlabUserNotFound(): void
     {
         $event = $this->createEvent();
         $users = $this->createMock(Users::class);
@@ -98,7 +98,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->handler->handle($event);
     }
 
-    public function testHandleSkipsWhenLocalUserCannotBeFound(): void
+    public function testSkipsWhenLocalUserNotFound(): void
     {
         $event      = $this->createEvent();
         $gitlabUser = new GitlabUser();
