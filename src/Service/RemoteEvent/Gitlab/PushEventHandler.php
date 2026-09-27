@@ -23,6 +23,9 @@ class PushEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
     {
     }
 
+    /**
+     * @phpstan-impure
+     */
     public function supports(object $event): bool
     {
         return $event instanceof PushEvent;

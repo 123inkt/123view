@@ -34,6 +34,9 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
     ) {
     }
 
+    /**
+     * @phpstan-impure
+     */
     public function supports(object $event): bool
     {
         return $event instanceof NoteEvent && $event->action === 'create' && $event->noteType === 'MergeRequest';
