@@ -79,7 +79,7 @@
             {% endfor %}
             {% if viewModel.searchResults.moreResultsAvailable %}
                 <div class="mt-2">
-                    <a href="?search={{ viewModel.searchQuery|escape('url') }}&filename={{ viewModel.filename|escape('url') }}&all=true&regex={{ viewModel.regexEnabled ? 'true' : 'false' }}"
+                    <a href="?search={{ viewModel.filter.searchQuery|escape('url') }}&filename={{ viewModel.filter.filename|escape('url') }}&all=true&regex={{ viewModel.filter.regexEnabled ? 'true' : 'false' }}"
                        type="button"
                        class="btn btn-outline-primary">{{ 'show.all'|trans }}</a>
                 </div>
