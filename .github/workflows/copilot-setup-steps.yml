@@ -1,0 +1,76 @@
+name: Copilot Setup Steps
+
+on:
+    workflow_dispatch:
+    push:
+        paths:
+            - .github/workflows/copilot-setup-steps.yml
+    pull_request:
+        paths:
+            - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+    copilot-setup-steps:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        services:
+            mysql:
+                image: mysql:8.4
+                env:
+                    MYSQL_ALLOW_EMPTY_PASSWORD: false
+                    MYSQL_ROOT_PASSWORD: symfony
+                    MYSQL_DATABASE: symfony
+                ports:
+                    - 3306/tcp
+                options: >-
+                    --health-cmd="mysqladmin ping -h localhost -uroot -psymfony"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=5
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v7
+
+            -   name: Setup PHP 8.5
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.5'
+                    extensions: amqp, mbstring, xml, ctype, iconv, intl, mysql
+                    coverage: pcov
+                    ini-values: zend.assertions=1
+                    tools: composer
+
+            -   name: Setup Node.js 24
+                uses: actions/setup-node@v7
+                with:
+                    node-version: '24.x'
+                    cache: npm
+
+            -   name: Configure test database
+                run: |
+                    database_password=symfony
+                    database_url="mysql://root:${database_password}@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony?serverVersion=8.4&charset=utf8mb4"
+                    echo "DATABASE_URL=${database_url}" >> "$GITHUB_ENV"
+                    echo "MYSQL_VERSION=8.4" >> "$GITHUB_ENV"
+                    printf 'DATABASE_URL=%s\nMYSQL_VERSION=8.4\n' "$database_url" > .env.test.local
+
+            -   name: Get Composer cache directory
+                id: composer-cache
+                run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+            -   name: Cache Composer dependencies
+                uses: actions/cache@v6
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                    restore-keys: ${{ runner.os }}-composer-
+
+            -   name: Install Composer dependencies
+                run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+            -   name: Install npm dependencies
+                run: npm ci
+
+            -   name: Build frontend
+                run: npm run build
