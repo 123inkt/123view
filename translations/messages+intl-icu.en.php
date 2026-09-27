@@ -302,7 +302,7 @@ return [
     'search.enable.regex'                         => 'Enable regex',
     'search.filename'                             => 'Filename',
     'search.file.filename'                        => "Regular expression to match against the file path.\nExamples:\ncomposer\\.json\n\\.json\n\\.(json|xml)",
-    'search.much.be.minimum.5.characters'         => 'Search query must be at least 5 characters long',
+    'search.much.be.minimum.characters'           => 'Search query must be at least 3 characters long',
     'search.review'                               => 'Search code review',
     'search.revisions'                            => 'Search revision',
     'send.type.both'                              => 'Mail and browser',

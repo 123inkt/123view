@@ -37,8 +37,8 @@ class SearchCodeController extends AbstractController
     public function __invoke(SearchCodeRequest $request): array
     {
         $filter = $request->getFilter();
-        if (strlen($filter->searchQuery) < 5) {
-            $this->addFlash('error', $this->translator->trans('search.much.be.minimum.5.characters'));
+        if (strlen($filter->searchQuery) < 3) {
+            $this->addFlash('error', $this->translator->trans('search.much.be.minimum.characters'));
             $results = new SearchResultCollection([], false);
         } else {
             $this->stopwatch?->start('file-search');

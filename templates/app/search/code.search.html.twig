@@ -22,9 +22,9 @@
                        name="filename"
                        placeholder="{{ 'search.filename'|trans }}"
                        title="{{ 'search.file.filename'|trans }}"
-                       value="{{ viewModel.filename }}"
+                       value="{{ viewModel.filter.filename }}"
                        class="form-control code-search-filename-input"/>
-                {% if viewModel.searchQuery or viewModel.filename %}
+                {% if viewModel.filter.searchQuery %}
                     <a href="?search=&filename=" class="btn btn-secondary">&times;</a>
                 {% endif %}
                 <button class="btn btn-secondary" type="submit"><i class="bi bi-search"></i></button>

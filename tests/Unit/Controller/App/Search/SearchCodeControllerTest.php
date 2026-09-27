@@ -39,12 +39,12 @@ class SearchCodeControllerTest extends AbstractControllerTestCase
     public function testInvokeWithTooShortQuery(): void
     {
         $request = static::createStub(SearchCodeRequest::class);
-        $filter = new SearchFilter('fail', null, false);
+        $filter = new SearchFilter('fo', null, false);
         $request->method('getFilter')->willReturn($filter);
         $request->method('isShowAll')->willReturn(false);
 
         $this->translator->expects($this->exactly(2))->method('trans')
-            ->with(...consecutive(['search.much.be.minimum.5.characters'], ['code.search']))
+            ->with(...consecutive(['search.much.be.minimum.characters'], ['code.search']))
             ->willReturn('translation1', 'translation2');
         $this->expectAddFlash('error', 'translation1');
         $this->fileSearcher->expects($this->never())->method('find');

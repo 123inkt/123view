@@ -25,7 +25,7 @@ class SearchCodeRequest extends AbstractValidatedRequest
         return $this->request->query->getBoolean('all');
     }
 
-    protected function getValidationRules(): ?ValidationRules
+    protected function getValidationRules(): ValidationRules
     {
         return new ValidationRules(
             [
