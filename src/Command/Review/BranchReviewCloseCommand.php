@@ -54,7 +54,8 @@ class BranchReviewCloseCommand extends Command implements LoggerAwareInterface
 
             $this->logger?->debug('Found {count} open branch reviews', ['count' => count($reviews)]);
             foreach ($reviews as $review) {
-                if (isset($branches[$review->getReferenceId()])) {
+                $referenceId = $review->getReferenceId();
+                if ($referenceId !== null && isset($branches[$referenceId])) {
                     continue;
                 }
 

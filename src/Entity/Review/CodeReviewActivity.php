@@ -69,9 +69,9 @@ class CodeReviewActivity
     #[ORM\Column]
     private string $eventName;
 
-    /** @var array<string, int|float|bool|string|null> */
+    /** @var array<string, int|float|bool|string|null>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private array $data = [];
+    private ?array $data = [];
 
     #[ORM\Column]
     private int $createTimestamp;
@@ -129,12 +129,12 @@ class CodeReviewActivity
      */
     public function getData(): array
     {
-        return $this->data;
+        return $this->data ?? [];
     }
 
     public function getDataValue(string $key): int|float|bool|string|null
     {
-        return $this->data[$key] ?? null;
+        return ($this->data ?? [])[$key] ?? null;
     }
 
     /**

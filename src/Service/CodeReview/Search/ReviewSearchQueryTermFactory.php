@@ -29,8 +29,7 @@ class ReviewSearchQueryTermFactory
         // too many final classes
         // @codeCoverageIgnoreStart
         $result = $this->parserFactory->createParser()->run(new StringStream($searchQuery));
-        if ($result->isFail()) {
-            /** @var Fail<TermInterface> $result */ // @phpcs:ignore
+        if ($result instanceof Fail) {
             throw new InvalidQueryException(new ParserHasFailed($result));
         }
 
