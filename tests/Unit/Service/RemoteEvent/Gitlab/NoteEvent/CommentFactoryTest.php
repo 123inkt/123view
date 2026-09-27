@@ -8,6 +8,7 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
+use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentFactory;
@@ -21,16 +22,17 @@ class CommentFactoryTest extends AbstractTestCase
 
     public function testCreateComment(): void
     {
-        $event                   = new NoteEvent();
-        $event->id               = 42;
-        $event->mergeRequestIId = 7;
-        $event->discussionId     = 'discussion';
-        $event->note      = 'Please update this line.';
-        $event->position         = new Position();
-        $event->position->oldPath = 'old.php';
-        $event->position->newPath = 'new.php';
-        $event->position->oldLine = 10;
-        $event->position->newLine = 12;
+        $event                                = new NoteEvent();
+        $event->id                            = 42;
+        $event->mergeRequest                  = new MergeRequest();
+        $event->mergeRequest->mergeRequestIId = 7;
+        $event->discussionId                  = 'discussion';
+        $event->note                          = 'Please update this line.';
+        $event->position                      = new Position();
+        $event->position->oldPath             = 'old.php';
+        $event->position->newPath             = 'new.php';
+        $event->position->oldLine             = 10;
+        $event->position->newLine             = 12;
 
         $repository = new Repository()->setDisplayName('Repository');
         $review     = new CodeReview()->setId(123)->setRepository($repository);
@@ -57,14 +59,15 @@ class CommentFactoryTest extends AbstractTestCase
 
     public function testUsesNewLineWhenOldLineIsNull(): void
     {
-        $event                   = new NoteEvent();
-        $event->id               = 42;
-        $event->mergeRequestIId = 7;
-        $event->discussionId     = 'discussion';
-        $event->note      = 'Comment';
-        $event->position         = new Position();
-        $event->position->newPath = 'new.php';
-        $event->position->newLine = 12;
+        $event                                = new NoteEvent();
+        $event->id                            = 42;
+        $event->mergeRequest                  = new MergeRequest();
+        $event->mergeRequest->mergeRequestIId = 7;
+        $event->discussionId                  = 'discussion';
+        $event->note                          = 'Comment';
+        $event->position                      = new Position();
+        $event->position->newPath             = 'new.php';
+        $event->position->newLine             = 12;
 
         $review   = new CodeReview();
         $revision = new Revision()->setCommitHash('commitsha');

@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
+use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
@@ -30,28 +31,28 @@ use stdClass;
 #[CoversClass(NoteEventCreateHandler::class)]
 class NoteEventCreateHandlerTest extends AbstractTestCase
 {
-    private NoteEventHandlerLogger&MockObject $eventLogger;
-    private RepositoryRepository&MockObject   $repositoryRepository;
-    private GitlabApi&MockObject              $api;
-    private UserRepository&MockObject         $userRepository;
-    private BranchRevisionService&MockObject  $branchRevisionService;
+    private NoteEventHandlerLogger&MockObject  $eventLogger;
+    private RepositoryRepository&MockObject    $repositoryRepository;
+    private GitlabApi&MockObject               $api;
+    private UserRepository&MockObject          $userRepository;
+    private BranchRevisionService&MockObject   $branchRevisionService;
     private RevisionFilepathMatcher&MockObject $revisionMatcher;
-    private CommentFactory&MockObject         $commentFactory;
-    private CommentRepository&MockObject      $commentRepository;
+    private CommentFactory&MockObject          $commentFactory;
+    private CommentRepository&MockObject       $commentRepository;
     private NoteEventCreateHandler             $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->eventLogger            = $this->createMock(NoteEventHandlerLogger::class);
-        $this->repositoryRepository   = $this->createMock(RepositoryRepository::class);
-        $this->api                    = $this->createMock(GitlabApi::class);
-        $this->userRepository         = $this->createMock(UserRepository::class);
-        $this->branchRevisionService  = $this->createMock(BranchRevisionService::class);
-        $this->revisionMatcher        = $this->createMock(RevisionFilepathMatcher::class);
-        $this->commentFactory         = $this->createMock(CommentFactory::class);
-        $this->commentRepository      = $this->createMock(CommentRepository::class);
-        $this->handler                = new NoteEventCreateHandler(
+        $this->eventLogger           = $this->createMock(NoteEventHandlerLogger::class);
+        $this->repositoryRepository  = $this->createMock(RepositoryRepository::class);
+        $this->api                   = $this->createMock(GitlabApi::class);
+        $this->userRepository        = $this->createMock(UserRepository::class);
+        $this->branchRevisionService = $this->createMock(BranchRevisionService::class);
+        $this->revisionMatcher       = $this->createMock(RevisionFilepathMatcher::class);
+        $this->commentFactory        = $this->createMock(CommentFactory::class);
+        $this->commentRepository     = $this->createMock(CommentRepository::class);
+        $this->handler               = new NoteEventCreateHandler(
             $this->eventLogger,
             $this->repositoryRepository,
             $this->api,
@@ -63,10 +64,14 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         );
     }
 
+    /**
+     * @param 'create'|'update'      $action
+     * @param 'MergeRequest'|'Issue' $noteType
+     */
     #[TestWith([new NoteEvent(), 'create', 'MergeRequest', true])]
     #[TestWith([new NoteEvent(), 'update', 'MergeRequest', false])]
     #[TestWith([new NoteEvent(), 'create', 'Issue', false])]
-    #[TestWith([new stdClass(), '', '', false])]
+    #[TestWith([new stdClass(), 'create', 'Issue', false])]
     public function testSupportsCreateMergeRequestNotes(object $event, string $action, string $noteType, bool $expected): void
     {
         $this->eventLogger->expects($this->never())->method(static::anything());
@@ -123,11 +128,11 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
 
     public function testSkipsWhenLocalUserNotFound(): void
     {
-        $event      = $this->createEvent();
-        $gitlabUser = new GitlabUser();
-        $gitlabUser->id = 123;
+        $event             = $this->createEvent();
+        $gitlabUser        = new GitlabUser();
+        $gitlabUser->id    = 123;
         $gitlabUser->email = 'user@example.com';
-        $users = $this->createMock(Users::class);
+        $users             = $this->createMock(Users::class);
         $this->commentRepository->expects($this->once())->method('findOneBy')->with(['extReferenceId' => '7:discussion:42'])->willReturn(null);
         $this->api->expects($this->once())->method('users')->willReturn($users);
         $users->expects($this->once())->method('getUser')->with(123)->willReturn($gitlabUser);
@@ -248,12 +253,12 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
      */
     private function configureResolvedUser(): array
     {
-        $event      = $this->createEvent();
-        $gitlabUser = new GitlabUser();
-        $gitlabUser->id = 123;
+        $event             = $this->createEvent();
+        $gitlabUser        = new GitlabUser();
+        $gitlabUser->id    = 123;
         $gitlabUser->email = 'user@example.com';
-        $user = new User()->setEmail('user@example.com');
-        $users = $this->createMock(Users::class);
+        $user              = new User()->setEmail('user@example.com');
+        $users             = $this->createMock(Users::class);
 
         $this->commentRepository->expects($this->once())->method('findOneBy')->with(['extReferenceId' => '7:discussion:42'])->willReturn(null);
         $this->api->expects($this->once())->method('users')->willReturn($users);
@@ -265,21 +270,22 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
 
     private function createEvent(): NoteEvent
     {
-        $event                   = new NoteEvent();
-        $event->id               = 42;
-        $event->projectId        = 321;
-        $event->mergeRequestIId  = 7;
-        $event->sourceBranch     = 'feature';
-        $event->targetBranch     = 'main';
-        $event->discussionId     = 'discussion';
-        $event->note      = 'Comment';
-        $event->noteType         = 'MergeRequest';
-        $event->action            = 'create';
-        $event->position         = new Position();
-        $event->position->newPath = 'new.php';
-        $event->position->headSha = 'head-sha';
-        $event->user              = new GitlabUser();
-        $event->user->id          = 123;
+        $event                                = new NoteEvent();
+        $event->id                            = 42;
+        $event->projectId                     = 321;
+        $event->mergeRequest                  = new MergeRequest();
+        $event->mergeRequest->mergeRequestIId = 7;
+        $event->mergeRequest->sourceBranch    = 'feature';
+        $event->mergeRequest->targetBranch    = 'main';
+        $event->discussionId                  = 'discussion';
+        $event->note                          = 'Comment';
+        $event->noteType                      = 'MergeRequest';
+        $event->action                        = 'create';
+        $event->position                      = new Position();
+        $event->position->newPath             = 'new.php';
+        $event->position->headSha             = 'head-sha';
+        $event->user                          = new GitlabUser();
+        $event->user->id                      = 123;
 
         return $event;
     }

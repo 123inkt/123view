@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Model\Webhook\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Api\Gitlab\User;
 use Stringable;
@@ -16,15 +17,6 @@ class NoteEvent implements Stringable
 
     #[SerializedName('project_id')]
     public int $projectId;
-
-    #[SerializedPath('[merge_request][iid]')]
-    public int $mergeRequestIId;
-
-    #[SerializedPath('[merge_request][source_branch]')]
-    public string $sourceBranch;
-
-    #[SerializedPath('[merge_request][target_branch]')]
-    public string $targetBranch;
 
     #[SerializedPath('[object_attributes][discussion_id]')]
     public string $discussionId;
@@ -40,8 +32,11 @@ class NoteEvent implements Stringable
     #[SerializedPath('[object_attributes][action]')]
     public string $action;
 
+    #[SerializedPath('[merge_request]')]
+    public ?MergeRequest $mergeRequest;
+
     #[SerializedPath('[object_attributes][position]')]
-    public Position $position;
+    public ?Position $position;
 
     public User $user;
 
@@ -50,7 +45,7 @@ class NoteEvent implements Stringable
         return sprintf(
             'NoteEvent(id: %s, mergeRequestIID %s, type: %s, action: %s)',
             $this->id,
-            $this->mergeRequestIId,
+            $this->mergeRequest->mergeRequestIId ?? '',
             $this->noteType,
             $this->action
         );

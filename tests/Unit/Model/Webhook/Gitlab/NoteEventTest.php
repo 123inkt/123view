@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Model\Webhook\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -18,11 +19,12 @@ class NoteEventTest extends TestCase
 {
     public function testToString(): void
     {
-        $event                  = new NoteEvent();
-        $event->id              = 789;
-        $event->mergeRequestIId = 456;
-        $event->noteType        = 'MergeRequest';
-        $event->action          = 'create';
+        $event                                = new NoteEvent();
+        $event->id                            = 789;
+        $event->mergeRequest                  = new MergeRequest();
+        $event->mergeRequest->mergeRequestIId = 456;
+        $event->noteType                      = 'MergeRequest';
+        $event->action                        = 'create';
 
         static::assertSame('NoteEvent(id: 789, mergeRequestIID 456, type: MergeRequest, action: create)', (string)$event);
     }
@@ -74,14 +76,16 @@ class NoteEventTest extends TestCase
 
         static::assertInstanceOf(NoteEvent::class, $event);
         static::assertSame(123, $event->projectId);
-        static::assertSame(456, $event->mergeRequestIId);
-        static::assertSame('feature', $event->sourceBranch);
-        static::assertSame('master', $event->targetBranch);
+        static::assertNotNull($event->mergeRequest);
+        static::assertSame(456, $event->mergeRequest->mergeRequestIId);
+        static::assertSame('feature', $event->mergeRequest->sourceBranch);
+        static::assertSame('master', $event->mergeRequest->targetBranch);
         static::assertSame('discussion', $event->discussionId);
         static::assertSame('Please update this line.', $event->note);
         static::assertSame('MergeRequest', $event->noteType);
         static::assertSame('create', $event->action);
         static::assertSame(42, $event->user->id);
+        static::assertNotNull($event->position);
         static::assertSame('head-sha', $event->position->headSha);
         static::assertSame('new.php', $event->position->newPath);
         static::assertSame(12, $event->position->newLine);

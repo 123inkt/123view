@@ -47,7 +47,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
     {
         $this->logger?->info(
             'NoteEventHandler: no revisions found for branch {name}',
-            ['name' => $event->sourceBranch, 'discussionId' => $event->discussionId]
+            ['name' => $event->mergeRequest?->sourceBranch, 'discussionId' => $event->discussionId]
         );
     }
 
@@ -55,7 +55,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
     {
         $this->logger?->info(
             'NoteEventHandler: no revision matching file {file}',
-            ['file' => $event->position->newPath ?? $event->position->oldPath, 'discussionId' => $event->discussionId]
+            ['file' => $event->position->newPath ?? $event->position->oldPath ?? null, 'discussionId' => $event->discussionId]
         );
     }
 
@@ -64,7 +64,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
         $this->logger?->info(
             'NoteEventHandler: creating comment for {file} on {repository}: {review} by {user}',
             [
-                'file'         => $event->position->newPath ?? $event->position->oldPath,
+                'file'         => $event->position->newPath ?? $event->position->oldPath ?? null,
                 'repository'   => $review->getRepository()->getDisplayName(),
                 'review'       => 'CR-' . $review->getProjectId(),
                 'user'         => $user->getName(),

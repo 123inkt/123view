@@ -19,11 +19,11 @@ class CommentFactory
     {
         $now           = $this->now();
         $review        = Assert::notNull($revision->getReview());
-        $line          = Assert::notNull($event->position->oldLine ?? $event->position->newLine);
-        $lineAfter     = Assert::notNull($event->position->newLine ?? $event->position->oldLine);
+        $line          = Assert::notNull($event->position->oldLine ?? $event->position->newLine ?? null);
+        $lineAfter     = Assert::notNull($event->position->newLine ?? $event->position->oldLine ?? null);
         $lineReference = new LineReference(
-            $event->position->oldPath,
-            $event->position->newPath,
+            $event->position?->oldPath,
+            $event->position?->newPath,
             $line,
             0,
             $lineAfter,
@@ -37,7 +37,7 @@ class CommentFactory
         $comment->setReview($review);
         $comment->setMessage($event->note);
         $comment->setUser($user);
-        $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id));
+        $comment->setExtReferenceId(sprintf('%d:%s:%d', $event->mergeRequest->mergeRequestIId ?? 0, $event->discussionId, $event->id));
         $comment->setCreateTimestamp($now->getTimestamp());
         $comment->setUpdateTimestamp($now->getTimestamp());
         $review->getComments()->add($comment);

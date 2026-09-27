@@ -21,8 +21,8 @@ readonly class RevisionFilepathMatcher
      */
     public function matchRevision(NoteEvent $event, array $revisions): array
     {
-        foreach (Arrays::removeNull([$event->position->newPath, $event->position->oldPath]) as $path) {
-            $revision = $this->findRevisionFor($path, $revisions, $event->position->headSha);
+        foreach (Arrays::removeNull([$event->position?->newPath, $event->position?->oldPath]) as $path) {
+            $revision = $this->findRevisionFor($path, $revisions, $event->position?->headSha);
             if ($revision !== null) {
                 return [$revision, $path];
             }
@@ -34,7 +34,7 @@ readonly class RevisionFilepathMatcher
     /**
      * @param Revision[] $revisions
      */
-    private function findRevisionFor(string $filepath, array $revisions, string $preferSha): ?Revision
+    private function findRevisionFor(string $filepath, array $revisions, ?string $preferSha): ?Revision
     {
         $files = $this->revisionFileRepository->findRevisionFileForPath($revisions, $filepath);
         foreach ($files as $file) {

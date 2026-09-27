@@ -49,7 +49,8 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
     public function handle(object $event): void
     {
         Assert::isInstanceOf($event, NoteEvent::class);
-        $referenceId = sprintf('%d:%s:%d', $event->mergeRequestIId, $event->discussionId, $event->id);
+        $mergeRequest = Assert::notNull($event->mergeRequest);
+        $referenceId = sprintf('%d:%s:%d', $mergeRequest->mergeRequestIId, $event->discussionId, $event->id);
         if ($this->commentRepository->findOneBy(['extReferenceId' => $referenceId]) !== null) {
             $this->eventLogger->logCommentAlreadyExists($event);
 
@@ -81,7 +82,7 @@ class NoteEventCreateHandler implements RemoteEventHandlerInterface
         }
 
         // find revisions
-        $revisions = $this->branchRevisionService->getRevisionsFor($repository, 'origin/' . $event->sourceBranch, $event->targetBranch);
+        $revisions = $this->branchRevisionService->getRevisionsFor($repository, 'origin/' . $mergeRequest->sourceBranch, $mergeRequest->targetBranch);
         if (count($revisions) === 0) {
             $this->eventLogger->logRevisionsNotFound($event);
 

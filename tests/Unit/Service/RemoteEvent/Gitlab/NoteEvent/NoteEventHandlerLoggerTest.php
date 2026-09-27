@@ -6,11 +6,13 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab\NoteEvent;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\User\User;
+use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Tests\AbstractTestCase;
+use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
@@ -57,8 +59,8 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
 
     public function testLogUserNotFound(): void
     {
-        $event      = $this->createEvent();
-        $gitlabUser = new GitlabUser();
+        $event             = $this->createEvent();
+        $gitlabUser        = new GitlabUser();
         $gitlabUser->email = 'user@example.com';
         $this->messageLogger->expects($this->once())
             ->method('info')
@@ -111,8 +113,8 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
 
     public function testLogRevisionForFilenameNotFoundUsesOldPathWhenNewPathIsMissing(): void
     {
-        $event              = $this->createEvent();
-        $event->position->newPath = null;
+        $event                    = $this->createEvent();
+        Assert::notNull($event->position)->newPath = null;
         $this->messageLogger->expects($this->once())
             ->method('info')
             ->with(
@@ -147,16 +149,17 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
 
     private function createEvent(): NoteEvent
     {
-        $event                   = new NoteEvent();
-        $event->projectId        = 321;
-        $event->sourceBranch     = 'feature';
-        $event->discussionId     = 'discussion';
-        $event->note             = 'Comment';
-        $event->position         = new Position();
-        $event->position->newPath = 'new.php';
-        $event->position->oldPath = 'old.php';
-        $event->user              = new GitlabUser();
-        $event->user->id          = 123;
+        $event                             = new NoteEvent();
+        $event->projectId                  = 321;
+        $event->mergeRequest               = new MergeRequest();
+        $event->mergeRequest->sourceBranch = 'feature';
+        $event->discussionId               = 'discussion';
+        $event->note                       = 'Comment';
+        $event->position                   = new Position();
+        $event->position->newPath          = 'new.php';
+        $event->position->oldPath          = 'old.php';
+        $event->user                       = new GitlabUser();
+        $event->user->id                   = 123;
 
         return $event;
     }
