@@ -85,7 +85,7 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->eventLogger->logRevisionsNotFound($event);
     }
 
-    public function testLogRevisionForFilenameNotFoundUsesNewPath(): void
+    public function testLogRevisionUsesNewPath(): void
     {
         $event = $this->createEvent();
         $this->messageLogger->expects($this->once())
@@ -98,7 +98,7 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->eventLogger->logRevisionForFilenameNotFound($event);
     }
 
-    public function testLogRevisionForFilenameNotFoundUsesOldPathWhenNewPathIsMissing(): void
+    public function testLogRevisionUsesOldPath(): void
     {
         $event                                     = $this->createEvent();
         Assert::notNull($event->position)->newPath = null;
