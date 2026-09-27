@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
@@ -51,6 +52,7 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
         }
 
         $comment->setMessage($event->note);
+        $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);
         $this->eventLogger->logCommentUpdated($event, $referenceId);
