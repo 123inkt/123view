@@ -1099,6 +1099,12 @@ parameters:
 			path: src/Service/Api/Gitlab/Discussions.php
 
 		-
+			message: '#^Method DR\\Review\\Service\\Api\\Gitlab\\Discussions\:\:getDiscussion\(\) should return array\{id\: string, notes\: array\<array\{id\: int, body\: string, position\: array\{base_sha\: string, start_sha\: string, head_sha\: string, old_path\: string, new_path\: string\}\}\>\} but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Service/Api/Gitlab/Discussions.php
+
+		-
 			message: '#^Method DR\\Review\\Service\\Api\\Gitlab\\Discussions\:\:responseToJson\(\) return type has no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
