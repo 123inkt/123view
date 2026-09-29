@@ -50,15 +50,17 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
         $referenceId  = sprintf('%d:%s:%d', $mergeRequest->mergeRequestIId, $event->discussionId, $event->id);
 
         // handle as comment
-        $comment      = $this->commentRepository->findOneBy(['extReferenceId' => $referenceId]);
+        $comment = $this->commentRepository->findOneBy(['extReferenceId' => $referenceId]);
         if ($comment !== null) {
             $this->handleComment($event, $comment, $referenceId);
+
             return;
         }
 
         $reply = $this->replyRepository->findOneBy(['extReferenceId' => $referenceId]);
         if ($reply !== null) {
             $this->handleReply($event, $reply, $referenceId);
+
             return;
         }
 
@@ -74,12 +76,19 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
             return;
         }
 
-        $comment->setMessage($event->note);
-        $comment->setState($state);
+        if ($comment->getMessage() !== $event->note) {
+            $comment->setMessage($event->note);
+            $this->eventLogger->logCommentMessageUpdated($event, $referenceId);
+        }
+
+        if ($comment->getState() !== $state) {
+            $comment->setState($state);
+            $this->eventLogger->logCommentStateUpdated($event, $referenceId, $state);
+        }
+
         $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);
-        $this->eventLogger->logCommentUpdated($event, $referenceId);
     }
 
     private function handleReply(NoteEvent $event, CommentReply $reply, string $referenceId): void
@@ -106,6 +115,6 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
             )
         );
 
-        $this->eventLogger->logCommentUpdated($event, $referenceId, true);
+        $this->eventLogger->logCommentMessageUpdated($event, $referenceId, true);
     }
 }

@@ -106,7 +106,7 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
                 ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
             );
 
-        $this->eventLogger->logCommentUpdated($event, '7:discussion:42');
+        $this->eventLogger->logCommentMessageUpdated($event, '7:discussion:42');
     }
 
     public function testLogCommentReplyUpdated(): void
@@ -119,7 +119,7 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
                 ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
             );
 
-        $this->eventLogger->logCommentUpdated($event, '7:discussion:42', true);
+        $this->eventLogger->logCommentMessageUpdated($event, '7:discussion:42', true);
     }
 
     public function testLogUserNotFound(): void

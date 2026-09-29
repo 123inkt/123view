@@ -121,7 +121,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())
-            ->method('logCommentUpdated')
+            ->method('logCommentMessageUpdated')
             ->with($event, '7:discussion:42');
 
         $this->handler->handle($event);
@@ -144,7 +144,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())
-            ->method('logCommentUpdated')
+            ->method('logCommentMessageUpdated')
             ->with($event, '7:discussion:42');
 
         $this->handler->handle($event);
@@ -165,7 +165,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())
-            ->method('logCommentUpdated')
+            ->method('logCommentMessageUpdated')
             ->with($event, '7:discussion:42');
 
         $this->handler->handle($event);
@@ -224,7 +224,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->with(new CommentReplyUpdated(456, 321, 789, 'Original comment', CommentModificationEnum::Gitlab))
             ->willReturn($this->envelope);
         $this->eventLogger->expects($this->once())
-            ->method('logCommentUpdated')
+            ->method('logCommentMessageUpdated')
             ->with($event, '7:discussion:42', true);
 
         $this->handler->handle($event);

@@ -43,7 +43,7 @@ class CommentResolvedMessageHandler implements LoggerAwareInterface
         }
 
         if ($event->modifiedBy === CommentModificationEnum::Gitlab) {
-            $this->logger?->info('Comment was resolved by gitlab. Ignore sync to gitlab. {id}', ['id' => $event->commentId]);
+            $this->logger?->info('Comment was (un)resolved by gitlab. Ignore sync to gitlab. {id}', ['id' => $event->commentId]);
 
             return;
         }

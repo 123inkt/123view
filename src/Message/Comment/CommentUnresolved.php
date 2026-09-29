@@ -50,10 +50,10 @@ class CommentUnresolved implements AsyncMessageInterface, CommentEventInterface
     public function getPayload(): array
     {
         return [
-            'commentId'         => $this->commentId,
-            'file'              => $this->file,
+            'commentId'          => $this->commentId,
+            'file'               => $this->file,
             'unresolvedByUserId' => $this->unresolvedByUserId,
-            'modifiedBy'        => $this->modifiedBy->value,
+            'modifiedBy'         => $this->modifiedBy->value,
         ];
     }
 }
