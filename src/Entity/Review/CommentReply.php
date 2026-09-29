@@ -105,6 +105,8 @@ class CommentReply
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
 
+    private CommentModificationEnum $modifiedBy = CommentModificationEnum::Local;
+
     #[ORM\Column]
     private int $createTimestamp;
 
@@ -164,6 +166,18 @@ class CommentReply
     public function setExtReferenceId(?string $extReferenceId): self
     {
         $this->extReferenceId = $extReferenceId;
+
+        return $this;
+    }
+
+    public function getModifiedBy(): CommentModificationEnum
+    {
+        return $this->modifiedBy;
+    }
+
+    public function setModifiedBy(CommentModificationEnum $modifiedBy): self
+    {
+        $this->modifiedBy = $modifiedBy;
 
         return $this;
     }

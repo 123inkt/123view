@@ -32,18 +32,19 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
         );
     }
 
-    public function logCommentUnchanged(NoteEvent $event, string $referenceId): void
+    public function logCommentUnchanged(NoteEvent $event, string $referenceId, bool $reply = false): void
     {
         $this->logger?->info(
-            'NoteEventHandler: comment message is unchanged in 123view',
+            $reply ? 'NoteEventHandler: reply message is unchanged in 123view'
+                : 'NoteEventHandler: comment message is unchanged in 123view',
             ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
         );
     }
 
-    public function logCommentUpdated(NoteEvent $event, string $referenceId): void
+    public function logCommentUpdated(NoteEvent $event, string $referenceId, bool $reply = false): void
     {
         $this->logger?->info(
-            'NoteEventHandler: updated comment in 123view',
+            $reply ? 'NoteEventHandler: updated reply in 123view' : 'NoteEventHandler: updated comment in 123view',
             ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
         );
     }
