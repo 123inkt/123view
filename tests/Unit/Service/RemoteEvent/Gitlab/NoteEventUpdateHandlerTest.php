@@ -144,8 +144,8 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())
-            ->method('logCommentMessageUpdated')
-            ->with($event, '7:discussion:42');
+            ->method('logCommentStateUpdated')
+            ->with($event, '7:discussion:42', CommentStateEnum::Resolved);
 
         $this->handler->handle($event);
 
@@ -165,8 +165,8 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())
-            ->method('logCommentMessageUpdated')
-            ->with($event, '7:discussion:42');
+            ->method('logCommentStateUpdated')
+            ->with($event, '7:discussion:42', CommentStateEnum::Open);
 
         $this->handler->handle($event);
 
