@@ -15,6 +15,7 @@ use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\Api\Gitlab\GitlabCommentFormatter;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEventUpdateHandler;
 use DR\Review\Tests\AbstractTestCase;
@@ -32,6 +33,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
     private NoteEventHandlerLogger&MockObject $eventLogger;
     private CommentRepository&MockObject      $commentRepository;
     private CommentReplyRepository&MockObject $replyRepository;
+    private GitlabCommentFormatter&MockObject $commentFormatter;
     private MessageBusInterface&MockObject     $bus;
     private NoteEventUpdateHandler             $handler;
 
@@ -41,8 +43,15 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->eventLogger       = $this->createMock(NoteEventHandlerLogger::class);
         $this->commentRepository = $this->createMock(CommentRepository::class);
         $this->replyRepository   = $this->createMock(CommentReplyRepository::class);
+        $this->commentFormatter  = $this->createMock(GitlabCommentFormatter::class);
         $this->bus               = $this->createMock(MessageBusInterface::class);
-        $this->handler           = new NoteEventUpdateHandler($this->eventLogger, $this->commentRepository, $this->replyRepository, $this->bus);
+        $this->handler           = new NoteEventUpdateHandler(
+            $this->eventLogger,
+            $this->commentRepository,
+            $this->replyRepository,
+            $this->commentFormatter,
+            $this->bus,
+        );
     }
 
     /**
@@ -58,6 +67,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         $this->eventLogger->expects($this->never())->method(static::anything());
         $this->commentRepository->expects($this->never())->method(static::anything());
         $this->replyRepository->expects($this->never())->method(static::anything());
+        $this->commentFormatter->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
 
         if ($event instanceof NoteEvent) {
@@ -83,6 +93,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('logCommentNotFound')
             ->with($event, '7:discussion:42');
         $this->commentRepository->expects($this->never())->method('save');
+        $this->commentFormatter->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method('dispatch');
 
         $this->handler->handle($event);
@@ -96,6 +107,10 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn($comment);
+        $this->commentFormatter->expects($this->once())
+            ->method('format')
+            ->with($comment)
+            ->willReturn('Comment');
         $this->eventLogger->expects($this->once())
             ->method('logCommentUnchanged')
             ->with($event, '7:discussion:42');
@@ -117,6 +132,10 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn($comment);
+        $this->commentFormatter->expects($this->once())
+            ->method('format')
+            ->with($comment)
+            ->willReturn('Original comment');
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
@@ -140,6 +159,10 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn($comment);
+        $this->commentFormatter->expects($this->once())
+            ->method('format')
+            ->with($comment)
+            ->willReturn('Comment');
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
@@ -161,6 +184,10 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn($comment);
+        $this->commentFormatter->expects($this->once())
+            ->method('format')
+            ->with($comment)
+            ->willReturn('Comment');
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
         $this->replyRepository->expects($this->never())->method(static::anything());
         $this->bus->expects($this->never())->method(static::anything());
@@ -188,6 +215,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn($reply);
+        $this->commentFormatter->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())
             ->method('logCommentUnchanged')
             ->with($event, '7:discussion:42', true);
@@ -218,6 +246,7 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn($reply);
+        $this->commentFormatter->expects($this->never())->method(static::anything());
         $this->replyRepository->expects($this->once())->method('save')->with($reply, true);
         $this->bus->expects($this->once())
             ->method('dispatch')
