@@ -134,8 +134,4 @@ class CreateCommentReplyProcessorTest extends AbstractTestCase
         return $input;
     }
 
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
-    }
 }

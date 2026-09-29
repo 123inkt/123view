@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Patch;
 use DateTimeImmutable;
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\ApiPlatform\Factory\CommentReplyOutputFactory;
 use DR\Review\ApiPlatform\Input\UpdateCommentReplyInput;
 use DR\Review\ApiPlatform\StateProcessor\UpdateCommentReplyProcessor;
@@ -34,8 +33,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 #[CoversClass(UpdateCommentReplyProcessor::class)]
 class UpdateCommentReplyProcessorTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private CommentReplyRepository&MockObject        $commentReplyRepository;
     private UserEntityProvider&Stub                    $userProvider;
     private CommentVisibility&MockObject              $commentVisibility;
@@ -203,8 +200,4 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
             ->willReturn($authorized);
     }
 
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
-    }
 }

@@ -6,7 +6,6 @@ namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Patch;
 use DateTimeImmutable;
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\ApiPlatform\Factory\CommentOutputFactory;
 use DR\Review\ApiPlatform\Input\UpdateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
@@ -29,8 +28,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 #[CoversClass(UpdateCommentProcessor::class)]
 class UpdateCommentProcessorTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private CommentRepository&MockObject $commentRepository;
     private UserEntityProvider $userProvider;
     private CommentVisibility $commentVisibility;
@@ -173,8 +170,4 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         return $input;
     }
 
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
-    }
 }
