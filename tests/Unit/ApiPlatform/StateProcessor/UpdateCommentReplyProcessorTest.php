@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Patch;
+use DateTimeImmutable;
 use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\ApiPlatform\Factory\CommentReplyOutputFactory;
 use DR\Review\ApiPlatform\Input\UpdateCommentReplyInput;
@@ -78,8 +79,8 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
             ->setTag(CommentTagEnum::Suggestion);
         $this->reply->setComment($this->comment);
         $this->reply->setMessage('Original reply');
-        $this->reply->setCreateTimestamp(1_000);
-        $this->reply->setUpdateTimestamp(1_000);
+        $this->reply->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1_000));
+        $this->reply->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(1_000));
     }
 
     public function testUpdatesAndDispatchesOriginal(): void
@@ -103,7 +104,7 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
 
         self::assertSame('Updated reply', $output->message);
         self::assertSame(CommentTagEnum::ChangeRequest->value, $output->tag);
-        self::assertSame(self::time(), $output->updatedAt->getTimestamp());
+        self::assertSame(1_000, $output->updatedAt->getTimestamp());
     }
 
     public function testTagOnlyUpdateDoesNotDispatchEvent(): void

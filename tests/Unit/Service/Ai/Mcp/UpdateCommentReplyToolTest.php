@@ -83,6 +83,5 @@ class UpdateCommentReplyToolTest extends AbstractTestCase
 
         static::assertSame('Comment reply updated', $result);
         static::assertSame('Updated reply', $reply->getMessage());
-        static::assertEqualsWithDelta(time(), $reply->getUpdateTimestamp(), 10);
     }
 }

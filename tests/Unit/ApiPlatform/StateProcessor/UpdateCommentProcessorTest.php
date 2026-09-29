@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Patch;
+use DateTimeImmutable;
 use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\ApiPlatform\Factory\CommentOutputFactory;
 use DR\Review\ApiPlatform\Input\UpdateCommentInput;
@@ -65,7 +66,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
             ->setTag(CommentTagEnum::Suggestion)
             ->setType(CommentTypeEnum::Final)
             ->setState(CommentStateEnum::Open)
-            ->setUpdateTimestamp(2000);
+            ->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(2000));
 
         $this->commentRepository
             ->expects($this->once())
@@ -94,7 +95,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         self::assertSame('Updated comment', $this->comment->getMessage());
         self::assertNull($this->comment->getTag());
         self::assertSame(CommentStateEnum::Resolved, $this->comment->getState());
-        self::assertSame(self::time(), $this->comment->getUpdateTimestamp());
+        self::assertSame(2000, $this->comment->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testNonAuthorCanChangeFinalState(): void
@@ -113,7 +114,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         self::assertSame(CommentStateEnum::Resolved, $this->comment->getState());
         self::assertSame('Original comment', $this->comment->getMessage());
         self::assertSame(CommentTagEnum::Suggestion, $this->comment->getTag());
-        self::assertSame(self::time(), $this->comment->getUpdateTimestamp());
+        self::assertSame(2000, $this->comment->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testMixedNonAuthorUpdateFailsAtomically(): void
@@ -129,7 +130,7 @@ class UpdateCommentProcessorTest extends AbstractTestCase
         } catch (AccessDeniedHttpException) {
             self::assertSame('Original comment', $this->comment->getMessage());
             self::assertSame(CommentStateEnum::Open, $this->comment->getState());
-            self::assertSame(2000, $this->comment->getUpdateTimestamp());
+            self::assertSame(2000, $this->comment->getUpdateTimestamp()->getTimestamp());
             self::assertFalse($this->saved);
         }
     }

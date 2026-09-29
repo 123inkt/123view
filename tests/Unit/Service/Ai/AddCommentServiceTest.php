@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai;
 
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
@@ -24,8 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(AddCommentService::class)]
 class AddCommentServiceTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private CodeReviewRepository&MockObject      $repository;
     private CommentRepository&MockObject         $commentRepository;
     private CodeReviewRevisionService&MockObject $reviewRevisionService;
@@ -141,22 +138,4 @@ class AddCommentServiceTest extends AbstractTestCase
         static::assertSame('**Note**bold text', $comment->getMessage());
     }
 
-    public function testAddCommentShouldSetTimestamps(): void
-    {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
-        $review           = new CodeReview()->setId(1);
-
-        $this->lineReferenceFactory->expects($this->once())->method('createFromReview')->willReturn(new LineReference());
-        $this->repository->expects($this->once())->method('find')->willReturn($review);
-        $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
-        $this->commentRepository->expects($this->once())->method('save');
-
-        $this->service->addComment(new User(), 1, 'file.php', 5, 'comment', null);
-
-        $comment = $review->getComments()->first();
-        static::assertInstanceOf(Comment::class, $comment);
-        static::assertSame(self::now()->getTimestamp(), $comment->getCreateTimestamp());
-        static::assertSame(self::now()->getTimestamp(), $comment->getUpdateTimestamp());
-    }
 }

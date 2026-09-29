@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Tool;
 
+use DateTimeImmutable;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentStateEnum;
@@ -56,7 +57,7 @@ class GetCommentsToolTest extends AbstractTestCase
             ->setState(CommentStateEnum::Open)
             ->setLineReference(new LineReference(oldPath: 'src/old.php', newPath: 'src/new.php', lineAfter: 25))
             ->setUser($user)
-            ->setCreateTimestamp(1700000000);
+            ->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1700000000));
 
         $review = new CodeReview();
         $review->getComments()->add($comment);
@@ -94,7 +95,7 @@ class GetCommentsToolTest extends AbstractTestCase
             ->setState(CommentStateEnum::Open)
             ->setLineReference(new LineReference(oldPath: 'src/old.php', newPath: null, lineAfter: 10))
             ->setUser($user)
-            ->setCreateTimestamp(1700000000);
+            ->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1700000000));
 
         $review = new CodeReview();
         $review->getComments()->add($comment);
@@ -112,12 +113,12 @@ class GetCommentsToolTest extends AbstractTestCase
         $comment1 = new Comment()
             ->setId(1)->setMessage('first')->setState(CommentStateEnum::Open)
             ->setLineReference(new LineReference(newPath: 'a.php', lineAfter: 1))
-            ->setUser($user)->setCreateTimestamp(1000);
+            ->setUser($user)->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1000));
 
         $comment2 = new Comment()
             ->setId(2)->setMessage('second')->setState(CommentStateEnum::Resolved)
             ->setLineReference(new LineReference(newPath: 'b.php', lineAfter: 5))
-            ->setUser($user)->setCreateTimestamp(2000);
+            ->setUser($user)->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(2000));
 
         $review = new CodeReview();
         $review->getComments()->add($comment1);

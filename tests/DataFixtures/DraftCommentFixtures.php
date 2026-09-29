@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\DataFixtures;
 
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -25,8 +26,8 @@ class DraftCommentFixtures extends Fixture implements DependentFixtureInterface
         $draft->setMessage('draft message');
         $draft->setFilePath('src/Foo.php');
         $draft->setType(CommentTypeEnum::Draft);
-        $draft->setCreateTimestamp(12345678);
-        $draft->setUpdateTimestamp(12345678);
+        $draft->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(12345678));
+        $draft->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(12345678));
         $draft->setReview($review);
         $draft->setUser($user);
         $manager->persist($draft);
@@ -36,8 +37,8 @@ class DraftCommentFixtures extends Fixture implements DependentFixtureInterface
         $final->setMessage('final message');
         $final->setFilePath('src/Bar.php');
         $final->setType(CommentTypeEnum::Final);
-        $final->setCreateTimestamp(12345679);
-        $final->setUpdateTimestamp(12345679);
+        $final->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(12345679));
+        $final->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(12345679));
         $final->setReview($review);
         $final->setUser($user);
         $manager->persist($final);

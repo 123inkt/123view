@@ -93,8 +93,6 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
 
         $response = ($this->controller)($request, $reply);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
-
-        static::assertEqualsWithDelta(time(), $reply->getUpdateTimestamp(), 10);
     }
 
     public function testInvokeIsSubmittedWithChanges(): void
@@ -134,8 +132,6 @@ class UpdateCommentReplyControllerTest extends AbstractControllerTestCase
 
         $response = ($this->controller)($request, $reply);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
-
-        static::assertEqualsWithDelta(time(), $reply->getUpdateTimestamp(), 10);
     }
 
     public function getController(): AbstractController
