@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\Design\ExcessiveParameterList" file="src/ApiPlatform/Output/CodeReviewOutput.php" method="__construct"/>
+  <violation rule="PHPMD\Rule\Design\ExcessiveParameterList" file="src/ApiPlatform/Output/CommentOutput.php" method="__construct"/>
   <violation rule="PHPMD\Rule\CyclomaticComplexity" file="src/ApiPlatform/StateProcessor/UpdateCommentProcessor.php" method="process"/>
   <violation rule="PHPMD\Rule\Design\NPathComplexity" file="src/ApiPlatform/StateProcessor/UpdateCommentProcessor.php" method="process"/>
   <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Controller/App/User/Gitlab/UserGitlabDisconnectController.php"/>

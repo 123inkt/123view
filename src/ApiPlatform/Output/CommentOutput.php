@@ -10,7 +10,6 @@ class CommentOutput
 {
     /**
      * @codeCoverageIgnore
-     * @SuppressWarnings(ExcessiveParameterList)
      */
     public function __construct(
         public readonly int $id,

@@ -29,7 +29,7 @@ class GitlabApi
 
     public function discussions(): Discussions
     {
-        return $this->discussions ??= new Discussions($this->gitlabClient);
+        return $this->discussions ??= new Discussions($this->gitlabClient, $this->serializer);
     }
 
     public function branches(): Branches
