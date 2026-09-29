@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab\NoteEvent;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Api\Gitlab\Position;
@@ -96,30 +97,47 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->eventLogger->logCommentUnchanged($event, '7:discussion:42', true);
     }
 
-    public function testLogCommentUpdated(): void
+    public function testLogCommentMessageUpdated(): void
     {
         $event = $this->createEvent();
         $this->messageLogger->expects($this->once())
             ->method('info')
             ->with(
-                'NoteEventHandler: updated comment in 123view',
+                'NoteEventHandler: updated comment message in 123view',
                 ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
             );
 
-        $this->eventLogger->logCommentUpdated($event, '7:discussion:42');
+        $this->eventLogger->logCommentMessageUpdated($event, '7:discussion:42');
     }
 
-    public function testLogCommentReplyUpdated(): void
+    public function testLogCommentReplyMessageUpdated(): void
     {
         $event = $this->createEvent();
         $this->messageLogger->expects($this->once())
             ->method('info')
             ->with(
-                'NoteEventHandler: updated reply in 123view',
+                'NoteEventHandler: updated reply message in 123view',
                 ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
             );
 
-        $this->eventLogger->logCommentUpdated($event, '7:discussion:42', true);
+        $this->eventLogger->logCommentMessageUpdated($event, '7:discussion:42', true);
+    }
+
+    public function testLogCommentStateUpdated(): void
+    {
+        $event = $this->createEvent();
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: updated comment state to {state} in 123view',
+                [
+                    'referenceId'  => '7:discussion:42',
+                    'discussionId' => 'discussion',
+                    'state'        => CommentStateEnum::Resolved->value,
+                ]
+            );
+
+        $this->eventLogger->logCommentStateUpdated($event, '7:discussion:42', CommentStateEnum::Resolved);
     }
 
     public function testLogUserNotFound(): void

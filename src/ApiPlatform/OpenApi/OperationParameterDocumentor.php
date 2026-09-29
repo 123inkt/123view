@@ -41,7 +41,7 @@ class OperationParameterDocumentor
             'updateTimestamp[lt]'      => 'Search for updateTimestamp lesser than the value',
             'updateTimestamp[lte]'     => 'Search for updateTimestamp lesser or equal than the value',
         ],
-        'api_comments_get_collection' => [
+        'api_comments_get_collection'               => [
             'user.id'                => 'Exact search for the comment author id',
             'review.id'              => 'Exact search for the review id of the comment',
             'exact[filepath]'        => 'Exact search for the comment filepath',

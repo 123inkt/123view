@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab\NoteEvent;
 
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
@@ -41,11 +42,19 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
         );
     }
 
-    public function logCommentUpdated(NoteEvent $event, string $referenceId, bool $reply = false): void
+    public function logCommentMessageUpdated(NoteEvent $event, string $referenceId, bool $reply = false): void
     {
         $this->logger?->info(
-            $reply ? 'NoteEventHandler: updated reply in 123view' : 'NoteEventHandler: updated comment in 123view',
+            $reply ? 'NoteEventHandler: updated reply message in 123view' : 'NoteEventHandler: updated comment message in 123view',
             ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logCommentStateUpdated(NoteEvent $event, string $referenceId, CommentStateEnum $state): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: updated comment state to {state} in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId, 'state' => $state->value]
         );
     }
 

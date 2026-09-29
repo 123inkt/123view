@@ -90,12 +90,14 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
+        $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setReview(new CodeReview()->setId(789));
 
         $event = $this->factory->createResolved($comment, $user);
         static::assertSame(456, $event->getCommentId());
         static::assertSame(123, $event->getUserId());
         static::assertSame('filepath', $event->file);
+        static::assertSame(CommentModificationEnum::Gitlab, $event->getModifiedBy());
         static::assertSame('comment-resolved', $event->getName());
     }
 
@@ -107,12 +109,14 @@ class CommentEventMessageFactoryTest extends AbstractTestCase
         $comment->setId(456);
         $comment->setFilePath('filepath');
         $comment->setMessage('message');
+        $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setReview(new CodeReview()->setId(789));
 
         $event = $this->factory->createUnresolved($comment, $user);
         static::assertSame(456, $event->getCommentId());
         static::assertSame(123, $event->getUserId());
         static::assertSame('filepath', $event->file);
+        static::assertSame(CommentModificationEnum::Gitlab, $event->getModifiedBy());
         static::assertSame('comment-unresolved', $event->getName());
     }
 

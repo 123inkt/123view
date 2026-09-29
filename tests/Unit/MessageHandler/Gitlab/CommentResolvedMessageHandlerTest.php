@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\MessageHandler\Gitlab;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
@@ -87,6 +88,21 @@ class CommentResolvedMessageHandlerTest extends AbstractTestCase
         $this->commentService->expects($this->never())->method('resolve');
 
         ($this->handler)(new CommentResolved(111, 222, 333, 'file'));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    #[TestWith([new CommentResolved(111, 222, 333, 'file', CommentModificationEnum::Gitlab)])]
+    #[TestWith([new CommentUnresolved(111, 222, 333, 'file', CommentModificationEnum::Gitlab)])]
+    public function testInvokeSkipsGitlabModifiedComment(CommentResolved|CommentUnresolved $event): void
+    {
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->commentService->expects($this->never())->method('resolve');
+
+        ($this->handler)($event);
     }
 
     /**

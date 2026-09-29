@@ -52,6 +52,7 @@ class NoteEventTest extends TestCase
                     'note'          => 'Please update this line.',
                     'noteable_type' => 'MergeRequest',
                     'action'        => 'create',
+                    'resolved_at'   => '2026-09-29T12:00:00.000Z',
                     'position'      => [
                         'position_type' => 'text',
                         'base_sha'      => 'base-sha',
@@ -84,6 +85,7 @@ class NoteEventTest extends TestCase
         static::assertSame('Please update this line.', $event->note);
         static::assertSame('MergeRequest', $event->noteType);
         static::assertSame('create', $event->action);
+        static::assertSame('2026-09-29T12:00:00.000Z', $event->resolvedAt);
         static::assertSame(42, $event->user->id);
         static::assertNotNull($event->position);
         static::assertSame('head-sha', $event->position->headSha);

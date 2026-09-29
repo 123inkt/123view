@@ -21,7 +21,6 @@ class GitRepositoryLockManager
 
     /**
      * @template T
-     *
      * @param callable(): T $callback
      *
      * @return T

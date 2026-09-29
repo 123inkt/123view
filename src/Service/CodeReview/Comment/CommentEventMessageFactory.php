@@ -59,6 +59,7 @@ class CommentEventMessageFactory
             $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
+            $comment->getModifiedBy(),
         );
     }
 
@@ -69,6 +70,7 @@ class CommentEventMessageFactory
             $comment->getId(),
             $user->getId(),
             $comment->getFilePath(),
+            $comment->getModifiedBy(),
         );
     }
 
