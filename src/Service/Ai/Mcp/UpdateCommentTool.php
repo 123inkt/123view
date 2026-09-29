@@ -38,7 +38,6 @@ readonly class UpdateCommentTool
             throw new AccessDeniedHttpException();
         }
         $comment->setMessage($message);
-        $comment->setMessage($message);
         $this->commentRepository->save($comment, true);
 
         return 'Comment updated';

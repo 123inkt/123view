@@ -199,5 +199,4 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
             ->with(CommentReplyVoter::EDIT, $this->reply)
             ->willReturn($authorized);
     }
-
 }

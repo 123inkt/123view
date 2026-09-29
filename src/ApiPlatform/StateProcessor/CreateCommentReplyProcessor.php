@@ -55,7 +55,6 @@ class CreateCommentReplyProcessor implements ProcessorInterface
             throw new BadRequestHttpException('Replies cannot be added to draft comments.');
         }
         $user      = $this->userProvider->getCurrentUser();
-        $user      = $this->userProvider->getCurrentUser();
         $reply     = new CommentReply();
         $reply->setComment($comment);
         $reply->setUser($user);

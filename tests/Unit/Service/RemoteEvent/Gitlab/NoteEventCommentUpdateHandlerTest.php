@@ -128,5 +128,4 @@ class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
 
         return $event;
     }
-
 }

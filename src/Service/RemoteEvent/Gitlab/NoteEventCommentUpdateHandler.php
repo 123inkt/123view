@@ -40,7 +40,6 @@ class NoteEventCommentUpdateHandler
             $this->eventLogger->logCommentStateUpdated($event, $referenceId, $state);
         }
         $comment->setModifiedBy(CommentModificationEnum::Gitlab);
-        $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $this->commentRepository->save($comment, true);
     }
 }

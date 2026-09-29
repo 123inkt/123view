@@ -169,5 +169,4 @@ class UpdateCommentProcessorTest extends AbstractTestCase
 
         return $input;
     }
-
 }

@@ -137,5 +137,4 @@ class AddCommentServiceTest extends AbstractTestCase
         static::assertInstanceOf(Comment::class, $comment);
         static::assertSame('**Note**bold text', $comment->getMessage());
     }
-
 }

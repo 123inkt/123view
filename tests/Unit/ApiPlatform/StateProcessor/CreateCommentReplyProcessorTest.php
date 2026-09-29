@@ -133,5 +133,4 @@ class CreateCommentReplyProcessorTest extends AbstractTestCase
 
         return $input;
     }
-
 }
