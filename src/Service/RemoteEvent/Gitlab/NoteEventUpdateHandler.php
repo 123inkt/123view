@@ -11,6 +11,7 @@ use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\Api\Gitlab\GitlabCommentFormatter;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\RemoteEventHandlerInterface;
 use DR\Utils\Assert;
@@ -28,6 +29,7 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly CommentRepository $commentRepository,
         private readonly CommentReplyRepository $replyRepository,
+        private readonly GitlabCommentFormatter $commentFormatter,
         private readonly MessageBusInterface $bus,
     ) {
     }
@@ -69,14 +71,15 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
 
     private function handleComment(NoteEvent $event, Comment $comment, string $referenceId): void
     {
-        $state = $event->resolvedAt === null ? CommentStateEnum::Open : CommentStateEnum::Resolved;
-        if ($comment->getMessage() === $event->note && $comment->getState() === $state) {
+        $state   = $event->resolvedAt === null ? CommentStateEnum::Open : CommentStateEnum::Resolved;
+        $message = $this->commentFormatter->format($comment);
+        if ($message === $event->note && $comment->getState() === $state) {
             $this->eventLogger->logCommentUnchanged($event, $referenceId);
 
             return;
         }
 
-        if ($comment->getMessage() !== $event->note) {
+        if ($message !== $event->note) {
             $comment->setMessage($event->note);
             $this->eventLogger->logCommentMessageUpdated($event, $referenceId);
         }
