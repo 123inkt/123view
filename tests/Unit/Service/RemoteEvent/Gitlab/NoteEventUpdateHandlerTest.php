@@ -4,10 +4,15 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
 use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentModificationEnum;
+use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\User\User;
+use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
+use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEventUpdateHandler;
@@ -16,6 +21,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 use stdClass;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 #[CoversClass(NoteEventUpdateHandler::class)]
 class NoteEventUpdateHandlerTest extends AbstractTestCase
@@ -24,6 +30,8 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
 
     private NoteEventHandlerLogger&MockObject $eventLogger;
     private CommentRepository&MockObject      $commentRepository;
+    private CommentReplyRepository&MockObject $replyRepository;
+    private MessageBusInterface&MockObject     $bus;
     private NoteEventUpdateHandler             $handler;
 
     protected function setUp(): void
@@ -31,7 +39,9 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         parent::setUp();
         $this->eventLogger       = $this->createMock(NoteEventHandlerLogger::class);
         $this->commentRepository = $this->createMock(CommentRepository::class);
-        $this->handler           = new NoteEventUpdateHandler($this->eventLogger, $this->commentRepository);
+        $this->replyRepository   = $this->createMock(CommentReplyRepository::class);
+        $this->bus               = $this->createMock(MessageBusInterface::class);
+        $this->handler           = new NoteEventUpdateHandler($this->eventLogger, $this->commentRepository, $this->replyRepository, $this->bus);
     }
 
     /**
@@ -46,6 +56,8 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
     {
         $this->eventLogger->expects($this->never())->method(static::anything());
         $this->commentRepository->expects($this->never())->method(static::anything());
+        $this->replyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
 
         if ($event instanceof NoteEvent) {
             $event->action   = $action;
@@ -62,10 +74,15 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn(null);
+        $this->replyRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn(null);
         $this->eventLogger->expects($this->once())
             ->method('logCommentNotFound')
             ->with($event, '7:discussion:42');
         $this->commentRepository->expects($this->never())->method('save');
+        $this->bus->expects($this->never())->method('dispatch');
 
         $this->handler->handle($event);
     }
@@ -82,6 +99,8 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->method('logCommentUnchanged')
             ->with($event, '7:discussion:42');
         $this->commentRepository->expects($this->never())->method('save');
+        $this->replyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
 
         $this->handler->handle($event);
 
@@ -98,6 +117,8 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn($comment);
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
+        $this->replyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())
             ->method('logCommentUpdated')
             ->with($event, '7:discussion:42');
@@ -107,6 +128,66 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         static::assertSame('Comment', $comment->getMessage());
         static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
         static::assertSame(self::time(), $comment->getUpdateTimestamp());
+    }
+
+    public function testHandleSkipsUnchangedReplyMessage(): void
+    {
+        $event = $this->createEvent();
+        $reply = new CommentReply();
+        $reply->setMessage('Comment');
+        $reply->setUpdateTimestamp(123);
+        $this->commentRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn(null);
+        $this->replyRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn($reply);
+        $this->eventLogger->expects($this->once())
+            ->method('logCommentUnchanged')
+            ->with($event, '7:discussion:42', true);
+        $this->replyRepository->expects($this->never())->method('save');
+        $this->bus->expects($this->never())->method(static::anything());
+
+        $this->handler->handle($event);
+
+        static::assertSame('Comment', $reply->getMessage());
+        static::assertSame(123, $reply->getUpdateTimestamp());
+    }
+
+    public function testHandleUpdatesReplyMessage(): void
+    {
+        $event   = $this->createEvent();
+        $review  = new CodeReview()->setId(456);
+        $comment = new Comment()->setReview($review);
+        $user    = new User()->setId(789);
+        $reply   = new CommentReply()->setId(321);
+        $reply->setMessage('Original comment');
+        $reply->setComment($comment);
+        $reply->setUser($user);
+        $this->commentRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn(null);
+        $this->replyRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn($reply);
+        $this->replyRepository->expects($this->once())->method('save')->with($reply, true);
+        $this->bus->expects($this->once())
+            ->method('dispatch')
+            ->with(new CommentReplyUpdated(456, 321, 789, 'Original comment', CommentModificationEnum::Gitlab))
+            ->willReturn($this->envelope);
+        $this->eventLogger->expects($this->once())
+            ->method('logCommentUpdated')
+            ->with($event, '7:discussion:42', true);
+
+        $this->handler->handle($event);
+
+        static::assertSame('Comment', $reply->getMessage());
+        static::assertSame(CommentModificationEnum::Gitlab, $reply->getModifiedBy());
+        static::assertSame(self::time(), $reply->getUpdateTimestamp());
     }
 
     private function createEvent(): NoteEvent

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
@@ -46,6 +47,7 @@ class NoteEventCreateReplyHandler
                 $user->getId(),
                 $reply->getMessage(),
                 $comment->getFilePath(),
+                CommentModificationEnum::Gitlab,
             )
         );
         $this->eventLogger->logCommentReplyAddedSuccess($event, $comment->getReview(), $user);

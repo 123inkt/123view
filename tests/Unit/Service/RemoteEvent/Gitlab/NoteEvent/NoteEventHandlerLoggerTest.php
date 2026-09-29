@@ -83,6 +83,19 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
         $this->eventLogger->logCommentUnchanged($event, '7:discussion:42');
     }
 
+    public function testLogCommentReplyUnchanged(): void
+    {
+        $event = $this->createEvent();
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: reply message is unchanged in 123view',
+                ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
+            );
+
+        $this->eventLogger->logCommentUnchanged($event, '7:discussion:42', true);
+    }
+
     public function testLogCommentUpdated(): void
     {
         $event = $this->createEvent();
@@ -94,6 +107,19 @@ class NoteEventHandlerLoggerTest extends AbstractTestCase
             );
 
         $this->eventLogger->logCommentUpdated($event, '7:discussion:42');
+    }
+
+    public function testLogCommentReplyUpdated(): void
+    {
+        $event = $this->createEvent();
+        $this->messageLogger->expects($this->once())
+            ->method('info')
+            ->with(
+                'NoteEventHandler: updated reply in 123view',
+                ['referenceId' => '7:discussion:42', 'discussionId' => 'discussion']
+            );
+
+        $this->eventLogger->logCommentUpdated($event, '7:discussion:42', true);
     }
 
     public function testLogUserNotFound(): void

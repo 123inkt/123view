@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentReplyAdded;
@@ -83,7 +84,7 @@ class NoteEventCreateReplyHandlerTest extends AbstractTestCase
         $this->commentReplyRepository->expects($this->once())->method('save')->with($reply, true);
         $this->bus->expects($this->once())
             ->method('dispatch')
-            ->with(new CommentReplyAdded(456, 321, 789, 'Reply', 'new.php'))
+            ->with(new CommentReplyAdded(456, 321, 789, 'Reply', 'new.php', CommentModificationEnum::Gitlab))
             ->willReturn(new Envelope(new stdClass()));
         $this->eventLogger->expects($this->once())->method('logCommentReplyAddedSuccess')->with($event, $review, $user);
 

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Message\Comment;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Tests\Unit\Message\AbstractMessageEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -12,13 +13,16 @@ class CommentReplyAddedTest extends AbstractMessageEventTestCase
 {
     public function testAccessors(): void
     {
+        $event = new CommentReplyAdded(5, 6, 7, 'message', 'file');
+
+        static::assertSame(CommentModificationEnum::Local, $event->getModifiedBy());
         static::assertCodeReviewEvent(
-            new CommentReplyAdded(5, 6, 7, 'message', 'file'),
+            $event,
             'comment-reply-added',
             5,
-            ['commentId' => 6, 'message' => 'message', 'file' => 'file']
+            ['commentId' => 6, 'message' => 'message', 'file' => 'file', 'modifiedBy' => 'local']
         );
-        static::assertCommentReplyEvent(new CommentReplyAdded(5, 6, 7, 'message', 'file'), 6);
-        static::assertUserAware(new CommentReplyAdded(5, 6, 7, 'message', 'file'), 7);
+        static::assertCommentReplyEvent($event, 6);
+        static::assertUserAware($event, 7);
     }
 }
