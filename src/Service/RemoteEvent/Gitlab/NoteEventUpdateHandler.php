@@ -99,6 +99,7 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
                 $reply->getId(),
                 $reply->getUser()->getId(),
                 $originalMessage,
+                CommentModificationEnum::Gitlab,
             )
         );
 

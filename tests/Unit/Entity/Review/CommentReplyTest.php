@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Entity\Review;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\NotificationStatus;
 use DR\Review\Tests\AbstractTestCase;
@@ -27,5 +28,14 @@ class CommentReplyTest extends AbstractTestCase
         $statusC = new NotificationStatus();
         $comment->setNotificationStatus($statusC);
         static::assertSame($statusC, $comment->getNotificationStatus());
+    }
+
+    public function testModifiedBy(): void
+    {
+        $reply = new CommentReply();
+
+        static::assertSame(CommentModificationEnum::Local, $reply->getModifiedBy());
+        $reply->setModifiedBy(CommentModificationEnum::Gitlab);
+        static::assertSame(CommentModificationEnum::Gitlab, $reply->getModifiedBy());
     }
 }
