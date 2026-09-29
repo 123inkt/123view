@@ -31,7 +31,7 @@ class CommentTimestampSubscriberTest extends AbstractTestCase
         $this->subscriber->setClock(new MockClock(self::NOW));
     }
 
-    public function testSetsCreateAndUpdateTimestampsForComment(): void
+    public function testSetsTimestampsForComment(): void
     {
         $comment = new Comment();
 
@@ -41,7 +41,7 @@ class CommentTimestampSubscriberTest extends AbstractTestCase
         self::assertSame(new DateTimeImmutable(self::NOW)->getTimestamp(), $comment->getUpdateTimestamp()->getTimestamp());
     }
 
-    public function testSetsCreateAndUpdateTimestampsForReply(): void
+    public function testSetsTimestampsForReply(): void
     {
         $reply = new CommentReply();
 
@@ -51,14 +51,14 @@ class CommentTimestampSubscriberTest extends AbstractTestCase
         self::assertSame(new DateTimeImmutable(self::NOW)->getTimestamp(), $reply->getUpdateTimestamp()->getTimestamp());
     }
 
-    public function testSetsUpdateTimestampAndRecomputesCommentChangeSet(): void
+    public function testUpdatesCommentTimestamp(): void
     {
         $comment = new Comment()->setUpdateTimestamp(new DateTimeImmutable('@123'));
 
         $this->assertUpdateTimestamp($comment);
     }
 
-    public function testSetsUpdateTimestampAndRecomputesReplyChangeSet(): void
+    public function testUpdatesReplyTimestamp(): void
     {
         $reply = new CommentReply();
         $reply->setUpdateTimestamp(new DateTimeImmutable('@123'));

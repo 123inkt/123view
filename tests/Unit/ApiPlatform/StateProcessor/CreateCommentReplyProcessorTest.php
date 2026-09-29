@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Post;
+use DateTimeImmutable;
 use DR\Review\ApiPlatform\Factory\CommentReplyOutputFactory;
 use DR\Review\ApiPlatform\Input\CreateCommentReplyInput;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentReplyProcessor;
@@ -76,6 +77,9 @@ class CreateCommentReplyProcessorTest extends AbstractTestCase
             ->with(self::isInstanceOf(CommentReply::class), true)
             ->willReturnCallback(static function (CommentReply $reply): void {
                 $reply->setId(40);
+                $timestamp = new DateTimeImmutable()->setTimestamp(1_700_000_000);
+                $reply->setCreateTimestamp($timestamp);
+                $reply->setUpdateTimestamp($timestamp);
             });
         $this->bus
             ->expects($this->once())

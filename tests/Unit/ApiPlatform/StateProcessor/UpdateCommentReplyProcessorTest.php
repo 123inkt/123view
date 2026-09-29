@@ -13,7 +13,6 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\CommentTagEnum;
-use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Repository\Review\CommentReplyRepository;
@@ -68,8 +67,7 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
             ->setId(20)
             ->setReview(new CodeReview()->setId(30))
             ->setUser($this->user)
-            ->setFilePath('src/Foo.php')
-            ->setType(CommentTypeEnum::Final);
+            ->setFilePath('src/Foo.php');
         $this->reply = new CommentReply()
             ->setId(40)
             ->setUser($this->user)
