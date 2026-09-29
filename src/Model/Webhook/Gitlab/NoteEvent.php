@@ -32,6 +32,9 @@ class NoteEvent implements Stringable
     #[SerializedPath('[object_attributes][action]')]
     public string $action;
 
+    #[SerializedPath('[object_attributes][resolved_at]')]
+    public ?string $resolvedAt = null;
+
     #[SerializedPath('[merge_request]')]
     public ?MergeRequest $mergeRequest;
 

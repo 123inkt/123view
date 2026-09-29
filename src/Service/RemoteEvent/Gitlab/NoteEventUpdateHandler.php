@@ -6,6 +6,7 @@ namespace DR\Review\Service\RemoteEvent\Gitlab;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentReplyRepository;
@@ -66,13 +67,15 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
 
     private function handleComment(NoteEvent $event, Comment $comment, string $referenceId): void
     {
-        if ($comment->getMessage() === $event->note) {
+        $state = $event->resolvedAt === null ? CommentStateEnum::Open : CommentStateEnum::Resolved;
+        if ($comment->getMessage() === $event->note && $comment->getState() === $state) {
             $this->eventLogger->logCommentUnchanged($event, $referenceId);
 
             return;
         }
 
         $comment->setMessage($event->note);
+        $comment->setState($state);
         $comment->setModifiedBy(CommentModificationEnum::Gitlab);
         $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);

@@ -8,6 +8,7 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
@@ -128,6 +129,49 @@ class NoteEventUpdateHandlerTest extends AbstractTestCase
         static::assertSame('Comment', $comment->getMessage());
         static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
         static::assertSame(self::time(), $comment->getUpdateTimestamp());
+    }
+
+    public function testHandleResolvesComment(): void
+    {
+        $event            = $this->createEvent();
+        $event->resolvedAt = '2026-09-29T12:00:00.000Z';
+        $comment          = new Comment()->setMessage('Comment');
+        $this->commentRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn($comment);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
+        $this->replyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
+        $this->eventLogger->expects($this->once())
+            ->method('logCommentUpdated')
+            ->with($event, '7:discussion:42');
+
+        $this->handler->handle($event);
+
+        static::assertSame(CommentStateEnum::Resolved, $comment->getState());
+        static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
+    }
+
+    public function testHandleUnresolvesComment(): void
+    {
+        $event   = $this->createEvent();
+        $comment = new Comment()->setMessage('Comment')->setState(CommentStateEnum::Resolved);
+        $this->commentRepository->expects($this->once())
+            ->method('findOneBy')
+            ->with(['extReferenceId' => '7:discussion:42'])
+            ->willReturn($comment);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
+        $this->replyRepository->expects($this->never())->method(static::anything());
+        $this->bus->expects($this->never())->method(static::anything());
+        $this->eventLogger->expects($this->once())
+            ->method('logCommentUpdated')
+            ->with($event, '7:discussion:42');
+
+        $this->handler->handle($event);
+
+        static::assertSame(CommentStateEnum::Open, $comment->getState());
+        static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
     }
 
     public function testHandleSkipsUnchangedReplyMessage(): void
