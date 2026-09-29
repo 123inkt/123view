@@ -21,14 +21,12 @@ readonly class GitlabCommentResolver
     public function resolve(int $projectId, int $mergeRequestIId, string $discussionId, int $noteId): array
     {
         $discussion = $this->discussions->getDiscussion($projectId, $mergeRequestIId, $discussionId);
-        $rootNote   = Assert::notNull($discussion['notes'][0] ?? null);
-        $isReply    = (int)$rootNote['id'] !== $noteId;
-
-        if ($isReply === false) {
+        $rootNote   =  $discussion->getNote(0);
+        if ($rootNote == null || $rootNote->id !== $noteId) {
             return [false, null];
         }
 
-        $referenceId = sprintf('%d:%s:%d', $mergeRequestIId, $discussionId, $rootNote['id']);
+        $referenceId = sprintf('%d:%s:%d', $mergeRequestIId, $discussionId, $rootNote->id);
         $comment     = $this->commentRepository->findOneBy(['extReferenceId' => $referenceId]);
 
         return [true, $comment];
