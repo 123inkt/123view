@@ -7,5 +7,5 @@ class Note
 {
     public int      $id;
     public string   $body;
-    public Position $position;
+    public ?Position $position = null;
 }

@@ -9,6 +9,8 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\LineReference;
 use DR\Review\Entity\Review\LineReferenceStateEnum;
+use DR\Review\Model\Api\Gitlab\Discussion;
+use DR\Review\Model\Api\Gitlab\Note;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Api\Gitlab\Version;
 use DR\Review\Repository\Review\CommentRepository;
@@ -123,10 +125,18 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->review->setRepository($this->repository);
         $this->repository->setRepositoryProperty(new RepositoryProperty('gitlab-project-id', '123'));
 
+        $nonDiffDiscussion     = new Discussion();
+        $nonDiffDiscussion->id = 'non-diff';
+        $nonDiffNote           = new Note();
+        $nonDiffNote->id       = 1;
+        $nonDiffNote->body     = 'match';
+        $nonDiffDiscussion->addNote($nonDiffNote);
+
         $threads = [
-            ['id' => '1', 'notes' => [['id' => '2', 'body' => 'foobar', 'position' => ['old_path' => 'old', 'new_path' => 'new']]]],
-            ['id' => '2', 'notes' => [['id' => '2', 'body' => 'match', 'position' => ['old_path' => 'foo', 'new_path' => 'bar']]]],
-            ['id' => '3', 'notes' => [['id' => '2', 'body' => 'match', 'position' => ['old_path' => 'old', 'new_path' => 'new']]]]
+            $this->createDiscussion('1', 'foobar', 'old', 'new'),
+            $nonDiffDiscussion,
+            $this->createDiscussion('2', 'match', 'foo', 'bar'),
+            $this->createDiscussion('3', 'match', 'old', 'new')
         ];
 
         $this->discussions->expects($this->once())->method('getDiscussions')->with(123, 456)->willReturn(static::createGeneratorFrom($threads));
@@ -136,6 +146,7 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->updateExtReferenceId($this->api, $this->comment, 456);
+        static::assertSame('456:3:2', $this->comment->getExtReferenceId());
     }
 
     /**
@@ -222,5 +233,23 @@ class GitlabCommentServiceTest extends AbstractTestCase
         $this->mergeRequests->expects($this->never())->method('versions');
 
         $this->service->delete($this->api, $this->repository, '222:333:444');
+    }
+
+    private function createDiscussion(string $id, string $body, string $oldPath, string $newPath): Discussion
+    {
+        $position        = new Position();
+        $position->oldPath = $oldPath;
+        $position->newPath = $newPath;
+
+        $note        = new Note();
+        $note->id     = 2;
+        $note->body   = $body;
+        $note->position = $position;
+
+        $discussion     = new Discussion();
+        $discussion->id = $id;
+        $discussion->addNote($note);
+
+        return $discussion;
     }
 }

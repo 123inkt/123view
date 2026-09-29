@@ -5,7 +5,9 @@ namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\User\User;
+use DR\Review\Model\Api\Gitlab\Discussion;
 use DR\Review\Model\Api\Gitlab\MergeRequest;
+use DR\Review\Model\Api\Gitlab\Note;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentRepository;
@@ -83,7 +85,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(321, 7, 'discussion')
-            ->willReturn(['id' => 'discussion', 'notes' => [['id' => 42]]]);
+            ->willReturn($this->createDiscussion(42));
         $this->eventLogger->expects($this->never())->method(static::anything());
         $this->commentRepository->expects($this->never())->method('findOneBy');
         $this->commentHandler->expects($this->once())->method('handle')->with($event, $user);
@@ -100,7 +102,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(321, 7, 'discussion')
-            ->willReturn(['id' => 'discussion', 'notes' => [['id' => 41], ['id' => 42]]]);
+            ->willReturn($this->createDiscussion(41, 42));
         $this->commentRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:41'])
@@ -118,7 +120,7 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(321, 7, 'discussion')
-            ->willReturn(['id' => 'discussion', 'notes' => [['id' => 42]]]);
+            ->willReturn($this->createDiscussion(42));
         $this->commentRepository->expects($this->never())->method('findOneBy');
         $this->userService->expects($this->once())
             ->method('getUser')
@@ -157,5 +159,18 @@ class NoteEventCreateHandlerTest extends AbstractTestCase
         $event->user->name                    = 'name';
 
         return $event;
+    }
+
+    private function createDiscussion(int ...$noteIds): Discussion
+    {
+        $discussion     = new Discussion();
+        $discussion->id = 'discussion';
+        foreach ($noteIds as $noteId) {
+            $note     = new Note();
+            $note->id = $noteId;
+            $discussion->addNote($note);
+        }
+
+        return $discussion;
     }
 }

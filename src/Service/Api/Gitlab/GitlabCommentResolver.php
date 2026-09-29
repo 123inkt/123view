@@ -5,7 +5,6 @@ namespace DR\Review\Service\Api\Gitlab;
 
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Repository\Review\CommentRepository;
-use DR\Utils\Assert;
 use Throwable;
 
 readonly class GitlabCommentResolver
@@ -21,12 +20,12 @@ readonly class GitlabCommentResolver
     public function resolve(int $projectId, int $mergeRequestIId, string $discussionId, int $noteId): array
     {
         $discussion = $this->discussions->getDiscussion($projectId, $mergeRequestIId, $discussionId);
-        $rootNote   =  $discussion->getNote(0);
-        if ($rootNote == null || $rootNote->id !== $noteId) {
+        $firstNote = $discussion?->getNote(0);
+        if ($firstNote === null || $firstNote->id === $noteId) {
             return [false, null];
         }
 
-        $referenceId = sprintf('%d:%s:%d', $mergeRequestIId, $discussionId, $rootNote->id);
+        $referenceId = sprintf('%d:%s:%d', $mergeRequestIId, $discussionId, $firstNote->id);
         $comment     = $this->commentRepository->findOneBy(['extReferenceId' => $referenceId]);
 
         return [true, $comment];

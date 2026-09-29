@@ -68,7 +68,7 @@ class GitlabCommentService implements LoggerAwareInterface
         foreach ($api->discussions()->getDiscussions($projectId, $mergeRequestIId) as $thread) {
             foreach ($thread->getNotes() as $note) {
                 // try to match body
-                if ($note->body !== $comment->getMessage()) {
+                if ($note->body !== $comment->getMessage() || $note->position === null) {
                     continue;
                 }
 

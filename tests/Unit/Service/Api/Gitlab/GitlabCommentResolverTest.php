@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Model\Api\Gitlab\Discussion;
+use DR\Review\Model\Api\Gitlab\Note;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\Api\Gitlab\Discussions;
 use DR\Review\Service\Api\Gitlab\GitlabCommentResolver;
@@ -35,7 +37,7 @@ class GitlabCommentResolverTest extends AbstractTestCase
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(123, 456, 'discussion')
-            ->willReturn(['id' => 'discussion', 'notes' => [['id' => 789]]]);
+            ->willReturn($this->createDiscussion(789));
         $this->commentRepository->expects($this->never())->method('findOneBy');
 
         static::assertSame([false, null], $this->resolver->resolve(123, 456, 'discussion', 789));
@@ -50,7 +52,7 @@ class GitlabCommentResolverTest extends AbstractTestCase
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(123, 456, 'discussion')
-            ->willReturn(['id' => 'discussion', 'notes' => [['id' => 789], ['id' => 987]]]);
+            ->willReturn($this->createDiscussion(789, 987));
         $this->commentRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['extReferenceId' => '456:discussion:789'])
@@ -67,12 +69,39 @@ class GitlabCommentResolverTest extends AbstractTestCase
         $this->discussions->expects($this->once())
             ->method('getDiscussion')
             ->with(123, 456, 'discussion')
-            ->willReturn(['id' => 'discussion', 'notes' => [['id' => 789], ['id' => 987]]]);
+            ->willReturn($this->createDiscussion(789, 987));
         $this->commentRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['extReferenceId' => '456:discussion:789'])
             ->willReturn(null);
 
         static::assertSame([true, null], $this->resolver->resolve(123, 456, 'discussion', 987));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testResolveMissingDiscussion(): void
+    {
+        $this->discussions->expects($this->once())
+            ->method('getDiscussion')
+            ->with(123, 456, 'discussion')
+            ->willReturn(null);
+        $this->commentRepository->expects($this->never())->method('findOneBy');
+
+        static::assertSame([false, null], $this->resolver->resolve(123, 456, 'discussion', 789));
+    }
+
+    private function createDiscussion(int ...$noteIds): Discussion
+    {
+        $discussion     = new Discussion();
+        $discussion->id = 'discussion';
+        foreach ($noteIds as $noteId) {
+            $note     = new Note();
+            $note->id = $noteId;
+            $discussion->addNote($note);
+        }
+
+        return $discussion;
     }
 }

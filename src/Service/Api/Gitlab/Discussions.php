@@ -11,6 +11,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -42,7 +44,14 @@ class Discussions implements LoggerAwareInterface
                 ['query' => ['per_page' => $perPage, 'page' => $page]]
             );
             $page     = (int)($response->getHeaders()['x-next-page'][0] ?? -1);
-            yield from $this->serializer->deserialize($response->getContent(), Discussion::class, 'json');
+            /** @phpstan-var list<Discussion> $discussions */
+            $discussions = $this->serializer->deserialize(
+                $response->getContent(),
+                Discussion::class . '[]',
+                JsonEncoder::FORMAT,
+                [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]
+            );
+            yield from $discussions;
         } while ($page > 0);
     }
 
@@ -61,7 +70,13 @@ class Discussions implements LoggerAwareInterface
             return null;
         }
 
-        return $this->serializer->deserialize($response->getContent(), Discussion::class, 'json');
+        /** @phpstan-var Discussion */
+        return $this->serializer->deserialize(
+            $response->getContent(),
+            Discussion::class,
+            JsonEncoder::FORMAT,
+            [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]
+        );
     }
 
     /**
