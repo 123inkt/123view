@@ -34,8 +34,6 @@ class AddCommentController extends AbstractController
         $comment->setType(CommentTypeEnum::tryFrom($request->query->getString('mode')) ?? CommentTypeEnum::Final);
         $comment->setTag(null);
         $comment->setReview($review);
-        $comment->setCreateTimestamp(time());
-        $comment->setUpdateTimestamp(time());
 
         $form = $this->createForm(AddCommentFormType::class, $comment, ['review' => $review]);
         $form->handleRequest($request);

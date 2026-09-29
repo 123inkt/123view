@@ -21,7 +21,6 @@ use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Arrays;
 use DR\Utils\Assert;
-use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Throwable;
@@ -31,8 +30,6 @@ use Throwable;
  */
 class CreateCommentProcessor implements ProcessorInterface
 {
-    use ClockAwareTrait;
-
     public function __construct(
         private readonly CodeReviewRepository $reviewRepository,
         private readonly CommentRepository $commentRepository,
@@ -83,8 +80,6 @@ class CreateCommentProcessor implements ProcessorInterface
         $comment->setTag($data->tag);
         $comment->setType(CommentTypeEnum::Final);
         $comment->setState(CommentStateEnum::Open);
-        $comment->setCreateTimestamp($this->now()->getTimestamp());
-        $comment->setUpdateTimestamp($this->now()->getTimestamp());
 
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);

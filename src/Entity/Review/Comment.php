@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeImmutable;
 use DR\Review\ApiPlatform\Input\CreateCommentInput;
 use DR\Review\ApiPlatform\Input\UpdateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
@@ -271,26 +272,26 @@ class Comment
         return $this;
     }
 
-    public function getCreateTimestamp(): int
+    public function getCreateTimestamp(): DateTimeImmutable
     {
-        return $this->createTimestamp;
+        return new DateTimeImmutable()->setTimestamp($this->createTimestamp);
     }
 
-    public function setCreateTimestamp(int $createTimestamp): self
+    public function setCreateTimestamp(DateTimeImmutable $createTimestamp): self
     {
-        $this->createTimestamp = $createTimestamp;
+        $this->createTimestamp = $createTimestamp->getTimestamp();
 
         return $this;
     }
 
-    public function getUpdateTimestamp(): int
+    public function getUpdateTimestamp(): DateTimeImmutable
     {
-        return $this->updateTimestamp;
+        return new DateTimeImmutable()->setTimestamp($this->updateTimestamp);
     }
 
-    public function setUpdateTimestamp(int $updateTimestamp): self
+    public function setUpdateTimestamp(DateTimeImmutable $updateTimestamp): self
     {
-        $this->updateTimestamp = $updateTimestamp;
+        $this->updateTimestamp = $updateTimestamp->getTimestamp();
 
         return $this;
     }

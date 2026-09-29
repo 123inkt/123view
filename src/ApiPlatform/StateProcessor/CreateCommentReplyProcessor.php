@@ -17,7 +17,6 @@ use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Assert;
-use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -27,8 +26,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
  */
 class CreateCommentReplyProcessor implements ProcessorInterface
 {
-    use ClockAwareTrait;
-
     public function __construct(
         private readonly CommentRepository $commentRepository,
         private readonly CommentReplyRepository $commentReplyRepository,
@@ -57,16 +54,13 @@ class CreateCommentReplyProcessor implements ProcessorInterface
         if ($comment->getType() === CommentTypeEnum::Draft) {
             throw new BadRequestHttpException('Replies cannot be added to draft comments.');
         }
-
         $user      = $this->userProvider->getCurrentUser();
-        $timestamp = $this->now()->getTimestamp();
+        $user      = $this->userProvider->getCurrentUser();
         $reply     = new CommentReply();
         $reply->setComment($comment);
         $reply->setUser($user);
         $reply->setMessage(trim($data->message));
         $reply->setTag($data->tag);
-        $reply->setCreateTimestamp($timestamp);
-        $reply->setUpdateTimestamp($timestamp);
 
         $this->commentReplyRepository->save($reply, true);
         $this->bus->dispatch(new CommentReplyAdded(
