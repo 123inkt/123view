@@ -58,6 +58,7 @@ class NoteEventUpdateHandler implements RemoteEventHandlerInterface
         $reply = $this->replyRepository->findOneBy(['extReferenceId' => $referenceId]);
         if ($reply !== null) {
             $this->handleReply($event, $reply, $referenceId);
+            return;
         }
 
         $this->eventLogger->logCommentNotFound($event, $referenceId);
