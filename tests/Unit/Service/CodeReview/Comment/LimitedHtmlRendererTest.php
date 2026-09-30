@@ -29,7 +29,7 @@ class LimitedHtmlRendererTest extends AbstractTestCase
         static::assertSame($html, $this->renderer->render(new HtmlInline($html), $this->childRenderer));
     }
 
-    public function testDisallowedHtmlIsEscapedWhileAllowedHtmlIsPreserved(): void
+    public function testMixedHtmlIsEscapedAndPreserved(): void
     {
         static::assertSame(
             'text &lt;div&gt;content&lt;/div&gt; &lt;script&gt;alert(1)&lt;/script&gt; <details>details</details>',
