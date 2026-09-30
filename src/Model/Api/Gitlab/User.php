@@ -12,5 +12,5 @@ class User
     public string $username;
     #[SerializedName('avatar_url')]
     public string $avatarUrl;
-    public string $email;
+    public ?string $email = null;
 }
