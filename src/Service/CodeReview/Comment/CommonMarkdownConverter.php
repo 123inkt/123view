@@ -7,6 +7,8 @@ use FD\CommonMarkEmoji\EmojiDataProvider;
 use FD\CommonMarkEmoji\EmojiExtension;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Block\HtmlBlock;
+use League\CommonMark\Extension\CommonMark\Node\Inline\HtmlInline;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -32,6 +34,10 @@ class CommonMarkdownConverter extends MarkdownConverter
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
         $environment->addExtension(new EmojiExtension(EmojiDataProvider::full()));
         $environment->addExtension(new HighlightExtension());
+
+        $limitedHtmlRenderer = new LimitedHtmlRenderer();
+        $environment->addRenderer(HtmlBlock::class, $limitedHtmlRenderer, 50);
+        $environment->addRenderer(HtmlInline::class, $limitedHtmlRenderer, 50);
 
         parent::__construct($environment);
     }
