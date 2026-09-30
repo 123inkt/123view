@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\CodeReview\Comment;
 
 use DR\Review\Service\CodeReview\Comment\CommonMarkdownConverter;
-use DR\Review\Service\CodeReview\Comment\LimitedHtmlRenderer;
 use DR\Review\Tests\AbstractTestCase;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,7 +12,6 @@ use Tempest\Highlight\CommonMark\CodeBlockRenderer;
 use Tempest\Highlight\CommonMark\HighlightExtension;
 
 #[CoversClass(CommonMarkdownConverter::class)]
-#[CoversClass(LimitedHtmlRenderer::class)]
 class CommonMarkdownConverterTest extends AbstractTestCase
 {
     private CommonMarkdownConverter $converter;
@@ -42,16 +40,16 @@ class CommonMarkdownConverterTest extends AbstractTestCase
     public function testAllowedHtml(): void
     {
         static::assertSame(
-            "<p><detail>details</detail> <summary>summary</summary> <!-- comment --></p>\n",
-            $this->converter->convert('<detail>details</detail> <summary>summary</summary> <!-- comment -->')->getContent()
+            "<details>details</details> <summary>summary</summary> <!-- comment -->\n",
+            $this->converter->convert('<details>details</details> <summary>summary</summary> <!-- comment -->')->getContent()
         );
     }
 
     public function testDisallowedHtmlIsEscaped(): void
     {
         static::assertSame(
-            "<p>text &lt;div&gt;content&lt;/div&gt; &lt;script&gt;alert(1)&lt;/script&gt; <code>&lt;detail&gt;</code></p>\n",
-            $this->converter->convert('text <div>content</div> <script>alert(1)</script> `<detail>`')->getContent()
+            "<p>text &lt;div&gt;content&lt;/div&gt; &lt;script&gt;alert(1)&lt;/script&gt; <code>&lt;details&gt;</code></p>\n",
+            $this->converter->convert('text <div>content</div> <script>alert(1)</script> `<details>`')->getContent()
         );
     }
 }
