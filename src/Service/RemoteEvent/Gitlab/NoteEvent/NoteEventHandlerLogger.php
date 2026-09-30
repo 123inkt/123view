@@ -62,7 +62,7 @@ class NoteEventHandlerLogger implements LoggerAwareInterface
     {
         $this->logger?->info(
             'NoteEventHandler: user {email} not found in 123view',
-            ['email' => $gitlabUser->email, 'discussionId' => $event->discussionId]
+            ['email' => $gitlabUser->email ?? '-', 'discussionId' => $event->discussionId]
         );
     }
 

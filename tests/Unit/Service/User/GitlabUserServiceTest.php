@@ -78,6 +78,22 @@ class GitlabUserServiceTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testGetUserWithoutEmail(): void
+    {
+        $gitlabUser = new GitlabUser();
+
+        $this->userRepository->expects($this->exactly(2))
+            ->method('findOneBy')
+            ->with(...consecutive([['gitlabUserId' => 123]], [['name' => 'username']]))
+            ->willReturn(null, null);
+        $this->users->expects($this->once())->method('getUser')->with(123)->willReturn($gitlabUser);
+
+        static::assertNull($this->service->getUser(123, 'username'));
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testGetUserByEmail(): void
     {
         $user              = new User();
