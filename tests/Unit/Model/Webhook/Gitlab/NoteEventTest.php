@@ -69,7 +69,6 @@ class NoteEventTest extends TestCase
                     'name'       => 'User',
                     'username'   => 'user',
                     'avatar_url' => 'https://example.com/avatar',
-                    'email'      => 'user@example.com',
                 ],
             ],
             NoteEvent::class
@@ -87,6 +86,7 @@ class NoteEventTest extends TestCase
         static::assertSame('create', $event->action);
         static::assertSame('2026-09-29T12:00:00.000Z', $event->resolvedAt);
         static::assertSame(42, $event->user->id);
+        static::assertNull($event->user->email);
         static::assertNotNull($event->position);
         static::assertSame('head-sha', $event->position->headSha);
         static::assertSame('new.php', $event->position->newPath);
