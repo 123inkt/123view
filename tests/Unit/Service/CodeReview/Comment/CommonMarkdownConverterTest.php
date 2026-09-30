@@ -20,6 +20,7 @@ class CommonMarkdownConverterTest extends AbstractTestCase
     {
         parent::setUp();
         $eventDispatcher = static::createStub(EventDispatcherInterface::class);
+        $eventDispatcher->method('dispatch')->willReturnArgument(0);
         $this->converter = new CommonMarkdownConverter($eventDispatcher);
     }
 
@@ -34,5 +35,21 @@ class CommonMarkdownConverterTest extends AbstractTestCase
         $renderers = [...$environment->getRenderersForClass(FencedCode::class)];
         static::assertCount(2, $renderers);
         static::assertInstanceOf(CodeBlockRenderer::class, $renderers[0]);
+    }
+
+    public function testAllowedHtml(): void
+    {
+        static::assertSame(
+            "<details>details</details> <summary>summary</summary> <!-- comment -->\n",
+            $this->converter->convert('<details>details</details> <summary>summary</summary> <!-- comment -->')->getContent()
+        );
+    }
+
+    public function testDisallowedHtmlIsEscaped(): void
+    {
+        static::assertSame(
+            "<p>text &lt;div&gt;content&lt;/div&gt; &lt;script&gt;alert(1)&lt;/script&gt; <code>&lt;details&gt;</code></p>\n",
+            $this->converter->convert('text <div>content</div> <script>alert(1)</script> `<details>`')->getContent()
+        );
     }
 }
