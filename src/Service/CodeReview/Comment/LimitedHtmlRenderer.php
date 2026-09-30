@@ -12,6 +12,7 @@ use League\CommonMark\Util\HtmlFilter;
 
 final class LimitedHtmlRenderer implements NodeRendererInterface
 {
+    // allow <details>, <summary> and html comments
     private const ALLOWED_HTML_PATTERN = '/(<!--[\s\S]*?-->|<\/?(?:details|summary)\s*>)/i';
 
     /**
