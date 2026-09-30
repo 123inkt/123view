@@ -24,7 +24,7 @@ class LimitedHtmlRendererTest extends AbstractTestCase
 
     public function testAllowedHtmlIsPreserved(): void
     {
-        $html = '<DETAILS>details</DETAILS> <summary>summary</summary> <!-- comment -->';
+        $html = '<DETAILS>details</DETAILS> <summary>summary</summary> <sub>sub</sub> <!-- comment -->';
 
         static::assertSame($html, $this->renderer->render(new HtmlInline($html), $this->childRenderer));
     }
