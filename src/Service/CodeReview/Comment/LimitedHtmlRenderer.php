@@ -15,6 +15,7 @@ final class LimitedHtmlRenderer implements NodeRendererInterface
 
     public function render(Node $node, ChildNodeRendererInterface $childRenderer): string
     {
+        unset($childRenderer);
         assert($node instanceof RawMarkupContainerInterface);
 
         $parts = preg_split(self::ALLOWED_HTML_PATTERN, $node->getLiteral(), -1, PREG_SPLIT_DELIM_CAPTURE);
