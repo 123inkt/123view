@@ -31,7 +31,7 @@ class GitlabCommentFormatter implements LoggerAwareInterface
 
         // add link to review
         return sprintf(
-            "%s\n<!-- 123view-footer-start -->\n<br>\n<br>\n[123view: CR-%d](%s#focus:comment:%d)\n<!-- 123view-footer-end -->",
+            "%s<!-- 123view-footer-start -->\n\n<br>\n<br>\n[123view: CR-%d](%s#focus:comment:%d)\n<!-- 123view-footer-end -->",
             $message,
             $review->getProjectId(),
             $url,

@@ -34,7 +34,7 @@ class NoteEventCommentUpdateHandler
         }
 
         if ($message !== $event->note) {
-            $comment->setMessage((string)preg_replace('/\n?<!-- 123view-footer-start -->.*?<!-- 123view-footer-end -->/s', '', $event->note));
+            $comment->setMessage((string)preg_replace('/<!-- 123view-footer-start -->.*?<!-- 123view-footer-end -->/s', '', $event->note));
             $this->eventLogger->logCommentMessageUpdated($event, $referenceId);
         }
 
