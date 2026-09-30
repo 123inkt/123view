@@ -36,8 +36,8 @@ class CommonMarkdownConverter extends MarkdownConverter
         $environment->addExtension(new HighlightExtension());
 
         $limitedHtmlRenderer = new LimitedHtmlRenderer();
-        $environment->addRenderer(HtmlBlock::class, $limitedHtmlRenderer, 50);
-        $environment->addRenderer(HtmlInline::class, $limitedHtmlRenderer, 50);
+        $environment->addRenderer(HtmlBlock::class, $limitedHtmlRenderer, 60);
+        $environment->addRenderer(HtmlInline::class, $limitedHtmlRenderer, 60);
 
         parent::__construct($environment);
     }
