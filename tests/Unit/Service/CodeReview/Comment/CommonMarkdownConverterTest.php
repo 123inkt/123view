@@ -40,8 +40,8 @@ class CommonMarkdownConverterTest extends AbstractTestCase
     public function testAllowedHtml(): void
     {
         static::assertSame(
-            "<details>details</details> <summary>summary</summary> <!-- comment -->\n",
-            $this->converter->convert('<details>details</details> <summary>summary</summary> <!-- comment -->')->getContent()
+            "<details>details</details> <summary>summary</summary> <sub>sub</sub> <!-- comment -->\n",
+            $this->converter->convert('<details>details</details> <summary>summary</summary> <sub>sub</sub> <!-- comment -->')->getContent()
         );
     }
 
