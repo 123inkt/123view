@@ -81,7 +81,7 @@ class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
 
     public function testHandleStripsCommentFooter(): void
     {
-        $footer = "\n<!-- 123view-footer-start -->\n<br>\n<br>\n[123view: CR-123](https://example.com/review"
+        $footer = "<!-- 123view-footer-start -->\n\n<br>\n<br>\n[123view: CR-123](https://example.com/review"
             . "#focus:comment:456)\n<!-- 123view-footer-end -->";
         $event  = $this->createEvent();
         $event->note = 'Updated comment' . $footer;
