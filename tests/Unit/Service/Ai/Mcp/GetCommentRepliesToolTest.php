@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Mcp;
 
+use DateTimeImmutable;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\User\User;
@@ -50,7 +51,7 @@ class GetCommentRepliesToolTest extends AbstractTestCase
         $reply   = new CommentReply()->setId(456)->setUser($user);
         $reply->setComment($comment);
         $reply->setMessage('Looks good');
-        $reply->setCreateTimestamp(1700000000);
+        $reply->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1700000000));
         $comment->getReplies()->add($reply);
 
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);

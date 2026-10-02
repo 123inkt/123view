@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Entity\Review;
 
+use DateTimeImmutable;
+use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\NotificationStatus;
@@ -14,7 +16,19 @@ class CommentReplyTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        static::assertAccessorPairs(CommentReply::class);
+        $config = new ConstraintConfig()->setExcludedMethods(['setCreateTimestamp', 'setUpdateTimestamp']);
+        static::assertAccessorPairs(CommentReply::class, $config);
+    }
+
+    public function testTimestampAccessors(): void
+    {
+        $timestamp = new DateTimeImmutable('@123');
+        $reply     = new CommentReply();
+
+        $reply->setCreateTimestamp($timestamp);
+        $reply->setUpdateTimestamp($timestamp);
+        static::assertSame(123, $reply->getCreateTimestamp()->getTimestamp());
+        static::assertSame(123, $reply->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testNotificationStatus(): void

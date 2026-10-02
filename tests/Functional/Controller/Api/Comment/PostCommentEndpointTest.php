@@ -78,7 +78,7 @@ class PostCommentEndpointTest extends AbstractApiTestCase
         self::assertSame('open', $comment->getState()->value);
         self::assertSame('final', $comment->getType()->value);
         self::assertSame('0123456789abcdef0123456789abcdef01234567', $comment->getLineReference()->headSha);
-        self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
+        self::assertSame($comment->getCreateTimestamp()->getTimestamp(), $comment->getUpdateTimestamp()->getTimestamp());
         self::assertSame(CommentTagEnum::Suggestion, $comment->getTag());
         self::assertSame(0, $comment->getNotificationStatus()->getStatus());
         self::assertCount(1, $this->messagesOfType(CommentAdded::class));

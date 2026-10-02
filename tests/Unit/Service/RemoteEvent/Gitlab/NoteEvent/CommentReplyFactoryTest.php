@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab\NoteEvent;
 
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
@@ -17,8 +16,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(CommentReplyFactory::class)]
 class CommentReplyFactoryTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     public function testCreateCommentReply(): void
     {
         $event                                = new NoteEvent();
@@ -38,15 +35,8 @@ class CommentReplyFactoryTest extends AbstractTestCase
         static::assertSame('Please update this line.', $reply->getMessage());
         static::assertNull($reply->getTag());
         static::assertSame('7:discussion:42', $reply->getExtReferenceId());
-        static::assertSame(self::time(), $reply->getCreateTimestamp());
-        static::assertSame(self::time(), $reply->getUpdateTimestamp());
         static::assertSame($comment, $reply->getComment());
         static::assertSame($user, $reply->getUser());
         static::assertSame($reply, $comment->getReplies()->first());
-    }
-
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
     }
 }

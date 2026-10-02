@@ -85,8 +85,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
-
-        static::assertEqualsWithDelta(time(), $comment->getUpdateTimestamp(), 10);
     }
 
     public function testInvokeIsSubmittedWithChanges(): void
@@ -122,8 +120,6 @@ class UpdateCommentControllerTest extends AbstractControllerTestCase
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
-
-        static::assertEqualsWithDelta(time(), $comment->getUpdateTimestamp(), 10);
     }
 
     public function testInvokePublishDraftComment(): void

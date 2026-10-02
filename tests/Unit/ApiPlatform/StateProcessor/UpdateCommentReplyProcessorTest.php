@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Patch;
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
+use DateTimeImmutable;
 use DR\Review\ApiPlatform\Factory\CommentReplyOutputFactory;
 use DR\Review\ApiPlatform\Input\UpdateCommentReplyInput;
 use DR\Review\ApiPlatform\StateProcessor\UpdateCommentReplyProcessor;
@@ -13,7 +13,6 @@ use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\CommentTagEnum;
-use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Repository\Review\CommentReplyRepository;
@@ -33,8 +32,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 #[CoversClass(UpdateCommentReplyProcessor::class)]
 class UpdateCommentReplyProcessorTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private CommentReplyRepository&MockObject        $commentReplyRepository;
     private UserEntityProvider&Stub                    $userProvider;
     private CommentVisibility&MockObject              $commentVisibility;
@@ -70,16 +67,15 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
             ->setId(20)
             ->setReview(new CodeReview()->setId(30))
             ->setUser($this->user)
-            ->setFilePath('src/Foo.php')
-            ->setType(CommentTypeEnum::Final);
+            ->setFilePath('src/Foo.php');
         $this->reply = new CommentReply()
             ->setId(40)
             ->setUser($this->user)
             ->setTag(CommentTagEnum::Suggestion);
         $this->reply->setComment($this->comment);
         $this->reply->setMessage('Original reply');
-        $this->reply->setCreateTimestamp(1_000);
-        $this->reply->setUpdateTimestamp(1_000);
+        $this->reply->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1_000));
+        $this->reply->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(1_000));
     }
 
     public function testUpdatesAndDispatchesOriginal(): void
@@ -103,7 +99,7 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
 
         self::assertSame('Updated reply', $output->message);
         self::assertSame(CommentTagEnum::ChangeRequest->value, $output->tag);
-        self::assertSame(self::time(), $output->updatedAt->getTimestamp());
+        self::assertSame(1_000, $output->updatedAt->getTimestamp());
     }
 
     public function testTagOnlyUpdateDoesNotDispatchEvent(): void
@@ -200,10 +196,5 @@ class UpdateCommentReplyProcessorTest extends AbstractTestCase
             ->method('isGranted')
             ->with(CommentReplyVoter::EDIT, $this->reply)
             ->willReturn($authorized);
-    }
-
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
     }
 }

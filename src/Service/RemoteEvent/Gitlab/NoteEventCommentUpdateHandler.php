@@ -10,12 +10,9 @@ use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\Api\Gitlab\GitlabCommentFormatter;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
-use Symfony\Component\Clock\ClockAwareTrait;
 
 class NoteEventCommentUpdateHandler
 {
-    use ClockAwareTrait;
-
     public function __construct(
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly GitlabCommentFormatter $commentFormatter,
@@ -42,9 +39,7 @@ class NoteEventCommentUpdateHandler
             $comment->setState($state);
             $this->eventLogger->logCommentStateUpdated($event, $referenceId, $state);
         }
-
         $comment->setModifiedBy(CommentModificationEnum::Gitlab);
-        $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);
     }
 }

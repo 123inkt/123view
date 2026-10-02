@@ -44,7 +44,6 @@ class UpdateCommentController extends AbstractController
             $comment->setType(CommentTypeEnum::Final);
         }
 
-        $comment->setUpdateTimestamp(time());
         $this->commentRepository->save($comment, true);
 
         return $this->json(['success' => true, 'commentId' => $comment->getId()]);
