@@ -45,6 +45,9 @@
                     <div class="list-group-item">
                         <div class="d-flex justify-content-between gap-2">
                             <a href="{{ itemUrl }}">
+                                <span class="badge rounded-pill text-bg-primary me-2">
+                                    {{ item.comment.review.repository.displayName }}
+                                </span>
                                 <span class="badge rounded-pill text-bg-primary">
                                     {{ (item.isReply ? 'reply' : 'comment')|trans }}
                                 </span>
