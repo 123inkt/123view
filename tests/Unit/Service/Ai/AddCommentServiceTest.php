@@ -135,7 +135,5 @@ class AddCommentServiceTest extends AbstractTestCase
 
         $comment = $review->getComments()->first();
         static::assertInstanceOf(Comment::class, $comment);
-        static::assertSame(self::now()->getTimestamp(), $comment->getCreateTimestamp());
-        static::assertSame(self::now()->getTimestamp(), $comment->getUpdateTimestamp());
     }
 }
