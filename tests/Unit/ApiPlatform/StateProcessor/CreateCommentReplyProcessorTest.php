@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Post;
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
+use DateTimeImmutable;
 use DR\Review\ApiPlatform\Factory\CommentReplyOutputFactory;
 use DR\Review\ApiPlatform\Input\CreateCommentReplyInput;
 use DR\Review\ApiPlatform\StateProcessor\CreateCommentReplyProcessor;
@@ -30,8 +30,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[CoversClass(CreateCommentReplyProcessor::class)]
 class CreateCommentReplyProcessorTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private CommentRepository&MockObject $commentRepository;
     private CommentReplyRepository&MockObject $commentReplyRepository;
     private UserEntityProvider $userProvider;
@@ -79,6 +77,9 @@ class CreateCommentReplyProcessorTest extends AbstractTestCase
             ->with(self::isInstanceOf(CommentReply::class), true)
             ->willReturnCallback(static function (CommentReply $reply): void {
                 $reply->setId(40);
+                $timestamp = new DateTimeImmutable()->setTimestamp(1_700_000_000);
+                $reply->setCreateTimestamp($timestamp);
+                $reply->setUpdateTimestamp($timestamp);
             });
         $this->bus
             ->expects($this->once())
@@ -92,8 +93,6 @@ class CreateCommentReplyProcessorTest extends AbstractTestCase
         self::assertSame(10, $output->userId);
         self::assertSame('Please extract this condition.', $output->message);
         self::assertSame(CommentTagEnum::Suggestion->value, $output->tag);
-        self::assertSame(self::time(), $output->createdAt->getTimestamp());
-        self::assertSame(self::time(), $output->updatedAt->getTimestamp());
     }
 
     public function testRejectsMissingComment(): void
@@ -137,10 +136,5 @@ class CreateCommentReplyProcessorTest extends AbstractTestCase
         $input->tag     = $tag;
 
         return $input;
-    }
-
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
     }
 }

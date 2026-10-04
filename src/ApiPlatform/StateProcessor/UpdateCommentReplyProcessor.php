@@ -16,7 +16,6 @@ use DR\Review\Security\Voter\CommentReplyVoter;
 use DR\Review\Service\CodeReview\Comment\CommentVisibility;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Assert;
-use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -27,8 +26,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class UpdateCommentReplyProcessor implements ProcessorInterface
 {
-    use ClockAwareTrait;
-
     public function __construct(
         private readonly CommentReplyRepository $commentReplyRepository,
         private readonly UserEntityProvider $userProvider,
@@ -71,7 +68,6 @@ class UpdateCommentReplyProcessor implements ProcessorInterface
         if ($data->hasTag()) {
             $reply->setTag($data->getTag());
         }
-        $reply->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentReplyRepository->save($reply, true);
 
         if ($reply->getMessage() !== $originalMessage) {

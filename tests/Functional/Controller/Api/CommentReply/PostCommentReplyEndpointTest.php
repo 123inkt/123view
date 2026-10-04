@@ -58,7 +58,7 @@ class PostCommentReplyEndpointTest extends AbstractApiTestCase
         self::assertSame($comment->getId(), $reply->getComment()->getId());
         self::assertSame($this->getCurrentUserId(), $reply->getUser()->getId());
         self::assertSame(CommentTagEnum::Suggestion, $reply->getTag());
-        self::assertSame($reply->getCreateTimestamp(), $reply->getUpdateTimestamp());
+        self::assertSame($reply->getCreateTimestamp()->getTimestamp(), $reply->getUpdateTimestamp()->getTimestamp());
 
         $messages = $this->messagesOfType(CommentReplyAdded::class);
         self::assertCount(1, $messages);

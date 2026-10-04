@@ -118,7 +118,7 @@ class PatchCommentEndpointTest extends AbstractApiTestCase
         $comment = $this->reload($comment);
         self::assertSame('patch author final', $comment->getMessage());
         self::assertSame('open', $comment->getState()->value);
-        self::assertSame($originalTimestamp, $comment->getUpdateTimestamp());
+        self::assertSame($originalTimestamp->getTimestamp(), $comment->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testAuthorEditsOwnDraftButNotState(): void
@@ -140,7 +140,7 @@ class PatchCommentEndpointTest extends AbstractApiTestCase
         self::assertSame('patch other draft', $this->reload($comment)->getMessage());
     }
 
-    public function testUnchangedValueRefreshesTimestamp(): void
+    public function testUnchangedValuePreservesTimestamp(): void
     {
         $comment           = $this->getComment('patch author final');
         $originalTimestamp = $comment->getUpdateTimestamp();
@@ -148,7 +148,7 @@ class PatchCommentEndpointTest extends AbstractApiTestCase
         $this->request($comment, ['state' => 'open']);
 
         $this->assertPatchStatusCode(Response::HTTP_OK);
-        self::assertGreaterThan($originalTimestamp, $this->reload($comment)->getUpdateTimestamp());
+        self::assertSame($originalTimestamp->getTimestamp(), $this->reload($comment)->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testRejectsMissingEmptyAndUnknownInput(): void

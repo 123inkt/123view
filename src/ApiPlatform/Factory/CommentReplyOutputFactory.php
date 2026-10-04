@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DR\Review\ApiPlatform\Factory;
 
-use DateTimeImmutable;
 use DR\Review\ApiPlatform\Output\CommentReplyOutput;
 use DR\Review\Entity\Review\CommentReply;
 
@@ -18,8 +17,8 @@ class CommentReplyOutputFactory
             $reply->getUser()->getId(),
             $reply->getMessage(),
             $reply->getTag()?->value,
-            new DateTimeImmutable()->setTimestamp($reply->getCreateTimestamp()),
-            new DateTimeImmutable()->setTimestamp($reply->getUpdateTimestamp()),
+            $reply->getCreateTimestamp(),
+            $reply->getUpdateTimestamp(),
         );
     }
 }

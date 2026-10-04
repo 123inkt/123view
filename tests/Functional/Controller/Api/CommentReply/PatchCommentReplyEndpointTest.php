@@ -51,7 +51,7 @@ class PatchCommentReplyEndpointTest extends AbstractApiTestCase
         $this->entityManager?->clear();
         $updatedReply = $this->getReply('Updated reply');
         self::assertSame(CommentTagEnum::ChangeRequest, $updatedReply->getTag());
-        self::assertGreaterThan(1_000, $updatedReply->getUpdateTimestamp());
+        self::assertGreaterThan(1_000, $updatedReply->getUpdateTimestamp()->getTimestamp());
 
         $messages = $this->messagesOfType(CommentReplyUpdated::class);
         self::assertCount(1, $messages);
@@ -112,7 +112,7 @@ class PatchCommentReplyEndpointTest extends AbstractApiTestCase
         $reply = $this->reload($reply);
         self::assertSame($originalMessage, $reply->getMessage());
         self::assertSame($originalTag, $reply->getTag());
-        self::assertSame($originalUpdated, $reply->getUpdateTimestamp());
+        self::assertSame($originalUpdated->getTimestamp(), $reply->getUpdateTimestamp()->getTimestamp());
         self::assertCount(0, $this->messagesOfType(CommentReplyUpdated::class));
     }
 

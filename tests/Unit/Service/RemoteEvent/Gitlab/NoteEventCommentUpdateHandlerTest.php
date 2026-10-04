@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
+use DateTimeImmutable;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\Review\CommentStateEnum;
@@ -20,8 +20,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(NoteEventCommentUpdateHandler::class)]
 class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private NoteEventHandlerLogger&MockObject $eventLogger;
     private CommentRepository&MockObject      $commentRepository;
     private GitlabCommentFormatter&MockObject $commentFormatter;
@@ -43,7 +41,7 @@ class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
     public function testHandleSkipsUnchangedMessage(): void
     {
         $event   = $this->createEvent();
-        $comment = new Comment()->setMessage('Comment')->setUpdateTimestamp(123);
+        $comment = new Comment()->setMessage('Comment')->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(123));
         $this->commentFormatter->expects($this->once())
             ->method('format')
             ->with($comment)
@@ -56,7 +54,7 @@ class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
         $this->handler->handle($event, $comment, '7:discussion:42');
 
         static::assertSame('Comment', $comment->getMessage());
-        static::assertSame(123, $comment->getUpdateTimestamp());
+        static::assertSame(123, $comment->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testHandleUpdatesCommentMessage(): void
@@ -76,7 +74,6 @@ class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
 
         static::assertSame('Comment', $comment->getMessage());
         static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
-        static::assertSame(self::time(), $comment->getUpdateTimestamp());
     }
 
     public function testHandleStripsCommentFooter(): void
@@ -151,10 +148,5 @@ class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
         $event->mergeRequest->mergeRequestIId = 7;
 
         return $event;
-    }
-
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
     }
 }

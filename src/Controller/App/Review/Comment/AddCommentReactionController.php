@@ -33,8 +33,6 @@ class AddCommentReactionController extends AbstractController
         $reply->setUser($user);
         $reply->setComment($comment);
         $reply->setMessage($message);
-        $reply->setCreateTimestamp(time());
-        $reply->setUpdateTimestamp(time());
 
         $this->replyRepository->save($reply, true);
 

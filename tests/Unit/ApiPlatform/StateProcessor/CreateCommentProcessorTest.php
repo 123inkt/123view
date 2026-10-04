@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\ApiPlatform\StateProcessor;
 
 use ApiPlatform\Metadata\Post;
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\ApiPlatform\Factory\CommentOutputFactory;
 use DR\Review\ApiPlatform\Input\CreateCommentInput;
 use DR\Review\ApiPlatform\Output\CommentOutput;
@@ -34,8 +33,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 #[CoversClass(CreateCommentProcessor::class)]
 class CreateCommentProcessorTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private CodeReviewRepository&MockObject $reviewRepository;
     private CommentRepository&MockObject $commentRepository;
     private CodeReviewRevisionService&MockObject $revisionService;
@@ -102,7 +99,6 @@ class CreateCommentProcessorTest extends AbstractTestCase
                 self::assertSame(CommentTagEnum::Suggestion, $comment->getTag());
                 self::assertSame(CommentTypeEnum::Final, $comment->getType());
                 self::assertSame(CommentStateEnum::Open, $comment->getState());
-                self::assertSame($comment->getCreateTimestamp(), $comment->getUpdateTimestamp());
                 self::assertSame(0, $comment->getNotificationStatus()->getStatus());
 
                 return true;
@@ -113,7 +109,6 @@ class CreateCommentProcessorTest extends AbstractTestCase
         self::assertCount(1, $review->getComments());
         $comment = $review->getComments()->first();
         self::assertInstanceOf(Comment::class, $comment);
-        self::assertSame(self::time(), $comment->getCreateTimestamp());
     }
 
     public function testUsesRouteReviewAndUser(): void

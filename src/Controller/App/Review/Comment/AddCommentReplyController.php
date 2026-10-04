@@ -47,8 +47,6 @@ class AddCommentReplyController extends AbstractController
         $reply->setMessage('');
         $reply->setTag(null);
         $reply->setComment($comment);
-        $reply->setCreateTimestamp(time());
-        $reply->setUpdateTimestamp(time());
 
         $form = $this->createForm(AddCommentReplyFormType::class, $reply, ['comment' => $comment]);
         $form->handleRequest($request);
