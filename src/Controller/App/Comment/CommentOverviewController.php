@@ -10,11 +10,14 @@ use DR\Review\ViewModelProvider\CommentOverviewViewModelProvider;
 use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CommentOverviewController extends AbstractController
 {
-    public function __construct(private readonly CommentOverviewViewModelProvider $viewModelProvider)
-    {
+    public function __construct(
+        private readonly TranslatorInterface $translator,
+        private readonly CommentOverviewViewModelProvider $viewModelProvider
+    ) {
     }
 
     /**
@@ -28,7 +31,7 @@ class CommentOverviewController extends AbstractController
         $user = $this->getUser();
 
         return [
-            'page_title' => 'comments.overview',
+            'page_title' => $this->translator->trans('comments.overview'),
             'viewModel'  => $this->viewModelProvider->getCommentOverviewViewModel($user, $request)
         ];
     }
