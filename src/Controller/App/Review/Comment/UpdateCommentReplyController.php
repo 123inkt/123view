@@ -45,7 +45,6 @@ class UpdateCommentReplyController extends AbstractController
             return $this->json(['success' => false], Response::HTTP_BAD_REQUEST);
         }
 
-        $reply->setUpdateTimestamp(time());
         $this->replyRepository->save($reply, true);
 
         if ($reply->getMessage() !== $originalComment) {

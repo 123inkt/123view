@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Entity\Review;
 
+use DateTimeImmutable;
 use DigitalRevolution\AccessorPairConstraint\Constraint\ConstraintConfig;
 use Doctrine\Common\Collections\ArrayCollection;
 use DR\Review\Entity\Review\Comment;
@@ -17,8 +18,25 @@ class CommentTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = new ConstraintConfig()->setExcludedMethods(['setReplies', 'setLineReference', 'setMentions']);
+        $config = new ConstraintConfig()->setExcludedMethods([
+            'setReplies',
+            'setLineReference',
+            'setMentions',
+            'setCreateTimestamp',
+            'setUpdateTimestamp',
+        ]);
         static::assertAccessorPairs(Comment::class, $config);
+    }
+
+    public function testTimestampAccessors(): void
+    {
+        $timestamp = new DateTimeImmutable('@123');
+        $comment  = new Comment();
+
+        static::assertSame($comment, $comment->setCreateTimestamp($timestamp));
+        static::assertSame($comment, $comment->setUpdateTimestamp($timestamp));
+        static::assertSame(123, $comment->getCreateTimestamp()->getTimestamp());
+        static::assertSame(123, $comment->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testNotificationStatus(): void

@@ -44,7 +44,7 @@ readonly class GetCommentRepliesTool
                     'name'   => $reply->getUser()->getName(),
                     'email'  => $reply->getUser()->getEmail(),
                 ],
-                'createdAt' => date('c', $reply->getCreateTimestamp()),
+                'createdAt' => $reply->getCreateTimestamp()->format('c'),
             ],
             $comment->getReplies()->toArray()
         );

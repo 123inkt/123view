@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ApiPlatform\Factory;
 
+use DateTimeImmutable;
 use DR\Review\ApiPlatform\Factory\CommentReplyOutputFactory;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
@@ -23,8 +24,8 @@ class CommentReplyOutputFactoryTest extends AbstractTestCase
         $reply->setUser(new User()->setId(10));
         $reply->setMessage('Reply text');
         $reply->setTag(CommentTagEnum::Suggestion);
-        $reply->setCreateTimestamp(1234567890);
-        $reply->setUpdateTimestamp(1234567891);
+        $reply->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1234567890));
+        $reply->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(1234567891));
 
         $output = new CommentReplyOutputFactory()->create($reply);
 
@@ -45,8 +46,8 @@ class CommentReplyOutputFactoryTest extends AbstractTestCase
         $reply->setUser(new User()->setId(10));
         $reply->setMessage('Reply text');
         $reply->setTag(null);
-        $reply->setCreateTimestamp(1000);
-        $reply->setUpdateTimestamp(2000);
+        $reply->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1000));
+        $reply->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(2000));
 
         static::assertNull(new CommentReplyOutputFactory()->create($reply)->tag);
     }

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
+use DateTimeImmutable;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentModificationEnum;
@@ -23,8 +23,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[CoversClass(NoteEventReplyUpdateHandler::class)]
 class NoteEventReplyUpdateHandlerTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private NoteEventHandlerLogger&MockObject $eventLogger;
     private CommentReplyRepository&MockObject $replyRepository;
     private MessageBusInterface&MockObject     $bus;
@@ -48,7 +46,7 @@ class NoteEventReplyUpdateHandlerTest extends AbstractTestCase
         $event = $this->createEvent();
         $reply = new CommentReply();
         $reply->setMessage('Comment');
-        $reply->setUpdateTimestamp(123);
+        $reply->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(123));
         $this->eventLogger->expects($this->once())
             ->method('logCommentUnchanged')
             ->with($event, '7:discussion:42', true);
@@ -58,7 +56,7 @@ class NoteEventReplyUpdateHandlerTest extends AbstractTestCase
         $this->handler->handle($event, $reply, '7:discussion:42');
 
         static::assertSame('Comment', $reply->getMessage());
-        static::assertSame(123, $reply->getUpdateTimestamp());
+        static::assertSame(123, $reply->getUpdateTimestamp()->getTimestamp());
     }
 
     public function testHandleUpdatesReplyMessage(): void
@@ -84,7 +82,6 @@ class NoteEventReplyUpdateHandlerTest extends AbstractTestCase
 
         static::assertSame('Comment', $reply->getMessage());
         static::assertSame(CommentModificationEnum::Gitlab, $reply->getModifiedBy());
-        static::assertSame(self::time(), $reply->getUpdateTimestamp());
     }
 
     private function createEvent(): NoteEvent
@@ -99,10 +96,5 @@ class NoteEventReplyUpdateHandlerTest extends AbstractTestCase
         $event->mergeRequest->mergeRequestIId = 7;
 
         return $event;
-    }
-
-    protected function freezeTimeAt(): int
-    {
-        return 1_700_000_000;
     }
 }

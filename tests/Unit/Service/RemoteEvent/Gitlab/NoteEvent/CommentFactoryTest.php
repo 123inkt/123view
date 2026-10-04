@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab\NoteEvent;
 
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CommentModificationEnum;
@@ -19,8 +18,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(CommentFactory::class)]
 class CommentFactoryTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     public function testCreateComment(): void
     {
         $event                                = new NoteEvent();
@@ -48,8 +45,6 @@ class CommentFactoryTest extends AbstractTestCase
         static::assertSame($review, $comment->getReview());
         static::assertSame($user, $comment->getUser());
         static::assertSame('7:discussion:42', $comment->getExtReferenceId());
-        static::assertSame(self::time(), $comment->getCreateTimestamp());
-        static::assertSame(self::time(), $comment->getUpdateTimestamp());
         static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
         static::assertSame('old.php', $comment->getLineReference()->oldPath);
         static::assertSame('new.php', $comment->getLineReference()->newPath);

@@ -14,13 +14,10 @@ use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\CodeReview\LineReferenceFactory;
 use DR\Utils\Arrays;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Target;
 
 class AddCommentService
 {
-    use ClockAwareTrait;
-
     public function __construct(
         #[Target('aiLogger')] private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
@@ -57,8 +54,6 @@ class AddCommentService
         $comment->setMessage($message);
         $comment->setUser($user);
         $comment->setNotificationStatus(NotificationStatus::all());
-        $comment->setCreateTimestamp($this->now()->getTimestamp());
-        $comment->setUpdateTimestamp($this->now()->getTimestamp());
 
         $review->getComments()->add($comment);
         $this->commentRepository->save($comment, true);

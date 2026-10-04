@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ApiPlatform\Factory;
 
+use DateTimeImmutable;
 use DR\Review\ApiPlatform\Factory\CommentOutputFactory;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
@@ -38,8 +39,8 @@ class CommentOutputFactoryTest extends AbstractTestCase
             ->setLineReference(new LineReference(null, 'src/Foo.php', 40, 2, 42, 'abc123'))
             ->setState(CommentStateEnum::Resolved)
             ->setTag(CommentTagEnum::Suggestion)
-            ->setCreateTimestamp(1234567890)
-            ->setUpdateTimestamp(1234567891);
+            ->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1234567890))
+            ->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(1234567891));
 
         $output = $this->factory->create($comment);
 
@@ -66,8 +67,8 @@ class CommentOutputFactoryTest extends AbstractTestCase
             ->setFilePath('src/Legacy.php')
             ->setLineReference(new LineReference(null, 'src/Legacy.php', 7, 1, 8))
             ->setTag(null)
-            ->setCreateTimestamp(1000)
-            ->setUpdateTimestamp(2000);
+            ->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(1000))
+            ->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(2000));
 
         $output = $this->factory->create($comment);
 

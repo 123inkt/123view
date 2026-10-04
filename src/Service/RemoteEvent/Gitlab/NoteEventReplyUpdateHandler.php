@@ -9,13 +9,10 @@ use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Review\CommentReplyRepository;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
-use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class NoteEventReplyUpdateHandler
 {
-    use ClockAwareTrait;
-
     public function __construct(
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly CommentReplyRepository $replyRepository,
@@ -34,7 +31,6 @@ class NoteEventReplyUpdateHandler
         $originalMessage = $reply->getMessage();
         $reply->setMessage($event->note);
         $reply->setModifiedBy(CommentModificationEnum::Gitlab);
-        $reply->setUpdateTimestamp($this->now()->getTimestamp());
         $this->replyRepository->save($reply, true);
 
         $this->bus->dispatch(

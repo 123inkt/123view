@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai;
 
-use DR\PHPUnitExtensions\Symfony\ClockTestTrait;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
@@ -24,8 +23,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(AddCommentService::class)]
 class AddCommentServiceTest extends AbstractTestCase
 {
-    use ClockTestTrait;
-
     private CodeReviewRepository&MockObject      $repository;
     private CommentRepository&MockObject         $commentRepository;
     private CodeReviewRevisionService&MockObject $reviewRevisionService;
@@ -138,7 +135,5 @@ class AddCommentServiceTest extends AbstractTestCase
 
         $comment = $review->getComments()->first();
         static::assertInstanceOf(Comment::class, $comment);
-        static::assertSame(self::now()->getTimestamp(), $comment->getCreateTimestamp());
-        static::assertSame(self::now()->getTimestamp(), $comment->getUpdateTimestamp());
     }
 }

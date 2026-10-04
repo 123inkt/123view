@@ -12,6 +12,7 @@ use ApiPlatform\Metadata\Link;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\QueryParameter;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DR\Review\ApiPlatform\Input\CreateCommentReplyInput;
@@ -182,24 +183,24 @@ class CommentReply
         return $this;
     }
 
-    public function getCreateTimestamp(): int
+    public function getCreateTimestamp(): DateTimeImmutable
     {
-        return $this->createTimestamp;
+        return new DateTimeImmutable()->setTimestamp($this->createTimestamp);
     }
 
-    public function setCreateTimestamp(int $createTimestamp): void
+    public function setCreateTimestamp(DateTimeImmutable $createTimestamp): void
     {
-        $this->createTimestamp = $createTimestamp;
+        $this->createTimestamp = $createTimestamp->getTimestamp();
     }
 
-    public function getUpdateTimestamp(): int
+    public function getUpdateTimestamp(): DateTimeImmutable
     {
-        return $this->updateTimestamp;
+        return new DateTimeImmutable()->setTimestamp($this->updateTimestamp);
     }
 
-    public function setUpdateTimestamp(int $updateTimestamp): void
+    public function setUpdateTimestamp(DateTimeImmutable $updateTimestamp): void
     {
-        $this->updateTimestamp = $updateTimestamp;
+        $this->updateTimestamp = $updateTimestamp->getTimestamp();
     }
 
     public function getNotificationStatus(): NotificationStatus

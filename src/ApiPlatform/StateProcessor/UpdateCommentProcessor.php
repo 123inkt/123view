@@ -15,7 +15,6 @@ use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Service\CodeReview\Comment\CommentVisibility;
 use DR\Review\Service\User\UserEntityProvider;
 use DR\Utils\Assert;
-use Symfony\Component\Clock\ClockAwareTrait;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -25,8 +24,6 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
  */
 class UpdateCommentProcessor implements ProcessorInterface
 {
-    use ClockAwareTrait;
-
     public function __construct(
         private readonly CommentRepository $commentRepository,
         private readonly UserEntityProvider $userProvider,
@@ -78,7 +75,6 @@ class UpdateCommentProcessor implements ProcessorInterface
         if ($data->hasState()) {
             $comment->setState($data->state);
         }
-        $comment->setUpdateTimestamp($this->now()->getTimestamp());
         $this->commentRepository->save($comment, true);
 
         return $this->commentOutputFactory->create($comment);
