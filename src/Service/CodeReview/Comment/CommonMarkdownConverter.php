@@ -32,7 +32,7 @@ class CommonMarkdownConverter extends MarkdownConverter
         $environment->setEventDispatcher($eventDispatcher);
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
-        $environment->addExtension(new EmojiExtension(EmojiDataProvider::full()));
+        $environment->addExtension(new EmojiExtension(EmojiDataProvider::full([':*'])));
         $environment->addExtension(new HighlightExtension());
 
         $limitedHtmlRenderer = new LimitedHtmlRenderer();
