@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e1cc79271acb52a4c31dc10070b7c854",
+    "content-hash": "393aeac4fbfb7396a136422c439921b9",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -2984,16 +2984,16 @@
         },
         {
             "name": "fdekker/commonmark-ext-emoji",
-            "version": "v1.1.2",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/frankdekker/commonmark-ext-emoji.git",
-                "reference": "d09acf0b66fafd1ba63bb145c578fd46cf43d91f"
+                "reference": "341f2274ebff84f35358329f75936c3437679ce2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/frankdekker/commonmark-ext-emoji/zipball/d09acf0b66fafd1ba63bb145c578fd46cf43d91f",
-                "reference": "d09acf0b66fafd1ba63bb145c578fd46cf43d91f",
+                "url": "https://api.github.com/repos/frankdekker/commonmark-ext-emoji/zipball/341f2274ebff84f35358329f75936c3437679ce2",
+                "reference": "341f2274ebff84f35358329f75936c3437679ce2",
                 "shasum": ""
             },
             "require": {
@@ -3007,7 +3007,7 @@
                 "phpstan/phpstan": "^1.10",
                 "phpstan/phpstan-phpunit": "^1.3",
                 "phpstan/phpstan-strict-rules": "^1.5",
-                "phpunit/phpunit": "10.1.*",
+                "phpunit/phpunit": "^10.5",
                 "roave/security-advisories": "dev-latest",
                 "squizlabs/php_codesniffer": "^3.7"
             },
@@ -3024,9 +3024,9 @@
             "description": "An emoji extension for league/commonmark",
             "support": {
                 "issues": "https://github.com/frankdekker/commonmark-ext-emoji/issues",
-                "source": "https://github.com/frankdekker/commonmark-ext-emoji/tree/v1.1.2"
+                "source": "https://github.com/frankdekker/commonmark-ext-emoji/tree/v1.2.0"
             },
-            "time": "2023-04-26T17:48:25+00:00"
+            "time": "2026-10-04T08:04:00+00:00"
         },
         {
             "name": "fdekker/log-viewer-bundle",
