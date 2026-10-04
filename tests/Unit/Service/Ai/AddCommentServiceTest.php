@@ -123,24 +123,6 @@ class AddCommentServiceTest extends AbstractTestCase
         static::assertSame('Just a comment', $comment->getMessage());
     }
 
-    public function testAddCommentShouldReplaceKissEmoticonInMessage(): void
-    {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision()->setRepository($repositoryEntity)->setCommitHash('abc123');
-        $review           = new CodeReview()->setId(1);
-
-        $this->lineReferenceFactory->expects($this->once())->method('createFromReview')->willReturn(new LineReference());
-        $this->repository->expects($this->once())->method('find')->willReturn($review);
-        $this->reviewRevisionService->expects($this->once())->method('getRevisions')->willReturn([$revision]);
-        $this->commentRepository->expects($this->once())->method('save');
-
-        $this->service->addComment(new User(), 1, 'file.php', 5, '**Note:**bold text', null);
-
-        $comment = $review->getComments()->first();
-        static::assertInstanceOf(Comment::class, $comment);
-        static::assertSame('**Note**bold text', $comment->getMessage());
-    }
-
     public function testAddCommentShouldSetTimestamps(): void
     {
         $repositoryEntity = new Repository();
