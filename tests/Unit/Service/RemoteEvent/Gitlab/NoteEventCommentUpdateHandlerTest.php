@@ -76,6 +76,27 @@ class NoteEventCommentUpdateHandlerTest extends AbstractTestCase
         static::assertSame(CommentModificationEnum::Gitlab, $comment->getModifiedBy());
     }
 
+    public function testHandleStripsCommentFooter(): void
+    {
+        $footer = "<!-- 123view-footer-start -->\n\n<br>\n<br>\n[123view: CR-123](https://example.com/review"
+            . "#focus:comment:456)\n<!-- 123view-footer-end -->";
+        $event  = $this->createEvent();
+        $event->note = 'Updated comment' . $footer;
+        $comment = new Comment()->setMessage('Original comment');
+        $this->commentFormatter->expects($this->once())
+            ->method('format')
+            ->with($comment)
+            ->willReturn('Original comment' . $footer);
+        $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
+        $this->eventLogger->expects($this->once())
+            ->method('logCommentMessageUpdated')
+            ->with($event, '7:discussion:42');
+
+        $this->handler->handle($event, $comment, '7:discussion:42');
+
+        static::assertSame('Updated comment', $comment->getMessage());
+    }
+
     public function testHandleResolvesComment(): void
     {
         $event            = $this->createEvent();

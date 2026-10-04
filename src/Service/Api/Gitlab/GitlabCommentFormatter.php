@@ -30,6 +30,12 @@ class GitlabCommentFormatter implements LoggerAwareInterface
         $message = preg_replace('/@user:\d+\[([^]]+)]/', '[$1]', $comment->getMessage());
 
         // add link to review
-        return sprintf("%s\n<br>\n<br>\n[123view: CR-%d](%s#focus:comment:%d)", $message, $review->getProjectId(), $url, $comment->getId());
+        return sprintf(
+            "%s<!-- 123view-footer-start -->\n\n<br>\n<br>\n[123view: CR-%d](%s#focus:comment:%d)\n<!-- 123view-footer-end -->",
+            $message,
+            $review->getProjectId(),
+            $url,
+            $comment->getId(),
+        );
     }
 }
