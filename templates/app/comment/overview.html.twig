@@ -1,0 +1,80 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <div class="container-fluid mt-3">
+        <h1>{{ 'comments.overview'|trans }}</h1>
+
+        <form method="get" class="mb-3">
+            <div class="input-group">
+                <input type="search"
+                       name="search"
+                       value="{{ viewModel.searchQuery }}"
+                       class="form-control"
+                       {{ stimulus_controller('search-field') }}
+                       placeholder="{{ 'comments.search'|trans }}"/>
+                <input type="hidden" name="order-by" value="{{ viewModel.orderBy }}"/>
+                <button type="submit" class="btn btn-primary">{{ 'search'|trans }}</button>
+
+                {% set nextOrderBy = viewModel.orderBy == 'create-timestamp' ? 'update-timestamp' : 'create-timestamp' %}
+                <a class="btn btn-outline-secondary"
+                   href="{{ url_query_params({'order-by': nextOrderBy, page: 1}) }}"
+                   title="{{ 'comments.sort'|trans }}">
+                    <i class="bi bi-sort-down"></i>
+                    {{ (viewModel.orderBy == 'create-timestamp' ? 'last.updated' : 'creation.date')|trans }}
+                </a>
+
+                {% if viewModel.searchQuery != '' %}
+                    <a class="btn btn-secondary"
+                       href="{{ url_query_params({search: '', page: 1}) }}"
+                       aria-label="{{ 'comments.clear.search'|trans }}">&times;</a>
+                {% endif %}
+            </div>
+        </form>
+
+        {% if viewModel.items is empty %}
+            <p class="text-muted">{{ 'comments.empty'|trans }}</p>
+        {% else %}
+            <div class="list-group">
+                {% for item in viewModel.items %}
+                    {% if item.isReply %}
+                        {% set itemUrl = comment_reply_url(item.content) ~ '#focus:reply:' ~ item.content.id %}
+                    {% else %}
+                        {% set itemUrl = comment_url(item.content) ~ '#focus:comment:' ~ item.content.id %}
+                    {% endif %}
+
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between gap-2">
+                            <a href="{{ itemUrl }}">
+                                <span class="badge rounded-pill text-bg-primary">
+                                    {{ (item.isReply ? 'reply' : 'comment')|trans }}
+                                </span>
+                                CR-{{ item.comment.review.projectId }} — {{ item.comment.review.title }}
+                                <code>{{ item.comment.filePath }}</code>
+                            </a>
+                            {% set timestamp = viewModel.orderBy == 'update-timestamp' ? item.content.updateTimestamp : item.content.createTimestamp %}
+                            <small class="text-secondary text-nowrap">
+                                {{ (viewModel.orderBy == 'update-timestamp' ? 'last.updated' : 'creation.date')|trans }}:
+                                {{ timestamp|format_datetime('short', 'short') }}
+                            </small>
+                        </div>
+
+                        {% if item.isReply %}
+                            <div class="mt-2 text-secondary">
+                                <strong>{{ 'reply.to.this.comment'|trans }}:</strong>
+                                <div class="comment__message comment__markdown">
+                                    {{ item.comment.message|mentions|markdown }}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="mt-2 comment__message comment__markdown">
+                            {{ item.content.message|mentions|markdown }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {% include 'app/paginator/paginator.html.twig' with {paginatorModel: viewModel.paginator} %}
+        {% endif %}
+    </div>
+{% endblock %}
