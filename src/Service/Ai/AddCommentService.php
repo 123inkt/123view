@@ -41,9 +41,6 @@ class AddCommentService
             $message .= "\n\n```\n" . $codeSuggestion . "\n```";
         }
 
-        // markdown bold + : turn in to kiss emoticon. Replace it to bold only.
-        $message = str_replace(':**', '**', $message);
-
         $this->aiLogger?->info(
             'AddCommentService: Adding comment to file "{filepath}" at line {line} in review {id}',
             ['id' => $review->getId(), 'filepath' => $filepath, 'line' => $lineNumber]
