@@ -28,11 +28,9 @@ class CommentOverviewController extends AbstractController
     #[IsGranted(Roles::ROLE_USER)]
     public function __invoke(CommentOverviewRequest $request): array
     {
-        $user = $this->getUser();
-
         return [
             'page_title' => $this->translator->trans('comments.overview'),
-            'viewModel'  => $this->viewModelProvider->getCommentOverviewViewModel($user, $request)
+            'viewModel'  => $this->viewModelProvider->getCommentOverviewViewModel($this->getUser(), $request)
         ];
     }
 }
