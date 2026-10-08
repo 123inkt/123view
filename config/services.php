@@ -12,6 +12,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
 use DR\Review\Form\User\UserSettingType;
+use DR\Review\Monolog\UserProcessor;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentReplyUpdated;
@@ -135,6 +136,7 @@ return static function (ContainerConfigurator $container): void {
     // create empty cache clearer
     $services->set('cache.default_clearer', Psr6CacheClearer::class)->args([[]]);
 
+    $services->set(UserProcessor::class)->tag('monolog.processor');
     $services->set(Filesystem::class);
     $services->set(InputValidator::class);
     $services->set(LoginService::class);
