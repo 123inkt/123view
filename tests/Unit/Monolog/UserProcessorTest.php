@@ -27,7 +27,7 @@ class UserProcessorTest extends AbstractTestCase
         $this->processor    = new UserProcessor($this->tokenStorage);
     }
 
-    public function testInvokeAddsUserIdentifierToContext(): void
+    public function testInvokeAddsUserIdentifierToExtra(): void
     {
         $user = static::createStub(UserInterface::class);
         $user->method('getUserIdentifier')->willReturn('user@example.com');
@@ -39,7 +39,8 @@ class UserProcessorTest extends AbstractTestCase
 
         $processedRecord = ($this->processor)($record);
 
-        static::assertSame(['message_id' => '123', 'user_id' => 'user@example.com'], $processedRecord->context);
+        static::assertSame(['message_id' => '123'], $processedRecord->context);
+        static::assertSame(['user_id' => 'user@example.com'], $processedRecord->extra);
     }
 
     public function testInvokeLeavesContextWithoutUser(): void

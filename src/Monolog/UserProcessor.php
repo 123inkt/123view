@@ -21,6 +21,8 @@ final readonly class UserProcessor implements ProcessorInterface
             return $record;
         }
 
-        return $record->with(context: [...$record->context, 'user_id' => $user->getUserIdentifier()]);
+        $record->extra['user_id'] = $user->getUserIdentifier();
+
+        return $record;
     }
 }
