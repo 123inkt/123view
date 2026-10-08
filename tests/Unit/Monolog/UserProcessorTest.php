@@ -42,7 +42,7 @@ class UserProcessorTest extends AbstractTestCase
         static::assertSame(['message_id' => '123', 'user_id' => 'user@example.com'], $processedRecord->context);
     }
 
-    public function testInvokeLeavesContextUnchangedWithoutUser(): void
+    public function testInvokeLeavesContextWithoutUser(): void
     {
         $this->tokenStorage->expects($this->once())->method('getToken')->willReturn(null);
         $record = $this->createRecord(['message_id' => '123']);
