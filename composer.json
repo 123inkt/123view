@@ -77,7 +77,7 @@
         "symfony/http-client": "^8.1",
         "symfony/mailer": "^8.1",
         "symfony/mcp-bundle": "^0.14.0",
-        "symfony/mercure-bundle": "^0.5.0",
+        "symfony/mercure-bundle": "^0.5.0 || ^0.6.0",
         "symfony/messenger": "^8.1",
         "symfony/monolog-bundle": "^4.0",
         "symfony/process": "^8.1",
