@@ -44,6 +44,10 @@ class UserCommentsControllerTest extends AbstractFunctionalTestCase
             ],
             self::getMessages($crawler)
         );
+        static::assertSame(
+            ['displayName', 'displayName', 'displayName', 'displayName'],
+            $crawler->filter('.list-group-item .badge.text-bg-primary')->each(static fn(Crawler $badge): string => $badge->text())
+        );
     }
 
     /**

@@ -40,10 +40,13 @@
                 <li class="list-group-item">
                     {# review and file the comment was placed on #}
                     <div class="small mb-2">
+                        <span class="badge rounded-pill text-bg-primary">{{ review.repository.displayName }}</span>
+                        {% if comment.type.value != 'draft' and comment.state.value == 'resolved' %}
+                            <span class="badge rounded-pill text-bg-success">{{ 'resolved'|trans }}</span>
+                        {% endif %}
                         <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
                             {{- 'CR-' ~ review.projectId }} — {{ review.title -}}
                         </a>
-                        <span class="text-body-secondary">({{ review.repository.displayName }})</span>
                         <br/>
                         <i class="bi bi-file-earmark-code"></i>
                         {% if reply is null %}
@@ -53,8 +56,6 @@
                         {% endif %}
                         {% if comment.type.value == 'draft' %}
                             <span class="badge rounded-pill text-bg-info">{{ 'comment.draft.label'|trans }}</span>
-                        {% elseif comment.state.value == 'resolved' %}
-                            <span class="badge rounded-pill text-bg-success">{{ 'resolved'|trans }}</span>
                         {% endif %}
                     </div>
 
