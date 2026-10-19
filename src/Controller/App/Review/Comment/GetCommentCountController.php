@@ -6,6 +6,7 @@ namespace DR\Review\Controller\App\Review\Comment;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CommentStateEnum;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Security\Role\Roles;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +22,10 @@ class GetCommentCountController extends AbstractController
         $data = ['total' => 0, 'open' => 0, 'resolved' => 0];
 
         foreach ($review->getComments() as $comment) {
+            if ($comment->getType() !== CommentTypeEnum::Final) {
+                continue;
+            }
+
             ++$data['total'];
             if ($comment->getState() === CommentStateEnum::Resolved) {
                 ++$data['resolved'];
