@@ -1405,29 +1405,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * }
  * @psalm-type MercureConfig = array{
  *     hubs?: array<string, array{ // Default: []
- *         url?: scalar|Param|null, // URL of the hub's publish endpoint. Leave empty to publish through FrankenPHP's built-in Mercure hub. // Default: null
+ *         url?: scalar|Param|null, // URL of the hub's publish endpoint
  *         public_url?: scalar|Param|null, // URL of the hub's public endpoint // Default: null
- *         publisher?: array{ // Configuration of the JSON Web Token used to publish to this hub. Use with "subscriber" to sign publisher and subscriber tokens with different keys.
- *             value?: scalar|Param|null, // JSON Web Token to use to publish to this hub.
- *             provider?: scalar|Param|null, // The ID of a service implementing TokenProviderInterface.
- *             factory?: scalar|Param|null, // The ID of a service implementing TokenFactoryInterface, used to create the JSON Web Token.
- *             topics?: list<scalar|Param|null>,
- *             secret?: scalar|Param|null, // The JWT Secret to use.
- *             passphrase?: scalar|Param|null, // The JWT secret passphrase. // Default: ""
- *             algorithm?: scalar|Param|null, // The algorithm to use to sign the JWT. With "secret", one of LcobucciFactory::SIGN_ALGORITHMS ("hmac.sha256", the default). With "jwks_uri", a JWA name from WebTokenFactory::SIGN_ALGORITHMS ("HS256", the default).
- *             jwks_uri?: scalar|Param|null, // URL of a JSON Web Key Set (JWKS) to fetch the signing key from, instead of "secret". Requires "protocol_version: 1.0" and "web-token/jwt-library".
- *             key_id?: scalar|Param|null, // The "kid" of the key to select from "jwks_uri", required when the key set holds more than one matching key.
- *             claims?: array<string, mixed>,
- *         },
- *         subscriber?: array{ // Configuration of the JSON Web Tokens created for subscribers (e.g. the authorization cookie).
- *             factory?: scalar|Param|null, // The ID of a service implementing TokenFactoryInterface, used to create the JSON Web Tokens.
- *             secret?: scalar|Param|null, // The JWT Secret to use.
- *             passphrase?: scalar|Param|null, // The JWT secret passphrase. // Default: ""
- *             algorithm?: scalar|Param|null, // The algorithm to use to sign the JWT. With "secret", one of LcobucciFactory::SIGN_ALGORITHMS ("hmac.sha256", the default). With "jwks_uri", a JWA name from WebTokenFactory::SIGN_ALGORITHMS ("HS256", the default).
- *             jwks_uri?: scalar|Param|null, // URL of a JSON Web Key Set (JWKS) to fetch the signing key from, instead of "secret". Requires "protocol_version: 1.0" and "web-token/jwt-library".
- *             key_id?: scalar|Param|null, // The "kid" of the key to select from "jwks_uri", required when the key set holds more than one matching key.
- *             claims?: array<string, mixed>,
- *         },
  *         jwt?: Param|string|array{ // JSON Web Token configuration.
  *             value?: scalar|Param|null, // JSON Web Token to use to publish to this hub.
  *             provider?: scalar|Param|null, // The ID of a service to call to provide the JSON Web Token.
@@ -1443,9 +1422,8 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *         jwt_provider?: scalar|Param|null, // Deprecated: The child node "jwt_provider" at path "mercure.hubs..jwt_provider" is deprecated, use "jwt.provider" instead. // The ID of a service to call to generate the JSON Web Token.
  *         bus?: scalar|Param|null, // Name of the Messenger bus where the handler for this hub must be registered. Default to the default bus if Messenger is enabled.
- *         http_client?: scalar|Param|null, // The ID of the HTTP client service to publish to this hub with, e.g. a scoped client with a short timeout. Defaults to "http_client".
- *         protocol_version?: value-of<\Symfony\Component\Mercure\ProtocolVersion>|\Symfony\Component\Mercure\ProtocolVersion|Param, // The Mercure protocol version spoken by this hub: "1.0" (default) or "0.x". Affects the default cookie name, the JWT claim shape built by "jwt.secret", and how the mercure() Twig function interprets matcher-typed topics. // Default: "1.0"
- *         cookie_name?: scalar|Param|null, // Name of the subscriber authorization cookie. Defaults to a value computed from "protocol_version" when not set: "__Secure-mercure_access_token" for "1.0" ("mercure_access_token" in debug mode, matching the hub's "playground" mode), "mercureAuthorization" for "0.x". // Default: null
+ *         protocol_version?: "0.x"|"1.0"|Param, // The Mercure protocol version spoken by this hub: "0.x" (default) or "1.0". Affects the default cookie name, the JWT claim shape built by "jwt.secret", and how the mercure() Twig function interprets matcher-typed topics. // Default: "0.x"
+ *         cookie_name?: scalar|Param|null, // Name of the subscriber authorization cookie. Defaults to a value computed from "protocol_version" ("mercureAuthorization" for "0.x", "__Secure-mercure_access_token" for "1.0") when not set. // Default: null
  *     }>,
  *     default_hub?: scalar|Param|null,
  *     default_cookie_lifetime?: int|Param, // Default lifetime of the cookie containing the JWT, in seconds. Defaults to the value of "framework.session.cookie_lifetime". // Default: null
