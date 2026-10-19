@@ -6,6 +6,7 @@ namespace DR\Review\ViewModel\App\Review;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\CommentStateEnum;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\ViewModel\App\Revision\ReviewRevisionViewModel;
@@ -129,7 +130,7 @@ class ReviewViewModel
     {
         $count = 0;
         foreach ($this->review->getComments() as $comment) {
-            if ($comment->getState() !== CommentStateEnum::Resolved) {
+            if ($comment->getType() === CommentTypeEnum::Final && $comment->getState() !== CommentStateEnum::Resolved) {
                 ++$count;
             }
         }
