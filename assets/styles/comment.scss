@@ -92,13 +92,27 @@
 }
 
 .comment__comment-thread.comment__collapsed {
+    position: absolute;
+    z-index: 1;
+    margin-top: -20px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: 0;
+    color: var(--bs-primary);
     cursor: pointer;
+    text-align: center;
 
-    .comment__comment {
-        -webkit-box-orient: vertical;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        overflow: hidden;
+    &::before {
+        content: '\f249';
+        font-family: bootstrap-icons, sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .comment__comment,
+    .comment__reply {
+        display: none;
     }
 
     .comment__toolbar {
