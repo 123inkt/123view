@@ -44,7 +44,7 @@
             {% set isLineBefore = false %}
             {%- if file.blocks -%}
                 {%- for detachedComment in commentsViewModel.detachedComments -%}
-                    {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true, visible: commentsViewModel.isCommentVisible(detachedComment)} -%}
+                    {%- include 'app/review/comment/comment.html.twig' with {comment: detachedComment, detached: true, visible: commentsViewModel.isCommentVisible(detachedComment), collapsed: commentsViewModel.isCommentCollapsed(detachedComment)} -%}
                 {%- endfor -%}
 
                 {%- for block in file.blocks -%}
