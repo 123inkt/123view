@@ -52,6 +52,16 @@ class CommentsViewModelTest extends AbstractTestCase
         static::assertFalse($viewModel->isCommentVisible($commentB));
     }
 
+    public function testIsCommentCollapsed(): void
+    {
+        $commentA = new Comment()->setState(CommentStateEnum::Open);
+        $commentB = new Comment()->setState(CommentStateEnum::Resolved);
+
+        $viewModel = new CommentsViewModel([], [], DiffComparePolicy::IGNORE, CommentVisibilityEnum::ALL);
+        static::assertFalse($viewModel->isCommentCollapsed($commentA));
+        static::assertTrue($viewModel->isCommentCollapsed($commentB));
+    }
+
     public function testGetComments(): void
     {
         $lineA = new DiffLine(DiffLine::STATE_UNCHANGED, []);

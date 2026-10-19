@@ -32,7 +32,7 @@
         {%- for comment in commentsViewModel.getComments(line) -%}
             {# left side only shows comments on removed code, right side all the others #}
             {% if not isLineBefore or comment.lineReference.lineAfter == 0 %}
-                {%- include 'app/review/comment/comment.html.twig' with {visible: commentsViewModel.isCommentVisible(comment)} -%}
+                {%- include 'app/review/comment/comment.html.twig' with {visible: commentsViewModel.isCommentVisible(comment), collapsed: commentsViewModel.isCommentCollapsed(comment)} -%}
             {% endif %}
         {%- endfor -%}
 

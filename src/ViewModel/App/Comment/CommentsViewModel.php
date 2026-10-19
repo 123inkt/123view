@@ -33,6 +33,14 @@ class CommentsViewModel
     }
 
     /**
+     * Resolved comments are collapsed by default
+     */
+    public function isCommentCollapsed(Comment $comment): bool
+    {
+        return $comment->getState() === CommentStateEnum::Resolved;
+    }
+
+    /**
      * @return Comment[]
      */
     public function getComments(DiffLine $line): array
