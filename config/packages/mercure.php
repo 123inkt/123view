@@ -9,6 +9,7 @@ return App::config([
             'default' => [
                 'url'        => '%env(MERCURE_URL)%',
                 'public_url' => 'https://%env(APP_HOSTNAME)%:%env(MERCURE_SSL_PORT)%/.well-known/mercure',
+                'protocol_version' => '0.x',
                 'jwt'        => ['secret' => '%env(MERCURE_JWT_SECRET)%', 'publish' => '*'],
             ],
         ],
