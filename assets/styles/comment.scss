@@ -94,15 +94,13 @@
 .comment__comment-thread.comment__collapsed {
     cursor: pointer;
 
-    .comment__message {
+    .comment__comment {
         -webkit-box-orient: vertical;
         display: -webkit-box;
         -webkit-line-clamp: 1;
         overflow: hidden;
     }
 
-    .comment__reply,
-    .comment__edit-reply,
     .comment__toolbar {
         display: none;
     }
