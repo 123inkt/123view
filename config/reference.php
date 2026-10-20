@@ -2551,6 +2551,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         http?: array{
  *             path?: string|Param, // HTTP endpoint path. Defaults to "/mcp/<name>". // Default: null
  *             allowed_hosts?: mixed, // DNS rebinding protection hosts (without port). Leave unset to keep the SDK default (localhost only), set an array of hostnames to expose a public MCP server, or false to disable the protection entirely. // Default: null
+ *             allowed_origins?: list<scalar|Param|null>,
  *         },
  *         protocol_versions?: Param|string|list<"2024-11-05"|"2025-03-26"|"2025-06-18"|"2025-11-25"|"2026-07-28"|Param>,
  *         request_state?: array{ // Signs the state a multi-round-trip answer carries through the client, which has no session to keep progress in. Required for a modern-era server whose handlers return an InputRequiredResult, and for one whose handlers call ClientGateway::elicit() more than once: the second ask has to carry the first answer to the next round.
@@ -2574,8 +2575,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             store?: "file"|"memory"|"cache"|"framework"|Param, // Default: "file"
  *             directory?: string|Param, // Directory for the "file" store. Defaults to "%kernel.cache_dir%/mcp-sessions/<name>". // Default: null
  *             cache_pool?: string|Param, // PSR-16 cache service for the "cache" store. // Default: "cache.mcp.sessions"
- *             prefix?: string|Param, // Key prefix for the "cache" and "framework" stores. Defaults to "mcp-<name>-". // Default: null
+ *             prefix?: string|Param, // Key prefix for the "cache" and "framework" stores and a "session.lock.factory" lock. Defaults to "mcp-<name>-". // Default: null
  *             ttl?: int|Param, // Default: 3600
+ *             lock?: bool|array{ // Serializes the concurrent requests of one session, so none of them overwrites what another saved.
+ *                 enabled?: bool|Param, // Default: false
+ *                 factory?: string|Param, // Service id of a Symfony\Component\Lock\LockFactory, for a store shared across machines. Unset, the "file" store locks with flock() next to its session files. // Default: null
+ *                 timeout?: float|Param, // Seconds to wait for a lock held by another request of the same session. // Default: 30.0
+ *                 ttl?: float|Param, // Seconds a "factory" lock lives before its store expires it; must exceed the longest handler run. Ignored by the file lock. // Default: 300.0
+ *             },
  *         },
  *         registry?: array{ // The elements this server exposes, either as one list covering every kind or as a map narrowing each kind.
  *             tools?: Param|string|list<scalar|Param|null>,
