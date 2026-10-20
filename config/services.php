@@ -24,7 +24,6 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
-use DR\Review\Monolog\ToolExecutionExceptionActivationStrategy;
 use DR\Review\Monolog\UserProcessor;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
 use DR\Review\Router\ReviewRouter;
@@ -138,11 +137,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set('cache.default_clearer', Psr6CacheClearer::class)->args([[]]);
 
     $services->set(UserProcessor::class)->tag('monolog.processor');
-    if ($container->env() === 'prod') {
-        $services->set(ToolExecutionExceptionActivationStrategy::class)
-            ->decorate('monolog.handler.main.http_code_strategy')
-            ->args([service('.inner')]);
-    }
     $services->set(Filesystem::class);
     $services->set(InputValidator::class);
     $services->set(LoginService::class);
