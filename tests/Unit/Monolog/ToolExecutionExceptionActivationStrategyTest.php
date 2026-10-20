@@ -58,7 +58,7 @@ class ToolExecutionExceptionActivationStrategyTest extends AbstractTestCase
         yield 'not activated' => [false];
     }
 
-    public function testMailerActivationPreservesHttpExclusionsAndFileLogging(): void
+    public function testMailerHttpExclusionsAndFileLogging(): void
     {
         $requestStack = new RequestStack();
         $requestStack->push(Request::create('/mcp'));
