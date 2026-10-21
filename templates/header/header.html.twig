@@ -65,6 +65,15 @@
                                     {%- endif -%}
                                 </a>
                             </li>
+                            {# my comments and replies #}
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   aria-label="{{ 'my.comments'|trans }}"
+                                   title="{{ 'my.comments'|trans }}"
+                                   href="{{ path('DR\\Review\\Controller\\App\\Comment\\UserCommentsController') }}">
+                                    <i class="bi-chat-left-text"></i>
+                                </a>
+                            </li>
                             {# logout #}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ path('DR\\Review\\Controller\\Auth\\LogoutController') }}">

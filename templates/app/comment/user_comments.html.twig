@@ -1,0 +1,99 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <h2 class="mt-3 mb-3">{{ 'my.comments'|trans }}</h2>
+
+    {% set order_by_update = viewModel.orderBy == 'update-timestamp' %}
+    <form method="get" class="mb-3">
+        <input type="hidden" name="order-by" value="{{ viewModel.orderBy }}"/>
+        <div class="input-group">
+            <input type="search"
+                   name="search"
+                   value="{{ viewModel.searchQuery }}"
+                   class="form-control"
+                   aria-label="{{ 'search.comments'|trans }}"
+                   placeholder="{{ 'search.comments'|trans }}"
+                    {{ stimulus_controller('search-field') }}/>
+            {% if viewModel.searchQuery != '' %}
+                <a href="{{ url_query_params({search: '', page: 1}) }}" class="btn btn-secondary">&times;</a>
+            {% endif %}
+            <button type="submit" class="btn btn-secondary" title="{{ 'search'|trans }}" aria-label="{{ 'search'|trans }}">
+                <i class="bi bi-search"></i>
+            </button>
+            <a href="{{ url_query_params({'order-by': order_by_update ? 'create-timestamp' : 'update-timestamp', page: 1}) }}"
+               class="btn btn-outline-secondary"
+               title="{{ (order_by_update ? 'sort.by.creation.date' : 'sort.by.last.updated')|trans }}">
+                <i class="bi bi-sort-down"></i>
+                {{ (order_by_update ? 'last.updated' : 'creation.date')|trans }}
+            </a>
+        </div>
+    </form>
+
+    {% if viewModel.comments is empty %}
+        <p class="text-body-secondary">{{ 'my.comments.empty'|trans }}</p>
+    {% else %}
+        <ul class="list-group">
+            {% for entry in viewModel.comments %}
+                {% set comment = entry.comment %}
+                {% set reply = entry.reply %}
+                {% set review = comment.review %}
+                <li class="list-group-item">
+                    {# review and file the comment was placed on #}
+                    <div class="small mb-2">
+                        <span class="badge rounded-pill text-bg-primary">{{ review.repository.displayName }}</span>
+                        {% if comment.type.value != 'draft' and comment.state.value == 'resolved' %}
+                            <span class="badge rounded-pill text-bg-success">{{ 'resolved'|trans }}</span>
+                        {% endif %}
+                        <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                            {{- 'CR-' ~ review.projectId }} — {{ review.title -}}
+                        </a>
+                        <br/>
+                        <i class="bi bi-file-earmark-code"></i>
+                        {% if reply is null %}
+                            <a href="{{ comment_url(comment) }}#focus:comment:{{ comment.id }}">{{ comment.filePath }}</a>
+                        {% else %}
+                            <a href="{{ comment_reply_url(reply) }}#focus:reply:{{ reply.id }}">{{ comment.filePath }}</a>
+                        {% endif %}
+                        {% if comment.type.value == 'draft' %}
+                            <span class="badge rounded-pill text-bg-info">{{ 'comment.draft.label'|trans }}</span>
+                        {% endif %}
+                    </div>
+
+                    {# the comment the reply was placed on #}
+                    {% if reply is not null %}
+                        <div class="border-start border-3 ps-2 mb-2 text-body-secondary">
+                            <div class="small">
+                                <strong>{{ comment.user.name }}</strong>
+                                {{ 'on'|trans }} {{ comment.createTimestamp|format_datetime('short', 'short') }}
+                            </div>
+                            <div class="comment__markdown">{{ comment.message|mentions|markdown }}</div>
+                        </div>
+                    {% endif %}
+
+                    {# the comment or reply of the user #}
+                    {% set item = reply ?? comment %}
+                    <div{% if reply is not null %} class="ms-3"{% endif %}>
+                        <div class="small">
+                            {% if reply is not null %}
+                                <i class="bi bi-reply-fill text-body-secondary" title="{{ 'reply'|trans }}"></i>
+                            {% endif %}
+                            <strong>{{ item.user.name }}</strong>
+                            {{ 'on'|trans }} {{ item.createTimestamp|format_datetime('short', 'short') }}
+                            {% if item.updateTimestamp != item.createTimestamp %}
+                                <span class="text-body-secondary">
+                                    ({{ 'last.updated'|trans }}: {{ item.updateTimestamp|format_datetime('short', 'short') }})
+                                </span>
+                            {% endif %}
+                            {% if item.tag %}
+                                <span class="badge rounded-pill text-bg-secondary">{{ ('tag.' ~ item.tag.value)|trans }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="comment__markdown">{{ item.message|mentions|markdown }}</div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% include 'app/paginator/paginator.html.twig' with {paginatorModel: viewModel} %}
+{% endblock %}
