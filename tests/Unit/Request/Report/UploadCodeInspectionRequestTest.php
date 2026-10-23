@@ -8,6 +8,10 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Request\Report\UploadCodeInspectionRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @extends AbstractRequestTestCase<UploadCodeInspectionRequest>
@@ -69,6 +73,38 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
         $this->expectGetValidationRules($expected);
 
         $this->validatedRequest->validate();
+    }
+
+    public function testInvalidGitlabJsonIsRejected(): void
+    {
+        $request = new Request(['format' => 'gitlab'], content: "[\"\x00\"]");
+        $stack   = new RequestStack([$request]);
+
+        $validatedRequest = new class ($stack, Validation::createValidator(), $this->constraintFactory) extends UploadCodeInspectionRequest {
+            protected function getValidationRules(): ?ValidationRules
+            {
+                return null;
+            }
+        };
+
+        $this->expectException(BadRequestException::class);
+        $validatedRequest->validate();
+    }
+
+    public function testInvalidXmlIsRejected(): void
+    {
+        $request = new Request(content: '<checkstyle>');
+        $stack   = new RequestStack([$request]);
+
+        $validatedRequest = new class ($stack, Validation::createValidator(), $this->constraintFactory) extends UploadCodeInspectionRequest {
+            protected function getValidationRules(): ?ValidationRules
+            {
+                return null;
+            }
+        };
+
+        $this->expectException(BadRequestException::class);
+        $validatedRequest->validate();
     }
 
     protected static function getClassToTest(): string
