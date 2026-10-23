@@ -8,6 +8,10 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Request\Report\UploadCodeCoverageRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @extends AbstractRequestTestCase<UploadCodeCoverageRequest>
@@ -55,6 +59,22 @@ class UploadCodeCoverageRequestTest extends AbstractRequestTestCase
         $this->expectGetValidationRules($expected);
 
         $this->validatedRequest->validate();
+    }
+
+    public function testInvalidXmlIsRejected(): void
+    {
+        $request = new Request(content: '<coverage>');
+        $stack   = new RequestStack([$request]);
+
+        $validatedRequest = new class ($stack, Validation::createValidator(), $this->constraintFactory) extends UploadCodeCoverageRequest {
+            protected function getValidationRules(): ?ValidationRules
+            {
+                return null;
+            }
+        };
+
+        $this->expectException(BadRequestException::class);
+        $validatedRequest->validate();
     }
 
     protected static function getClassToTest(): string

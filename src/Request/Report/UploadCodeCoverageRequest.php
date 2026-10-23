@@ -6,6 +6,8 @@ namespace DR\Review\Request\Report;
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DR\Review\Service\Report\Coverage\Parser\CloverParser;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints\Xml;
 
 class UploadCodeCoverageRequest extends AbstractValidatedRequest
 {
@@ -40,5 +42,12 @@ class UploadCodeCoverageRequest extends AbstractValidatedRequest
                 ]
             ]
         );
+    }
+
+    protected function validateCustomRules(): ?Response
+    {
+        $violations = $this->validator->validate($this->getData(), new Xml(maxSize: PHP_INT_MAX));
+
+        return count($violations) > 0 ? $this->handleViolations($violations) : null;
     }
 }
