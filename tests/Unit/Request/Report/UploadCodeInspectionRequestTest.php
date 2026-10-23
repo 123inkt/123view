@@ -82,6 +82,7 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
     public static function invalidGitlabDataProvider(): iterable
     {
         yield 'invalid json' => ["[\"\x00\"]"];
+        yield 'json object' => ['{}'];
         yield 'invalid field type' => ['[{"description":[]}]'];
     }
 

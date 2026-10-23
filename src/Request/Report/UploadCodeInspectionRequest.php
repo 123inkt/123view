@@ -71,7 +71,7 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
                 }
 
                 $issues = json_decode($data, true);
-                if (is_array($issues) === false || array_is_list($issues) === false) {
+                if (is_array(json_decode($data)) === false || is_array($issues) === false) {
                     $context->buildViolation('This value should be a valid GitLab code quality report.')->addViolation();
 
                     return;
