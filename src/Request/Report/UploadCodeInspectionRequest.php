@@ -78,7 +78,7 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
                 }
 
                 foreach ($issues as $issue) {
-                    if (is_array($issue) === false) {
+                    if (is_array($issue) === false || self::isValidGitlabIssue($issue) === false) {
                         $context->buildViolation('This value should be a valid GitLab code quality report.')->addViolation();
 
                         return;
@@ -90,5 +90,27 @@ class UploadCodeInspectionRequest extends AbstractValidatedRequest
         $violations = $this->validator->validate($this->getData(), $constraint);
 
         return count($violations) > 0 ? $this->handleViolations($violations) : null;
+    }
+
+    /**
+     * @param array<mixed, mixed> $issue
+     */
+    private static function isValidGitlabIssue(array $issue): bool
+    {
+        $location = $issue['location'] ?? [];
+        $lines    = is_array($location) ? ($location['lines'] ?? []) : [];
+
+        return (array_key_exists('description', $issue) === false || is_string($issue['description']))
+            && (array_key_exists('severity', $issue) === false || is_string($issue['severity']))
+            && (array_key_exists('check_name', $issue) === false || $issue['check_name'] === null || is_string($issue['check_name']))
+            && (array_key_exists('location', $issue) === false || is_array($location))
+            && (is_array($location) === false || array_key_exists('path', $location) === false || is_string($location['path']))
+            && (is_array($location) === false || array_key_exists('lines', $location) === false || is_array($lines))
+            && (
+                is_array($lines) === false
+                || array_key_exists('begin', $lines) === false
+                || is_int($lines['begin'])
+                || (is_string($lines['begin']) && is_numeric($lines['begin']))
+            );
     }
 }

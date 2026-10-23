@@ -8,6 +8,7 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Request\Report\UploadCodeInspectionRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -75,9 +76,19 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
         $this->validatedRequest->validate();
     }
 
-    public function testInvalidGitlabJsonIsRejected(): void
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function invalidGitlabDataProvider(): iterable
     {
-        $request = new Request(['format' => 'gitlab'], content: "[\"\x00\"]");
+        yield 'invalid json' => ["[\"\x00\"]"];
+        yield 'invalid field type' => ['[{"description":[]}]'];
+    }
+
+    #[DataProvider('invalidGitlabDataProvider')]
+    public function testInvalidGitlabJsonIsRejected(string $content): void
+    {
+        $request = new Request(['format' => 'gitlab'], content: $content);
         $stack   = new RequestStack([$request]);
 
         $validatedRequest = new class ($stack, Validation::createValidator(), $this->constraintFactory) extends UploadCodeInspectionRequest {
