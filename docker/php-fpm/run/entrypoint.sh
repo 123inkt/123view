@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# Keep newly created development files writable on the host bind mount.
+if [ "${APP_ENV}" == "dev" ]; then
+    umask 0000
+fi
+
 ##
 # Apply custom php memory limit setting
 #
@@ -46,4 +51,8 @@ chmod -R a+rwx /app/var
 chown www-data:www-data -R /app/var
 
 # exec is needed to make supervisord pid 1 and able to receive SIGTERM signal
+if [ "${APP_ENV}" == "dev" ]; then
+    exec supervisord -c /etc/supervisor/conf.d/supervisord.conf --umask 0000
+fi
+
 exec supervisord -c /etc/supervisor/conf.d/supervisord.conf
