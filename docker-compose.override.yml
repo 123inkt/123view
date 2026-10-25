@@ -3,8 +3,8 @@ services:
     nginx:
         volumes:
             - ./docker/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
-            - ./docker/ssl/development/development-self-signed.crt:/etc/ssl/certs/123view-cert.crt:ro
-            - ./docker/ssl/development/development-self-signed.key:/etc/ssl/private/123view-cert.key:ro
+            - ${SSL_CERTIFICATE:-./docker/ssl/development/development-self-signed.crt}:/etc/ssl/certs/123view-cert.crt:ro
+            - ${SSL_CERTIFICATE_KEY:-./docker/ssl/development/development-self-signed.key}:/etc/ssl/private/123view-cert.key:ro
 
     php-fpm:
         build:
@@ -41,6 +41,6 @@ services:
 
     my_mercure:
         volumes:
-            - ./docker/ssl/development/development-self-signed.crt:/etc/ssl/certs/123view-cert.crt:ro
-            - ./docker/ssl/development/development-self-signed.key:/etc/ssl/private/123view-cert.key:ro
+            - ${SSL_CERTIFICATE:-./docker/ssl/development/development-self-signed.crt}:/etc/ssl/certs/123view-cert.crt:ro
+            - ${SSL_CERTIFICATE_KEY:-./docker/ssl/development/development-self-signed.key}:/etc/ssl/private/123view-cert.key:ro
         command: /usr/bin/caddy run --config /etc/caddy/dev.Caddyfile

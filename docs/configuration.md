@@ -43,6 +43,36 @@ Commit message: B#789 my first bug
 > matches: 'B#789', group 'bug'
 ```
 
+## Custom development TLS certificates
+
+To use an already generated certificate (for example, one issued by your internal CA), set both paths in `.env.dev.local`:
+
+```dotenv
+SSL_CERTIFICATE=/etc/letsencrypt/live/phoebe.drshop.123dev.nl/fullchain.pem
+SSL_CERTIFICATE_KEY=/etc/letsencrypt/live/phoebe.drshop.123dev.nl/privkey.pem
+```
+
+These are paths on the Docker host. On Windows, use forward slashes, for example `C:/certificates/fullchain.pem`.
+The certificate file should include the server certificate and any intermediate certificates, and the key must match it.
+The certificate must include the actual hostname in its Subject Alternative Names: `*.123dev.nl` does not cover
+`phoebe.drshop.123dev.nl`. The issuing root CA must also be trusted by your browser/operating system.
+
+Apply the settings with `./bin/start.sh --dev --skip-log`. Both nginx and Mercure mount the files read-only.
+When either variable is unset or empty, that file defaults to the existing certificate or key in `docker/ssl/development/`.
+Set both variables together to avoid a mismatched certificate/key pair.
+
+When running Docker Compose directly, explicitly load the local environment file:
+
+```bash
+docker compose --env-file .env --env-file .env.dev.local up -d nginx my_mercure
+```
+
+Certificate issuance and renewal are managed outside the application. After renewal, recreate the containers to load the updated files:
+
+```bash
+docker compose --env-file .env --env-file .env.dev.local up -d --force-recreate nginx my_mercure
+```
+
 ## Extra options
 
 - `NGINX_VERSION`: controls the version of nginx.
