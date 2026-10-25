@@ -5,14 +5,12 @@ namespace DR\Review\ViewModelProvider;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use ApiPlatform\Metadata\Operation;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
-use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionFileRepository;
@@ -36,7 +34,6 @@ class RevisionViewModelProvider implements ProviderInterface
 {
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
-        private readonly CodeReviewRepository $reviewRepository,
         private RevisionRepository $revisionRepository,
         private CodeReviewRepository $reviewRepository,
         private RevisionVisibilityService $visibilityService,
@@ -59,7 +56,6 @@ class RevisionViewModelProvider implements ProviderInterface
 
         return new RevisionsViewModel($repository, $revisions, $reviews, $paginatorViewModel, $searchQuery);
     }
-
 
     /**
      * @inheritDoc
