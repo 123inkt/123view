@@ -1,6 +1,6 @@
 export const environment = {
-    appName: 'app',
-    appAuthPassword: false,
-    appAuthAzureAd: false,
-    apiPort: 9443
-};
+    "appName": "123view",
+    "appAuthPassword": true,
+    "appAuthAzureAd": true,
+    "apiPort": 9443
+}

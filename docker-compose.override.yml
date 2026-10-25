@@ -1,6 +1,8 @@
 ## overrides for development
 services:
     nginx:
+        environment:
+            NGINX_DEV_FRAME_ORIGIN: ${NGINX_DEV_FRAME_ORIGIN:-}
         volumes:
             - ./docker/ssl/dhparam.pem:/etc/ssl/certs/dhparam.pem:ro
             - ${SSL_CERTIFICATE:-./docker/ssl/development/development-self-signed.crt}:/etc/ssl/certs/123view-cert.crt:ro
