@@ -10,8 +10,8 @@ use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Notification\Rule;
 use DR\Review\Entity\Notification\RuleConfiguration;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\FormatPattern;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\FormatPattern;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\Log\FormatPatternFactory;
@@ -64,8 +64,8 @@ class GitLogServiceTest extends AbstractTestCase
         $this->commandFactory->expects($this->never())->method('fromRule');
         $this->patternFactory->expects($this->never())->method('createPattern');
         $this->logParser->expects($this->never())->method('parse');
-        $repository = (new Repository())->setActive(false);
-        $rule       = (new Rule())->addRepository($repository);
+        $repository = new Repository()->setActive(false);
+        $rule       = new Rule()->addRepository($repository);
         $config     = new RuleConfiguration(new DatePeriod(new DateTime(), new DateInterval('PT1H'), new DateTime()), $rule);
 
         static::assertSame([], $this->logFactory->getCommits($config));

@@ -14,7 +14,7 @@ class UserAccessToken
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 80, options: ['fixed' => true])]
     private string $token;
@@ -35,12 +35,12 @@ class UserAccessToken
     #[ORM\Column(nullable: true)]
     private ?int $useTimestamp = null;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

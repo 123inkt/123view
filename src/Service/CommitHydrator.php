@@ -8,7 +8,7 @@ use DR\Review\Entity\Git\Author;
 use DR\Review\Entity\Git\Commit;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Repository\Repository;
-use DR\Review\Git\FormatPattern;
+use DR\Review\Model\Git\FormatPattern;
 use Exception;
 
 class CommitHydrator

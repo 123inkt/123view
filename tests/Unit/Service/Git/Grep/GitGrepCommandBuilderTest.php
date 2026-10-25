@@ -23,6 +23,11 @@ class GitGrepCommandBuilderTest extends AbstractTestCase
         static::assertSame('grep', $this->builder->command());
     }
 
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
+
     public function testBuild(): void
     {
         $result = $this->builder
@@ -40,8 +45,9 @@ class GitGrepCommandBuilderTest extends AbstractTestCase
             '-n',
             '--no-color',
             '--full-name',
-            '--context 3',
-            escapeshellarg('test-pattern'),
+            '--context',
+            '3',
+            'test-pattern',
             'abc123'
         ], $result);
     }
@@ -67,6 +73,6 @@ class GitGrepCommandBuilderTest extends AbstractTestCase
             ->pattern('search')
             ->hash('def456');
 
-        static::assertSame("git grep " . escapeshellarg('search') . " def456", $result);
+        static::assertSame('git grep search def456', $result);
     }
 }

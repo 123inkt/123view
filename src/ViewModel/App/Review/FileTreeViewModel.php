@@ -4,10 +4,10 @@ declare(strict_types=1);
 namespace DR\Review\ViewModel\App\Review;
 
 use Doctrine\Common\Collections\Collection;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\FileSeenStatusCollection;
 use DR\Review\Entity\Review\FolderCollapseStatusCollection;
 use DR\Review\Model\Review\DirectoryTreeNode;
@@ -79,7 +79,7 @@ class FileTreeViewModel
                 continue;
             }
 
-            if ($comment->getState() !== CommentStateType::RESOLVED) {
+            if ($comment->getState() !== CommentStateEnum::Resolved) {
                 ++$result['unresolved'];
             }
             ++$result['total'];

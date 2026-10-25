@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service\RemoteEvent\Gitlab;
 
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Service\RemoteEvent\Gitlab\RemoteEventPayloadDenormalizer;
 use DR\Review\Tests\AbstractTestCase;
@@ -49,6 +50,21 @@ class RemoteEventPayloadDenormalizerTest extends AbstractTestCase
             ->willReturn($event);
 
         static::assertSame($event, $this->denormalizer->denormalize('Push Hook', ['data']));
+    }
+
+    /**
+     * @throws ExceptionInterface
+     */
+    public function testDeserializeNoteHook(): void
+    {
+        $event = new NoteEvent();
+
+        $this->objectDenormalizer->expects($this->once())
+            ->method('denormalize')
+            ->with(['data'], NoteEvent::class, null, ['collect_denormalization_errors' => true, 'allow_extra_attributes' => true])
+            ->willReturn($event);
+
+        static::assertSame($event, $this->denormalizer->denormalize('Note Hook', ['data']));
     }
 
     /**

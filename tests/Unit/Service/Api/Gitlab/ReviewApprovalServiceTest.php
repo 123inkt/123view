@@ -43,11 +43,11 @@ class ReviewApprovalServiceTest extends AbstractTestCase
     public function testApproveShouldSkipWithoutApi(): void
     {
         $user               = new User();
-        $reviewer           = (new CodeReviewer())->setUser($user);
+        $reviewer           = new CodeReviewer()->setUser($user);
         $repositoryProperty = new RepositoryProperty('gitlab-project-id', '123');
         $repository         = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', $repositoryProperty);
-        $review = (new CodeReview())->setId(456)->setRepository($repository);
+        $review = new CodeReview()->setId(456)->setRepository($repository);
 
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn(null);
         $this->mergeRequestService->expects($this->never())->method('retrieveMergeRequestIID');
@@ -63,11 +63,11 @@ class ReviewApprovalServiceTest extends AbstractTestCase
     public function testApproveShouldSkipWithoutMergeRequestIId(): void
     {
         $user               = new User();
-        $reviewer           = (new CodeReviewer())->setUser($user);
+        $reviewer           = new CodeReviewer()->setUser($user);
         $repositoryProperty = new RepositoryProperty('gitlab-project-id', '123');
         $repository         = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', $repositoryProperty);
-        $review = (new CodeReview())->setId(456)->setRepository($repository);
+        $review = new CodeReview()->setId(456)->setRepository($repository);
 
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($this->gitlabApi);
         $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($this->gitlabApi, $review)->willReturn(null);
@@ -83,11 +83,11 @@ class ReviewApprovalServiceTest extends AbstractTestCase
     public function testApproveShouldApprove(): void
     {
         $user               = new User();
-        $reviewer           = (new CodeReviewer())->setUser($user);
+        $reviewer           = new CodeReviewer()->setUser($user);
         $repositoryProperty = new RepositoryProperty('gitlab-project-id', '123');
         $repository         = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', $repositoryProperty);
-        $review = (new CodeReview())->setId(456)->setRepository($repository);
+        $review = new CodeReview()->setId(456)->setRepository($repository);
 
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($this->gitlabApi);
         $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($this->gitlabApi, $review)->willReturn(543);
@@ -103,11 +103,11 @@ class ReviewApprovalServiceTest extends AbstractTestCase
     public function testApproveShouldUnapprove(): void
     {
         $user               = new User();
-        $reviewer           = (new CodeReviewer())->setUser($user);
+        $reviewer           = new CodeReviewer()->setUser($user);
         $repositoryProperty = new RepositoryProperty('gitlab-project-id', '123');
         $repository         = new Repository();
         $repository->getRepositoryProperties()->set('gitlab-project-id', $repositoryProperty);
-        $review = (new CodeReview())->setId(456)->setRepository($repository);
+        $review = new CodeReview()->setId(456)->setRepository($repository);
 
         $this->apiProvider->expects($this->once())->method('create')->with($repository, $user)->willReturn($this->gitlabApi);
         $this->mergeRequestService->expects($this->once())->method('retrieveMergeRequestIID')->with($this->gitlabApi, $review)->willReturn(543);

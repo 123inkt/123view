@@ -6,6 +6,7 @@ namespace DR\Review\Tests\Unit\MessageHandler\Gitlab;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\MessageHandler\Gitlab\CommentAddedMessageHandler;
@@ -63,6 +64,19 @@ class CommentAddedMessageHandlerTest extends AbstractTestCase
             $this->commentService
         );
         ($handler)(new CommentAdded(111, 222, 333, 'file', 'message'));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testInvokeSkipsGitlabModifiedComment(): void
+    {
+        $this->commentRepository->expects($this->never())->method('find');
+        $this->apiProvider->expects($this->never())->method('create');
+        $this->mergeRequestService->expects($this->never())->method('retrieveMergeRequestIID');
+        $this->commentService->expects($this->never())->method('create');
+
+        ($this->handler)(new CommentAdded(111, 222, 333, 'file', 'message', CommentModificationEnum::Gitlab));
     }
 
     /**

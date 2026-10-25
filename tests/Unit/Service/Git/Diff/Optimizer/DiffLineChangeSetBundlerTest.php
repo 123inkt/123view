@@ -75,4 +75,24 @@ class DiffLineChangeSetBundlerTest extends AbstractTestCase
         static::assertNull($lines[2]->lineNumberBefore);
         static::assertSame(21, $lines[2]->lineNumberAfter);
     }
+
+    public function testBundleWithAddedAndDefaultNewlines(): void
+    {
+        $set     = $this->createMock(DiffLineChangeSet::class);
+        $changes = new ArrayObject(
+            [
+                [LineBlockTextIterator::TEXT_ADDED, "\n"],
+                [LineBlockTextIterator::TEXT_UNCHANGED_AFTER, "\n"],
+            ]
+        );
+
+        $set->expects($this->once())->method('getLineNumbers')->willReturn(new DiffLineNumberPair(10, 20));
+        $this->differ->expects($this->once())->method('diff')->with($set, DiffComparePolicy::IGNORE)->willReturn($changes);
+
+        $lines = $this->bundler->bundle($set, DiffComparePolicy::IGNORE);
+        static::assertNotNull($lines);
+        static::assertCount(2, $lines);
+        static::assertSame(DiffLine::STATE_ADDED, $lines[0]->state);
+        static::assertSame(DiffLine::STATE_CHANGED, $lines[1]->state);
+    }
 }

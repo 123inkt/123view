@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Message\Comment;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Message\AsyncMessageInterface;
 use DR\Review\Message\MailNotificationInterface;
 
@@ -15,7 +16,8 @@ class CommentReplyAdded implements AsyncMessageInterface, MailNotificationInterf
         public readonly int $commentReplyId,
         public readonly int $byUserId,
         public readonly string $message,
-        public readonly string $file
+        public readonly string $file,
+        public readonly CommentModificationEnum $modifiedBy = CommentModificationEnum::Local,
     ) {
     }
 
@@ -39,11 +41,16 @@ class CommentReplyAdded implements AsyncMessageInterface, MailNotificationInterf
         return $this->byUserId;
     }
 
+    public function getModifiedBy(): CommentModificationEnum
+    {
+        return $this->modifiedBy;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentReplyId, 'message' => $this->message, 'file' => $this->file];
+        return ['commentId' => $this->commentReplyId, 'message' => $this->message, 'file' => $this->file, 'modifiedBy' => $this->modifiedBy->value];
     }
 }

@@ -5,10 +5,10 @@ namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
 use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Git\Diff\DiffFile;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\FileSeenStatusCollection;
 use DR\Review\Entity\Review\FolderCollapseStatusCollection;
 use DR\Review\Model\Review\DirectoryTreeNode;
@@ -138,9 +138,9 @@ class FileTreeViewModelTest extends AbstractTestCase
         $commentB->setFilePath('filepathB');
         $commentC->setFilePath('filepathB');
 
-        $commentA->setState(CommentStateType::OPEN);
-        $commentB->setState(CommentStateType::OPEN);
-        $commentC->setState(CommentStateType::RESOLVED);
+        $commentA->setState(CommentStateEnum::Open);
+        $commentB->setState(CommentStateEnum::Open);
+        $commentC->setState(CommentStateEnum::Resolved);
 
         $this->commentCollection->add($commentA);
         $this->commentCollection->add($commentB);

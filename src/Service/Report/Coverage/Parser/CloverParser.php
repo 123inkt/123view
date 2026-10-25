@@ -31,7 +31,7 @@ class CloverParser implements CodeCoverageParserInterface
 
         // create document and search for file nodes
         $document     = $this->documentFactory->createFromString($data);
-        $fileElements = Assert::notFalse((new DOMXpath($document))->query("/coverage/project/file"));
+        $fileElements = Assert::notFalse(new DOMXpath($document)->query("/coverage/project/file"));
 
         /** @var DOMElement $fileElement */
         foreach ($fileElements as $fileElement) {
@@ -53,7 +53,7 @@ class CloverParser implements CodeCoverageParserInterface
                 }
             }
 
-            $result[] = (new CodeCoverageFile())
+            $result[] = new CodeCoverageFile()
                 ->setCoverage($coverage)
                 ->setPercentage((string)$percentage)
                 ->setFile($filePath);

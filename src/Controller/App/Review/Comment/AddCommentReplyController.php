@@ -6,6 +6,7 @@ namespace DR\Review\Controller\App\Review\Comment;
 use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Form\Review\AddCommentReplyFormType;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Repository\Review\CommentReplyRepository;
@@ -36,14 +37,16 @@ class AddCommentReplyController extends AbstractController
             return $this->json(['success' => false, 'error' => $this->translator->trans('comment.was.deleted.meanwhile')], Response::HTTP_NOT_FOUND);
         }
 
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            return $this->json(['success' => false, 'error' => $this->translator->trans('comment.is.draft')], Response::HTTP_BAD_REQUEST);
+        }
+
         $user = $this->getUser();
         $reply = new CommentReply();
         $reply->setUser($user);
         $reply->setMessage('');
         $reply->setTag(null);
         $reply->setComment($comment);
-        $reply->setCreateTimestamp(time());
-        $reply->setUpdateTimestamp(time());
 
         $form = $this->createForm(AddCommentReplyFormType::class, $reply, ['comment' => $comment]);
         $form->handleRequest($request);
@@ -56,7 +59,7 @@ class AddCommentReplyController extends AbstractController
         $this->bus->dispatch(
             new CommentReplyAdded(
                 $comment->getReview()->getId(),
-                (int)$reply->getId(),
+                $reply->getId(),
                 $user->getId(),
                 $reply->getMessage(),
                 $comment->getFilePath()

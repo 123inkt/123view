@@ -51,8 +51,8 @@ class RecoverableReviewDiffServiceTest extends AbstractTestCase
     {
         $callCount        = new stdClass();
         $callCount->count = 0;
-        $repository       = (new Repository())->setMainBranchName('master');
-        $review           = (new CodeReview())->setTargetBranch('foobar')->setRepository($repository);
+        $repository       = new Repository()->setMainBranchName('master');
+        $review           = new CodeReview()->setTargetBranch('foobar')->setRepository($repository);
         $revisions        = [new Revision()];
         $options          = new FileDiffOptions(5, DiffComparePolicy::ALL);
         $branchName       = 'branch';
@@ -74,8 +74,8 @@ class RecoverableReviewDiffServiceTest extends AbstractTestCase
     {
         $callCount        = new stdClass();
         $callCount->count = 0;
-        $repository       = (new Repository())->setMainBranchName('master');
-        $review           = (new CodeReview())->setTargetBranch('master')->setRepository($repository);
+        $repository       = new Repository()->setMainBranchName('master');
+        $review           = new CodeReview()->setTargetBranch('master')->setRepository($repository);
         $revisions        = [new Revision()];
         $options          = new FileDiffOptions(5, DiffComparePolicy::ALL);
         $branchName       = 'branch';

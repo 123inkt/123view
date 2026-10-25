@@ -69,8 +69,6 @@ class AddCommentControllerTest extends AbstractControllerTestCase
                     $comment->setId(123);
                     static::assertSame($user, $comment->getUser());
                     static::assertSame($review, $comment->getReview());
-                    static::assertGreaterThan(0, $comment->getCreateTimestamp());
-                    static::assertGreaterThan(0, $comment->getUpdateTimestamp());
 
                     return true;
                 }),

@@ -3,18 +3,20 @@ declare(strict_types=1);
 
 namespace DR\Review\Message\Comment;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Message\AsyncMessageInterface;
 use DR\Review\Message\MailNotificationInterface;
 
-class CommentReplyUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentReplyEventInterface
+readonly class CommentReplyUpdated implements AsyncMessageInterface, MailNotificationInterface, CommentReplyEventInterface
 {
     public const NAME = 'comment-reply-updated';
 
     public function __construct(
-        public readonly int $reviewId,
-        public readonly int $commentReplyId,
-        public readonly int $byUserId,
-        public readonly string $originalComment
+        public int $reviewId,
+        public int $commentReplyId,
+        public int $byUserId,
+        public string $originalComment,
+        public readonly CommentModificationEnum $modifiedBy = CommentModificationEnum::Local,
     ) {
     }
 
@@ -38,11 +40,16 @@ class CommentReplyUpdated implements AsyncMessageInterface, MailNotificationInte
         return $this->byUserId;
     }
 
+    public function getModifiedBy(): CommentModificationEnum
+    {
+        return $this->modifiedBy;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentReplyId, 'originalComment' => $this->originalComment];
+        return ['commentId' => $this->commentReplyId, 'originalComment' => $this->originalComment, 'modifiedBy' => $this->modifiedBy->value];
     }
 }

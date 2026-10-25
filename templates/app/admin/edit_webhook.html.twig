@@ -4,10 +4,10 @@
     {% set form = editWebhookModel.form %}
 
     <h1 class="mb-4 mt-2">
-        {% if editWebhookModel.webhook.id is same as null %}
-            {{ 'add.webhook'|trans }}
-        {% else %}
+        {% if editWebhookModel.webhook.hasId() %}
             {{ 'edit.webhook'|trans }} #{{ editWebhookModel.webhook.id }}
+        {% else %}
+            {{ 'add.webhook'|trans }}
         {% endif %}
     </h1>
 

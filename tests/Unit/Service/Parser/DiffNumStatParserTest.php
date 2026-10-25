@@ -31,9 +31,9 @@ foobar
 OUTPUT;
 
         $expected = [
-            (new RevisionFile())->setRevision($revision)->setLinesAdded(85)->setLinesRemoved(80)->setFilepath('src/composer.lock'),
-            (new RevisionFile())->setRevision($revision)->setLinesAdded(5)->setLinesRemoved(0)->setFilepath('src/Service/Service.ts'),
-            (new RevisionFile())->setRevision($revision)->setLinesAdded(0)->setLinesRemoved(2)->setFilepath('src/Provider/Provider.php')
+            new RevisionFile()->setRevision($revision)->setLinesAdded(85)->setLinesRemoved(80)->setFilepath('src/composer.lock'),
+            new RevisionFile()->setRevision($revision)->setLinesAdded(5)->setLinesRemoved(0)->setFilepath('src/Service/Service.ts'),
+            new RevisionFile()->setRevision($revision)->setLinesAdded(0)->setLinesRemoved(2)->setFilepath('src/Provider/Provider.php')
         ];
         $result = $this->parser->parse($revision, $output);
         static::assertEquals($expected, $result);

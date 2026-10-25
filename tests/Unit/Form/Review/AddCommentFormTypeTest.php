@@ -63,7 +63,7 @@ class AddCommentFormTypeTest extends AbstractTestCase
         $builder = $this->createMock(FormBuilderInterface::class);
         $builder->expects($this->once())->method('setAction')->with($url);
         $builder->expects($this->once())->method('setMethod')->with('POST');
-        $builder->expects($this->exactly(4))
+        $builder->expects($this->exactly(5))
             ->method('add')
             ->with(
                 ...consecutive(
@@ -71,6 +71,7 @@ class AddCommentFormTypeTest extends AbstractTestCase
                     ['message', CommentType::class, static::isArray()],
                     ['tag', CommentTagType::class, static::isArray()],
                     ['save', SubmitType::class, ['label' => 'add.comment']],
+                    ['saveDraft', SubmitType::class, ['label' => 'save.as.draft']],
                 )
             )->willReturnSelf();
 

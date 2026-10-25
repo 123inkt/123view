@@ -14,7 +14,7 @@ class CodeCoverageReportTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getFiles']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getFiles']);
         static::assertAccessorPairs(CodeCoverageReport::class, $config);
     }
 

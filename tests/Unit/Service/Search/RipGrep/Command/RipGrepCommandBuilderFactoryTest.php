@@ -21,7 +21,7 @@ class RipGrepCommandBuilderFactoryTest extends AbstractTestCase
 
     public function testDefault(): void
     {
-        $expected = (new RipGrepCommandBuilder())
+        $expected = new RipGrepCommandBuilder()
             ->hidden()
             ->noColor()
             ->lineNumber()

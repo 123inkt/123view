@@ -42,7 +42,7 @@ class RuleNotificationController extends AbstractController
 
         $options     = Assert::notNull($rule->getRuleOptions());
         $frequency   = Assert::notNull($options->getFrequency());
-        $currentTime = DateTimeImmutable::createFromMutable((new DateTime())->setTimestamp($notification->getNotifyTimestamp()));
+        $currentTime = DateTimeImmutable::createFromMutable(new DateTime()->setTimestamp($notification->getNotifyTimestamp()));
 
         // gather commits
         $commits = $this->ruleProcessor->processRule(new RuleConfiguration(Frequency::getPeriod($currentTime, $frequency), $rule));

@@ -68,7 +68,7 @@ class DiffFileCacheMessageHandlerTest extends AbstractTestCase
      */
     public function testHandleEventHighLoad(): void
     {
-        $review = (new CodeReview())->setId(123);
+        $review = new CodeReview()->setId(123);
 
         $this->reviewRepository->expects($this->once())->method('find')->with(123)->willReturn($review);
         $this->diffService->expects($this->never())->method('getDiffForRevisions');

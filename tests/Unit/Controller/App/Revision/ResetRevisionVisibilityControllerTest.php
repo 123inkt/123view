@@ -39,7 +39,7 @@ class ResetRevisionVisibilityControllerTest extends AbstractControllerTestCase
     {
         $review     = new CodeReview();
         $revision   = new Revision();
-        $visibility = (new RevisionVisibility())->setVisible(false);
+        $visibility = new RevisionVisibility()->setVisible(false);
         $user       = new User();
 
         $this->expectGetUser($user);

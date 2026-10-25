@@ -36,7 +36,7 @@ class UserSetting
     #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'setting')]
     private ?User $user = null;
 
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
 

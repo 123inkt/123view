@@ -47,7 +47,7 @@ class ChangeReviewerStateServiceTest extends AbstractTestCase
 
     public function testChangeStateExistingReviewerChangesState(): void
     {
-        $user     = (new User())->setId(789);
+        $user     = new User()->setId(789);
         $reviewer = new CodeReviewer();
         $reviewer->setUser($user);
         $review = new CodeReview();

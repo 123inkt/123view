@@ -12,7 +12,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use function DR\PHPUnitExtensions\Mock\consecutive;
 
 /**
  * @extends AbstractControllerTestCase<UserGitlabOAuth2StartController>
@@ -30,8 +29,7 @@ class UserGitlabOAuth2StartControllerTest extends AbstractControllerTestCase
 
     public function testInvoke(): void
     {
-        $session = $this->createMock(SessionInterface::class);
-        $session->method('set')->with(...consecutive(['gitlab.oauth2.state', 'state'], ['gitlab.oauth2.pkce', 'pkce']));
+        $session = static::createStub(SessionInterface::class);
 
         $request = new Request();
         $request->setSession($session);

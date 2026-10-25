@@ -3,13 +3,93 @@ declare(strict_types=1);
 
 namespace DR\Review\Entity\Review;
 
+use ApiPlatform\Doctrine\Orm\Filter\ExactFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SortFilter;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\QueryParameter;
+use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DR\Review\ApiPlatform\Input\CreateCommentReplyInput;
+use DR\Review\ApiPlatform\Input\UpdateCommentReplyInput;
+use DR\Review\ApiPlatform\Output\CommentReplyOutput;
+use DR\Review\ApiPlatform\Provider\CommentReplyCollectionProvider;
+use DR\Review\ApiPlatform\Provider\CommentReplyProvider;
+use DR\Review\ApiPlatform\StateProcessor\CreateCommentReplyProcessor;
+use DR\Review\ApiPlatform\StateProcessor\DeleteCommentReplyProcessor;
+use DR\Review\ApiPlatform\StateProcessor\UpdateCommentReplyProcessor;
 use DR\Review\Doctrine\Type\CommentTagType;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentReplyRepository;
+use DR\Review\Security\Role\Roles;
+use Symfony\Component\Serializer\Exception\ExceptionInterface as SerializerExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Attribute\Groups;
 
+#[Get(
+    uriTemplate : '/comment-replies/{id}',
+    requirements : ['id' => '\\d+'],
+    security    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output      : CommentReplyOutput::class,
+    provider    : CommentReplyProvider::class,
+)]
+#[GetCollection(
+    paginationEnabled           : true,
+    paginationClientEnabled     : false,
+    paginationClientItemsPerPage: true,
+    order                       : ['createTimestamp' => 'ASC', 'id' => 'ASC'],
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    output                      : CommentReplyOutput::class,
+    provider                    : CommentReplyCollectionProvider::class,
+    parameters                  : [
+        'comment.id'              => new QueryParameter(filter: new ExactFilter(), property: 'comment.id'),
+        'order[id]'                => new QueryParameter(filter: new SortFilter(), property: 'id'),
+        'order[comment.id]'        => new QueryParameter(filter: new SortFilter(), property: 'comment.id'),
+        'order[user.id]'           => new QueryParameter(filter: new SortFilter(), property: 'user.id'),
+        'order[createTimestamp]'   => new QueryParameter(filter: new SortFilter(), property: 'createTimestamp'),
+        'order[updateTimestamp]'   => new QueryParameter(filter: new SortFilter(), property: 'updateTimestamp'),
+    ],
+)]
+#[Post(
+    uriTemplate                 : '/comments/{commentId}/replies',
+    uriVariables                : ['commentId' => new Link(fromClass: Comment::class, identifiers: ['id'])],
+    requirements                : ['commentId' => '\\d+'],
+    status                      : 201,
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    collectDenormalizationErrors: true,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : CreateCommentReplyInput::class,
+    output                      : CommentReplyOutput::class,
+    read                        : false,
+    processor                   : CreateCommentReplyProcessor::class,
+)]
+#[Patch(
+    uriTemplate                 : '/comment-replies/{id}',
+    requirements                : ['id' => '\\d+'],
+    exceptionToStatus           : [SerializerExceptionInterface::class => 422],
+    denormalizationContext      : [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false],
+    collectDenormalizationErrors: true,
+    security                    : 'is_granted("' . Roles::ROLE_USER . '")',
+    input                       : UpdateCommentReplyInput::class,
+    output                      : CommentReplyOutput::class,
+    read                        : false,
+    processor                   : UpdateCommentReplyProcessor::class,
+)]
+#[Delete(
+    uriTemplate: '/comment-replies/{id}',
+    requirements: ['id' => '\\d+'],
+    status: 204,
+    security: 'is_granted("' . Roles::ROLE_USER . '")',
+    output: false,
+    read: false,
+    processor: DeleteCommentReplyProcessor::class,
+)]
 #[ORM\Entity(repositoryClass: CommentReplyRepository::class)]
 class CommentReply
 {
@@ -17,7 +97,7 @@ class CommentReply
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups('comment-reply:read')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Groups('comment-reply:read')]
@@ -29,6 +109,8 @@ class CommentReply
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
+
+    private CommentModificationEnum $modifiedBy = CommentModificationEnum::Local;
 
     #[ORM\Column]
     #[Groups('comment-reply:read')]
@@ -56,7 +138,7 @@ class CommentReply
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -95,24 +177,36 @@ class CommentReply
         return $this;
     }
 
-    public function getCreateTimestamp(): int
+    public function getModifiedBy(): CommentModificationEnum
     {
-        return $this->createTimestamp;
+        return $this->modifiedBy;
     }
 
-    public function setCreateTimestamp(int $createTimestamp): void
+    public function setModifiedBy(CommentModificationEnum $modifiedBy): self
     {
-        $this->createTimestamp = $createTimestamp;
+        $this->modifiedBy = $modifiedBy;
+
+        return $this;
     }
 
-    public function getUpdateTimestamp(): int
+    public function getCreateTimestamp(): DateTimeImmutable
     {
-        return $this->updateTimestamp;
+        return new DateTimeImmutable()->setTimestamp($this->createTimestamp);
     }
 
-    public function setUpdateTimestamp(int $updateTimestamp): void
+    public function setCreateTimestamp(DateTimeImmutable $createTimestamp): void
     {
-        $this->updateTimestamp = $updateTimestamp;
+        $this->createTimestamp = $createTimestamp->getTimestamp();
+    }
+
+    public function getUpdateTimestamp(): DateTimeImmutable
+    {
+        return new DateTimeImmutable()->setTimestamp($this->updateTimestamp);
+    }
+
+    public function setUpdateTimestamp(DateTimeImmutable $updateTimestamp): void
+    {
+        $this->updateTimestamp = $updateTimestamp->getTimestamp();
     }
 
     public function getNotificationStatus(): NotificationStatus

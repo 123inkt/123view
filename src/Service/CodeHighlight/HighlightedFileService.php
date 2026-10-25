@@ -8,6 +8,7 @@ use DR\Review\Model\Review\Highlight\HighlightedFile;
 use Exception;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -22,7 +23,7 @@ class HighlightedFileService implements LoggerAwareInterface
 
     public function __construct(
         private readonly FilenameToLanguageTranslator $translator,
-        private readonly HttpClientInterface $highlightjsClient,
+        #[Target('highlightjsClient')] private readonly HttpClientInterface $highlightjsClient,
         private readonly HighlightHtmlLineSplitter $splitter,
         private readonly HighlightedFilePreprocessor $preprocessor
     ) {

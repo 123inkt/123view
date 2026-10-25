@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\MessageHandler\Gitlab;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Message\Comment\CommentReplyAdded;
 use DR\Review\Message\Comment\CommentReplyUpdated;
 use DR\Review\Repository\Review\CommentReplyRepository;
@@ -35,6 +36,12 @@ class CommentReplyAddedMessageHandler implements LoggerAwareInterface
     {
         if ($this->gitlabCommentSyncEnabled === false) {
             $this->logger?->info('Gitlab comment sync disabled. Comment id: {id}', ['id' => $event->commentReplyId]);
+            return;
+        }
+
+        if ($event->modifiedBy === CommentModificationEnum::Gitlab) {
+            $this->logger?->info('Comment was added/updated by gitlab. Ignore sync to gitlab. {id}', ['id' => $event->commentReplyId]);
+
             return;
         }
 

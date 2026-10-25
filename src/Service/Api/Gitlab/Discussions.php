@@ -3,11 +3,17 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Api\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\Discussion;
 use DR\Review\Model\Api\Gitlab\Position;
 use DR\Utils\Arrays;
 use Generator;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
@@ -16,25 +22,14 @@ class Discussions implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly HttpClientInterface $client)
-    {
+    public function __construct(
+        #[Autowire(service: HttpClientInterface::class . ' $gitlabClient')] private readonly HttpClientInterface $client,
+        private readonly SerializerInterface $serializer
+    ) {
     }
 
     /**
-     * @phpstan-return Generator<array{
-     *    id: string,
-     *    notes: array<array{
-     *      id: int,
-     *      body: string,
-     *      position: array{
-     *        base_sha: string,
-     *        start_sha: string,
-     *        head_sha: string,
-     *        old_path: string,
-     *        new_path: string,
-     *      }
-     *    }>
-     * }>
+     * @phpstan-return Generator<int, Discussion>
      * @throws Throwable
      * @link https://docs.gitlab.com/ee/api/discussions.html#merge-requests
      * @link https://docs.gitlab.com/ee/api/rest/index.html#pagination-link-header
@@ -49,8 +44,39 @@ class Discussions implements LoggerAwareInterface
                 ['query' => ['per_page' => $perPage, 'page' => $page]]
             );
             $page     = (int)($response->getHeaders()['x-next-page'][0] ?? -1);
-            yield from $response->toArray();
+            /** @phpstan-var list<Discussion> $discussions */
+            $discussions = $this->serializer->deserialize(
+                $response->getContent(),
+                Discussion::class . '[]',
+                JsonEncoder::FORMAT,
+                [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]
+            );
+            yield from $discussions;
         } while ($page > 0);
+    }
+
+    /**
+     * @throws Throwable
+     * @link https://docs.gitlab.com/ee/api/discussions.html#retrieve-a-merge-request-discussion-item
+     */
+    public function getDiscussion(int $projectId, int $mergeRequestIId, string $discussionId): ?Discussion
+    {
+        $response = $this->client->request(
+            'GET',
+            sprintf('projects/%d/merge_requests/%d/discussions/%s', $projectId, $mergeRequestIId, $discussionId)
+        );
+
+        if ($response->getStatusCode() === Response::HTTP_NOT_FOUND) {
+            return null;
+        }
+
+        /** @phpstan-var Discussion */
+        return $this->serializer->deserialize(
+            $response->getContent(),
+            Discussion::class,
+            JsonEncoder::FORMAT,
+            [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]
+        );
     }
 
     /**

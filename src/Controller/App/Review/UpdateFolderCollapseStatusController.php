@@ -36,7 +36,7 @@ class UpdateFolderCollapseStatusController extends AbstractController
 
         // register collapse state
         if ($state === 'collapsed') {
-            $status = (new FolderCollapseStatus())->setReview($review)->setUser($this->getUser())->setPath($path);
+            $status = new FolderCollapseStatus()->setReview($review)->setUser($this->getUser())->setPath($path);
             $this->folderCollapseRepository->save($status);
         } else {
             $this->folderCollapseRepository->removeOneBy(['user' => $this->getUser(), 'review' => $review, 'path' => $path], flush: true);

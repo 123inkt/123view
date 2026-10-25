@@ -15,7 +15,7 @@ class CodeInspectionReportTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getIssues', 'setIssues']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getIssues', 'setIssues']);
         static::assertAccessorPairs(CodeInspectionReport::class, $config);
     }
 

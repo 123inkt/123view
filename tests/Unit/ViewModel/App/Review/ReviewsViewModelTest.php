@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
-use ArrayIterator;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
@@ -18,30 +16,13 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(ReviewsViewModel::class)]
 class ReviewsViewModelTest extends AbstractTestCase
 {
-    public function testAccessorPairs(): void
-    {
-        $reviews    = [new CodeReview()];
-        $repository = new Repository();
-        $paginator  = static::createStub(Paginator::class);
-        $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
-        $paginatorVm = static::createStub(PaginatorViewModel::class);
-        $timeline    = static::createStub(TimelineViewModel::class);
-        $searchQuery = 'foobar';
-
-        $viewModel = new ReviewsViewModel($repository, $paginator, $paginatorVm, $searchQuery, '', $timeline);
-
-        static::assertSame($reviews, $viewModel->getReviews());
-    }
-
     public function testGetAuthors(): void
     {
-        $reviews    = [new CodeReview()];
-        $repository = new Repository();
-        $paginator  = static::createStub(Paginator::class);
-        $paginator->method('getIterator')->willReturn(new ArrayIterator($reviews));
+        $reviews     = [new CodeReview()];
+        $repository  = new Repository();
         $paginatorVm = static::createStub(PaginatorViewModel::class);
         $timeline    = static::createStub(TimelineViewModel::class);
-        $viewModel   = new ReviewsViewModel($repository, $paginator, $paginatorVm, '', '', $timeline);
+        $viewModel   = new ReviewsViewModel($repository, $reviews, $paginatorVm, '', '', $timeline);
 
         $revisionA = new Revision();
         $revisionB = new Revision();

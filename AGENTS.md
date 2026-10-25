@@ -46,6 +46,13 @@ composer test:integration # Integration tests only
 composer test:functional  # Functional tests only
 ```
 
+> **Important:** The full test suite takes a very long time. Always run tests scoped to the files you changed.
+> Use PHPUnit's `--filter` flag with a class or method name pattern, for example:
+> ```bash
+> vendor/bin/phpunit --testsuite unit --filter "CommentEventSubscriber|AddCommentController"
+> ```
+> Only fall back to `composer test:unit` (full suite) when you need broad regression coverage.
+
 **Docker Environment:**
 ```bash
 ./bin/start.sh      # Start development environment
@@ -80,6 +87,8 @@ Tests are organized in three directories:
 
 Use the specific test suites when working on particular areas to speed up feedback loops.
 
+See [`docs/agents/mock-expectations.md`](docs/agents/mock-expectations.md) for PHPUnit mock expectation rules, including `AllowMockObjectsWithoutExpectations`.
+
 ## Configuration Files
 
 - `webpack.config.js` - Frontend build configuration
@@ -87,3 +96,7 @@ Use the specific test suites when working on particular areas to speed up feedba
 - `composer.json` - PHP dependencies and scripts
 - `phpstan.neon` - Static analysis configuration
 - `phpunit.xml.dist` - Test configuration
+
+## Code Navigation and Refactoring
+
+IMPORTANT: When applicable, prefer using phpstorm-index MCP tools for code navigation and refactoring.

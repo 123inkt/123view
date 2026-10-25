@@ -13,14 +13,14 @@ class WebhookActivity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(type: 'text', length: 65535)]
     private string $request;
 
-    /** @var array<string, string> */
+    /** @var array<string, string>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private array $requestHeaders = [];
+    private ?array $requestHeaders = null;
 
     #[ORM\Column(type: 'integer')]
     private int $statusCode;
@@ -28,9 +28,9 @@ class WebhookActivity
     #[ORM\Column(type: 'text', length: 65535)]
     private string $response;
 
-    /** @var array<string, string|string[]> */
+    /** @var array<string, string|string[]>|null */
     #[ORM\Column(type: 'json', nullable: true)]
-    private array $responseHeaders = [];
+    private ?array $responseHeaders = null;
 
     #[ORM\Column(type: 'integer')]
     private int $createTimestamp;
@@ -45,7 +45,7 @@ class WebhookActivity
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -67,7 +67,7 @@ class WebhookActivity
      */
     public function getRequestHeaders(): array
     {
-        return $this->requestHeaders;
+        return $this->requestHeaders ?? [];
     }
 
     /**
@@ -109,7 +109,7 @@ class WebhookActivity
      */
     public function getResponseHeaders(): array
     {
-        return $this->responseHeaders;
+        return $this->responseHeaders ?? [];
     }
 
     /**

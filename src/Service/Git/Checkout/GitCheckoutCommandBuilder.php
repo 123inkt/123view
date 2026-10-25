@@ -25,7 +25,8 @@ class GitCheckoutCommandBuilder implements GitCommandBuilderInterface
 
     public function branch(string $branchName): self
     {
-        $this->arguments['branch'] = '-b ' . $branchName;
+        $this->arguments['branch-flag'] = '-b';
+        $this->arguments['branch-name'] = $branchName;
 
         return $this;
     }
@@ -33,6 +34,11 @@ class GitCheckoutCommandBuilder implements GitCommandBuilderInterface
     public function command(): string
     {
         return 'checkout';
+    }
+
+    public function requiresShell(): bool
+    {
+        return false;
     }
 
     /**

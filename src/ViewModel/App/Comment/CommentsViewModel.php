@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace DR\Review\ViewModel\App\Comment;
 
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Git\Diff\DiffComparePolicy;
 use DR\Review\Entity\Git\Diff\DiffLine;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentVisibilityEnum;
 
 class CommentsViewModel
@@ -27,9 +27,17 @@ class CommentsViewModel
     {
         return match ($this->commentVisibility) {
             CommentVisibilityEnum::NONE       => false,
-            CommentVisibilityEnum::UNRESOLVED => $comment->getState() === CommentStateType::OPEN,
+            CommentVisibilityEnum::UNRESOLVED => $comment->getState() === CommentStateEnum::Open,
             default                           => true,
         };
+    }
+
+    /**
+     * Resolved comments are collapsed by default
+     */
+    public function isCommentCollapsed(Comment $comment): bool
+    {
+        return $comment->getState() === CommentStateEnum::Resolved;
     }
 
     /**

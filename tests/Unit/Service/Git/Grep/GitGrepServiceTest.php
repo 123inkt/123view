@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Service\Git\Grep;
 
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\GitCommandBuilderFactory;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Git\Grep\GitGrepCommandBuilder;
@@ -36,7 +36,7 @@ class GitGrepServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setUrl(Uri::new('https://url/'));
-        
+
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash('abc123');
@@ -63,7 +63,7 @@ class GitGrepServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setUrl(Uri::new('https://url/'));
-        
+
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash('abc123');
@@ -90,7 +90,7 @@ class GitGrepServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setUrl(Uri::new('https://url/'));
-        
+
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash('abc123');
@@ -123,7 +123,7 @@ class GitGrepServiceTest extends AbstractTestCase
     {
         $repository = new Repository();
         $repository->setUrl(Uri::new('https://url/'));
-        
+
         $revision = new Revision();
         $revision->setRepository($repository);
         $revision->setCommitHash('abc123');

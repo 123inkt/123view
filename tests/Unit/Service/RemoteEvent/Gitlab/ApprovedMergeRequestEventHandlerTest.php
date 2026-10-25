@@ -11,6 +11,7 @@ use DR\Review\Entity\User\User;
 use DR\Review\Model\Api\Gitlab\Project;
 use DR\Review\Model\Api\Gitlab\User as GitlabUser;
 use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
+use DR\Review\Model\Webhook\Gitlab\PushEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\CodeReview\ChangeReviewerStateService;
@@ -48,16 +49,21 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
-    public function testHandleShouldOnlyAcceptApprovedMergeRequest(): void
+    public function testSupportsOnlyApprovedMergeRequest(): void
     {
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
+        $this->reviewRepository->expects($this->never())->method(static::anything());
+        $this->userService->expects($this->never())->method(static::anything());
+        $this->changeReviewerStateService->expects($this->never())->method(static::anything());
+
         $event         = new MergeRequestEvent();
         $event->action = 'open';
 
-        $this->repositoryRepository->expects($this->never())->method('findByProperty');
-        $this->reviewRepository->expects($this->never())->method('findByBranchName');
-        $this->userService->expects($this->never())->method('getUser');
-        $this->changeReviewerStateService->expects($this->never())->method('changeState');
-        $this->handler->handle($event);
+        static::assertFalse($this->handler->supports($event));
+
+        $event->action = 'approved';
+        static::assertTrue($this->handler->supports($event));
+        static::assertFalse($this->handler->supports(new PushEvent()));
     }
 
     /**
@@ -90,7 +96,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->project = $project;
         $event->action  = 'approved';
 
-        $repository = (new Repository())->setActive(false);
+        $repository = new Repository()->setActive(false);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->never())->method('getUser');
@@ -115,7 +121,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->user    = $user;
         $event->action  = 'approved';
 
-        $repository = (new Repository())->setActive(true);
+        $repository = new Repository()->setActive(true);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn(null);
@@ -142,8 +148,8 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
         $event->action       = 'approved';
 
         $user       = new User();
-        $review     = (new CodeReview())->setState(CodeReviewStateType::CLOSED);
-        $repository = (new Repository())->setId(456)->setActive(true);
+        $review     = new CodeReview()->setState(CodeReviewStateType::CLOSED);
+        $repository = new Repository()->setId(456)->setActive(true);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn($user);
@@ -171,7 +177,7 @@ class ApprovedMergeRequestEventHandlerTest extends AbstractTestCase
 
         $user       = new User();
         $review     = new CodeReview();
-        $repository = (new Repository())->setId(456)->setActive(true);
+        $repository = new Repository()->setId(456)->setActive(true);
 
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->with('gitlab-project-id', 123)->willReturn($repository);
         $this->userService->expects($this->once())->method('getUser')->with(789, 'name')->willReturn($user);

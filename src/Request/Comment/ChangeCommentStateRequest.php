@@ -5,20 +5,20 @@ namespace DR\Review\Request\Comment;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
-use DR\Review\Doctrine\Type\CommentStateType;
+use DR\Review\Entity\Review\CommentStateEnum;
 
 class ChangeCommentStateRequest extends AbstractValidatedRequest
 {
-    public function getState(): string
+    public function getState(): CommentStateEnum
     {
-        return (string)$this->request->request->get('state');
+        return CommentStateEnum::from($this->request->request->getString('state'));
     }
 
     protected function getValidationRules(): ?ValidationRules
     {
         return new ValidationRules(
             [
-                'request' => ['state' => 'required|string|in:' . implode(',', CommentStateType::VALUES)]
+                'request' => ['state' => 'required|string|in:' . implode(',', CommentStateEnum::values())]
             ]
         );
     }

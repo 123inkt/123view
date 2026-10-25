@@ -23,7 +23,7 @@ class CodeReviewActivityVariableFactory
         $link     = sprintf(
             '<a href="%s#focus:comment:%d">%s</a>',
             htmlspecialchars($url, ENT_QUOTES),
-            (int)$comment->getId(),
+            $comment->getId(),
             htmlspecialchars(basename($filePath), ENT_QUOTES)
         );
 

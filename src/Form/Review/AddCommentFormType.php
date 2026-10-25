@@ -56,6 +56,7 @@ class AddCommentFormType extends AbstractType
         );
         $builder->add('tag', CommentTagType::class);
         $builder->add('save', SubmitType::class, ['label' => 'add.comment']);
+        $builder->add('saveDraft', SubmitType::class, ['label' => 'save.as.draft']);
     }
 
     public function setter(Comment $comment, string $value): void

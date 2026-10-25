@@ -6,6 +6,7 @@ namespace DR\Review\ViewModel\App\Revision;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
 use DR\Review\Entity\Repository\Repository;
+use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\ViewModel\App\Review\PaginatorViewModel;
 use DR\Review\ViewModelProvider\RevisionViewModelProvider;

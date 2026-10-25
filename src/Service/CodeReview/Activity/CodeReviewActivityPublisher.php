@@ -41,7 +41,7 @@ class CodeReviewActivityPublisher implements LoggerAwareInterface
 
         // create the payload
         $updateMessage = new UpdateMessage(
-            (int)$activity->getId(),
+            $activity->getId(),
             $userId,
             (int)$review->getId(),
             $activity->getEventName(),

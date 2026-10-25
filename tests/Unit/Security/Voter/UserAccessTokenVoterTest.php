@@ -16,7 +16,7 @@ class UserAccessTokenVoterTest extends AbstractTestCase
 {
     public function testSupports(): void
     {
-        $user = (new User())->setId(789);
+        $user = new User()->setId(789);
         $rule = new UserAccessToken();
         $rule->setUser($user);
 
@@ -71,7 +71,7 @@ class UserAccessTokenVoterTest extends AbstractTestCase
         $rule->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects($this->once())->method('getUser')->willReturn((new User())->setId(5));
+        $token->expects($this->once())->method('getUser')->willReturn(new User()->setId(5));
 
         $voter = new UserAccessTokenVoter();
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $rule, [UserAccessTokenVoter::DELETE]));

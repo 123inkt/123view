@@ -5,12 +5,14 @@ namespace DR\Review\ViewModelProvider;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use ApiPlatform\Metadata\Operation;
 use DR\Review\Doctrine\Type\CodeReviewType;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Form\Review\Revision\DetachRevisionsFormType;
 use DR\Review\Form\Review\Revision\RevisionVisibilityFormType;
+use DR\Review\Repository\Mcp\CodeReviewRepository;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Repository\Revision\RevisionFileRepository;
@@ -35,23 +37,29 @@ class RevisionViewModelProvider implements ProviderInterface
     public function __construct(
         private readonly RepositoryRepository $repositoryRepository,
         private readonly CodeReviewRepository $reviewRepository,
-        private readonly RevisionRepository $revisionRepository,
-        private readonly RevisionVisibilityService $visibilityService,
-        private readonly RevisionFileRepository $revisionFileRepository,
-        private readonly FormFactoryInterface $formFactory,
-        private readonly UserEntityProvider $userProvider,
+        private RevisionRepository $revisionRepository,
+        private CodeReviewRepository $reviewRepository,
+        private RevisionVisibilityService $visibilityService,
+        private RevisionFileRepository $revisionFileRepository,
+        private FormFactoryInterface $formFactory,
+        private UserEntityProvider $userProvider,
     ) {
     }
 
     public function getRevisionsViewModel(Repository $repository, int $page, string $searchQuery, ?bool $attached = null): RevisionsViewModel
     {
-        $paginator = $this->revisionRepository->getPaginatorForSearchQuery((int)$repository->getId(), $page, $searchQuery, $attached);
+        $paginator = $this->revisionRepository->getPaginatorForSearchQuery($repository->getId(), $page, $searchQuery, $attached);
+
+        $revisions = iterator_to_array($paginator);
+        $reviewIds = array_map(static fn(Revision $revision): ?int => $revision->getReview()?->getId(), $revisions);
+        $reviews   = $this->reviewRepository->findBy(['id' => Arrays::removeNull($reviewIds)]);
 
         /** @var PaginatorViewModel<Revision> $paginatorViewModel */
         $paginatorViewModel = new PaginatorViewModel($paginator, $page);
 
-        return new RevisionsViewModel($repository, iterator_to_array($paginator), [], $paginatorViewModel, $searchQuery);
+        return new RevisionsViewModel($repository, $revisions, $reviews, $paginatorViewModel, $searchQuery);
     }
+
 
     /**
      * @inheritDoc

@@ -98,7 +98,7 @@ class DirectoryTreeNodeTest extends AbstractTestCase
     public function testAddNodeEmptyPathIsDisallowed(): void
     {
         $this->expectException(LogicException::class);
-        (new DirectoryTreeNode(''))->addNode([], new stdClass());
+        new DirectoryTreeNode('')->addNode([], new stdClass());
     }
 
     public function testGetDirectories(): void

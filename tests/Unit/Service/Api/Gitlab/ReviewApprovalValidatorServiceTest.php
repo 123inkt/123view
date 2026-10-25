@@ -59,7 +59,7 @@ class ReviewApprovalValidatorServiceTest extends AbstractTestCase
 
     public function testValidateShouldReturnFalseWhenRemoteRefDoesNotMatchPattern(): void
     {
-        $revision = (new Revision())->setFirstBranch('feature-branch');
+        $revision = new Revision()->setFirstBranch('feature-branch');
         $repository = new Repository();
         $repository->setGitApprovalSync(true);
         $review = new CodeReview();
@@ -71,7 +71,7 @@ class ReviewApprovalValidatorServiceTest extends AbstractTestCase
 
     public function testValidateShouldReturnTrueWhenAllConditionsAreMet(): void
     {
-        $revision = (new Revision())->setFirstBranch('PR-12345');
+        $revision = new Revision()->setFirstBranch('PR-12345');
         $repository = new Repository();
         $repository->setGitApprovalSync(true);
         $review = new CodeReview();

@@ -56,7 +56,7 @@ class WebhookTypeTest extends AbstractTestCase
     public function testGetAuthorization(): void
     {
         $webhookA = new Webhook();
-        $webhookB = (new Webhook())->setHeader('Authorization', 'Bearer 123view');
+        $webhookB = new Webhook()->setHeader('Authorization', 'Bearer 123view');
 
         $type = new WebhookType();
         static::assertSame('', $type->getAuthorization($webhookA));
@@ -66,7 +66,7 @@ class WebhookTypeTest extends AbstractTestCase
     public function testSetAuthorization(): void
     {
         $webhookA = new Webhook();
-        $webhookB = (new Webhook())->setHeader('Authorization', 'Bearer 123view');
+        $webhookB = new Webhook()->setHeader('Authorization', 'Bearer 123view');
 
         $type = new WebhookType();
         $type->setAuthorization($webhookA, 'bearer');

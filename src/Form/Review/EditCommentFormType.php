@@ -5,6 +5,7 @@ namespace DR\Review\Form\Review;
 
 use DR\Review\Controller\App\Review\Comment\UpdateCommentController;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -37,5 +38,8 @@ class EditCommentFormType extends AbstractType
         $builder->add('message', CommentType::class);
         $builder->add('tag', CommentTagType::class);
         $builder->add('save', SubmitType::class, ['label' => 'save']);
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            $builder->add('publish', SubmitType::class, ['label' => 'publish']);
+        }
     }
 }

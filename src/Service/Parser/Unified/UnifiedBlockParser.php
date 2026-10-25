@@ -5,7 +5,7 @@ namespace DR\Review\Service\Parser\Unified;
 
 use DR\Review\Entity\Git\Diff\DiffBlock;
 use DR\Review\Entity\Git\Diff\DiffLine;
-use DR\Review\Git\LineReader;
+use DR\Review\Service\Parser\LineReader;
 
 class UnifiedBlockParser
 {

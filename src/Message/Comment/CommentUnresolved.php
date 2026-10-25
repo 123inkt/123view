@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Message\Comment;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Message\AsyncMessageInterface;
 
 class CommentUnresolved implements AsyncMessageInterface, CommentEventInterface
@@ -13,7 +14,8 @@ class CommentUnresolved implements AsyncMessageInterface, CommentEventInterface
         public readonly int $reviewId,
         public readonly int $commentId,
         public readonly int $unresolvedByUserId,
-        public readonly string $file
+        public readonly string $file,
+        public readonly CommentModificationEnum $modifiedBy = CommentModificationEnum::Local,
     ) {
     }
 
@@ -37,11 +39,21 @@ class CommentUnresolved implements AsyncMessageInterface, CommentEventInterface
         return $this->unresolvedByUserId;
     }
 
+    public function getModifiedBy(): CommentModificationEnum
+    {
+        return $this->modifiedBy;
+    }
+
     /**
      * @inheritDoc
      */
     public function getPayload(): array
     {
-        return ['commentId' => $this->commentId, 'file' => $this->file, 'unresolvedByUserId' => $this->unresolvedByUserId];
+        return [
+            'commentId'          => $this->commentId,
+            'file'               => $this->file,
+            'unresolvedByUserId' => $this->unresolvedByUserId,
+            'modifiedBy'         => $this->modifiedBy->value,
+        ];
     }
 }

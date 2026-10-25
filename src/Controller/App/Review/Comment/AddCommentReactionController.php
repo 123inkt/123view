@@ -33,13 +33,11 @@ class AddCommentReactionController extends AbstractController
         $reply->setUser($user);
         $reply->setComment($comment);
         $reply->setMessage($message);
-        $reply->setCreateTimestamp(time());
-        $reply->setUpdateTimestamp(time());
 
         $this->replyRepository->save($reply, true);
 
         $this->bus->dispatch(
-            new CommentReplyAdded($comment->getReview()->getId(), (int)$reply->getId(), $user->getId(), $message, $comment->getFilePath())
+            new CommentReplyAdded($comment->getReview()->getId(), $reply->getId(), $user->getId(), $message, $comment->getFilePath())
         );
 
         return $this->json(['success' => true]);

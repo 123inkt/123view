@@ -35,7 +35,7 @@ class GitlabWebhookTest extends AbstractFunctionalTestCase
     {
         // setup repository en property
         $repository = Assert::notNull(self::getService(RepositoryRepository::class)->findOneBy(['name' => 'repository']));
-        $property   = (new RepositoryProperty('gitlab-project-id', '123'))->setRepository($repository);
+        $property   = new RepositoryProperty('gitlab-project-id', '123')->setRepository($repository);
         self::getService(RepositoryPropertyRepository::class)->save($property, true);
 
         // setup mock

@@ -7,7 +7,7 @@ class RipGrepCommandBuilderFactory
 {
     public function default(): RipGrepCommandBuilder
     {
-        return (new RipGrepCommandBuilder())
+        return new RipGrepCommandBuilder()
             ->hidden()
             ->noColor()
             ->lineNumber()

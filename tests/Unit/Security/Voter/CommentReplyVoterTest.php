@@ -16,7 +16,7 @@ class CommentReplyVoterTest extends AbstractTestCase
 {
     public function testSupports(): void
     {
-        $user    = (new User())->setId(789);
+        $user    = new User()->setId(789);
         $comment = new CommentReply();
         $comment->setUser($user);
 
@@ -71,7 +71,7 @@ class CommentReplyVoterTest extends AbstractTestCase
         $comment->setUser($user);
 
         $token = $this->createMock(TokenInterface::class);
-        $token->expects($this->once())->method('getUser')->willReturn((new User())->setId(5));
+        $token->expects($this->once())->method('getUser')->willReturn(new User()->setId(5));
 
         $voter = new CommentReplyVoter();
         static::assertSame(VoterInterface::ACCESS_DENIED, $voter->vote($token, $comment, [CommentReplyVoter::EDIT]));

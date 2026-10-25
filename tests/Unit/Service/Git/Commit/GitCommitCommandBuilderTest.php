@@ -30,7 +30,7 @@ class GitCommitCommandBuilderTest extends AbstractTestCase
     public function testBuild(): void
     {
         static::assertSame(
-            ['git', 'commit', '--allow-empty', '-m ' . escapeshellarg('message')],
+            ['git', 'commit', '--allow-empty', '-m', 'message'],
             $this->builder->allowEmpty()->message('message')->build()
         );
     }
@@ -40,8 +40,13 @@ class GitCommitCommandBuilderTest extends AbstractTestCase
         static::assertSame('commit', $this->builder->command());
     }
 
+    public function testRequiresShell(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
+
     public function testToString(): void
     {
-        static::assertSame('git commit -m ' . escapeshellarg('message'), (string)$this->builder->message('message'));
+        static::assertSame('git commit -m message', (string)$this->builder->message('message'));
     }
 }

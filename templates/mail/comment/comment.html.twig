@@ -4,7 +4,7 @@
     <table cellspacing="0" cellpadding="0" border="0" width="100%" class="comment__comment-table">
         <tr>
             <td>
-                <div class="comment__comment-thread {% if comment.state == 'resolved' %}comment__state_resolved{% endif %}">
+                <div class="comment__comment-thread {% if comment.state.value == 'resolved' %}comment__state_resolved{% endif %}">
                     <div class="comment__comment">
                         {#- detached comments -#}
                         {%- if detached is defined and detached -%}

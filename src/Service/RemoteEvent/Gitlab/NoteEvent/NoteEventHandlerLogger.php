@@ -1,0 +1,119 @@
+<?php
+declare(strict_types=1);
+
+namespace DR\Review\Service\RemoteEvent\Gitlab\NoteEvent;
+
+use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CommentStateEnum;
+use DR\Review\Entity\User\User;
+use DR\Review\Model\Api\Gitlab\User as GitlabUser;
+use DR\Review\Model\Webhook\Gitlab\NoteEvent;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+
+class NoteEventHandlerLogger implements LoggerAwareInterface
+{
+    use LoggerAwareTrait;
+
+    public function logCommentAlreadyExists(NoteEvent $event, bool $reply = false): void
+    {
+        $this->logger?->info(
+            $reply
+                ? 'NoteEventHandler: comment reply already exists in 123view'
+                : 'NoteEventHandler: comment already exists in 123view',
+            ['discussionId' => $event->discussionId, 'message' => $event->note]
+        );
+    }
+
+    public function logCommentNotFound(NoteEvent $event, string $referenceId): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: comment not found in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logCommentUnchanged(NoteEvent $event, string $referenceId, bool $reply = false): void
+    {
+        $this->logger?->info(
+            $reply ? 'NoteEventHandler: reply message is unchanged in 123view'
+                : 'NoteEventHandler: comment message is unchanged in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logCommentMessageUpdated(NoteEvent $event, string $referenceId, bool $reply = false): void
+    {
+        $this->logger?->info(
+            $reply ? 'NoteEventHandler: updated reply message in 123view' : 'NoteEventHandler: updated comment message in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logCommentStateUpdated(NoteEvent $event, string $referenceId, CommentStateEnum $state): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: updated comment state to {state} in 123view',
+            ['referenceId' => $referenceId, 'discussionId' => $event->discussionId, 'state' => $state->value]
+        );
+    }
+
+    public function logUserNotFound(NoteEvent $event, GitlabUser $gitlabUser): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: user {email} not found in 123view',
+            ['email' => $gitlabUser->email ?? '-', 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logRepositoryNotFound(NoteEvent $event): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: repository {id} doesn\'t exist or is inactive in 123view',
+            ['id' => $event->projectId, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logRevisionsNotFound(NoteEvent $event): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: no revisions found for branch {name}',
+            ['name' => $event->mergeRequest?->sourceBranch, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logRevisionForFilenameNotFound(NoteEvent $event): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: no revision matching file {file}',
+            ['file' => $event->position->newPath ?? $event->position->oldPath ?? null, 'discussionId' => $event->discussionId]
+        );
+    }
+
+    public function logCommentAddedSuccess(NoteEvent $event, CodeReview $review, User $user): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: creating comment for {file} on {repository}: {review} by {user}',
+            [
+                'file'         => $event->position->newPath ?? $event->position->oldPath ?? null,
+                'repository'   => $review->getRepository()->getDisplayName(),
+                'review'       => 'CR-' . $review->getProjectId(),
+                'user'         => $user->getName(),
+                'discussionId' => $event->discussionId
+            ]
+        );
+    }
+
+    public function logCommentReplyAddedSuccess(NoteEvent $event, CodeReview $review, User $user): void
+    {
+        $this->logger?->info(
+            'NoteEventHandler: creating comment reply on {repository}: {review} by {user}',
+            [
+                'repository'   => $review->getRepository()->getDisplayName(),
+                'review'       => 'CR-' . $review->getProjectId(),
+                'user'         => $user->getName(),
+                'discussionId' => $event->discussionId
+            ]
+        );
+    }
+}

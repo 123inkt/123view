@@ -83,7 +83,7 @@ class CreateBranchReviewControllerTest extends AbstractControllerTestCase
         $revision = new Revision();
         $revision->setId(456);
 
-        $this->expectGetUser((new User())->setId(789));
+        $this->expectGetUser(new User()->setId(789));
         $this->reviewRepository->expects($this->once())
             ->method('findOneBy')
             ->with(['repository' => $repository, 'type' => CodeReviewType::BRANCH, 'referenceId' => 'branch'])

@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\MessageHandler\Mail;
 
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
@@ -34,14 +35,6 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $this->handler           = new CommentUpdatedMailNotificationHandler($this->mailService, $this->commentRepository, $this->mentionService);
     }
 
-    public function testAccepts(): void
-    {
-        $this->mailService->expects($this->never())->method('sendNewCommentReplyMail');
-        $this->commentRepository->expects($this->never())->method('find');
-        $this->mentionService->expects($this->never())->method('getMentionedUsers');
-        static::assertSame(CommentUpdated::class, CommentUpdatedMailNotificationHandler::accepts());
-    }
-
     /**
      * @throws Throwable
      */
@@ -50,7 +43,7 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn(null);
         $this->mailService->expects($this->never())->method('sendNewCommentReplyMail');
         $this->mentionService->expects($this->never())->method('getMentionedUsers');
-        $this->handler->handle(new CommentUpdated(4, 123, 456, 'file', 'message', 'comment'));
+        $this->handler->handle(new CommentUpdated(4, 123, 456, 'file', 'message', CommentModificationEnum::Local, 'comment'));
     }
 
     /**
@@ -64,7 +57,7 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
         $this->mentionService->expects($this->once())->method('getMentionedUsers')->with('comment1')->willReturn([]);
         $this->mailService->expects($this->never())->method('sendNewCommentReplyMail');
-        $this->handler->handle(new CommentUpdated(4, 123, 456, 'file', 'message', 'comment2'));
+        $this->handler->handle(new CommentUpdated(4, 123, 456, 'file', 'message', CommentModificationEnum::Local, 'comment2'));
     }
 
     /**
@@ -76,7 +69,7 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
         $comment = new Comment();
         $comment->setReview($review);
         $comment->setMessage('comment2');
-        $user = (new User())->setId(789);
+        $user = new User()->setId(789);
 
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
         $this->mentionService->expects($this->exactly(2))
@@ -85,7 +78,7 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
             ->willReturn([$user], [$user]);
         $this->mailService->expects($this->never())->method('sendNewCommentReplyMail');
 
-        $this->handler->handle(new CommentUpdated(5, 123, 456, 'file', 'message', 'comment1'));
+        $this->handler->handle(new CommentUpdated(5, 123, 456, 'file', 'message', CommentModificationEnum::Local, 'comment1'));
     }
 
     /**
@@ -106,6 +99,6 @@ class CommentUpdatedMailNotificationHandlerTest extends AbstractTestCase
             ->willReturn([$user], []);
         $this->mailService->expects($this->once())->method('sendNewCommentMail')->with($review, $comment, [$user]);
 
-        $this->handler->handle(new CommentUpdated(5, 123, 456, 'file', 'message', 'comment1'));
+        $this->handler->handle(new CommentUpdated(5, 123, 456, 'file', 'message', CommentModificationEnum::Local, 'comment1'));
     }
 }

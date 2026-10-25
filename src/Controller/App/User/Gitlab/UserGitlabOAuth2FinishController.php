@@ -13,6 +13,7 @@ use DR\Review\Security\Role\Roles;
 use Exception;
 use League\OAuth2\Client\Provider\GenericProvider as OAuth2Provider;
 use Nette\Utils\Json;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -21,8 +22,10 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserGitlabOAuth2FinishController extends AbstractController
 {
-    public function __construct(private readonly OAuth2Provider $gitlabOAuth2Provider, private readonly GitAccessTokenRepository $tokenRepository)
-    {
+    public function __construct(
+        #[Target('gitlabOAuth2Provider')] private readonly OAuth2Provider $gitlabOAuth2Provider,
+        private readonly GitAccessTokenRepository $tokenRepository
+    ) {
     }
 
     /**

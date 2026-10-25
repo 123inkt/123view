@@ -28,10 +28,35 @@ class EditRepositoryFormTypeTest extends AbstractTestCase
         $this->type         = new EditRepositoryFormType($this->urlGenerator);
     }
 
+    public function testBuildFormNewRepository(): void
+    {
+        $url        = 'https://123view/add/repository';
+        $repository = new Repository();
+
+        $this->urlGenerator->expects($this->once())
+            ->method('generate')
+            ->with(RepositoryController::class, ['id' => null])
+            ->willReturn($url);
+
+        $builder = $this->createMock(FormBuilderInterface::class);
+        $builder->expects($this->once())->method('setAction')->with($url);
+        $builder->expects($this->once())->method('setMethod')->with('POST');
+        $builder->expects($this->exactly(2))
+            ->method('add')
+            ->with(
+                ...consecutive(
+                    ['repository', RepositoryType::class],
+                    ['save', SubmitType::class, ['label' => 'save']],
+                )
+            )->willReturnSelf();
+
+        $this->type->buildForm($builder, ['data' => ['repository' => $repository]]);
+    }
+
     public function testBuildForm(): void
     {
         $url        = 'https://123view/add/repository';
-        $repository = (new Repository())->setId(123);
+        $repository = new Repository()->setId(123);
 
         $this->urlGenerator->expects($this->once())
             ->method('generate')

@@ -15,10 +15,10 @@ class RuleNotificationViewModelTest extends AbstractTestCase
     {
         $viewModel = new RuleNotificationViewModel(null, [123 => 456], [], [], false);
 
-        $rule = (new Rule())->setId(123);
+        $rule = new Rule()->setId(123);
         static::assertSame(456, $viewModel->getNotificationCount($rule));
 
-        $rule = (new Rule())->setId(-1);
+        $rule = new Rule()->setId(-1);
         static::assertSame(0, $viewModel->getNotificationCount($rule));
     }
 }

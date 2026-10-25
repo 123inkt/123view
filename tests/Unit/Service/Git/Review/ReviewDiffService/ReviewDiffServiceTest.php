@@ -127,7 +127,7 @@ class ReviewDiffServiceTest extends AbstractTestCase
     public function testGetDiffForBranch(): void
     {
         $repository = new Repository();
-        $review   = (new CodeReview())->setRepository($repository)->setTargetBranch('master');
+        $review   = new CodeReview()->setRepository($repository)->setTargetBranch('master');
         $revision = new Revision();
         $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);
         $diffFile = new DiffFile();

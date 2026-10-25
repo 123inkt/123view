@@ -12,14 +12,25 @@
             "./src/ApiResource/.gitignore"
         ]
     },
+    "api-platform/symfony": {
+        "version": "5.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "e9952e9f393c2d048f10a78f272cd35e807d972b"
+        },
+        "files": [
+            "./config/packages/api_platform.yaml",
+            "./config/routes/api_platform.yaml",
+            "./src/ApiResource/.gitignore"
+        ]
+    },
     "composer/pcre": {
         "version": "1.0.0"
     },
     "composer/xdebug-handler": {
         "version": "2.0.2"
-    },
-    "czproject/git-php": {
-        "version": "v4.0.2"
     },
     "dealerdirect/phpcodesniffer-composer-installer": {
         "version": "v0.7.1"
@@ -182,18 +193,6 @@
     "myclabs/deep-copy": {
         "version": "1.10.2"
     },
-    "nelmio/cors-bundle": {
-        "version": "2.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "1.5",
-            "ref": "6bea22e6c564fba3a1391615cada1437d0bde39c"
-        },
-        "files": [
-            "./config/packages/nelmio_cors.yaml"
-        ]
-    },
     "nikic/php-parser": {
         "version": "v4.10.5"
     },
@@ -208,6 +207,18 @@
     },
     "phar-io/version": {
         "version": "3.1.0"
+    },
+    "php-http/discovery": {
+        "version": "1.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.18",
+            "ref": "f45b5dd173a27873ab19f5e3180b2f661c21de02"
+        },
+        "files": [
+            "./config/packages/http_discovery.yaml"
+        ]
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -511,6 +522,9 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/mcp-bundle": {
+        "version": "v0.8.0"
     },
     "symfony/mercure-bundle": {
         "version": "0.3",

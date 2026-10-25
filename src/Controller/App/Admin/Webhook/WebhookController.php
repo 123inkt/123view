@@ -35,7 +35,7 @@ class WebhookController extends AbstractController
             throw new NotFoundHttpException('Webhook not found');
         }
 
-        $webhook ??= (new Webhook())->setEnabled(true)->setRetries(3)->setVerifySsl(true);
+        $webhook ??= new Webhook()->setEnabled(true)->setRetries(3)->setVerifySsl(true);
 
         $form = $this->createForm(EditWebhookFormType::class, ['webhook' => $webhook]);
         $form->handleRequest($request);

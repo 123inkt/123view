@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Log;
 
-use DR\Review\Git\FormatPattern;
+use DR\Review\Model\Git\FormatPattern;
 
 /**
  * Factory for creation Git log --format pattern that's parseable by GitLogParser.

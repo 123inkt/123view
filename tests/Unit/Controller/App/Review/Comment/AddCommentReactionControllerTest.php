@@ -38,9 +38,9 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
         $request = static::createStub(Request::class);
         $request->method('getContent')->willReturn('message');
 
-        $user    = (new User())->setId(123);
-        $comment = (new Comment())->setFilePath('file');
-        $comment->setReview((new CodeReview())->setId(123));
+        $user    = new User()->setId(123);
+        $comment = new Comment()->setFilePath('file');
+        $comment->setReview(new CodeReview()->setId(123));
 
         $this->expectGetUser($user);
         $this->commentRepository
@@ -49,6 +49,7 @@ class AddCommentReactionControllerTest extends AbstractControllerTestCase
             ->with(
                 self::callback(
                     static function (CommentReply $reply) use ($user, $comment): bool {
+                        $reply->setId(123);
                         static::assertSame($user, $reply->getUser());
                         static::assertSame($comment, $reply->getComment());
                         static::assertSame('message', $reply->getMessage());

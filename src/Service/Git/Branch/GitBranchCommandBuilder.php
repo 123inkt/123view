@@ -18,7 +18,8 @@ class GitBranchCommandBuilder implements GitCommandBuilderInterface
 
     public function delete(string $ref): self
     {
-        $this->arguments['strategy'] = '-D ' . $ref;
+        $this->arguments['delete-flag'] = '-D';
+        $this->arguments['delete-ref']  = $ref;
 
         return $this;
     }
@@ -40,6 +41,11 @@ class GitBranchCommandBuilder implements GitCommandBuilderInterface
     public function command(): string
     {
         return 'branch';
+    }
+
+    public function requiresShell(): bool
+    {
+        return false;
     }
 
     /**

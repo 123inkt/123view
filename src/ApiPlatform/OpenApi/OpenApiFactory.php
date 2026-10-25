@@ -49,7 +49,7 @@ class OpenApiFactory implements OpenApiFactoryInterface
         }
 
         // add custom OpenApi documentation
-        $finder = (new Finder())->files()->in(__DIR__ . '/../../../resources/openapi')->name('*.php');
+        $finder = new Finder()->files()->in(__DIR__ . '/../../../resources/openapi')->name('*.php');
         foreach ($finder as $openApiFile) {
             (require $openApiFile)($openApi);
         }
@@ -62,7 +62,7 @@ class OpenApiFactory implements OpenApiFactoryInterface
      */
     private function setParameterDescription(Parameter $parameter, mixed $value): void
     {
-        $reflectionProperty = (new ReflectionClass($parameter))->getProperty('description');
+        $reflectionProperty = new ReflectionClass($parameter)->getProperty('description');
         /** @noinspection PhpExpressionResultUnusedInspection */
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($parameter, $value);

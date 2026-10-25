@@ -14,7 +14,7 @@ class HtmlMailExtensionTest extends AbstractTestCase
     #[DataProvider('dataProvider')]
     public function testConvert(string $html, string $expected): void
     {
-        static::assertSame($expected, (new HtmlMailExtension())->convert($html));
+        static::assertSame($expected, new HtmlMailExtension()->convert($html));
     }
 
     /**

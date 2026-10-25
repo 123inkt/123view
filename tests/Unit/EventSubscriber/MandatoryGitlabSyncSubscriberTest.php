@@ -11,6 +11,7 @@ use DR\Review\Doctrine\Type\RepositoryGitType;
 use DR\Review\Entity\User\GitAccessToken;
 use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\MandatoryGitlabSyncSubscriber;
+use DR\Review\Security\Role\Roles;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\TestWith;
@@ -49,6 +50,21 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         static::assertNull($event->getResponse());
     }
 
+    public function testInvokeSkipsWhenUserNotGrantedRole(): void
+    {
+        $subscriber = $this->createSubscriber();
+        $event      = $this->createRequestEvent();
+        $user       = new User();
+
+        $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(false);
+        $this->urlGenerator->expects($this->never())->method('generate');
+
+        ($subscriber)($event);
+
+        static::assertNull($event->getResponse());
+    }
+
     #[TestWith([UserGitlabOAuth2StartController::class])]
     #[TestWith([UserGitlabOAuth2FinishController::class])]
     #[TestWith([UserMandatoryGitlabSyncController::class])]
@@ -60,6 +76,7 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         $user       = new User();
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
         $this->urlGenerator->expects($this->never())->method('generate');
 
         ($subscriber)($event);
@@ -74,6 +91,7 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         $user       = new User();
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
         $this->urlGenerator->expects($this->never())->method('generate');
 
         ($subscriber)($event);
@@ -88,6 +106,7 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         $user       = new User();
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
         $this->urlGenerator->expects($this->never())->method('generate');
 
         ($subscriber)($event);
@@ -99,12 +118,13 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
     {
         $subscriber  = $this->createSubscriber();
         $event       = $this->createRequestEvent();
-        $gitlabToken = (new GitAccessToken())->setGitType(RepositoryGitType::GITLAB);
+        $gitlabToken = new GitAccessToken()->setGitType(RepositoryGitType::GITLAB);
 
         $user = new User();
         $user->getGitAccessTokens()->add($gitlabToken);
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
         $this->urlGenerator->expects($this->never())->method('generate');
 
         ($subscriber)($event);
@@ -119,6 +139,7 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         $user       = new User();
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
         $this->urlGenerator->expects($this->never())->method('generate');
 
         ($subscriber)($event);
@@ -134,6 +155,7 @@ class MandatoryGitlabSyncSubscriberTest extends AbstractTestCase
         $expectedUrl = '/mandatory-gitlab-sync';
 
         $this->security->expects($this->once())->method('getUser')->willReturn($user);
+        $this->security->expects($this->once())->method('isGranted')->with(Roles::ROLE_USER)->willReturn(true);
         $this->urlGenerator->expects($this->once())
             ->method('generate')
             ->with(UserMandatoryGitlabSyncController::class)

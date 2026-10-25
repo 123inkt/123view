@@ -27,7 +27,7 @@ class AzureAdUserBadgeFactory
                 if ($user !== null) {
                     return $user;
                 }
-                $user = (new User())->setEmail(Assert::nonEmptyString($email))->setName($name);
+                $user = new User()->setEmail(Assert::nonEmptyString($email))->setName($name);
 
                 // make first user admin
                 if ($this->userRepository->getUserCount() === 0) {

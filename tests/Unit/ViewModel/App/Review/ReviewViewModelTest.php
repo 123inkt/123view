@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\ViewModel\App\Review;
 
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\CodeReviewer;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Tests\AbstractTestCase;
@@ -24,18 +25,31 @@ class ReviewViewModelTest extends AbstractTestCase
     public function testGetOpenComments(): void
     {
         $commentA = new Comment();
-        $commentA->setState(CommentStateType::OPEN);
+        $commentA->setState(CommentStateEnum::Open);
         $commentB = new Comment();
-        $commentB->setState(CommentStateType::OPEN);
+        $commentB->setState(CommentStateEnum::Open);
         $commentC = new Comment();
-        $commentC->setState(CommentStateType::RESOLVED);
+        $commentC->setState(CommentStateEnum::Resolved);
+        $commentD = new Comment()->setType(CommentTypeEnum::Draft)->setState(CommentStateEnum::Open);
+        $commentE = new Comment()->setType(CommentTypeEnum::Draft)->setState(CommentStateEnum::Resolved);
         $review = new CodeReview();
         $review->getComments()->add($commentA);
         $review->getComments()->add($commentB);
         $review->getComments()->add($commentC);
+        $review->getComments()->add($commentD);
+        $review->getComments()->add($commentE);
 
         $model = new ReviewViewModel($review, [], [], 'tab', 1);
         static::assertSame(2, $model->getOpenComments());
+    }
+
+    public function testGetOpenCommentsIgnoresDrafts(): void
+    {
+        $review = new CodeReview();
+        $review->getComments()->add(new Comment()->setType(CommentTypeEnum::Draft)->setState(CommentStateEnum::Open));
+
+        $model = new ReviewViewModel($review, [], [], 'tab', 1);
+        static::assertSame(0, $model->getOpenComments());
     }
 
     public function testGetAuthors(): void
@@ -53,8 +67,8 @@ class ReviewViewModelTest extends AbstractTestCase
 
     public function testIsReviewer(): void
     {
-        $userA = (new User())->setId(5);
-        $userB = (new User())->setId(6);
+        $userA = new User()->setId(5);
+        $userB = new User()->setId(6);
 
         $reviewer = new CodeReviewer();
         $reviewer->setUser($userA);

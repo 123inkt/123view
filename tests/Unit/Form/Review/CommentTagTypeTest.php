@@ -51,7 +51,7 @@ class CommentTagTypeTest extends AbstractTestCase
 
         static::assertSame(
             'explanation',
-            Assert::isCallable($introspector->getDefault('getter'))((new Comment())->setTag(CommentTagEnum::Explanation))
+            Assert::isCallable($introspector->getDefault('getter'))(new Comment()->setTag(CommentTagEnum::Explanation))
         );
 
         $comment = new Comment();

@@ -66,19 +66,19 @@ class GitlabCommentService implements LoggerAwareInterface
         $reference = $comment->getLineReference();
 
         foreach ($api->discussions()->getDiscussions($projectId, $mergeRequestIId) as $thread) {
-            foreach ($thread['notes'] as $note) {
+            foreach ($thread->getNotes() as $note) {
                 // try to match body
-                if ($note['body'] !== $comment->getMessage()) {
+                if ($note->body !== $comment->getMessage() || $note->position === null) {
                     continue;
                 }
 
                 // should at least match either new path or old path
-                if ($note['position']['old_path'] !== $reference->oldPath && $note['position']['new_path'] !== $reference->newPath) {
+                if ($note->position->oldPath !== $reference->oldPath && $note->position->newPath !== $reference->newPath) {
                     continue;
                 }
 
                 // set reference id and save
-                $referenceId = sprintf('%s:%s:%s', $mergeRequestIId, $thread['id'], $note['id']);
+                $referenceId = sprintf('%s:%s:%s', $mergeRequestIId, $thread->id, $note->id);
                 $this->commentRepository->save($comment->setExtReferenceId($referenceId), true);
 
                 return;

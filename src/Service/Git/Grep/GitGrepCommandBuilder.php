@@ -3,20 +3,16 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Git\Grep;
 
-use DR\Review\Service\Git\GitCommandBuilderInterface;
+use DR\Review\Service\Git\AbstractGitCommandBuilder;
 
-class GitGrepCommandBuilder implements GitCommandBuilderInterface
+class GitGrepCommandBuilder extends AbstractGitCommandBuilder
 {
-    /** @var array<string, string> */
-    private array $arguments = [];
-
     private ?string $hash    = null;
     private ?string $pattern = null;
 
-    public function __construct(private readonly string $git)
+    public function __construct(string $git)
     {
-        $this->arguments['app']     = $this->git;
-        $this->arguments['command'] = 'grep';
+        parent::__construct($git, 'grep');
     }
 
     public function lineNumber(): self
@@ -42,7 +38,8 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
 
     public function context(int $context): self
     {
-        $this->arguments['context'] = '--context ' . $context;
+        $this->arguments['context-flag']  = '--context';
+        $this->arguments['context-value'] = (string)$context;
 
         return $this;
     }
@@ -64,19 +61,14 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
         return $this;
     }
 
-    public function command(): string
-    {
-        return 'grep';
-    }
-
     /**
      * @return string[]
      */
     public function build(): array
     {
-        $values = array_values($this->arguments);
+        $values = parent::build();
         if ($this->pattern !== null) {
-            $values[] = escapeshellarg($this->pattern);
+            $values[] = $this->pattern;
         }
         if ($this->hash !== null) {
             $values[] = $this->hash;
@@ -87,6 +79,6 @@ class GitGrepCommandBuilder implements GitCommandBuilderInterface
 
     public function __toString(): string
     {
-        return implode(" ", $this->build());
+        return implode(' ', $this->build());
     }
 }

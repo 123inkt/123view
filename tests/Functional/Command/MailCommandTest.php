@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Command;
 
-use DR\Review\Git\GitRepository;
+use DR\Review\Model\Git\GitRepository;
 use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Revision\RevisionFetchService;
@@ -60,7 +60,7 @@ class MailCommandTest extends AbstractKernelTestCase
         $repository->method('execute')->willReturn($this->getFileContents('git-log-commits.txt'));
 
         // start application and find the `mail`-command
-        $command = (new Application(Assert::notNull(static::$kernel)))->find('mail');
+        $command = new Application(Assert::notNull(static::$kernel))->find('mail');
 
         // execute command
         $commandTester = new CommandTester($command);

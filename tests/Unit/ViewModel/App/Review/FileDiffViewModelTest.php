@@ -29,8 +29,8 @@ class FileDiffViewModelTest extends AbstractTestCase
 
     public function testGetHeadSha(): void
     {
-        $revisionA = (new Revision())->setCommitHash('shaA');
-        $revisionB = (new Revision())->setCommitHash('shaB');
+        $revisionA = new Revision()->setCommitHash('shaA');
+        $revisionB = new Revision()->setCommitHash('shaB');
 
         $file = new FileDiffViewModel(new Difffile(), ReviewDiffModeEnum::INLINE, 6);
         $file->setRevisions([$revisionA, $revisionB]);

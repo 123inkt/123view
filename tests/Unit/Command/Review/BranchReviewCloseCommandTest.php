@@ -50,13 +50,13 @@ class BranchReviewCloseCommandTest extends AbstractTestCase
         $this->branchService->expects($this->never())->method('getRemoteBranches');
         $this->reviewEventService->expects($this->never())->method('reviewStateChanged');
 
-        (new CommandTester($this->command))->execute([]);
+        new CommandTester($this->command)->execute([]);
     }
 
     public function testExecuteReviewBranchStillExist(): void
     {
         $repository = new Repository();
-        $review     = (new CodeReview())->setReferenceId('origin/branch');
+        $review     = new CodeReview()->setReferenceId('origin/branch');
 
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->reviewRepository->expects($this->once())->method('findBy')
@@ -66,13 +66,13 @@ class BranchReviewCloseCommandTest extends AbstractTestCase
         $this->reviewRepository->expects($this->never())->method('save');
         $this->reviewEventService->expects($this->never())->method('reviewStateChanged');
 
-        (new CommandTester($this->command))->execute([]);
+        new CommandTester($this->command)->execute([]);
     }
 
     public function testExecuteCloseReview(): void
     {
         $repository = new Repository();
-        $review     = (new CodeReview())->setState('open')->setReferenceId('origin/branch');
+        $review     = new CodeReview()->setState('open')->setReferenceId('origin/branch');
 
         $this->repositoryRepository->expects($this->once())->method('findBy')->with(['active' => true])->willReturn([$repository]);
         $this->reviewRepository->expects($this->once())->method('findBy')
@@ -82,6 +82,6 @@ class BranchReviewCloseCommandTest extends AbstractTestCase
         $this->reviewRepository->expects($this->once())->method('save')->with($review, true);
         $this->reviewEventService->expects($this->once())->method('reviewStateChanged')->with($review, 'open', null);
 
-        (new CommandTester($this->command))->execute([]);
+        new CommandTester($this->command)->execute([]);
     }
 }

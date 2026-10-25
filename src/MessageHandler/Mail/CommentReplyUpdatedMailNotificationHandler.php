@@ -58,9 +58,4 @@ class CommentReplyUpdatedMailNotificationHandler implements MailNotificationHand
 
         $this->mailService->sendNewCommentReplyMail($review, $comment, $reply, $newMentions);
     }
-
-    public static function accepts(): string
-    {
-        return CommentReplyUpdated::class;
-    }
 }

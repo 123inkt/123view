@@ -31,7 +31,7 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setRuleOptions(
-            (new RuleOptions())
+            new RuleOptions()
                 ->setIgnoreSpaceAtEol(false)
                 ->setExcludeMergeCommits(false)
         );
@@ -52,7 +52,7 @@ class GitDiffCommandFactoryTest extends AbstractTestCase
     {
         $rule = new Rule();
         $rule->setRuleOptions(
-            (new RuleOptions())
+            new RuleOptions()
                 ->setIgnoreAllSpace(true)
                 ->setIgnoreSpaceChange(true)
                 ->setIgnoreBlankLines(true)

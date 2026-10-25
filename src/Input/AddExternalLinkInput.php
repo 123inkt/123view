@@ -26,7 +26,7 @@ class AddExternalLinkInput extends AbstractValidatedInput
 
     public function getValidationRules(): ValidationRules
     {
-        return (new ValidationRules())
+        return new ValidationRules()
             ->addArgumentConstraint('pattern', 'required|filled|string')
             ->addArgumentConstraint('url', 'required|string|regex:#^https?://#');
     }

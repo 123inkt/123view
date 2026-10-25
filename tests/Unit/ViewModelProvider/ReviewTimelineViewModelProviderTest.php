@@ -146,8 +146,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 
     public function testGetTimelineViewModelForFeedShouldSkip(): void
     {
-        $user     = (new User())->setId(789);
-        $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME);
+        $user     = new User()->setId(789);
+        $activity = new CodeReviewActivity()->setEventName(CommentAdded::NAME);
 
         $this->activityRepository->expects($this->once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);
         $this->activityFormatter->expects($this->once())->method('format')->with($activity, $user)->willReturn(null);
@@ -161,8 +161,8 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 
     public function testGetTimelineViewModelForFeed(): void
     {
-        $user     = (new User())->setId(789);
-        $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME);
+        $user     = new User()->setId(789);
+        $activity = new CodeReviewActivity()->setEventName(CommentAdded::NAME);
         $comment  = new Comment();
 
         $this->activityRepository->expects($this->once())->method('findForUser')->with(789, [CommentAdded::NAME])->willReturn([$activity]);

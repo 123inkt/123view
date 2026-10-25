@@ -58,8 +58,8 @@ class LockableReviewDiffServiceTest extends AbstractTestCase
      */
     public function testGetDiffForBranch(): void
     {
-        $repository = (new Repository())->setId(123);
-        $review     = (new CodeReview())->setRepository($repository);
+        $repository = new Repository()->setId(123);
+        $review     = new CodeReview()->setRepository($repository);
         $revision   = new Revision();
         $revision->setCommitHash('hash');
         $options  = new FileDiffOptions(10, DiffComparePolicy::TRIM);

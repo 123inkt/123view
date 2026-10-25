@@ -51,7 +51,7 @@ class CommitMailServiceTest extends AbstractTestCase
         $rule = new Rule();
         $rule->setName("Sherlock Holmes");
         $rule->addRecipient($recipient);
-        $rule->setRuleOptions((new RuleOptions())->setSubject('subject'));
+        $rule->setRuleOptions(new RuleOptions()->setSubject('subject'));
 
         $notification = new RuleNotification();
 

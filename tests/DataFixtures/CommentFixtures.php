@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\DataFixtures;
 
+use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -23,8 +24,8 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $comment->setLineReference(new LineReference());
         $comment->setMessage('message');
         $comment->setFilePath('filepath');
-        $comment->setCreateTimestamp(12345678);
-        $comment->setUpdateTimestamp(87654321);
+        $comment->setCreateTimestamp(new DateTimeImmutable()->setTimestamp(12345678));
+        $comment->setUpdateTimestamp(new DateTimeImmutable()->setTimestamp(87654321));
         $comment->setReview(Assert::notNull($review));
         $comment->setUser(Assert::notNull($user));
 

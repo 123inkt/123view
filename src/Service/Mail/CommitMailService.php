@@ -37,7 +37,7 @@ class CommitMailService implements LoggerAwareInterface
         $subject = $rule->getRuleOptions()?->getSubject() ?? sprintf('[%s] New revisions for: {name}', $this->applicationName);
 
         // create ViewModel and TemplateMail
-        $email = (new TemplatedEmail())
+        $email = new TemplatedEmail()
             ->subject($this->subjectFormatter->format($subject, $rule, $commits))
             ->htmlTemplate('mail/mail.commits.html.twig')
             ->text('')

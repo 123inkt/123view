@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
 use ApiPlatform\State\ProviderInterface;
-use CzProject\GitPhp\Git;
-use CzProject\GitPhp\Runners\CliRunner;
 use DigitalRevolution\SymfonyConsoleValidation\InputValidator;
 use DR\JBDiff\JBDiff;
 use DR\Review\ApiPlatform\OpenApi\OpenApiFactory;
@@ -14,6 +12,11 @@ use DR\Review\Entity\User\User;
 use DR\Review\EventSubscriber\ContentSecurityPolicyResponseSubscriber;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
 use DR\Review\Form\User\UserSettingType;
+use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentReplyAdded;
+use DR\Review\Message\Comment\CommentReplyUpdated;
+use DR\Review\Message\Comment\CommentResolved;
+use DR\Review\Message\Comment\CommentUpdated;
 use DR\Review\MessageHandler\Mail\CommentAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyAddedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentReplyUpdatedMailNotificationHandler;
@@ -21,10 +24,8 @@ use DR\Review\MessageHandler\Mail\CommentResolvedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\CommentUpdatedMailNotificationHandler;
 use DR\Review\MessageHandler\Mail\MailNotificationHandlerProvider;
 use DR\Review\MessageHandler\MailNotificationMessageHandler;
-use DR\Review\Model\Webhook\Gitlab\MergeRequestEvent;
-use DR\Review\Model\Webhook\Gitlab\PushEvent;
+use DR\Review\Monolog\UserProcessor;
 use DR\Review\QueryParser\ParserHasFailedFormatter;
-use DR\Review\Response\ProblemJsonResponseFactory;
 use DR\Review\Router\ReviewRouter;
 use DR\Review\Security\Api\BearerAuthenticator;
 use DR\Review\Security\AzureAd\AzureAdAuthenticator;
@@ -55,6 +56,8 @@ use DR\Review\Service\Parser\DiffFileParser;
 use DR\Review\Service\Parser\DiffParser;
 use DR\Review\Service\Parser\PrunableDiffParser;
 use DR\Review\Service\RemoteEvent\Gitlab\ApprovedMergeRequestEventHandler;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateHandler;
+use DR\Review\Service\RemoteEvent\Gitlab\NoteEventUpdateHandler;
 use DR\Review\Service\RemoteEvent\Gitlab\PushEventHandler;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Service\Report\CodeInspection\CodeInspectionIssueParserProvider;
@@ -77,7 +80,6 @@ use DR\Review\ViewModelProvider\Appender\Review\FileTreeViewModelAppender;
 use DR\Review\ViewModelProvider\Appender\Review\ReviewSummaryViewModelAppender;
 use DR\Review\ViewModelProvider\Appender\Review\RevisionViewModelAppender;
 use DR\Review\ViewModelProvider\ReviewViewModelProvider;
-use Highlight\Highlighter;
 use League\CommonMark\MarkdownConverter;
 use League\OAuth2\Client\Provider\GenericProvider;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator;
@@ -119,6 +121,7 @@ return static function (ContainerConfigurator $container): void {
     $services->load('DR\Review\ApiPlatform\Factory\\', __DIR__ . '/../src/ApiPlatform/Factory');
     $services->load('DR\Review\ApiPlatform\Provider\\', __DIR__ . '/../src/ApiPlatform/Provider');
     $services->load('DR\Review\ApiPlatform\StateProcessor\\', __DIR__ . '/../src/ApiPlatform/StateProcessor');
+    $services->load('DR\Review\ApiPlatform\Extension\\', __DIR__ . '/../src/ApiPlatform/Extension');
     $services->load('DR\Review\Command\\', __DIR__ . '/../src/Command');
     $services->load('DR\Review\EventSubscriber\\', __DIR__ . '/../src/EventSubscriber');
     $services->load('DR\Review\Form\\', __DIR__ . '/../src/Form');
@@ -137,6 +140,7 @@ return static function (ContainerConfigurator $container): void {
     // create empty cache clearer
     $services->set('cache.default_clearer', Psr6CacheClearer::class)->args([[]]);
 
+    $services->set(UserProcessor::class)->tag('monolog.processor');
     $services->set(Filesystem::class);
     $services->set(InputValidator::class);
     $services->set(LoginService::class);
@@ -146,7 +150,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(ContentSecurityPolicyResponseSubscriber::class)
         ->arg('$hostname', '%env(APP_HOSTNAME)%')
         ->arg('$ideUrlEnabled', '%env(bool:IDE_URL_ENABLED)%');
-    $services->set(ProblemJsonResponseFactory::class)->arg('$debug', '%env(APP_DEBUG)%');
 
     // configure security
     $services->set(CookieTokenExtractor::class)->arg('$name', 'jwtToken');
@@ -182,9 +185,10 @@ return static function (ContainerConfigurator $container): void {
     $services->set(JBDiff::class);
     $services->set(CssToInlineStyles::class);
     $services->set(IdeButtonExtension::class)->args(['%env(bool:IDE_URL_ENABLED)%', '%env(IDE_URL_TITLE)%']);
-    $services->set(Highlighter::class);
     $services->set(MarkdownConverter::class, CommonMarkdownConverter::class);
     $services->set(GitCommandBuilderFactory::class)->arg('$git', '%env(GIT_BINARY)%');
+
+    // Register Git
     $services->set(ParserHasFailedFormatter::class);
     $services->set(RuleNotificationTokenGenerator::class)->arg('$appSecret', '%env(APP_SECRET)%');
     $services->set(UserSettingType::class)->arg('$ideUrlPattern', '%env(IDE_URL_PATTERN)%');
@@ -200,10 +204,6 @@ return static function (ContainerConfigurator $container): void {
     $services->set(RevisionPatternMatcher::class)
         ->arg('$matchingPattern', '%env(CODE_REVIEW_MATCHING_PATTERN)%')
         ->arg('$matchingGroups', '%env(CODE_REVIEW_MATCHING_GROUPS)%');
-
-    // Register Git
-    $services->set(CliRunner::class)->arg('$gitBinary', '%env(GIT_BINARY)%');
-    $services->set(Git::class)->arg('$runner', service(CliRunner::class));
 
     // Review diff strategies
     $services->set(BasicCherryPickStrategy::class)->tag('review_diff_strategy', ['priority' => 30]);
@@ -228,18 +228,20 @@ return static function (ContainerConfigurator $container): void {
     $services->set(CodeCoverageParserProvider::class)->arg('$parsers', tagged_iterator('code_coverage_parser', 'key'));
 
     // Mail Notification Message handlers
-    $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentReplyAddedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentReplyUpdatedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler');
-    $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', null, 'accepts')]);
+    $services->set(CommentAddedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentAdded::class]);
+    $services->set(CommentUpdatedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentUpdated::class]);
+    $services->set(CommentReplyAddedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentReplyAdded::class]);
+    $services->set(CommentReplyUpdatedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentReplyUpdated::class]);
+    $services->set(CommentResolvedMailNotificationHandler::class)->tag('mail_notification_handler', ['key' => CommentResolved::class]);
+    $services->set(MailNotificationHandlerProvider::class)->args([tagged_iterator('mail_notification_handler', 'key')]);
     $services->set(MailNotificationMessageHandler::class)->arg('$mailNotificationDelay', '%env(MAILER_NOTIFICATION_DELAY)%');
 
     // Webhook handlers
-    $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler', ['key' => MergeRequestEvent::class]);
-    $services->set(PushEventHandler::class)->tag('webhook_handler', ['key' => PushEvent::class]);
-    $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler', 'key'));
+    $services->set(ApprovedMergeRequestEventHandler::class)->tag('webhook_handler');
+    $services->set(PushEventHandler::class)->tag('webhook_handler');
+    $services->set(NoteEventCreateHandler::class)->tag('webhook_handler');
+    $services->set(NoteEventUpdateHandler::class)->tag('webhook_handler');
+    $services->set(RemoteEventHandler::class)->arg('$handlers', tagged_iterator('webhook_handler'));
 
     $services->set(WebhookExecutionService::class)->arg('$httpClient', inline_service(NativeHttpClient::class));
 

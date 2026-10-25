@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Tool;
 
-use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\Ai\CodeReviewFileNotFoundException;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Ai\Tool\CodeReviewListFilesTool;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\LsTree\LockableLsTreeService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -18,21 +18,24 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(CodeReviewListFilesTool::class)]
 class CodeReviewListFilesToolTest extends AbstractTestCase
 {
-    private CodeReviewRepository&MockObject  $repository;
-    private LockableLsTreeService&MockObject $lsTreeService;
-    private CodeReviewListFilesTool          $tool;
+    private CodeReviewRepository&MockObject      $repository;
+    private CodeReviewRevisionService&MockObject $revisionService;
+    private LockableLsTreeService&MockObject     $lsTreeService;
+    private CodeReviewListFilesTool              $tool;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->repository    = $this->createMock(CodeReviewRepository::class);
-        $this->lsTreeService = $this->createMock(LockableLsTreeService::class);
-        $this->tool          = new CodeReviewListFilesTool($this->logger, $this->repository, $this->lsTreeService);
+        $this->repository      = $this->createMock(CodeReviewRepository::class);
+        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->lsTreeService   = $this->createMock(LockableLsTreeService::class);
+        $this->tool            = new CodeReviewListFilesTool($this->logger, $this->repository, $this->revisionService, $this->lsTreeService);
     }
 
     public function testInvokeShouldThrowExceptionWhenReviewNotFound(): void
     {
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $this->lsTreeService->expects($this->never())->method('listFiles');
 
         $this->expectException(CodeReviewNotFoundException::class);
@@ -43,6 +46,7 @@ class CodeReviewListFilesToolTest extends AbstractTestCase
     {
         $review = new CodeReview();
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([]);
         $this->lsTreeService->expects($this->never())->method('listFiles');
 
         $this->expectException(CodeReviewFileNotFoundException::class);
@@ -51,16 +55,13 @@ class CodeReviewListFilesToolTest extends AbstractTestCase
 
     public function testInvokeShouldReturnFileList(): void
     {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision();
-        $revision->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision);
+        $revision = new Revision();
+        $review   = new CodeReview();
 
         $fileList = ['src/file1.php', 'src/file2.php', 'src/Service/file3.php'];
 
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->lsTreeService->expects($this->once())
             ->method('listFiles')
             ->with($revision, 'src/')
@@ -72,16 +73,13 @@ class CodeReviewListFilesToolTest extends AbstractTestCase
 
     public function testInvokeShouldSupportGlobPatterns(): void
     {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision();
-        $revision->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision);
+        $revision = new Revision();
+        $review   = new CodeReview();
 
         $fileList = ['src/Service/Test.php', 'src/Service/SubDir/Another.php'];
 
         $this->repository->expects($this->once())->method('find')->with(456)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->lsTreeService->expects($this->once())
             ->method('listFiles')
             ->with($revision, 'src/Service/**/*.php')

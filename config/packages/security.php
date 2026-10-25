@@ -23,6 +23,7 @@ return App::config([
             'dev'      => ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'security' => false],
             'api_docs' => ['pattern' => '^/api/docs', 'stateless' => true, 'security' => false],
            // TODO fix angular 'api'      => ['pattern' => '^/api', 'stateless' => true, 'custom_authenticators' => [BearerAuthenticator::class]],
+            'mcp'      => ['pattern' => '^/_mcp', 'stateless' => true, 'custom_authenticators' => [BearerAuthenticator::class]],
             'main'     => [
                 'lazy'                  => true,
                 'provider'              => 'app_user_provider',
@@ -43,6 +44,7 @@ return App::config([
             ['path' => '^/app', 'roles' => AuthenticatedVoter::IS_AUTHENTICATED_FULLY],
             ['path' => '^/api/view-model/login', 'roles' => AuthenticatedVoter::PUBLIC_ACCESS],
             ['path' => '^/api', 'roles' => AuthenticatedVoter::IS_AUTHENTICATED_FULLY],
+            ['path' => '^/_mcp', 'roles' => [Roles::ROLE_USER]],
             ['path' => '^/log-viewer', 'roles' => [Roles::ROLE_ADMIN]],
         ],
     ],

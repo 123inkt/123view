@@ -32,8 +32,8 @@ class FolderCollapseStatusServiceTest extends AbstractTestCase
     public function testGetFolderCollapseStatus(): void
     {
         $status = new FolderCollapseStatus();
-        $user   = (new User())->setId(456);
-        $review = (new CodeReview())->setId(123);
+        $user   = new User()->setId(456);
+        $review = new CodeReview()->setId(123);
 
         $this->userProvider->expects($this->once())->method('getUser')->willReturn($user);
         $this->statusRepository->expects($this->once())->method('findBy')->with(['review' => 123, 'user' => 456])->willReturn([$status]);

@@ -18,12 +18,12 @@ export default class CommentService {
             .then(html => Elements.create(html));
     }
 
-    public submitAddCommentForm(form: HTMLFormElement): Promise<string> {
-        return this.client.form(form).then(response => (response.data as {commentUrl: string}).commentUrl);
+    public submitAddCommentForm(form: HTMLFormElement, mode: string): Promise<string> {
+        return this.client.form(form, {mode}).then(response => (response.data as {commentUrl: string}).commentUrl);
     }
 
-    public submitCommentForm(form: HTMLFormElement): Promise<number> {
-        return this.client.form(form).then(response => (response.data as {commentId: number}).commentId);
+    public submitCommentForm(form: HTMLFormElement, mode: string): Promise<number> {
+        return this.client.form(form, {mode}).then(response => (response.data as {commentId: number}).commentId);
     }
 
     public getCommentThread(url: string, action?: string): Promise<HTMLElement> {
@@ -39,23 +39,24 @@ export default class CommentService {
     }
 
     public deleteComment(url: string): Promise<void> {
-        return this.client.delete(url);
+        return this.client.delete(url).then(() => undefined);
     }
 
     public changeCommentState(url: string, state: string): Promise<void> {
-        return this.client.post(url, {state}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+        return this.client.post(url, {state}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}}).then(() => undefined);
     }
 
     public addCommentReaction(url: string, message: string): Promise<void> {
-        return this.client.post(url, message, {headers: {'Content-Type': 'application/text'}});
+        return this.client.post(url, message, {headers: {'Content-Type': 'application/text'}}).then(() => undefined);
     }
 
     public deleteCommentReply(url: string): Promise<void> {
-        return this.client.delete(url);
+        return this.client.delete(url).then(() => undefined);
     }
 
     public setCommentVisibility(visibility: string): Promise<void> {
-        return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+        return this.client.post('/app/reviews/comment-visibility', {visibility}, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}})
+            .then(() => undefined);
     }
 
     public getCommentCount(reviewId: number): Promise<CommentCount> {

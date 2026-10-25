@@ -32,16 +32,20 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
     }
 
     /**
+     * @phpstan-impure
+     */
+    public function supports(object $event): bool
+    {
+        return $event instanceof MergeRequestEvent && $event->action === 'approved';
+    }
+
+    /**
      * @phpstan-param MergeRequestEvent $event
      * @throws Throwable
      */
     public function handle(object $event): void
     {
         Assert::isInstanceOf($event, MergeRequestEvent::class);
-        if ($event->action !== 'approved') {
-            return;
-        }
-
         $repository = $this->repositoryRepository->findByProperty('gitlab-project-id', (string)$event->project->id);
         if ($repository === null) {
             $this->logger?->info('ApprovedMergeRequestEventHandler: no repository found for project id {id}', ['id' => $event->project->id]);
@@ -66,7 +70,7 @@ class ApprovedMergeRequestEventHandler implements RemoteEventHandlerInterface, L
 
         $this->logger?->info('ApprovedMergeRequestEventHandler: merge request {id} was approved', ['id' => $event->iid]);
 
-        $reviews = $this->reviewRepository->findByBranchName(Assert::notNull($repository->getId()), $event->sourceBranch);
+        $reviews = $this->reviewRepository->findByBranchName($repository->getId(), $event->sourceBranch);
         foreach ($reviews as $review) {
             if ($review->getState() === CodeReviewStateType::CLOSED) {
                 continue;

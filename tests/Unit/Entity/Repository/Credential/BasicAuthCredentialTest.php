@@ -13,7 +13,7 @@ class BasicAuthCredentialTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['getAuthorizationHeader', '__toString', 'fromString']);
+        $config = new ConstraintConfig()->setExcludedMethods(['getAuthorizationHeader', '__toString', 'fromString']);
         static::assertAccessorPairs(BasicAuthCredential::class, $config);
     }
 

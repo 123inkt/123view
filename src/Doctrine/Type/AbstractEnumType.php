@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Doctrine\Type;
 
+use BackedEnum;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use InvalidArgumentException;
@@ -32,6 +33,10 @@ abstract class AbstractEnumType extends Type
     {
         if ($value === null) {
             return null;
+        }
+
+        if ($value instanceof BackedEnum) {
+            $value = $value->value;
         }
 
         if (is_string($value) === false || in_array($value, static::VALUES, true) === false) {

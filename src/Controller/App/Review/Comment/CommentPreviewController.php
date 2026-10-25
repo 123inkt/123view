@@ -30,7 +30,7 @@ class CommentPreviewController extends AbstractController
         $message = $this->mentionService->replaceMentionedUsers($message, $this->mentionService->getMentionedUsers($message));
         $message = $this->converter->convert($message);
 
-        return (new Response($message, 200, ['Content-Type' => 'text/html']))
+        return new Response($message, 200, ['Content-Type' => 'text/html'])
             ->setMaxAge(86400)
             ->setPublic();
     }

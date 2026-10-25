@@ -8,6 +8,7 @@ use DR\Review\Controller\App\Review\Comment\AddCommentReplyController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Form\Review\AddCommentReplyFormType;
 use DR\Review\Message\Comment\CommentReplyAdded;
@@ -53,7 +54,7 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
     {
         $this->commentRepository->expects($this->never())->method('save');
         $this->bus->expects($this->never())->method('dispatch');
-        $user    = (new User())->setId(789);
+        $user    = new User()->setId(789);
         $request = new Request();
         $review  = new CodeReview();
         $review->setId(123);
@@ -74,9 +75,9 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
     public function testInvokeFormSubmitted(): void
     {
         $request = new Request();
-        $review  = (new CodeReview())->setId(123);
-        $comment = (new Comment())->setId(456)->setFilePath('file')->setReview($review);
-        $user    = (new User())->setId(789);
+        $review  = new CodeReview()->setId(123);
+        $comment = new Comment()->setId(456)->setFilePath('file')->setReview($review);
+        $user    = new User()->setId(789);
         $this->expectGetUser($user);
 
         $this->expectCreateForm(AddCommentReplyFormType::class, static::isInstanceOf(CommentReply::class), ['comment' => $comment])
@@ -88,10 +89,9 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
             ->method('save')
             ->with(
                 self::callback(static function (CommentReply $reply) use ($user, $comment) {
+                    $reply->setId(123);
                     static::assertSame($user, $reply->getUser());
                     static::assertSame($comment, $reply->getComment());
-                    static::assertGreaterThan(0, $reply->getCreateTimestamp());
-                    static::assertGreaterThan(0, $reply->getUpdateTimestamp());
 
                     return true;
                 }),
@@ -103,6 +103,19 @@ class AddCommentReplyControllerTest extends AbstractControllerTestCase
         $response = ($this->controller)($request, $comment);
         static::assertInstanceOf(JsonResponse::class, $response);
         static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testInvokeWithDraftComment(): void
+    {
+        $this->commentRepository->expects($this->never())->method('save');
+        $this->bus->expects($this->never())->method('dispatch');
+
+        $comment = new Comment();
+        $comment->setType(CommentTypeEnum::Draft);
+
+        $response = ($this->controller)(new Request(), $comment);
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     public function getController(): AbstractController

@@ -8,6 +8,7 @@ use DR\Review\Service\Git\Branch\GitBranchCommandBuilder;
 use DR\Review\Service\Git\Checkout\GitCheckoutCommandBuilder;
 use DR\Review\Service\Git\CherryPick\GitCherryPickCommandBuilder;
 use DR\Review\Service\Git\Clean\GitCleanCommandBuilder;
+use DR\Review\Service\Git\Clone\GitCloneCommandBuilder;
 use DR\Review\Service\Git\Commit\GitCommitCommandBuilder;
 use DR\Review\Service\Git\Diff\GitDiffCommandBuilder;
 use DR\Review\Service\Git\DiffTree\GitDiffTreeCommandBuilder;
@@ -31,6 +32,11 @@ class GitCommandBuilderFactory
     public function createAdd(): GitAddCommandBuilder
     {
         return new GitAddCommandBuilder($this->git);
+    }
+
+    public function createClone(): GitCloneCommandBuilder
+    {
+        return new GitCloneCommandBuilder($this->git);
     }
 
     public function createShow(): GitShowCommandBuilder

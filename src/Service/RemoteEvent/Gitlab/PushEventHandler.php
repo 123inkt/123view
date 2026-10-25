@@ -23,6 +23,14 @@ class PushEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
     {
     }
 
+    /**
+     * @phpstan-impure
+     */
+    public function supports(object $event): bool
+    {
+        return $event instanceof PushEvent;
+    }
+
     public function handle(object $event): void
     {
         Assert::isInstanceOf($event, PushEvent::class);
@@ -41,6 +49,6 @@ class PushEventHandler implements RemoteEventHandlerInterface, LoggerAwareInterf
         }
 
         $this->logger?->info('PushEventHandler: fetching new revisions for {name}', ['name' => $repository->getName()]);
-        $this->bus->dispatch(new FetchRepositoryRevisionsMessage((int)$repository->getId()));
+        $this->bus->dispatch(new FetchRepositoryRevisionsMessage($repository->getId()));
     }
 }

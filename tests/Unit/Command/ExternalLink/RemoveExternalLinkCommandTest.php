@@ -31,7 +31,7 @@ class RemoveExternalLinkCommandTest extends AbstractTestCase
      */
     public function testExecute(): void
     {
-        $link = (new ExternalLink())->setPattern('pattern')->setUrl('url');
+        $link = new ExternalLink()->setPattern('pattern')->setUrl('url');
 
         $this->linkRepository->expects($this->once())->method('find')->with('id')->willReturn($link);
         $this->linkRepository->expects($this->once())->method('remove')->with($link, true);

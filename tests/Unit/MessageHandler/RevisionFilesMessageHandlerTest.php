@@ -67,7 +67,7 @@ class RevisionFilesMessageHandlerTest extends AbstractTestCase
     public function testInvoke(): void
     {
         $repository = new Repository();
-        $revision   = (new Revision())->setRepository($repository);
+        $revision   = new Revision()->setRepository($repository);
         $file       = new RevisionFile();
 
         $this->revisionRepository->expects($this->once())->method('find')->with(123)->willReturn($revision);

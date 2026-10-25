@@ -7,12 +7,15 @@ use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Service\Git\Review\FileDiffOptions;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Contracts\Cache\CacheInterface;
 
 class CacheableReviewDiffService implements ReviewDiffServiceInterface
 {
-    public function __construct(private readonly CacheInterface $revisionCache, private readonly ReviewDiffServiceInterface $diffService)
-    {
+    public function __construct(
+        #[Target('revisionCache')] private readonly CacheInterface $revisionCache,
+        private readonly ReviewDiffServiceInterface $diffService
+    ) {
     }
 
     /**

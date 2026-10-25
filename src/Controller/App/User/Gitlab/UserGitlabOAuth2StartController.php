@@ -8,6 +8,7 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Security\Role\Roles;
 use Exception;
 use League\OAuth2\Client\Provider\GenericProvider as OAuth2Provider;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class UserGitlabOAuth2StartController extends AbstractController
 {
-    public function __construct(private readonly OAuth2Provider $gitlabOAuth2Provider)
+    public function __construct(#[Target('gitlabOAuth2Provider')] private readonly OAuth2Provider $gitlabOAuth2Provider)
     {
     }
 

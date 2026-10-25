@@ -23,7 +23,18 @@ class GitShowCommandBuilderTest extends AbstractTestCase
         static::assertSame('show', $this->builder->command());
     }
 
-    public function testBuild(): void
+    public function testRequiresShellFalseByDefault(): void
+    {
+        static::assertFalse($this->builder->requiresShell());
+    }
+
+    public function testRequiresShellTrueWithBase64(): void
+    {
+        static::assertTrue($this->builder->base64encode()->requiresShell());
+    }
+
+    /** Shell mode (base64): format is quoted, file is escapeshellarg'd, pipe token appended */
+    public function testBuildShellMode(): void
     {
         static::assertSame(
             [
@@ -54,10 +65,36 @@ class GitShowCommandBuilderTest extends AbstractTestCase
         );
     }
 
+    /** Argv mode (no base64): format has no extra quotes, file is raw */
+    public function testBuildArgvMode(): void
+    {
+        static::assertSame(
+            [
+                'git',
+                'show',
+                'foobar',
+                '--unified=5',
+                '--no-patch',
+                '--format=format',
+                'hash:file',
+                '--ignore-space-at-eol',
+                '--ignore-cr-at-eol',
+            ],
+            $this->builder->startPoint('foobar')
+                ->unified(5)
+                ->noPatch()
+                ->format('format')
+                ->file('hash', 'file')
+                ->ignoreSpaceAtEol()
+                ->ignoreCrAtEol()
+                ->build()
+        );
+    }
+
     public function testToString(): void
     {
         static::assertSame(
-            'git show foobar --unified=5 --no-patch --format="format" ' . escapeshellarg('hash:file') . ' --ignore-space-at-eol --ignore-cr-at-eol',
+            'git show foobar --unified=5 --no-patch --format=format hash:file --ignore-space-at-eol --ignore-cr-at-eol',
             (string)$this->builder->startPoint('foobar')
                 ->unified(5)
                 ->noPatch()

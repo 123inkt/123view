@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Ai\Tool;
 
-use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Service\Ai\Tool\CodeReviewGrepTool;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Grep\LockableGitGrepService;
 use DR\Review\Tests\AbstractTestCase;
 use InvalidArgumentException;
@@ -18,21 +18,24 @@ use PHPUnit\Framework\MockObject\MockObject;
 #[CoversClass(CodeReviewGrepTool::class)]
 class CodeReviewGrepToolTest extends AbstractTestCase
 {
-    private CodeReviewRepository&MockObject   $repository;
-    private LockableGitGrepService&MockObject $grepService;
-    private CodeReviewGrepTool                $tool;
+    private CodeReviewRepository&MockObject      $repository;
+    private CodeReviewRevisionService&MockObject $revisionService;
+    private LockableGitGrepService&MockObject    $grepService;
+    private CodeReviewGrepTool                   $tool;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->repository  = $this->createMock(CodeReviewRepository::class);
-        $this->grepService = $this->createMock(LockableGitGrepService::class);
-        $this->tool        = new CodeReviewGrepTool($this->logger, $this->repository, $this->grepService);
+        $this->repository      = $this->createMock(CodeReviewRepository::class);
+        $this->revisionService = $this->createMock(CodeReviewRevisionService::class);
+        $this->grepService     = $this->createMock(LockableGitGrepService::class);
+        $this->tool            = new CodeReviewGrepTool($this->logger, $this->repository, $this->revisionService, $this->grepService);
     }
 
     public function testInvokeShouldThrowExceptionForInvalidRegex(): void
     {
         $this->repository->expects($this->never())->method('find');
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $this->grepService->expects($this->never())->method('grep');
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The provided pattern is not a valid regex pattern: [invalid');
@@ -42,6 +45,7 @@ class CodeReviewGrepToolTest extends AbstractTestCase
     public function testInvokeShouldThrowExceptionWhenReviewNotFound(): void
     {
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn(null);
+        $this->revisionService->expects($this->never())->method('getRevisions');
         $this->grepService->expects($this->never())->method('grep');
 
         $this->expectException(CodeReviewNotFoundException::class);
@@ -52,6 +56,7 @@ class CodeReviewGrepToolTest extends AbstractTestCase
     {
         $review = new CodeReview();
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([]);
         $this->grepService->expects($this->never())->method('grep');
 
         $this->expectException(CodeReviewNotFoundException::class);
@@ -60,14 +65,11 @@ class CodeReviewGrepToolTest extends AbstractTestCase
 
     public function testInvokeShouldReturnNoResultsFoundWhenGrepReturnsNull(): void
     {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision();
-        $revision->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision);
+        $revision = new Revision();
+        $review   = new CodeReview();
 
         $this->repository->expects($this->once())->method('find')->with(123)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->grepService->expects($this->once())
             ->method('grep')
             ->with($revision, 'searchPattern', null)
@@ -79,14 +81,11 @@ class CodeReviewGrepToolTest extends AbstractTestCase
 
     public function testInvokeShouldReturnGrepResults(): void
     {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision();
-        $revision->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision);
+        $revision = new Revision();
+        $review   = new CodeReview();
 
         $this->repository->expects($this->once())->method('find')->with(456)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->grepService->expects($this->once())
             ->method('grep')
             ->with($revision, 'function', null)
@@ -98,14 +97,11 @@ class CodeReviewGrepToolTest extends AbstractTestCase
 
     public function testInvokeShouldPassContextToGrepService(): void
     {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision();
-        $revision->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision);
+        $revision = new Revision();
+        $review   = new CodeReview();
 
         $this->repository->expects($this->once())->method('find')->with(789)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->grepService->expects($this->once())
             ->method('grep')
             ->with($revision, 'class', 3)
@@ -117,19 +113,12 @@ class CodeReviewGrepToolTest extends AbstractTestCase
 
     public function testInvokeShouldUseLastRevision(): void
     {
-        $repositoryEntity = new Repository();
-
         $revision1 = new Revision();
-        $revision1->setRepository($repositoryEntity);
-
         $revision2 = new Revision();
-        $revision2->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision1);
-        $review->getRevisions()->add($revision2);
+        $review    = new CodeReview();
 
         $this->repository->expects($this->once())->method('find')->with(100)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision1, $revision2]);
         $this->grepService->expects($this->once())
             ->method('grep')
             ->with($revision2, 'pattern', null)
@@ -141,14 +130,11 @@ class CodeReviewGrepToolTest extends AbstractTestCase
 
     public function testInvokeShouldPassNullContextWhenContextIsZero(): void
     {
-        $repositoryEntity = new Repository();
-        $revision         = new Revision();
-        $revision->setRepository($repositoryEntity);
-
-        $review = new CodeReview();
-        $review->getRevisions()->add($revision);
+        $revision = new Revision();
+        $review   = new CodeReview();
 
         $this->repository->expects($this->once())->method('find')->with(200)->willReturn($review);
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
         $this->grepService->expects($this->once())
             ->method('grep')
             ->with($revision, 'test', null)

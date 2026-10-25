@@ -32,13 +32,13 @@ class RuleNotificationServiceTest extends AbstractTestCase
 
     public function testAddRuleNotification(): void
     {
-        $start = (new DateTimeImmutable())->setTimestamp(123456);
-        $end   = (new DateTimeImmutable())->setTimestamp(654321);
+        $start = new DateTimeImmutable()->setTimestamp(123456);
+        $end   = new DateTimeImmutable()->setTimestamp(654321);
 
         $rule   = new Rule();
         $period = new DatePeriod($start, new DateInterval('PT1H'), $end);
 
-        $expected = (new RuleNotification())
+        $expected = new RuleNotification()
             ->setRule($rule)
             ->setNotifyTimestamp(654321)
             ->setCreateTimestamp(self::time());

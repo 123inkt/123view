@@ -49,8 +49,8 @@ class CreateBranchReviewController extends AbstractController
         }
 
         $review   = $this->reviewCreationService->createFromBranch($repository, $branchName);
-        $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
         $this->reviewRepository->save($review, true);
+        $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
 
         $this->messageBus->dispatch(new ReviewCreated($review->getId(), (int)$revision?->getId(), $this->getUser()->getId()));
 

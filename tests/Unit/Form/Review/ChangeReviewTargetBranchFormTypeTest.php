@@ -51,7 +51,7 @@ class ChangeReviewTargetBranchFormTypeTest extends AbstractTestCase
         $url = 'https://123view/review/target-branch';
 
         $repository = new Repository();
-        $review     = (new CodeReview())->setId(123);
+        $review     = new CodeReview()->setId(123);
         $review->setRepository($repository);
 
         $this->urlGenerator->expects($this->once())

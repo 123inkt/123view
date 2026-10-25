@@ -58,7 +58,7 @@ class CodeReviewActivity
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['review-activity:read'])]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: true)]
@@ -74,16 +74,16 @@ class CodeReviewActivity
     #[Groups(['review-activity:read'])]
     private string $eventName;
 
-    /** @var array<string, int|float|bool|string|null> */
+    /** @var array<string, int|float|bool|string|null>|null */
     #[ORM\Column(type: 'json', nullable: true)]
     #[Groups(['review-activity:read'])]
-    private array $data = [];
+    private ?array $data = null;
 
     #[ORM\Column]
     #[Groups(['review-activity:read'])]
     private int $createTimestamp;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -136,12 +136,12 @@ class CodeReviewActivity
      */
     public function getData(): array
     {
-        return $this->data;
+        return $this->data ?? [];
     }
 
     public function getDataValue(string $key): int|float|bool|string|null
     {
-        return $this->data[$key] ?? null;
+        return ($this->data ?? [])[$key] ?? null;
     }
 
     /**

@@ -53,13 +53,7 @@ class DirectoryTreeNode
      */
     public function getDirectory(string $path): ?self
     {
-        foreach ($this->directories as $directory) {
-            if ($directory->getName() === $path) {
-                return $directory;
-            }
-        }
-
-        return null;
+        return array_find($this->directories, static fn($directory) => $directory->getName() === $path);
     }
 
     /**

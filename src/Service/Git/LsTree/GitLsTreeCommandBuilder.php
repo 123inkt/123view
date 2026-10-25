@@ -52,6 +52,11 @@ class GitLsTreeCommandBuilder implements GitCommandBuilderInterface
         return 'ls-tree';
     }
 
+    public function requiresShell(): bool
+    {
+        return false;
+    }
+
     /**
      * @return string[]
      */
@@ -61,7 +66,9 @@ class GitLsTreeCommandBuilder implements GitCommandBuilderInterface
 
         if (count($this->files) > 0) {
             $values[] = '--';
-            $values   = array_merge($values, array_map('escapeshellarg', $this->files));
+            foreach ($this->files as $file) {
+                $values[] = $file;
+            }
         }
 
         return $values;

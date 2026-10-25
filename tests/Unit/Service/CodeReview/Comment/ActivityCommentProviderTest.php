@@ -33,7 +33,7 @@ class ActivityCommentProviderTest extends AbstractTestCase
     public function testGetCommentForCommentAdded(): void
     {
         $comment  = new Comment();
-        $activity = (new CodeReviewActivity())->setEventName(CommentAdded::NAME)->setData(['commentId' => '123']);
+        $activity = new CodeReviewActivity()->setEventName(CommentAdded::NAME)->setData(['commentId' => '123']);
 
         $this->commentRepository->expects($this->once())->method('find')->with(123)->willReturn($comment);
         $this->replyRepository->expects($this->never())->method('find');
@@ -43,7 +43,7 @@ class ActivityCommentProviderTest extends AbstractTestCase
     public function testGetCommentForReplyAdded(): void
     {
         $reply    = new CommentReply();
-        $activity = (new CodeReviewActivity())->setEventName(CommentReplyAdded::NAME)->setData(['commentId' => '123']);
+        $activity = new CodeReviewActivity()->setEventName(CommentReplyAdded::NAME)->setData(['commentId' => '123']);
 
         $this->replyRepository->expects($this->once())->method('find')->with(123)->willReturn($reply);
         $this->commentRepository->expects($this->never())->method('find');
@@ -54,7 +54,7 @@ class ActivityCommentProviderTest extends AbstractTestCase
     {
         $this->commentRepository->expects($this->never())->method('find');
         $this->replyRepository->expects($this->never())->method('find');
-        $activity = (new CodeReviewActivity())->setEventName('unknown');
+        $activity = new CodeReviewActivity()->setEventName('unknown');
         static::assertNull($this->provider->getCommentFor($activity));
     }
 }

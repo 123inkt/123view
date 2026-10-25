@@ -14,7 +14,7 @@ class GitAccessTokenTest extends AbstractTestCase
 {
     public function testAccessorPairs(): void
     {
-        $config = (new ConstraintConfig())->setExcludedMethods(['setGitType', 'getGitType']);
+        $config = new ConstraintConfig()->setExcludedMethods(['setGitType', 'getGitType']);
         static::assertAccessorPairs(GitAccessToken::class, $config);
     }
 

@@ -21,7 +21,7 @@ class OpenApiParameterIterator implements IteratorAggregate
     }
 
     /**
-     * @return Generator<array{0: Operation, 1: Parameter}>
+     * @return Generator<int, array{0: Operation, 1: Parameter}, mixed, void>
      */
     public function getIterator(): Generator
     {

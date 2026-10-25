@@ -63,7 +63,7 @@ class RuleNotificationViewModelProviderTest extends AbstractTestCase
      */
     public function testGetNotificationsViewModel(): void
     {
-        $rule         = (new Rule())->setId(123);
+        $rule         = new Rule()->setId(123);
         $notification = new RuleNotification();
 
         $this->userProvider->expects($this->once())

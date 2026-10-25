@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Message\Comment;
 
+use DR\Review\Entity\Review\CommentModificationEnum;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Tests\Unit\Message\AbstractMessageEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -12,13 +13,16 @@ class CommentAddedTest extends AbstractMessageEventTestCase
 {
     public function testAccessors(): void
     {
+        $event = new CommentAdded(5, 6, 7, 'file', 'message', CommentModificationEnum::Gitlab);
+
+        static::assertSame(CommentModificationEnum::Gitlab, $event->getModifiedBy());
         static::assertCodeReviewEvent(
-            new CommentAdded(5, 6, 7, 'file', 'message'),
+            $event,
             'comment-added',
             5,
-            ['commentId' => 6, 'file' => 'file', 'message' => 'message']
+            ['commentId' => 6, 'file' => 'file', 'message' => 'message', 'modifiedBy' => 'gitlab']
         );
-        static::assertCommentEvent(new CommentAdded(5, 6, 7, 'file', 'message'), 6);
-        static::assertUserAware(new CommentAdded(5, 6, 7, 'file', 'message'), 7);
+        static::assertCommentEvent($event, 6);
+        static::assertUserAware($event, 7);
     }
 }

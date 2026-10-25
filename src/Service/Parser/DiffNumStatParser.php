@@ -24,7 +24,7 @@ class DiffNumStatParser implements LoggerAwareInterface
                 $this->logger?->notice('DiffNumStatParser: Unable to parse line: {line}', ['line' => $line]);
                 continue;
             }
-            $files[] = (new RevisionFile())
+            $files[] = new RevisionFile()
                 ->setRevision($revision)
                 ->setLinesAdded((int)$matches[1])
                 ->setLinesRemoved((int)$matches[2])

@@ -10,7 +10,7 @@ class CodeReviewNotFoundException extends RuntimeException implements ToolExecut
 {
     public function __construct(private readonly int $reviewId)
     {
-        parent::__construct();
+        parent::__construct('Code review not found: ' . $this->reviewId);
     }
 
     public function getToolCallResult(): string

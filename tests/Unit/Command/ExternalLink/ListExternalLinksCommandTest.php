@@ -31,7 +31,7 @@ class ListExternalLinksCommandTest extends AbstractTestCase
      */
     public function testExecute(): void
     {
-        $link = (new ExternalLink())->setPattern('pattern')->setUrl('url');
+        $link = new ExternalLink()->setId(123)->setPattern('pattern')->setUrl('url');
 
         $this->linkRepository
             ->expects($this->once())

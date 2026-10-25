@@ -17,7 +17,7 @@ class RuleOptions
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\OneToOne(targetEntity: Rule::class, inversedBy: 'ruleOptions', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -54,9 +54,14 @@ class RuleOptions
     #[ORM\Column(type: MailThemeType::TYPE)]
     private string $theme = MailThemeType::UPSOURCE;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function getRule(): Rule
@@ -202,7 +207,7 @@ class RuleOptions
 
     public function __clone(): void
     {
-        $this->id = null;
+        unset($this->id);
         unset($this->rule);
     }
 }

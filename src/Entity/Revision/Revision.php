@@ -24,7 +24,7 @@ class Revision
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups('revision:read')]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 50)]
     #[Groups('revision:read')]
@@ -83,9 +83,14 @@ class Revision
         return $this;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function hasId(): bool
+    {
+        return isset($this->id);
     }
 
     public function getCommitHash(): string

@@ -5,12 +5,14 @@ namespace DR\Review\Service\Ai\Tool;
 
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\Grep\LockableGitGrepService;
 use DR\Utils\Arrays;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
-use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
+use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
 #[AsTool(
@@ -21,8 +23,9 @@ use Throwable;
 class CodeReviewGrepTool
 {
     public function __construct(
-        private ?LoggerInterface $aiLogger,
+        #[Target('aiLogger')] private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly LockableGitGrepService $grepService
     ) {
     }
@@ -35,7 +38,7 @@ class CodeReviewGrepTool
      * @return string The as-is output of the git grep command
      * @throws Throwable
      */
-    public function __invoke(int $codeReviewId, string $pattern, #[With(minimum: 0, maximum: 5)] int $context = 0): string
+    public function __invoke(int $codeReviewId, string $pattern, #[Schema(minimum: 0, maximum: 5)] int $context = 0): string
     {
         if (@preg_match('/' . $pattern . '/', '') === false) {
             throw new InvalidArgumentException('The provided pattern is not a valid regex pattern: ' . $pattern);
@@ -46,7 +49,7 @@ class CodeReviewGrepTool
             throw new CodeReviewNotFoundException($codeReviewId);
         }
 
-        $revision = Arrays::lastOrNull($review->getRevisions());
+        $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
         if ($revision === null) {
             throw new CodeReviewNotFoundException($codeReviewId);
         }

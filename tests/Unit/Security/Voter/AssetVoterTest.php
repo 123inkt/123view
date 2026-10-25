@@ -34,7 +34,7 @@ class AssetVoterTest extends AbstractTestCase
     #[TestWith(['foobar', VoterInterface::ACCESS_ABSTAIN])]
     public function testSupportsWithDifferentAttributes(string $attribute, int $accessGrant): void
     {
-        $asset   = (new Asset())->setData('test-data');
+        $asset   = new Asset()->setData('test-data');
         $request = new Request(['hash' => $asset->getHash()]);
         $this->requestStack->push($request);
 

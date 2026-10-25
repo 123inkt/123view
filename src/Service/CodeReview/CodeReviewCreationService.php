@@ -30,7 +30,7 @@ class CodeReviewCreationService implements LoggerAwareInterface
     public function createFromRevision(Revision $revision, ?string $referenceId = null): CodeReview
     {
         $review = $this->reviewFactory->createFromRevision($revision, $referenceId);
-        $review->setProjectId($this->reviewRepository->getCreateProjectId((int)$revision->getRepository()->getId()));
+        $review->setProjectId($this->reviewRepository->getCreateProjectId($revision->getRepository()->getId()));
         $this->logger?->info('Created new review CR-' . $review->getProjectId());
 
         return $review;
@@ -42,7 +42,7 @@ class CodeReviewCreationService implements LoggerAwareInterface
     public function createFromBranch(Repository $repository, string $branchName): CodeReview
     {
         $review = $this->reviewFactory->createFromBranch($repository, $branchName);
-        $review->setProjectId($this->reviewRepository->getCreateProjectId((int)$repository->getId()));
+        $review->setProjectId($this->reviewRepository->getCreateProjectId($repository->getId()));
         $review->setTargetBranch($this->targetBranchService->getTargetBranch($repository, $branchName));
         $this->logger?->info('Created new branch review CR-' . $review->getProjectId());
 

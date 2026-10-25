@@ -22,7 +22,7 @@ class ProcessOutputIteratorTest extends AbstractTestCase
         static::assertCount(4, $output);
 
         // test if resource is closed
-        static::assertFalse(is_resource($handle));
+        static::assertSame('resource (closed)', get_debug_type($handle));
     }
 
     public function testGetIteratorWithEarlyTerminations(): void
@@ -41,6 +41,6 @@ class ProcessOutputIteratorTest extends AbstractTestCase
         static::assertIsString($firstLine);
 
         // test if resource is closed
-        static::assertFalse(is_resource($handle));
+        static::assertSame('resource (closed)', get_debug_type($handle));
     }
 }

@@ -40,31 +40,32 @@ export default class extends Controller<HTMLElement> {
         }
     }
 
-    public submitComment(event: Event): void {
+    public submitComment(event: SubmitEvent): void {
         Events.stop(event);
         if (this.submitting) {
             return;
         }
         this.submitting     = true;
+        const mode          = event.submitter?.dataset.mode ?? 'save';
         const commentThread = this.element.closest<HTMLElement>('[data-controller="comment-thread"]') !== null;
 
         if (commentThread) {
             this.commentService
-                .submitCommentForm(this.formTarget)
+                .submitCommentForm(this.formTarget, mode)
                 .then(commentId => window.dispatchEvent(new CustomEvent('comment-update', {detail: commentId})))
                 .catch(err => {
-                    this.submitButtonTarget.disabled  = false;
-                    this.submitting = false;
+                    this.submitButtonTarget.disabled = false;
+                    this.submitting                  = false;
                     Errors.catch(err);
                 });
         } else {
             this.commentService
-                .submitAddCommentForm(this.formTarget)
+                .submitAddCommentForm(this.formTarget, mode)
                 .then(commentUrl => this.commentService.getCommentThread(commentUrl))
                 .then(thread => this.element.replaceWith(thread))
                 .catch(err => {
-                    this.submitButtonTarget.disabled  = false;
-                    this.submitting = false;
+                    this.submitButtonTarget.disabled = false;
+                    this.submitting                  = false;
                     Errors.catch(err);
                 });
         }

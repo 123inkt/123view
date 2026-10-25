@@ -6,10 +6,12 @@ namespace DR\Review\EventSubscriber\Dispatch;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
-use DR\Review\Doctrine\Type\CommentStateType;
 use DR\Review\Entity\Review\Comment;
+use DR\Review\Entity\Review\CommentStateEnum;
+use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
+use DR\Review\Message\Comment\CommentDraftAdded;
 use DR\Review\Message\Comment\CommentRemoved;
 use DR\Review\Message\Comment\CommentResolved;
 use DR\Review\Message\Comment\CommentUnresolved;
@@ -24,18 +26,28 @@ use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Service\ResetInterface;
 
+/**
+ * @phpstan-type CommentChangeSet array{
+ *     type?: array{0: string, 1: string},
+ *     message?: array{0: string, 1: string},
+ *     state?: array{0: string, 1: CommentStateEnum}
+ * }
+ */
 #[AsEntityListener(event: Events::postPersist, method: 'commentAdded', entity: Comment::class)]
 #[AsEntityListener(event: Events::preUpdate, method: 'preCommentUpdated', entity: Comment::class)]
 #[AsEntityListener(event: Events::postUpdate, method: 'commentUpdated', entity: Comment::class)]
+#[AsEntityListener(event: Events::preRemove, method: 'preCommentRemoved', entity: Comment::class)]
 #[AsEntityListener(event: Events::postRemove, method: 'commentRemoved', entity: Comment::class)]
 #[AsEventListener(event: KernelEvents::TERMINATE, method: 'finish')]
 #[AsEventListener(event: ConsoleEvents::TERMINATE, method: 'finish')]
 class CommentEventSubscriber implements ResetInterface
 {
-    /** @var array<CommentAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
+    /** @var array<CommentAdded|CommentDraftAdded|CommentUpdated|CommentRemoved|CommentUnresolved|CommentResolved> */
     private array $events = [];
-    /** @var array<int, mixed[]> */
+    /** @var array<int, CommentChangeSet> */
     private array $updated = [];
+    /** @var array<int, CommentRemoved> */
+    private array $removed = [];
 
     public function __construct(
         private readonly UserEntityProvider $userEntityProvider,
@@ -46,21 +58,40 @@ class CommentEventSubscriber implements ResetInterface
 
     public function commentAdded(Comment $comment): void
     {
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            $this->events[] = $this->messageFactory->createDraftAdded($comment, $comment->getUser());
+
+            return;
+        }
+
         $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
     }
 
     public function preCommentUpdated(Comment $comment, PreUpdateEventArgs $event): void
     {
-        /** @var mixed[] $changeSet */
-        $changeSet                                         = $event->getEntityChangeSet();
-        $this->updated[Assert::integer($comment->getId())] = $changeSet;
+        /** @var CommentChangeSet $changeSet */
+        $changeSet                        = $event->getEntityChangeSet();
+        $this->updated[$comment->getId()] = $changeSet;
     }
 
     public function commentUpdated(Comment $comment): void
     {
-        $user      = $this->getUser($comment);
+        $user = $this->getUser($comment);
+        /** @var CommentChangeSet $changeSet */
         $changeSet = $this->updated[$comment->getId()] ?? null;
         if ($changeSet === null) {
+            return;
+        }
+
+        // when draft is published, dispatch CommentDraftAdded
+        if (array_key_exists('type', $changeSet) && $changeSet['type'] === [CommentTypeEnum::Draft->value, CommentTypeEnum::Final->value]) {
+            $this->events[] = $this->messageFactory->createAdded($comment, $comment->getUser());
+
+            return;
+        }
+
+        // suppress all events for draft comments
+        if ($comment->getType() === CommentTypeEnum::Draft) {
             return;
         }
 
@@ -72,21 +103,34 @@ class CommentEventSubscriber implements ResetInterface
             return;
         }
 
-        if ($comment->getState() === CommentStateType::RESOLVED) {
+        if ($comment->getState() === CommentStateEnum::Resolved) {
             $this->events[] = $this->messageFactory->createResolved($comment, $user);
         } else {
             $this->events[] = $this->messageFactory->createUnresolved($comment, $user);
         }
     }
 
-    public function commentRemoved(Comment $comment): void
+    public function preCommentRemoved(Comment $comment): void
     {
+        if ($comment->getType() === CommentTypeEnum::Draft) {
+            return;
+        }
+
         $user = $this->getUser($comment);
         if ($user->hasId() === false) {
             return;
         }
 
-        $this->events[] = $this->messageFactory->createRemoved($comment, $user);
+        $this->removed[spl_object_id($comment)] = $this->messageFactory->createRemoved($comment, $user);
+    }
+
+    public function commentRemoved(Comment $comment): void
+    {
+        $event = $this->removed[spl_object_id($comment)] ?? null;
+        unset($this->removed[spl_object_id($comment)]);
+        if ($event !== null) {
+            $this->events[] = $event;
+        }
     }
 
     /**
@@ -102,8 +146,10 @@ class CommentEventSubscriber implements ResetInterface
      */
     public function finish(): void
     {
-        $events       = $this->events;
-        $this->events = [];
+        $this->updated = [];
+        $this->removed = [];
+        $events        = $this->events;
+        $this->events  = [];
         foreach ($events as $event) {
             $this->bus->dispatch($event);
         }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Service;
 
 use DR\Review\Entity\Git\Diff\DiffFile;
-use DR\Review\Git\FormatPattern;
+use DR\Review\Model\Git\FormatPattern;
 use DR\Review\Service\CommitHydrator;
 use DR\Review\Tests\AbstractTestCase;
 use Exception;

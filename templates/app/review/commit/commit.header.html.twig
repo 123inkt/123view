@@ -1,6 +1,15 @@
-{#- fileDiffViewModel: FileDiffViewModel -#}
+{%- types {fileDiffViewModel: '\\DR\\Review\\ViewModel\\App\\Review\\FileDiffViewModel'} -%}
+
 <div class="diff-file__file-revision-info pb-2">
     <div class="clearfix">
+        {%- if fileDiffViewModel.codeOwners -%}
+            <div class="float-start me-2">
+                <span class="badge rounded-pill text-bg-success"
+                      title="{{ 'code.owner.of.file'|trans ~ ': ' ~ fileDiffViewModel.codeOwners|join(', ') }}"
+                >CODEOWNER</span>
+            </div>
+        {%- endif -%}
+
         <div class="float-start">
             <div>
                 {%- if file.rename -%}

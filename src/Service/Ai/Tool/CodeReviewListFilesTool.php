@@ -6,19 +6,24 @@ namespace DR\Review\Service\Ai\Tool;
 use DR\Review\Exception\Ai\CodeReviewFileNotFoundException;
 use DR\Review\Exception\Ai\CodeReviewNotFoundException;
 use DR\Review\Repository\Review\CodeReviewRepository;
+use DR\Review\Service\CodeReview\CodeReviewRevisionService;
 use DR\Review\Service\Git\LsTree\LockableLsTreeService;
 use DR\Utils\Arrays;
+use Mcp\Capability\Attribute\McpTool;
 use Psr\Log\LoggerInterface;
 use Symfony\AI\Agent\Toolbox\Attribute\AsTool;
-use Symfony\AI\Platform\Contract\JsonSchema\Attribute\With;
+use Symfony\AI\Platform\Contract\JsonSchema\Attribute\Schema;
+use Symfony\Component\DependencyInjection\Attribute\Target;
 use Throwable;
 
+#[McpTool('list_files', 'List the files in the given directory path for the specified code review.')]
 #[AsTool('list_files', 'List the files in the given directory path for the specified code review.')]
 class CodeReviewListFilesTool
 {
     public function __construct(
-        private ?LoggerInterface $aiLogger,
+        #[Target('aiLogger')] private ?LoggerInterface $aiLogger,
         private readonly CodeReviewRepository $repository,
+        private readonly CodeReviewRevisionService $revisionService,
         private readonly LockableLsTreeService $lsTreeService
     ) {
     }
@@ -30,14 +35,14 @@ class CodeReviewListFilesTool
      * @return string[] List of file paths
      * @throws Throwable
      */
-    public function __invoke(#[With(minimum: 1)] int $codeReviewId, string $filepath): array
+    public function __invoke(#[Schema(minimum: 1)] int $codeReviewId, string $filepath): array
     {
         $review = $this->repository->find($codeReviewId);
         if ($review === null) {
             throw new CodeReviewNotFoundException($codeReviewId);
         }
 
-        $revision = Arrays::lastOrNull($review->getRevisions());
+        $revision = Arrays::lastOrNull($this->revisionService->getRevisions($review));
         if ($revision === null) {
             throw new CodeReviewFileNotFoundException($filepath, $codeReviewId);
         }

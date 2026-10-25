@@ -17,7 +17,7 @@ class GetAssetControllerTest extends AbstractTestCase
         $asset->setMimeType('image/png');
         $asset->setData('image-data');
 
-        $response = (new GetAssetController())($asset);
+        $response = new GetAssetController()($asset);
 
         static::assertSame('image-data', $response->getContent());
 

@@ -5,23 +5,19 @@ namespace DR\Review\Request\Search;
 
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
-use DR\Utils\Arrays;
+use DR\Review\Model\Search\SearchFilter;
 
 class SearchCodeRequest extends AbstractValidatedRequest
 {
-    public function getSearchQuery(): string
+    public function getFilter(): SearchFilter
     {
-        return trim($this->request->query->getString('search'));
-    }
+        $filename = trim($this->request->query->getString('filename'));
 
-    /**
-     * @return non-empty-array<string>|null
-     */
-    public function getExtensions(): ?array
-    {
-        $extensions = Arrays::explode(',', $this->request->query->getString('extension'));
-
-        return count($extensions) === 0 ? null : $extensions;
+        return new SearchFilter(
+            trim($this->request->query->getString('search')),
+            $filename === '' ? null : $filename,
+            $this->request->query->getBoolean('regex'),
+        );
     }
 
     public function isShowAll(): bool
@@ -29,14 +25,15 @@ class SearchCodeRequest extends AbstractValidatedRequest
         return $this->request->query->getBoolean('all');
     }
 
-    protected function getValidationRules(): ?ValidationRules
+    protected function getValidationRules(): ValidationRules
     {
         return new ValidationRules(
             [
                 'query' => [
-                    'search'    => 'required|string',
-                    'extension' => 'string|regex:/^[a-zA-Z0-9]{1,5}(,[a-zA-Z0-9]{1,5})*$/',
-                    'all'       => 'string',
+                    'search'   => 'required|string',
+                    'filename' => 'string',
+                    'all'      => 'string',
+                    'regex'    => 'string|in:true,false',
                 ]
             ]
         );

@@ -35,7 +35,7 @@ class RevisionVisibilityServiceTest extends AbstractTestCase
     public function testGetVisibleRevisionsWithoutVisibility(): void
     {
         $revision = new Revision();
-        $review   = (new CodeReview())->setId(123);
+        $review   = new CodeReview()->setId(123);
 
         $this->userProvider->expects($this->once())
             ->method('getUser')

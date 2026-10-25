@@ -15,7 +15,7 @@ class CodeCoverageFile
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     private string $file;
@@ -33,12 +33,12 @@ class CodeCoverageFile
     #[ORM\JoinColumn(nullable: false)]
     private CodeCoverageReport $report;
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(?int $id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 
