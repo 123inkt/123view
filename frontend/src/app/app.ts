@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet} from '@angular/router';
+import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterOutlet} from '@angular/router';
 import {Header} from '@component/header/header';
 import {Loader} from '@component/loader/loader';
 import {ToastList} from '@component/toast/toast-list/toast-list';
@@ -23,10 +23,7 @@ export class App {
             if (event instanceof NavigationStart) {
                 progress.setLoading(true);
             }
-            if (event instanceof NavigationEnd) {
-                progress.setLoading(false);
-            }
-            if (event instanceof NavigationError) {
+            if (event instanceof NavigationEnd || event instanceof NavigationError || event instanceof NavigationCancel) {
                 progress.setLoading(false);
             }
         });
