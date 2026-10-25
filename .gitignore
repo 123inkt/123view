@@ -10,6 +10,11 @@
 /.claude/settings.local.json
 /*_PLAN.md
 /docs/plan/
+/.ai
+/.claude
+/.codex
+/.copilot
+/.openchamber
 /.opencode/
 
 ###> symfony/framework-bundle ###
