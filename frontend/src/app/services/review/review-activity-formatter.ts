@@ -34,7 +34,7 @@ export class ReviewActivityFormatter {
 
     public formatActivity(activity: CodeReviewActivity): Observable<string> {
         const translationKey: string = ReviewActivityFormatter.TranslationMap[activity.eventName];
-        const filepath               = String(activity.data['file'] ?? 'unknown file');
+        const filepath               = String(activity.data?.['file'] ?? 'unknown file');
         const filename               = basename(filepath);
 
         return this.formatUsername(activity)
@@ -43,7 +43,7 @@ export class ReviewActivityFormatter {
 
     private formatUsername(activity: CodeReviewActivity): Observable<string> {
         // if user is unknown, activity was executed by the system
-        if (activity.user === undefined) {
+        if (activity.user == null) {
             return of('123view');
         }
         // user is current user, show as 'You'

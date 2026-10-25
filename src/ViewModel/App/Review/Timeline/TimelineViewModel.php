@@ -5,7 +5,6 @@ namespace DR\Review\ViewModel\App\Review\Timeline;
 
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\OpenApi\Model\Operation as OpenApiOperation;
-use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\ViewModelProvider\ReviewTimelineViewModelProvider;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -33,13 +32,10 @@ class TimelineViewModel
     /**
      * @codeCoverageIgnore
      *
-     * @param CodeReviewActivity[]     $activities
-     * @param TimelineEntryViewModel[] $entries
+     * @param TimelineActivityViewModel[] $activities
+     * @param TimelineEntryViewModel[]    $entries
      */
-    public function __construct(
-        #[Groups('app:timeline')]
-        public array $activities,
-        public array $entries
-    ) {
+    public function __construct(#[Groups('app:timeline')] public array $activities, public array $entries)
+    {
     }
 }

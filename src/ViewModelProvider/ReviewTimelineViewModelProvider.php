@@ -7,6 +7,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Review\CodeReview;
+use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
@@ -22,6 +23,7 @@ use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
 use DR\Review\Service\CodeReview\Comment\ActivityCommentProvider;
 use DR\Review\Service\User\UserEntityProvider;
+use DR\Review\ViewModel\App\Review\Timeline\TimelineActivityViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineEntryViewModel;
 use DR\Review\ViewModel\App\Review\Timeline\TimelineViewModel;
 use DR\Utils\Assert;
@@ -115,8 +117,13 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
             Assert::notNull($repository, 'Repository not found: ' . $repositoryId);
         }
 
+        $activities = $this->activityRepository->findForUser($this->userProvider->getCurrentUser()->getId(), self::FEED_EVENTS, $repository);
+
         return new TimelineViewModel(
-            $this->activityRepository->findForUser($this->userProvider->getCurrentUser()->getId(), self::FEED_EVENTS, $repository),
+            array_map(
+                static fn(CodeReviewActivity $activity): TimelineActivityViewModel => TimelineActivityViewModel::fromActivity($activity),
+                $activities
+            ),
             []
         );
     }

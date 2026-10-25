@@ -10,6 +10,7 @@ use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Message\Comment\CommentAdded;
 use DR\Review\Message\Revision\ReviewRevisionAdded;
+use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityFormatter;
 use DR\Review\Service\CodeReview\Activity\CodeReviewActivityUrlGenerator;
@@ -24,6 +25,7 @@ use function DR\PHPUnitExtensions\Mock\consecutive;
 #[CoversClass(ReviewTimelineViewModelProvider::class)]
 class ReviewTimelineViewModelProviderTest extends AbstractTestCase
 {
+    private RepositoryRepository&MockObject             $repositoryRepository;
     private CodeReviewActivityRepository&MockObject   $activityRepository;
     private CodeReviewActivityFormatter&MockObject    $activityFormatter;
     private ActivityCommentProvider&MockObject        $commentProvider;
@@ -36,12 +38,15 @@ class ReviewTimelineViewModelProviderTest extends AbstractTestCase
     {
         parent::setUp();
         $this->user               = new User();
+        $this->repositoryRepository = $this->createMock(RepositoryRepository::class);
+        $this->repositoryRepository->expects($this->never())->method(static::anything());
         $this->userProvider       = $this->createMock(UserEntityProvider::class);
         $this->activityRepository = $this->createMock(CodeReviewActivityRepository::class);
         $this->activityFormatter  = $this->createMock(CodeReviewActivityFormatter::class);
         $this->commentProvider    = $this->createMock(ActivityCommentProvider::class);
         $this->urlGenerator       = $this->createMock(CodeReviewActivityUrlGenerator::class);
         $this->provider           = new ReviewTimelineViewModelProvider(
+            $this->repositoryRepository,
             $this->activityRepository,
             $this->activityFormatter,
             $this->commentProvider,
