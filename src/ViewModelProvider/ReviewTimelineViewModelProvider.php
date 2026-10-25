@@ -115,6 +115,9 @@ readonly class ReviewTimelineViewModelProvider implements ProviderInterface
             Assert::notNull($repository, 'Repository not found: ' . $repositoryId);
         }
 
-        return new TimelineViewModel($this->activityRepository->findForUser($this->user->getId(), self::FEED_EVENTS, $repository), []);
+        return new TimelineViewModel(
+            $this->activityRepository->findForUser($this->userProvider->getCurrentUser()->getId(), self::FEED_EVENTS, $repository),
+            []
+        );
     }
 }

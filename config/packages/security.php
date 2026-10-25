@@ -22,7 +22,20 @@ return App::config([
         'firewalls'        => [
             'dev'      => ['pattern' => '^/(_(profiler|wdt)|css|images|js)/', 'security' => false],
             'api_docs' => ['pattern' => '^/api/docs', 'stateless' => true, 'security' => false],
-           // TODO fix angular 'api'      => ['pattern' => '^/api', 'stateless' => true, 'custom_authenticators' => [BearerAuthenticator::class]],
+            'api'      => [
+                'pattern'      => '^/api',
+                'stateless'    => true,
+                'provider'     => 'app_user_provider',
+                'user_checker' => UserChecker::class,
+                'entry_point'  => 'jwt',
+                'json_login'   => [
+                    'check_path'      => 'lexik_jwt_access_token',
+                    'success_handler' => 'lexik_jwt_authentication.handler.authentication_success',
+                    'failure_handler' => 'lexik_jwt_authentication.handler.authentication_failure',
+                ],
+                'jwt'          => [],
+                'refresh_jwt'  => ['check_path' => 'gesdinet_jwt_refresh_token'],
+            ],
             'mcp'      => ['pattern' => '^/_mcp', 'stateless' => true, 'custom_authenticators' => [BearerAuthenticator::class]],
             'main'     => [
                 'lazy'                  => true,
@@ -42,6 +55,7 @@ return App::config([
         ],
         'access_control'   => [
             ['path' => '^/app', 'roles' => AuthenticatedVoter::IS_AUTHENTICATED_FULLY],
+            ['path' => '^/api/token/(acquire|refresh)$', 'roles' => AuthenticatedVoter::PUBLIC_ACCESS],
             ['path' => '^/api/view-model/login', 'roles' => AuthenticatedVoter::PUBLIC_ACCESS],
             ['path' => '^/api', 'roles' => AuthenticatedVoter::IS_AUTHENTICATED_FULLY],
             ['path' => '^/_mcp', 'roles' => [Roles::ROLE_USER]],
