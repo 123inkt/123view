@@ -13,6 +13,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -75,7 +76,10 @@ abstract class AbstractRequestTestCase extends AbstractTestCase
         $validator
             ->expects($this->atLeastOnce())
             ->method('validate')
-            ->with(self::isInstanceOf(Request::class), $constraint)
+            ->with(
+                self::logicalOr(self::isInstanceOf(Request::class), self::callback(is_string(...))),
+                self::logicalOr(self::identicalTo($constraint), self::isInstanceOf(Constraint::class))
+            )
             ->willReturn($violationList);
     }
 

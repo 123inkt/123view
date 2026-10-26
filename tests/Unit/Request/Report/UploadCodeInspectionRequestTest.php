@@ -8,6 +8,11 @@ use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
 use DR\Review\Request\Report\UploadCodeInspectionRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @extends AbstractRequestTestCase<UploadCodeInspectionRequest>
@@ -69,6 +74,49 @@ class UploadCodeInspectionRequestTest extends AbstractRequestTestCase
         $this->expectGetValidationRules($expected);
 
         $this->validatedRequest->validate();
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function invalidGitlabDataProvider(): iterable
+    {
+        yield 'invalid json' => ["[\"\x00\"]"];
+        yield 'json object' => ['{}'];
+        yield 'invalid field type' => ['[{"description":[]}]'];
+    }
+
+    #[DataProvider('invalidGitlabDataProvider')]
+    public function testInvalidGitlabJsonIsRejected(string $content): void
+    {
+        $request = new Request(['format' => 'gitlab'], content: $content);
+        $stack   = new RequestStack([$request]);
+
+        $validatedRequest = new class ($stack, Validation::createValidator(), $this->constraintFactory) extends UploadCodeInspectionRequest {
+            protected function getValidationRules(): ?ValidationRules
+            {
+                return null;
+            }
+        };
+
+        $this->expectException(BadRequestException::class);
+        $validatedRequest->validate();
+    }
+
+    public function testInvalidXmlIsRejected(): void
+    {
+        $request = new Request(content: '<checkstyle>');
+        $stack   = new RequestStack([$request]);
+
+        $validatedRequest = new class ($stack, Validation::createValidator(), $this->constraintFactory) extends UploadCodeInspectionRequest {
+            protected function getValidationRules(): ?ValidationRules
+            {
+                return null;
+            }
+        };
+
+        $this->expectException(BadRequestException::class);
+        $validatedRequest->validate();
     }
 
     protected static function getClassToTest(): string

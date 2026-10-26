@@ -14,6 +14,7 @@ use Exception;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 #[CoversNothing]
 class UploadCodeInspectionControllerTest extends AbstractFunctionalTestCase
@@ -40,6 +41,23 @@ class UploadCodeInspectionControllerTest extends AbstractFunctionalTestCase
             content: $content
         );
         self::assertResponseIsSuccessful();
+    }
+
+    public function testInvalidUploadReturnsBadRequest(): void
+    {
+        $userRepository = self::getService(UserRepository::class);
+        $user           = Assert::notNull($userRepository->findOneBy(['name' => 'Sherlock Holmes']))->addRole(Roles::ROLE_ADMIN);
+        $userRepository->save($user, true);
+
+        $url = '/api/report/code-inspection/repository/126d52488ea380618c4a69cf8b250d4bd05de6c7?format=gitlab&identifier=foobar';
+        $this->client->request(
+            Request::METHOD_POST,
+            $url,
+            server: ['HTTP_AUTHORIZATION' => 'Bearer ' . UserAccessTokenFixtures::TOKEN_VALUE],
+            content: "[\"\x00\"]"
+        );
+
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
     }
 
     /**
