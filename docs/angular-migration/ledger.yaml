@@ -1,0 +1,255 @@
+# Execution register. Immutable run/review records live in evidence/.
+schema_version: 2
+architecture_approval:
+  status: approved
+  authority: user approval relayed in G0a assignment
+  baseline_verified: false
+target_branch: angular
+max_active_implementation_workers: 1
+lifecycle_values: [proposed, ready, implementing, candidate, independently-reviewed, CI-passed, merged, human-review-pending, accepted]
+check_status_values: [passed, failed, blocked, not_run, not_applicable]
+human_status_values: [unassigned, pending, changes_requested, accepted]
+policies:
+  readiness: Ordinary readiness requires integrated dependencies with no blockers or human changes requested; pending human review does not block ordinary development. C1 requires all dependency human acceptances.
+  foundation: Every feature from ready onward requires integrated G0/G0a/G0b and baseline_verified; provisional stacking cannot bypass this gate.
+  discovery: execution_mode discovery stays proposed and creates no implementation candidate; source measurements do not advance dependency gates.
+  stacking: Explicit authorization and exact unmerged parent candidates with completed checks and supplied prerequisites are required; reconcile and remove provisional_stack before merge.
+  lifecycle: Advance only with linked evidence; independently-reviewed and CI-passed require matching candidate SHA, accepted requires postmerge human acceptance.
+  invalidation: Fix, rebase or integration requires fresh candidate checks and independent review; retain old evidence append-only.
+  cutover: Individual review slices cannot cut over an unfinished review screen.
+  cleanup: C1 requires all applicable parity and human reviews accepted, not merely merged.
+  evidence: See evidence/README.md; source SHA and artifact commit SHA are separate identities.
+  applicability: Every required check must pass; not_applicable requires scope justification and never substitutes for a missing capability.
+  schema_reference: evidence/README.md defines version 2 lifecycle fields and state invariants.
+
+# YAML merge defaults materialize the tracking fields for EVERY slice.
+# Update nested maps in full when overriding them; YAML merge is shallow.
+defaults: &slice
+  lifecycle: proposed
+  execution_mode: implementation
+  provisional_stack: null
+  worktree: null
+  branch: null
+  base_sha: null
+  parent_sha: null
+  candidate_sha: null
+  pr_url: null
+  pr_target: angular
+  blockers: []
+  evidence: []
+  checks:
+    governance: {status: not_run, evidence: null}
+    npm_ci: {status: not_run, evidence: null}
+    production_build: {status: not_run, evidence: null}
+    frontend_lint: {status: not_run, evidence: null}
+    angular_components: {status: not_run, evidence: null}
+    backend_unit: {status: not_run, evidence: null}
+    backend_functional: {status: not_run, evidence: null}
+    backend_integration: {status: not_run, evidence: null}
+    php_static: {status: not_run, evidence: null}
+    twig_container_email: {status: not_run, evidence: null}
+    browser: {status: not_run, evidence: null}
+  ci: {status: not_run, sha: null, run_url: null, required_gate_verified: false}
+  independent_review: {status: not_run, reviewer: null, sha: null, worktree: null, evidence: null}
+  merge_sha: null
+  human_review: {owner: null, status: unassigned, sha: null, evidence: null}
+
+slices:
+  G0:
+    <<: *slice
+    title: Governance and operational baseline gate
+    depends_on: [G0a, G0b]
+    acceptance:
+      - Approved architecture, routes, ledger, agents and evidence conventions are usable and reviewed.
+      - Isolated fixtures and working required CI plus actual test/runtime baseline are verified; G0a alone cannot unlock F1.
+    blockers: [G0b fixtures and working verification/CI remain unimplemented and unverified.]
+  G0a:
+    <<: *slice
+    title: Governance documents and migration agents
+    depends_on: []
+    lifecycle: candidate
+    worktree: /home/dr/projects/123view-g0-governance
+    branch: migration/g0-governance
+    base_sha: 0786d3a44f855bba5e4b364197c80c3f9f38603f
+    parent_sha: 0786d3a44f855bba5e4b364197c80c3f9f38603f
+    candidate_sha: 98c14610b60ff0ea8703f583ac5ca5e153c3cb81
+    candidate_identity_note: Checked repair source commit; parent must record final evidence-envelope SHA and matching rerun checks before independent review or CI approval. The a742 rejection remains historical, not a review of this candidate.
+    evidence:
+      - evidence/G0a/20261028T085554Z-0786d3a-precommit.md
+      - evidence/G0a/20261028T085758Z-a525140f-attestation.md
+      - evidence/G0a/a742d5a8-independent-review-request-changes.md
+      - evidence/G0a/20261028T092501Z-a742d5a8-repair.md
+      - evidence/G0a/20261028T092754Z-98c14610-repair-attestation.md
+    checks:
+      governance: {status: passed, evidence: evidence/G0a/20261028T092754Z-98c14610-repair-attestation.md, sha: 98c14610b60ff0ea8703f583ac5ca5e153c3cb81}
+      npm_ci: {status: not_applicable, reason: Governance-only changes; G0b must establish the application baseline.}
+      production_build: {status: not_applicable, reason: No application or build changes.}
+      frontend_lint: {status: not_applicable, reason: No application frontend changes; governance validator syntax checked separately.}
+      angular_components: {status: not_applicable, reason: No Angular component changes.}
+      backend_unit: {status: not_applicable, reason: No backend changes.}
+      backend_functional: {status: not_applicable, reason: No backend changes.}
+      backend_integration: {status: not_applicable, reason: No backend changes.}
+      php_static: {status: not_applicable, reason: No PHP changes.}
+      twig_container_email: {status: not_applicable, reason: No Twig or mail implementation changes.}
+      browser: {status: not_applicable, reason: No rendered feature changes; runtime agent discovery remains not_run in evidence.}
+    acceptance:
+      - Approved constraints, slice dependencies, route/DOM boundaries and email retention are recorded without feature or CI edits.
+      - Agent frontmatter, ledger schema/dependency graph and governance consistency checks pass; independent exact-SHA review remains separate.
+      - Evidence conventions and mandatory postmerge human acceptance are explicit; missing runtime/CI baselines are not labeled passing.
+    independent_review: {status: not_run, reviewer: null, sha: null, worktree: null, evidence: null}
+    blockers: [Repairs await fresh exact-SHA independent review and required CI; prior a742 rejection is preserved as historical evidence.]
+  G0b:
+    <<: *slice
+    title: Isolated fixtures and functioning verification/CI baseline
+    depends_on: [G0a]
+    execution_mode: discovery
+    evidence:
+      - evidence/G0b/a742d5a8-baseline-measurement.md
+    acceptance:
+      - Pin isolated frontend/backend/browser runtime to candidate SHA without using the main checkout bind mount as candidate evidence.
+      - Execute npm ci, production build, lint and meaningful Karma ChromeHeadless component tests; validate test runner and behavior assertions.
+      - Add approved Playwright dependency with isolated seeded fixtures covering critical roles/journeys and a documented real-SSO verification path.
+      - Run scoped backend and static checks plus relevant Twig/container/mail checks; record commands, exits, versions and limitations.
+      - Establish required angular-target PR CI at exact candidate SHA with no masked migration failures; verify gate enforcement.
+    acceptance_substeps:
+      - Repair deterministic Karma providers and meaningful rendered/permission/history tests; preserve failed baseline evidence.
+      - Repair test-only RemoteEventHandler registration and prove test-container lint without changing production semantics.
+      - Establish isolated seeded MySQL/local Git/mail/live fixtures and candidate-only frontend/backend serving with verified SHA.
+      - Run fixture-backed functional/integration/email and candidate Playwright journeys; verify real SSO safely beyond mocks.
+      - Establish unmasked exact-SHA angular-target required CI and separately verify gate enforcement.
+    blockers:
+      - Measured a742 ChromeHeadless executed 5 cases; 4 failed and the passing guard scaffold was behaviorally meaningless.
+      - Measured test-container lint failed RemoteEventHandler registration; dev lint success does not resolve it.
+      - No isolated fixture DB/functionals/candidate journeys/real SSO/required CI; narrow measured passes are not G0b acceptance or new-SHA results.
+  F1:
+    <<: *slice
+    title: Route/session/onboarding/shell/theme/translation
+    depends_on: [G0]
+    acceptance:
+      - Preserve root/login/return URLs, onboarding, expiry, SSO and JWT/cookie behavior with real-flow evidence beyond mocks.
+      - Verify session permission gates, shell navigation, theme/locale and browser Git sync without external API changes.
+  P1:
+    <<: *slice
+    title: Projects and activity
+    depends_on: [F1]
+    acceptance: [Preserve /app/projects access and activity behavior with populated/empty/error/denied rendered interactions.]
+  P2:
+    <<: *slice
+    title: Project review lists
+    depends_on: [P1]
+    acceptance: [Preserve review-list filters/search/page/order and history restoration with permission and empty/error tests.]
+  P3:
+    <<: *slice
+    title: Revisions and branches browser
+    depends_on: [P1]
+    acceptance: [Verify repository/branch/revision selection and deep links with access control and paging/error behavior.]
+  S1:
+    <<: *slice
+    title: Global search
+    depends_on: [P2, P3]
+    acceptance: [Preserve search semantics and result navigation/filter/pagination contracts including URL history and denied/error states.]
+  R1:
+    <<: *slice
+    title: Review header/summary/timeline/routes
+    depends_on: [P2]
+    acceptance: [Preserve canonical review route and deprecated redirect with summary/timeline permission and link behavior; no incomplete-screen cutover.]
+  R2:
+    <<: *slice
+    title: Review tree/navigation/seen/collapse
+    depends_on: [R1]
+    acceptance: [Verify filePath navigation and history/keyboard behavior plus server-authoritative seen/collapse persistence.]
+  R3:
+    <<: *slice
+    title: Unified diff
+    depends_on: [R2]
+    acceptance: [Verify unified diff content and line anchors across representative files and states with theme/keyboard parity and retained shared mail rendering.]
+  R4:
+    <<: *slice
+    title: Side-by-side diff/scroll/preferences
+    depends_on: [R3]
+    acceptance: [Verify side-by-side content and synchronized scroll with server-authoritative preferences and navigation/theme parity.]
+  R5:
+    <<: *slice
+    title: Thread reads/draft visibility/anchors
+    depends_on: [R3]
+    acceptance: [Verify comment/reply anchors and thread rendering with owner/nonowner draft visibility and direct-link/history behavior.]
+  R6:
+    <<: *slice
+    title: Composer/create/edit/reply/preview/mentions/upload
+    depends_on: [R5]
+    acceptance: [Exercise typed forms and server authorization for create/edit/reply/preview/mentions and uploads including asset hashes and error recovery.]
+  R7:
+    <<: *slice
+    title: Delete/resolve/reactions/draft lifecycle/overview
+    depends_on: [R6]
+    acceptance: [Verify permitted and rejected lifecycle operations with draft persistence/overview and server events preserved.]
+  R8:
+    <<: *slice
+    title: Review and reviewer lifecycle
+    depends_on: [R1]
+    acceptance: [Verify accept/reject and reviewer/review state transitions including denied operations and backend events/integrations.]
+  R9:
+    <<: *slice
+    title: Revision attach/detach/visibility/target
+    depends_on: [P3, R2, R8]
+    acceptance: [Verify attach/detach and visibility/target changes update tree/diff/lifecycle coherently with permission/error paths.]
+  P4:
+    <<: *slice
+    title: Review creation
+    depends_on: [P3, R1]
+    acceptance: [Verify review creation from selected revisions with validation/permissions and canonical navigation; replace unfinished create behavior.]
+  R10:
+    <<: *slice
+    title: Mercure/live notifications/MR/AI
+    depends_on: [R4, R5, R6, R7, R8, R9]
+    acceptance: [Verify authorized live updates/reconnect and MR/AI integration with feature flags and no stale or duplicate UI state.]
+  U1:
+    <<: *slice
+    title: Account settings/browser notifications
+    depends_on: [F1]
+    acceptance: [Verify persisted settings and browser notification enable/deny/error flows with user ownership and theme/locale parity.]
+  U2:
+    <<: *slice
+    title: Tokens and Git sync
+    depends_on: [F1]
+    acceptance: [Verify token owner authorization and Git sync behavior while protecting secrets and retaining integration contracts.]
+  N1:
+    <<: *slice
+    title: Notification rule editor/filters/recipients
+    depends_on: [F1]
+    acceptance: [Verify typed rule forms and ownership with filter/recipient/frequency behavior and retained backend email delivery rules.]
+  N2:
+    <<: *slice
+    title: Notification history/read/Angular browser viewer
+    depends_on: [N1, R3]
+    acceptance: [Verify history/read marking and Angular notification viewer while retaining mail Twig/styles/renderer and shared diff/URL dependencies.]
+  A1:
+    <<: *slice
+    title: Admin users
+    depends_on: [F1]
+    acceptance: [Verify user administration and validation with admin/nonadmin permission and error behavior.]
+  A2:
+    <<: *slice
+    title: Admin repositories/credentials/validation
+    depends_on: [F1]
+    acceptance: [Verify repository management and credential validation with admin authorization and no secret persistence in evidence.]
+  A3:
+    <<: *slice
+    title: Admin webhooks
+    depends_on: [F1]
+    acceptance: [Verify admin webhook configuration/validation and delivery contracts with nonadmin denial and safe isolated integrations.]
+  X1:
+    <<: *slice
+    title: Auxiliary/error/route audit
+    depends_on: [F1, P1, P2, P3, S1, R1, R2, R3, R4, R5, R6, R7, R8, R9, P4, R10, U1, U2, N1, N2, A1, A2, A3]
+    dependency_note: Relevant slices drive incremental audits; final route audit conservatively waits for all feature owners.
+    acceptance: [Reconcile complete Symfony/Angular route export with ownership register and verify auxiliary/error/redirect/history/deep-link behavior; no unowned routes.]
+  C1:
+    <<: *slice
+    title: Browser Twig/Stimulus cleanup
+    depends_on: [G0, G0a, G0b, F1, P1, P2, P3, S1, R1, R2, R3, R4, R5, R6, R7, R8, R9, P4, R10, U1, U2, N1, N2, A1, A2, A3, X1]
+    dependency_gate: All applicable parity and postmerge human reviews accepted.
+    acceptance:
+      - Prove complete browser parity and accepted human reviews before deleting browser-only Twig/Stimulus.
+      - Inventory inbound template/config/asset consumers and retain mail/shared dependencies; uncertainty blocks deletion.
+      - Verify no dual DOM ownership or URL regressions and rerun affected browser/backend/mail checks after cleanup.
