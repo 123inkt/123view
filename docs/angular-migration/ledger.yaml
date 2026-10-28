@@ -61,13 +61,16 @@ slices:
     <<: *slice
     title: Governance documents and migration agents
     depends_on: []
-    lifecycle: implementing
+    lifecycle: candidate
     worktree: /home/dr/projects/123view-g0-governance
     branch: migration/g0-governance
     base_sha: 0786d3a44f855bba5e4b364197c80c3f9f38603f
     parent_sha: 0786d3a44f855bba5e4b364197c80c3f9f38603f
+    candidate_sha: a525140f8fd3cc1985f8dec23b231a7c60771f49
+    candidate_identity_note: This is the checked source commit; parent must record and review the final evidence-envelope commit SHA reported at handoff before approval or CI claims.
     evidence:
       - evidence/G0a/20261028T085554Z-0786d3a-precommit.md
+      - evidence/G0a/20261028T085758Z-a525140f-attestation.md
     checks:
       governance: {status: passed, evidence: evidence/G0a/20261028T085554Z-0786d3a-precommit.md}
       npm_ci: {status: not_applicable, reason: Governance-only changes; G0b must establish the application baseline.}
