@@ -67,20 +67,21 @@ slices:
     <<: *slice
     title: Governance documents and migration agents
     depends_on: []
-    lifecycle: implementing
+    lifecycle: candidate
     worktree: /home/dr/projects/123view-g0-governance
     branch: migration/g0-governance
     base_sha: 0786d3a44f855bba5e4b364197c80c3f9f38603f
     parent_sha: 0786d3a44f855bba5e4b364197c80c3f9f38603f
-    candidate_sha: null
-    candidate_identity_note: Repair in progress; a742 was independently rejected. Final envelope SHA must replace source identity before review or CI approval; old evidence is historical only.
+    candidate_sha: 98c14610b60ff0ea8703f583ac5ca5e153c3cb81
+    candidate_identity_note: Checked repair source commit; parent must record final evidence-envelope SHA and matching rerun checks before independent review or CI approval. The a742 rejection remains historical, not a review of this candidate.
     evidence:
       - evidence/G0a/20261028T085554Z-0786d3a-precommit.md
       - evidence/G0a/20261028T085758Z-a525140f-attestation.md
       - evidence/G0a/a742d5a8-independent-review-request-changes.md
       - evidence/G0a/20261028T092501Z-a742d5a8-repair.md
+      - evidence/G0a/20261028T092754Z-98c14610-repair-attestation.md
     checks:
-      governance: {status: passed, evidence: evidence/G0a/20261028T092501Z-a742d5a8-repair.md, sha: null}
+      governance: {status: passed, evidence: evidence/G0a/20261028T092754Z-98c14610-repair-attestation.md, sha: 98c14610b60ff0ea8703f583ac5ca5e153c3cb81}
       npm_ci: {status: not_applicable, reason: Governance-only changes; G0b must establish the application baseline.}
       production_build: {status: not_applicable, reason: No application or build changes.}
       frontend_lint: {status: not_applicable, reason: No application frontend changes; governance validator syntax checked separately.}
@@ -95,12 +96,7 @@ slices:
       - Approved constraints, slice dependencies, route/DOM boundaries and email retention are recorded without feature or CI edits.
       - Agent frontmatter, ledger schema/dependency graph and governance consistency checks pass; independent exact-SHA review remains separate.
       - Evidence conventions and mandatory postmerge human acceptance are explicit; missing runtime/CI baselines are not labeled passing.
-    independent_review:
-      status: failed
-      reviewer: Independent migration reviewer; findings relayed by orchestrator
-      sha: a742d5a8cdd793fe09af74fc0416b30d2130fa9b
-      worktree: /home/dr/projects/123view-g0-review
-      evidence: evidence/G0a/a742d5a8-independent-review-request-changes.md
+    independent_review: {status: not_run, reviewer: null, sha: null, worktree: null, evidence: null}
     blockers: [Repairs await fresh exact-SHA independent review and required CI; prior a742 rejection is preserved as historical evidence.]
   G0b:
     <<: *slice
