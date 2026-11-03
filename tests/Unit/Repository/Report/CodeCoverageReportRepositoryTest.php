@@ -5,8 +5,8 @@ namespace DR\Review\Tests\Unit\Repository\Report;
 
 use DR\Review\Repository\Report\CodeCoverageReportRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\CodeCoverageFileFixtures;
-use DR\Review\Tests\DataFixtures\CodeCoverageReportFixtures;
+use DR\Review\Tests\DataFixtures\test\CodeCoverageFileFixtures;
+use DR\Review\Tests\DataFixtures\test\CodeCoverageReportFixtures;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 

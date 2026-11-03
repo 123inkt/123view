@@ -8,7 +8,7 @@ use DR\Review\Repository\Config\RepositoryPropertyRepository;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Service\RemoteEvent\RemoteEventHandler;
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Tests\DataFixtures\RepositoryFixtures;
+use DR\Review\Tests\DataFixtures\test\RepositoryFixtures;
 use DR\Utils\Assert;
 use Exception;
 use Nette\Utils\Json;

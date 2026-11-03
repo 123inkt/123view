@@ -7,7 +7,7 @@ namespace DR\Review\Tests\Integration\Entity\Review;
 use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\CommentFixtures;
+use DR\Review\Tests\DataFixtures\test\CommentFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;

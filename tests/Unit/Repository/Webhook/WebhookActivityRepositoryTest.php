@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Repository\Webhook;
 
 use DR\Review\Repository\Webhook\WebhookActivityRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\WebhookActivityFixtures;
+use DR\Review\Tests\DataFixtures\test\WebhookActivityFixtures;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 

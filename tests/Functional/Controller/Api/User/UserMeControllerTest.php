@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Functional\Controller\Api\User;
 
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Tests\DataFixtures\UserFixtures;
+use DR\Review\Tests\DataFixtures\test\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;

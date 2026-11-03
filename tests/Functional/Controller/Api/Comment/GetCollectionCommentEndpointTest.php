@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Functional\Controller\Api\Comment;
 
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Tests\DataFixtures\CommentApiFixtures;
+use DR\Review\Tests\DataFixtures\test\CommentApiFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;

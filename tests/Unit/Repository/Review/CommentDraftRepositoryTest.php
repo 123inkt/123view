@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Repository\Review;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\DraftCommentFixtures;
+use DR\Review\Tests\DataFixtures\test\DraftCommentFixtures;
 use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
