@@ -5,8 +5,8 @@ namespace DR\Review\Tests\Functional\Controller\Api\Repository;
 
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Tests\DataFixtures\test\RepositoryFixtures;
-use DR\Review\Tests\DataFixtures\test\UserFixtures;
+use DR\Review\Tests\DataFixtures\Test\RepositoryFixtures;
+use DR\Review\Tests\DataFixtures\Test\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;

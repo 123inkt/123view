@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Functional\Mcp;
 
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Tests\DataFixtures\test\CodeReviewFixtures;
-use DR\Review\Tests\DataFixtures\test\UserAccessTokenFixtures;
+use DR\Review\Tests\DataFixtures\Test\CodeReviewFixtures;
+use DR\Review\Tests\DataFixtures\Test\UserAccessTokenFixtures;
 use DR\Utils\Arrays;
 use DR\Utils\Assert;
 use Mcp\Server\Session\Session;

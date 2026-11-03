@@ -7,7 +7,7 @@ use DR\Review\Repository\Config\RuleNotificationRepository;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\test\RuleNotificationFixtures;
+use DR\Review\Tests\DataFixtures\Test\RuleNotificationFixtures;
 use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Throwable;

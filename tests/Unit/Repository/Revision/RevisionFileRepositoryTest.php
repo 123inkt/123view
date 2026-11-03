@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Unit\Repository\Revision;
 use DR\Review\Repository\Revision\RevisionFileRepository;
 use DR\Review\Repository\Revision\RevisionRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\test\RevisionFileFixtures;
+use DR\Review\Tests\DataFixtures\Test\RevisionFileFixtures;
 use DR\Utils\Arrays;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;

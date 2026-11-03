@@ -8,7 +8,7 @@ use DR\Review\Service\Git\CacheableGitRepositoryService;
 use DR\Review\Service\Git\GitRepositoryService;
 use DR\Review\Service\Revision\RevisionFetchService;
 use DR\Review\Tests\AbstractKernelTestCase;
-use DR\Review\Tests\DataFixtures\test\Command\MailCommandTestFixtures;
+use DR\Review\Tests\DataFixtures\Test\Command\MailCommandTestFixtures;
 use DR\Review\Tests\Helper\MessageEventCollector;
 use DR\Utils\Assert;
 use Exception;
