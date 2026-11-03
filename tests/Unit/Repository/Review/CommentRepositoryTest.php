@@ -5,7 +5,7 @@ namespace DR\Review\Tests\Unit\Repository\Review;
 
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\CommentFixtures;
+use DR\Review\Tests\DataFixtures\Test\CommentFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;

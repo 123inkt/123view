@@ -20,5 +20,5 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->get(CodeReviewRevisionService::class)->public();
     $services->set(RemoteEventHandler::class)->public();
 
-    $services->load('DR\\Review\\Tests\\DataFixtures\\', '../tests/DataFixtures/*')->tag('doctrine.fixture.orm');
+    $services->load('DR\\Review\\Tests\\DataFixtures\\Test\\', '../tests/DataFixtures/Test/*')->tag('doctrine.fixture.orm');
 };
