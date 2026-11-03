@@ -6,7 +6,7 @@ namespace DR\Review\Tests\Functional\Controller\Api;
 use DR\Review\Repository\User\UserAccessTokenRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
+use DR\Review\Tests\DataFixtures\Test\UserAccessTokenFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversNothing;

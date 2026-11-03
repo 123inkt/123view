@@ -8,7 +8,7 @@ use DR\Review\Entity\Review\CodeReviewActivity;
 use DR\Review\Repository\Review\CodeReviewActivityRepository;
 use DR\Review\Repository\Review\CodeReviewRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\CodeReviewFixtures;
+use DR\Review\Tests\DataFixtures\Test\CodeReviewFixtures;
 use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 
