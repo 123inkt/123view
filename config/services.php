@@ -107,7 +107,6 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
         ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
-        ->bind('$codeReviewExcludeAuthors', '%env(CODE_REVIEW_EXCLUDE_AUTHORS)%')
         ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));
 
     // Register controllers

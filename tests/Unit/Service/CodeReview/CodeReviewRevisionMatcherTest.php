@@ -38,7 +38,8 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
             $this->reviewRepository,
             $this->patternMatcher,
             $this->reviewCreationService,
-            'sherlock@example.com'
+            ['sherlock@example.com'],
+            ''
         );
     }
 
@@ -96,6 +97,34 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         $revision->setAuthorEmail('sherlock@example.com');
 
         static::assertFalse($this->matcher->isSupported($revision));
+    }
+
+    public function testIsSupportedCommitMessageShouldBeExcluded(): void
+    {
+        $repository = new Repository();
+        $repository->setCreateTimestamp(10000);
+
+        $revision = new Revision();
+        $revision->setCreateTimestamp(20000);
+        $revision->setRepository($repository);
+        $revision->setAuthorEmail('holmes@example.com');
+        $revision->setTitle('F#58072 US#68400 T#68401 Update dependencies');
+        $revision->setDescription('');
+
+        $this->titleNormalizer->expects($this->never())->method('normalize');
+        $this->reviewRepository->expects($this->never())->method('findOneByReferenceId');
+        $this->reviewCreationService->expects($this->never())->method('createFromRevision');
+        $this->patternMatcher->expects($this->never())->method('match');
+
+        $matcher = new CodeReviewRevisionMatcher(
+            $this->titleNormalizer,
+            $this->reviewRepository,
+            $this->patternMatcher,
+            $this->reviewCreationService,
+            [],
+            '/\AF#58072 US#68400 T#68401/'
+        );
+        static::assertFalse($matcher->isSupported($revision));
     }
 
     public function testIsSupported(): void
