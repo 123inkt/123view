@@ -107,7 +107,7 @@
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "liip/test-fixtures-bundle": "^3.8",
         "mikey179/vfsstream": "^1.6",
-        "phpmd/phpmd": "3.x-dev",
+        "phpmd/phpmd": "^3.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1.40",
         "phpstan/phpstan-doctrine": "^2.0",
