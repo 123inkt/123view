@@ -262,7 +262,6 @@ erDiagram
   - `target_branch` — nullable `string(255)` for branch reviews.
   - `state` — `enum_code_review_state_type`.
   - `ext_reference_id` — nullable `string(255)` external reference.
-  - `ai_review_requested` — `boolean`.
   - `actors` — `json` actor ids, default `[]`.
   - `create_timestamp`, `update_timestamp` — `integer` lifecycle timestamps.
 - **Relationships:** `ManyToOne` to `Repository`; `OneToMany` to `Revision`, `CodeReviewer`, and `Comment`.

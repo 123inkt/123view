@@ -2,11 +2,18 @@
     comment: 'Comment',
     detached: 'bool|null',
     visible: 'bool',
+    collapsed: 'bool|null',
     editCommentForm: 'FormView|null',
     replyCommentForm: 'FormView|null', %}
 
+{% set is_edit_comment     = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
+{% set is_reply_on_comment = replyCommentForm is defined and replyCommentForm != null and replyCommentForm.comment == comment %}
+{# never collapse a comment thread with an open edit or reply form #}
+{% set is_collapsed        = collapsed is defined and collapsed and not is_edit_comment and not is_reply_on_comment %}
+
 <div class="comment__comment-thread
     {%- if comment.state.value == 'resolved' %} comment__state_resolved{% endif -%}
+    {%- if is_collapsed %} comment__collapsed{% endif -%}
     {%- if comment.type.value == 'draft' %} comment__draft{% endif -%}
     {%- if visible is same as(false) %} d-none{% endif -%}"
      data-comment-id="{{ comment.id }}"
@@ -14,10 +21,9 @@
      data-comment-thread-id-value="{{ comment.id }}"
      data-comment-thread-url-value="{{ path('DR\\Review\\Controller\\App\\Review\\Comment\\GetCommentThreadController', {id: comment.id}) }}"
         {{ stimulus_target('review-comment-visibility', 'comment') }}
-        {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window') }}
+        {{ stimulus_action('comment-thread', 'commentUpdated', 'comment-update@window')|stimulus_action('comment-thread', 'expand', 'click') }}
         {{ stimulus_controller('comment-thread') }}
 >
-    {% set is_edit_comment = editCommentForm is defined and editCommentForm != null and editCommentForm.comment == comment %}
     {% if not is_edit_comment %}
         <div class="comment__comment" data-comment-focus="{{ comment.id }}">
             {# detached comments #}
@@ -116,8 +122,6 @@
             {% include 'app/review/comment/comment.reply.html.twig' %}
         {% endfor %}
     {% endif %}
-
-    {% set is_reply_on_comment = replyCommentForm is defined and replyCommentForm != null and replyCommentForm.comment == comment %}
 
     {# comment action buttons #}
     <div class="comment__toolbar">

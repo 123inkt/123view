@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Functional\Mcp;
 
 use DR\Review\Tests\AbstractFunctionalTestCase;
-use DR\Review\Tests\DataFixtures\UserAccessTokenFixtures;
+use DR\Review\Tests\DataFixtures\Test\UserAccessTokenFixtures;
 use Mcp\Server\Session\Session;
 use Mcp\Server\Session\SessionStoreInterface;
 use Nette\Utils\Json;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Uid\Uuid;
 use Throwable;
 
@@ -106,7 +107,7 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertIsArray($data['result']['tools']);
 
         $toolNames = array_column($data['result']['tools'], 'name');
-        static::assertCount(16, $toolNames);
+        static::assertCount(17, $toolNames);
         static::assertContains('get_code_review', $toolNames);
         static::assertContains('get_code_reviews', $toolNames);
         static::assertContains('get_code_review_diff', $toolNames);
@@ -114,6 +115,7 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertContains('get_comment_replies', $toolNames);
         static::assertContains('get_current_user', $toolNames);
         static::assertContains('add_comment', $toolNames);
+        static::assertContains('add_comment_reply', $toolNames);
         static::assertContains('update_comment', $toolNames);
         static::assertContains('update_comment_reply', $toolNames);
         static::assertContains('delete_comment', $toolNames);
@@ -123,6 +125,68 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertContains('get_review_id_from_url', $toolNames);
         static::assertContains('reject_review', $toolNames);
         static::assertContains('resolve_comment', $toolNames);
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testCallCurrentUser(): void
+    {
+        $sessionId = $this->createMcpSession();
+
+        $this->client->request(
+            Request::METHOD_POST,
+            '/_mcp',
+            server : array_merge(self::SERVER_HEADERS, ['HTTP_MCP_SESSION_ID' => $sessionId]),
+            content: Json::encode([
+                'jsonrpc' => '2.0',
+                'id'      => 2,
+                'method'  => 'tools/call',
+                'params'  => ['name' => 'get_current_user', 'arguments' => (object)[]],
+            ]),
+        );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        $data = $this->getResponseArray();
+        static::assertArrayNotHasKey('error', $data);
+        static::assertIsArray($data['result']);
+        static::assertFalse($data['result']['isError'] ?? false);
+        static::assertStringContainsString('Sherlock Holmes', Json::encode($data['result']));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testSubscriptionsListen(): void
+    {
+        $request = Request::create(
+            '/_mcp',
+            Request::METHOD_POST,
+            server: array_merge(self::SERVER_HEADERS, [
+                'HTTP_MCP_PROTOCOL_VERSION' => '2026-07-28',
+                'HTTP_MCP_METHOD'           => 'subscriptions/listen',
+            ]),
+            content: Json::encode([
+                'jsonrpc' => '2.0',
+                'id'      => 1,
+                'method'  => 'subscriptions/listen',
+                'params'  => [
+                    '_meta' => [
+                        'io.modelcontextprotocol/protocolVersion'    => '2026-07-28',
+                        'io.modelcontextprotocol/clientCapabilities' => (object)[],
+                    ],
+                ],
+            ])
+        );
+
+        // Inspect the response without consuming the long-lived subscription stream.
+        $response = $this->client->getKernel()->handle($request);
+
+        static::assertInstanceOf(StreamedResponse::class, $response);
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertSame('text/event-stream; charset=UTF-8', $response->headers->get('Content-Type'));
+        static::assertSame('no', $response->headers->get('X-Accel-Buffering'));
+        static::assertNotNull($response->getCallback());
     }
 
     /**

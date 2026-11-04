@@ -5,8 +5,8 @@ namespace DR\Review\Tests\Unit\Repository\Config;
 
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\RepositoryFixtures;
-use DR\Review\Tests\DataFixtures\RepositoryPropertyFixtures;
+use DR\Review\Tests\DataFixtures\Test\RepositoryFixtures;
+use DR\Review\Tests\DataFixtures\Test\RepositoryPropertyFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;

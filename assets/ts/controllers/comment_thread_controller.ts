@@ -20,6 +20,10 @@ export default class extends Controller<HTMLElement> {
         this.updateCommentThread();
     }
 
+    public expand(): void {
+        this.element.classList.remove('comment__collapsed');
+    }
+
     public editComment(event: Event): void {
         Events.stop(event);
         this.updateCommentThread(`edit-comment:${String(this.idValue)}`);

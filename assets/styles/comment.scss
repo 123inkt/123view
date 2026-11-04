@@ -91,6 +91,35 @@
     filter: grayscale(1);
 }
 
+.comment__comment-thread.comment__collapsed {
+    position: absolute;
+    z-index: 1;
+    margin-top: -20px;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border: 0;
+    color: var(--bs-primary);
+    cursor: pointer;
+    text-align: center;
+
+    &::before {
+        content: '\f249';
+        font-family: bootstrap-icons, sans-serif;
+        font-size: 16px;
+        line-height: 20px;
+    }
+
+    .comment__comment,
+    .comment__reply {
+        display: none;
+    }
+
+    .comment__toolbar {
+        display: none;
+    }
+}
+
 .comment__comment-thread.comment__draft {
     background: var(--bs-info-bg-subtle);
     border-left: 3px solid var(--bs-info);

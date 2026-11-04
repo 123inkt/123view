@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace DR\Review\Service\CodeReview\Comment;
 
 use DR\Review\Entity\Review\CommentStateEnum;
-use DR\Review\Exception\Ai\CommentNotFoundException;
-use DR\Review\Exception\Ai\CommentNotInReviewException;
+use DR\Review\Exception\Review\CommentNotFoundException;
+use DR\Review\Exception\Review\CommentNotInReviewException;
 use DR\Review\Repository\Review\CommentRepository;
 
 class ResolveCommentService

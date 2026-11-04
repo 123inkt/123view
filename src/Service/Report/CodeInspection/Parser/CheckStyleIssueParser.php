@@ -14,10 +14,23 @@ use DR\Utils\Assert;
 
 class CheckStyleIssueParser implements CodeInspectionIssueParserInterface
 {
-    public const FORMAT = 'checkstyle';
+    public const string FORMAT = 'checkstyle';
 
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {
+    }
+
+    public function validate(string $data): bool
+    {
+        if (trim($data) === '') {
+            return false;
+        }
+
+        try {
+            return $this->documentFactory->createFromString($data)->documentElement?->nodeName === 'checkstyle';
+        } catch (XMLException | ParseException) {
+            return false;
+        }
     }
 
     /**

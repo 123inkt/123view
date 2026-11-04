@@ -18,6 +18,7 @@ use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModelProvider\FileReviewViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @extends AbstractControllerTestCase<GetFileReviewController>
@@ -56,6 +57,25 @@ class GetFileReviewControllerTest extends AbstractControllerTestCase
             ->willReturn($viewModel);
         $this->fileSeenService->expects($this->once())->method('markAsSeen')->with($review, $user, $file);
         $this->expectRender('app/review/commit/commit.file.html.twig', ['fileDiffViewModel' => $viewModel]);
+
+        ($this->controller)($request, $review);
+    }
+
+    public function testInvokeWithoutViewModel(): void
+    {
+        $request = static::createStub(FileReviewRequest::class);
+        $request->method('getFilePath')->willReturn('filepath');
+        $review = new CodeReview();
+
+        $this->settingsProvider->expects($this->once())->method('getComparisonPolicy')->willReturn(DiffComparePolicy::IGNORE);
+        $this->settingsProvider->expects($this->once())->method('getReviewDiffMode')->willReturn(ReviewDiffModeEnum::INLINE);
+        $this->settingsProvider->expects($this->once())->method('getVisibleLines')->willReturn(6);
+        $this->modelProvider->expects($this->once())->method('getViewModel')
+            ->with($review, 'filepath', DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE, 6)
+            ->willReturn(null);
+        $this->fileSeenService->expects($this->never())->method(static::anything());
+
+        $this->expectException(NotFoundHttpException::class);
 
         ($this->controller)($request, $review);
     }

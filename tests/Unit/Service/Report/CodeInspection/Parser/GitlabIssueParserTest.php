@@ -8,6 +8,7 @@ use DR\Review\Service\Report\CodeInspection\Parser\GitlabIssueParser;
 use DR\Review\Tests\AbstractTestCase;
 use Nette\Utils\JsonException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 
 #[CoversClass(GitlabIssueParser::class)]
 class GitlabIssueParserTest extends AbstractTestCase
@@ -20,12 +21,27 @@ class GitlabIssueParserTest extends AbstractTestCase
         $this->parser = new GitlabIssueParser(new FilePathNormalizer());
     }
 
+    #[TestWith(['[]', true])]
+    #[TestWith(['{}', false])]
+    #[TestWith(['{"0": {}}', false])]
+    #[TestWith(['null', false])]
+    #[TestWith(['true', false])]
+    #[TestWith(['42', false])]
+    #[TestWith(['"report"', false])]
+    #[TestWith(['[', false])]
+    #[TestWith(['', false])]
+    public function testValidate(string $data, bool $expected): void
+    {
+        static::assertSame($expected, $this->parser->validate($data));
+    }
+
     /**
      * @throws JsonException
      */
     public function testParse(): void
     {
         $data = (string)file_get_contents(__DIR__ . '/GitlabIssueParserTest.json');
+        static::assertTrue($this->parser->validate($data));
 
         $issues = $this->parser->parse('/build/5', 'subDir', $data);
 

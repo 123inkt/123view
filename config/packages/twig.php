@@ -15,7 +15,6 @@ return App::config(
                 'app_absolute_url'       => '%env(APP_ABSOLUTE_URL)%',
                 'app_auth_password'      => '%env(bool:APP_AUTH_PASSWORD)%',
                 'app_auth_azure_ad'      => '%env(bool:APP_AUTH_AZURE_AD)%',
-                'ai_code_review_enabled' => '%env(bool:AI_CODE_REVIEW_ENABLED)%',
             ],
         ]
     ]

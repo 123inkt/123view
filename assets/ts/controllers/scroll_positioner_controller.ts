@@ -13,6 +13,8 @@ export default class extends Controller {
         if (target === null) {
             return;
         }
+        // unfold the comment thread when the focused comment or reply is collapsed
+        target.closest('.comment__collapsed')?.classList.remove('comment__collapsed');
         target.scrollIntoView({behavior: 'smooth', block: 'center'});
         if (highlight) {
             target.classList.add('highlighted');

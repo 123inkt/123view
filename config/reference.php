@@ -1389,10 +1389,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         signing_algorithm?: scalar|Param|null, // Default: "sha256"
  *         routing?: array<string, array{ // Default: []
  *             service?: scalar|Param|null,
- *             secret?: scalar|Param|null, // Default: ""
+ *             secret?: scalar|Param|null, // The secret used to verify incoming request signatures. It must be set in production: with an empty value, depending on the parser, requests from any sender are accepted or every request is rejected. // Default: ""
  *         }>,
  *     },
- *     remote-event?: bool|array{ // RemoteEvent configuration
+ *     remote_event?: bool|array{ // RemoteEvent configuration
  *         enabled?: bool|Param, // Default: true
  *     },
  *     json_streamer?: bool|array{ // JSON streamer configuration
@@ -1405,8 +1405,29 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  * }
  * @psalm-type MercureConfig = array{
  *     hubs?: array<string, array{ // Default: []
- *         url?: scalar|Param|null, // URL of the hub's publish endpoint
+ *         url?: scalar|Param|null, // URL of the hub's publish endpoint. Leave empty to publish through FrankenPHP's built-in Mercure hub. // Default: null
  *         public_url?: scalar|Param|null, // URL of the hub's public endpoint // Default: null
+ *         publisher?: array{ // Configuration of the JSON Web Token used to publish to this hub. Use with "subscriber" to sign publisher and subscriber tokens with different keys.
+ *             value?: scalar|Param|null, // JSON Web Token to use to publish to this hub.
+ *             provider?: scalar|Param|null, // The ID of a service implementing TokenProviderInterface.
+ *             factory?: scalar|Param|null, // The ID of a service implementing TokenFactoryInterface, used to create the JSON Web Token.
+ *             topics?: list<scalar|Param|null>,
+ *             secret?: scalar|Param|null, // The JWT Secret to use.
+ *             passphrase?: scalar|Param|null, // The JWT secret passphrase. // Default: ""
+ *             algorithm?: scalar|Param|null, // The algorithm to use to sign the JWT. With "secret", one of LcobucciFactory::SIGN_ALGORITHMS ("hmac.sha256", the default). With "jwks_uri", a JWA name from WebTokenFactory::SIGN_ALGORITHMS ("HS256", the default).
+ *             jwks_uri?: scalar|Param|null, // URL of a JSON Web Key Set (JWKS) to fetch the signing key from, instead of "secret". Requires "protocol_version: 1.0" and "web-token/jwt-library".
+ *             key_id?: scalar|Param|null, // The "kid" of the key to select from "jwks_uri", required when the key set holds more than one matching key.
+ *             claims?: array<string, mixed>,
+ *         },
+ *         subscriber?: array{ // Configuration of the JSON Web Tokens created for subscribers (e.g. the authorization cookie).
+ *             factory?: scalar|Param|null, // The ID of a service implementing TokenFactoryInterface, used to create the JSON Web Tokens.
+ *             secret?: scalar|Param|null, // The JWT Secret to use.
+ *             passphrase?: scalar|Param|null, // The JWT secret passphrase. // Default: ""
+ *             algorithm?: scalar|Param|null, // The algorithm to use to sign the JWT. With "secret", one of LcobucciFactory::SIGN_ALGORITHMS ("hmac.sha256", the default). With "jwks_uri", a JWA name from WebTokenFactory::SIGN_ALGORITHMS ("HS256", the default).
+ *             jwks_uri?: scalar|Param|null, // URL of a JSON Web Key Set (JWKS) to fetch the signing key from, instead of "secret". Requires "protocol_version: 1.0" and "web-token/jwt-library".
+ *             key_id?: scalar|Param|null, // The "kid" of the key to select from "jwks_uri", required when the key set holds more than one matching key.
+ *             claims?: array<string, mixed>,
+ *         },
  *         jwt?: Param|string|array{ // JSON Web Token configuration.
  *             value?: scalar|Param|null, // JSON Web Token to use to publish to this hub.
  *             provider?: scalar|Param|null, // The ID of a service to call to provide the JSON Web Token.
@@ -1422,8 +1443,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         },
  *         jwt_provider?: scalar|Param|null, // Deprecated: The child node "jwt_provider" at path "mercure.hubs..jwt_provider" is deprecated, use "jwt.provider" instead. // The ID of a service to call to generate the JSON Web Token.
  *         bus?: scalar|Param|null, // Name of the Messenger bus where the handler for this hub must be registered. Default to the default bus if Messenger is enabled.
- *         protocol_version?: "0.x"|"1.0"|Param, // The Mercure protocol version spoken by this hub: "0.x" (default) or "1.0". Affects the default cookie name, the JWT claim shape built by "jwt.secret", and how the mercure() Twig function interprets matcher-typed topics. // Default: "0.x"
- *         cookie_name?: scalar|Param|null, // Name of the subscriber authorization cookie. Defaults to a value computed from "protocol_version" ("mercureAuthorization" for "0.x", "__Secure-mercure_access_token" for "1.0") when not set. // Default: null
+ *         http_client?: scalar|Param|null, // The ID of the HTTP client service to publish to this hub with, e.g. a scoped client with a short timeout. Defaults to "http_client".
+ *         protocol_version?: value-of<\Symfony\Component\Mercure\ProtocolVersion>|\Symfony\Component\Mercure\ProtocolVersion|Param, // The Mercure protocol version spoken by this hub: "1.0" (default) or "0.x". Affects the default cookie name, the JWT claim shape built by "jwt.secret", and how the mercure() Twig function interprets matcher-typed topics. // Default: "1.0"
+ *         cookie_name?: scalar|Param|null, // Name of the subscriber authorization cookie. Defaults to a value computed from "protocol_version" when not set: "__Secure-mercure_access_token" for "1.0" ("mercure_access_token" in debug mode, matching the hub's "playground" mode), "mercureAuthorization" for "0.x". // Default: null
  *     }>,
  *     default_hub?: scalar|Param|null,
  *     default_cookie_lifetime?: int|Param, // Default lifetime of the cookie containing the JWT, in seconds. Defaults to the value of "framework.session.cookie_lifetime". // Default: null
@@ -1793,7 +1815,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             token_handler?: Param|string|array{
  *                 id?: scalar|Param|null,
  *                 oidc_user_info?: Param|string|array{
- *                     base_uri?: scalar|Param|null, // Base URI of the userinfo endpoint on the OIDC server, or the OIDC server URI to use the discovery (require "discovery" to be configured).
+ *                     base_uri?: scalar|Param|null, // Base URI of the userinfo endpoint on the OIDC server, or the OIDC server URI to use the discovery (require "discovery" to be configured). The latter must end with a slash when it has a path, as the discovery path is resolved against it as a relative URL.
  *                     discovery?: array{ // Enable the OIDC discovery.
  *                         cache?: array{
  *                             id?: scalar|Param|null, // Cache service id to use to cache the OIDC discovery configuration.
@@ -1861,9 +1883,9 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             lifetime?: int|Param, // Default: 31536000
  *             path?: scalar|Param|null, // Default: "/"
  *             domain?: scalar|Param|null, // Default: null
- *             secure?: true|false|"auto"|Param, // Default: "auto"
+ *             secure?: true|false|"auto"|Param, // Defaults to the value of "framework.session.cookie_secure", or to "auto".
  *             httponly?: bool|Param, // Default: true
- *             samesite?: null|"lax"|"strict"|"none"|Param, // Default: "lax"
+ *             samesite?: null|"lax"|"strict"|"none"|Param, // Defaults to the value of "framework.session.cookie_samesite", or to "lax".
  *             always_remember_me?: bool|Param, // Default: false
  *             remember_me_parameter?: scalar|Param|null, // Default: "_remember_me"
  *         },
@@ -2005,532 +2027,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     intercept_redirects?: bool|Param, // Default: false
  *     excluded_ajax_paths?: scalar|Param|null, // Default: "^/((index|app(_[\\w]+)?)\\.php/)?_wdt"
  * }
- * @psalm-type AiConfig = array{
- *     platform?: array{
- *         albert?: array{
- *             api_key?: string|Param,
- *             base_url?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         amazeeai?: array{
- *             base_url?: string|Param,
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         anthropic?: array{
- *             api_key?: string|Param,
- *             version?: string|Param, // Default: null
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             cache_retention?: "none"|"short"|"long"|Param, // Prompt cache retention policy for Anthropic models // Default: "short"
- *         },
- *         azure?: array<string, array{ // Default: []
- *             api_key?: string|Param,
- *             base_url?: string|Param,
- *             deployment?: string|Param,
- *             api_version?: string|Param, // The used API version
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         }>,
- *         bedrock?: array<string, array{ // Default: []
- *             api?: "invoke_model"|"completions"|"responses"|"messages"|Param, // Inference engine and protocol: the SDK-based InvokeModel API, or one of the Bedrock Mantle routes // Default: "invoke_model"
- *             bedrock_runtime_client?: string|Param, // Service ID of the Bedrock runtime client to use; only valid with "api: invoke_model" // Default: null
- *             api_key?: string|Param, // Bedrock API key; when omitted, requests are signed with AWS SigV4. Mantle only
- *             region?: string|Param, // AWS region the Mantle base URL is derived from, defaults to "us-west-2". Mantle only
- *             credential_provider?: string|Param, // Service ID of the AsyncAws credential provider used for SigV4 signing. Mantle only
- *             http_client?: string|Param, // Service ID of the HTTP client to use, defaults to "http_client". Mantle only
- *             path?: string|Param, // Overrides the Mantle request path, for models served on the other path prefix
- *             cache_retention?: "none"|"short"|"long"|Param, // Anthropic Messages prompt-cache retention, defaults to "short"; only valid with "api: messages"
- *             workspace?: string|Param, // Bedrock Mantle workspace ID sent with Anthropic Messages requests; only valid with "api: messages"
- *             model_catalog?: string|Param, // Default: null
- *         }>,
- *         cache?: array<string, array{ // Default: []
- *             platform?: string|Param,
- *             service?: string|Param, // The cache service id as defined under the "cache" configuration key // Default: "cache.app"
- *             cache_key?: string|Param, // Key used to store platform results, if not set, the current platform name will be used, the "prompt_cache_key" can be set during platform call to override this value
- *             ttl?: int|Param,
- *         }>,
- *         cartesia?: array{
- *             api_key?: string|Param,
- *             version?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         cerebras?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         cohere?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         decart?: array{
- *             api_key?: string|Param,
- *             host?: string|Param, // Default: "https://api.decart.ai/v1"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         deepgram?: array{
- *             api_key?: string|Param,
- *             endpoint?: string|Param, // Deepgram REST API endpoint // Default: "https://api.deepgram.com/v1/"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         deepseek?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         dockermodelrunner?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:12434"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         edenai?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         elevenlabs?: array{
- *             api_key?: string|Param,
- *             endpoint?: string|Param, // Default: "https://api.elevenlabs.io/v1/"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         failover?: array<string, array{ // Default: []
- *             platforms?: list<scalar|Param|null>,
- *             rate_limiter?: string|Param,
- *         }>,
- *         fireworks?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         gemini?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         generic?: array<string, array{ // Default: []
- *             base_url?: string|Param,
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             model_catalog?: string|Param, // Service ID of the model catalog to use
- *             supports_completions?: bool|Param, // Default: true
- *             supports_embeddings?: bool|Param, // Default: true
- *             completions_path?: string|Param, // Default: "/v1/chat/completions"
- *             embeddings_path?: string|Param, // Default: "/v1/embeddings"
- *         }>,
- *         higgsfield?: array{
- *             api_key?: string|Param,
- *             api_secret?: string|Param,
- *             base_url?: string|Param, // Base URL of the Higgsfield API. Defaults to "https://platform.higgsfield.ai" when null.
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             model_catalog?: string|Param, // Service ID of the model catalog to use
- *         },
- *         huggingface?: array{
- *             api_key?: string|Param,
- *             provider?: string|Param, // Default: "hf-inference"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         lmstudio?: array{
- *             host_url?: string|Param, // Default: "http://127.0.0.1:1234"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         minimax?: array{
- *             endpoint?: string|Param, // Default: "https://api.minimax.io/v1"
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         mistral?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         ollama?: array{
- *             endpoint?: string|Param, // Endpoint for Ollama (e.g. "http://127.0.0.1:11434" for local, or a cloud endpoint). If null, the http_client is used as-is and must already be configured with a base URI.
- *             api_key?: string|Param, // API key for Ollama Cloud authentication (optional for local usage)
- *             http_client?: string|Param, // Service ID of the HTTP client to use. When "endpoint" is null, this client must be pre-configured (e.g. with a base_uri). // Default: "http_client"
- *         },
- *         openai?: array{
- *             api_key?: string|Param,
- *             region?: scalar|Param|null, // The region for OpenAI API (EU, US, or null for default) // Default: null
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         openresponses?: array<string, array{ // Default: []
- *             base_url?: string|Param,
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *             model_catalog?: string|Param, // Service ID of the model catalog to use
- *             responses_path?: string|Param, // Default: "/v1/responses"
- *         }>,
- *         openrouter?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         ovh?: array{
- *             api_key?: scalar|Param|null,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         perplexity?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         scaleway?: array{
- *             api_key?: scalar|Param|null,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         together?: array{
- *             api_key?: string|Param,
- *             endpoint?: string|Param, // Base endpoint for the Together API. Defaults to "https://api.together.xyz" when null.
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         transformersphp?: array<mixed>,
- *         typesafe?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         venice?: array{
- *             api_key?: string|Param,
- *             endpoint?: string|Param, // Default: "https://api.venice.ai/api/v1/"
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         vertexai?: array{
- *             location?: string|Param, // Required for the project-scoped endpoint. Must be set together with "project_id". // Default: null
- *             project_id?: string|Param, // Required for the project-scoped endpoint. Must be set together with "location". // Default: null
- *             api_key?: string|Param, // When set without "location" and "project_id", uses the global endpoint. Note: API keys only identify the project for billing and do not provide identity-based access control. For production use with IAM, audit logging, or data residency, prefer the project-scoped endpoint with service account authentication. // Default: null
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *         voyage?: array{
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Service ID of the HTTP client to use // Default: "http_client"
- *         },
- *     },
- *     model?: array<string, array<string, array{ // Default: []
- *         class?: string|Param, // The fully qualified class name of the model (must extend Symfony\AI\Platform\Model) // Default: "Symfony\\AI\\Platform\\Model"
- *         capabilities?: list<value-of<\Symfony\AI\Platform\Capability>|\Symfony\AI\Platform\Capability|Param>,
- *     }>>,
- *     agent?: array<string, array{ // Default: []
- *         platform?: string|Param, // Service name of platform // Default: "Symfony\\AI\\Platform\\PlatformInterface"
- *         model?: mixed,
- *         memory?: mixed, // Memory configuration: string for static memory, or array with "service" key for service reference // Default: null
- *         prompt?: Param|string|array{ // The system prompt configuration
- *             text?: string|Param, // The system prompt text
- *             file?: string|Param, // Path to file containing the system prompt
- *             include_tools?: bool|Param, // Include tool definitions at the end of the system prompt // Default: false
- *             enable_translation?: bool|Param, // Enable translation for the system prompt // Default: false
- *             translation_domain?: string|Param, // The translation domain for the system prompt // Default: null
- *         },
- *         tools?: bool|array{ // Tools are opt-in: set to true to inject all services tagged with "ai.tool", or configure an explicit list of tools. When the option is omitted (or set to null or false), no tools are registered.
- *             enabled?: bool|Param, // Default: false
- *             execution_strategy?: scalar|Param|null, // The tool execution strategy. Built-in options are "sequential" (default) and "fiber". A custom service ID implementing ToolExecutorInterface can also be provided. // Default: null
- *             services?: list<Param|string|array{ // Default: []
- *                 service?: string|Param,
- *                 agent?: string|Param,
- *                 mcp_server?: string|Param, // A remote MCP server whose tools are exposed to this agent, as "<client>.<server>" referencing a connection configured under "mcp.clients".
- *                 name?: string|Param,
- *                 description?: string|Param,
- *                 method?: string|Param,
- *                 prefix?: string|Param, // Only with "mcp_server": prefix put in front of every remote tool name. Defaults to "<server>_".
- *             }>,
- *         },
- *         exclude_tool_messages?: bool|Param, // Exclude tool messages from the conversation history // Default: false
- *         include_sources?: bool|Param, // Include sources exposed by tools as part of the tool result metadata // Default: false
- *         max_tool_calls?: scalar|Param|null, // Maximum number of tool calls per agent call, null to disable // Default: 50
- *         fault_tolerant_toolbox?: bool|Param, // Continue the agent run even if a tool call fails // Default: true
- *         speech?: bool|array{ // Speech (TTS/STT) decorator configuration
- *             enabled?: bool|Param, // Default: true
- *             text_to_speech_platform?: string|Param, // Service name of the TTS platform (e.g. ai.platform.elevenlabs). // Default: null
- *             speech_to_text_platform?: string|Param, // Service name of the STT platform (e.g. ai.platform.openai). // Default: null
- *             tts_model?: string|Param, // Text-to-speech model name // Default: null
- *             tts_options?: mixed, // Provider-specific TTS options // Default: []
- *             stt_model?: string|Param, // Speech-to-text model name // Default: null
- *             stt_options?: mixed, // Provider-specific STT options // Default: []
- *         },
- *     }>,
- *     multi_agent?: array<string, array{ // Default: []
- *         orchestrator?: string|Param, // Service ID of the orchestrator agent
- *         handoffs?: array<string, list<scalar|Param|null>>,
- *         fallback?: string|Param, // Service ID of the fallback agent for unmatched requests
- *     }>,
- *     store?: array{
- *         azuresearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             api_key?: string|Param,
- *             api_version?: string|Param,
- *             index_name?: string|Param, // The name of the store will be used if the "index_name" option is not set
- *             http_client?: string|Param, // Default: "http_client"
- *             vector_field?: string|Param, // Default: "vector"
- *         }>,
- *         cache?: array<string, array{ // Default: []
- *             service?: string|Param, // Default: "cache.app"
- *             cache_key?: string|Param, // The name of the store will be used if the key is not set.
- *             strategy?: string|Param, // Default: "cosine"
- *         }>,
- *         chromadb?: array<string, array{ // Default: []
- *             client?: string|Param, // Default: "Codewithkyrian\\ChromaDB\\Client"
- *             collection?: string|Param,
- *             embedding_function?: string|Param, // Service id of a Codewithkyrian\ChromaDB\Embeddings\EmbeddingFunction, required to query the store with a TextQuery.
- *         }>,
- *         clickhouse?: array<string, array{ // Default: []
- *             dsn?: string|Param,
- *             http_client?: string|Param,
- *             database?: string|Param,
- *             table?: string|Param,
- *         }>,
- *         cloudflare?: array<string, array{ // Default: []
- *             account_id?: string|Param,
- *             api_key?: string|Param,
- *             index_name?: string|Param,
- *             http_client?: string|Param, // Default: "http_client"
- *             dimensions?: int|Param, // Default: 1536
- *             metric?: string|Param, // Default: "cosine"
- *             endpoint?: string|Param,
- *         }>,
- *         elasticsearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             index_name?: string|Param,
- *             vectors_field?: string|Param, // Default: "_vectors"
- *             dimensions?: int|Param, // Default: 1536
- *             similarity?: string|Param, // Default: "cosine"
- *             http_client?: string|Param,
- *         }>,
- *         manticoresearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             table?: string|Param,
- *             field?: string|Param, // Default: "_vectors"
- *             type?: string|Param, // Default: "hnsw"
- *             similarity?: string|Param, // Default: "cosine"
- *             dimensions?: int|Param, // Default: 1536
- *             quantization?: string|Param,
- *             http_client?: string|Param,
- *         }>,
- *         mariadb?: array<string, array{ // Default: []
- *             connection?: string|Param,
- *             table_name?: string|Param,
- *             index_name?: string|Param,
- *             vector_field_name?: string|Param,
- *             setup_options?: array{
- *                 dimensions?: int|Param,
- *             },
- *             distance?: "cosine"|"euclidean"|"distance"|Param, // Distance metric to use for vector similarity search // Default: "euclidean"
- *         }>,
- *         meilisearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             api_key?: string|Param,
- *             index_name?: string|Param,
- *             http_client?: string|Param, // Default: "http_client"
- *             embedder?: string|Param, // Default: "default"
- *             vector_field?: string|Param, // Default: "_vectors"
- *             dimensions?: int|Param, // Default: 1536
- *             semantic_ratio?: float|Param, // The ratio between semantic (vector) and full-text search (0.0 to 1.0). Default: 1.0 (100% semantic) // Default: 1.0
- *         }>,
- *         memory?: array<string, array{ // Default: []
- *             strategy?: string|Param,
- *         }>,
- *         milvus?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             api_key?: string|Param,
- *             database?: string|Param,
- *             collection?: string|Param,
- *             vector_field?: string|Param, // Default: "_vectors"
- *             dimensions?: int|Param, // Default: 1536
- *             metric_type?: string|Param, // Default: "COSINE"
- *             http_client?: string|Param,
- *         }>,
- *         mongodb?: array<string, array{ // Default: []
- *             client?: string|Param, // Default: "MongoDB\\Client"
- *             database?: string|Param,
- *             collection?: string|Param,
- *             index_name?: string|Param,
- *             vector_field?: string|Param, // Default: "vector"
- *             bulk_write?: bool|Param, // Default: false
- *             setup_options?: array{
- *                 fields?: mixed, // Default: []
- *             },
- *         }>,
- *         neo4j?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             username?: string|Param,
- *             password?: string|Param,
- *             database?: string|Param,
- *             vector_index_name?: string|Param,
- *             node_name?: string|Param,
- *             vector_field?: string|Param, // Default: "embeddings"
- *             dimensions?: int|Param, // Default: 1536
- *             distance?: string|Param, // Default: "cosine"
- *             quantization?: bool|Param,
- *             http_client?: string|Param,
- *         }>,
- *         opensearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             index_name?: string|Param,
- *             vectors_field?: string|Param, // Default: "_vectors"
- *             dimensions?: int|Param, // Default: 1536
- *             space_type?: string|Param, // Default: "l2"
- *             http_client?: string|Param,
- *         }>,
- *         pinecone?: array<string, array{ // Default: []
- *             client?: string|Param, // Default: "Probots\\Pinecone\\Client"
- *             index_name?: string|Param,
- *             namespace?: string|Param,
- *             filter?: list<scalar|Param|null>,
- *             top_k?: int|Param,
- *         }>,
- *         postgres?: array<string, array{ // Default: []
- *             dsn?: string|Param,
- *             username?: string|Param,
- *             password?: string|Param,
- *             table_name?: string|Param,
- *             vector_field?: string|Param, // Default: "embedding"
- *             distance?: "cosine"|"inner_product"|"l1"|"l2"|Param, // Distance metric to use for vector similarity search // Default: "l2"
- *             lang?: string|Param, // Default: "english"
- *             dbal_connection?: string|Param,
- *             setup_options?: array{
- *                 vector_type?: string|Param, // Default: "vector"
- *                 vector_size?: int|Param, // Default: 1536
- *                 index_method?: string|Param, // Default: "ivfflat"
- *                 index_opclass?: string|Param, // Default: "vector_cosine_ops"
- *             },
- *         }>,
- *         qdrant?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             api_key?: string|Param,
- *             collection_name?: string|Param, // The name of the store will be used if the "collection_name" is not set
- *             http_client?: string|Param, // Default: "http_client"
- *             dimensions?: int|Param, // Default: 1536
- *             distance?: string|Param, // Default: "Cosine"
- *             async?: bool|Param, // Default: false
- *         }>,
- *         redis?: array<string, array{ // Default: []
- *             connection_parameters?: mixed, // see https://github.com/phpredis/phpredis?tab=readme-ov-file#example-1
- *             client?: string|Param, // a service id of a Redis client
- *             index_name?: string|Param,
- *             key_prefix?: string|Param, // Default: "vector:"
- *             distance?: "COSINE"|"L2"|"IP"|Param, // Distance metric to use for vector similarity search // Default: "COSINE"
- *         }>,
- *         s3vectors?: array<string, array{ // Default: []
- *             client?: string|Param, // Service reference to an existing S3VectorsClient
- *             configuration?: list<scalar|Param|null>,
- *             vector_bucket_name?: string|Param,
- *             index_name?: string|Param,
- *             filter?: list<mixed>,
- *             top_k?: int|Param, // Default number of results to return // Default: 3
- *         }>,
- *         sqlite?: array<string, array{ // Default: []
- *             dsn?: string|Param,
- *             connection?: string|Param,
- *             table_name?: string|Param,
- *             strategy?: string|Param,
- *             vec?: bool|Param, // Default: false
- *             distance?: "cosine"|"L2"|Param, // Default: "cosine"
- *             vector_dimension?: int|Param, // Default: 1536
- *         }>,
- *         supabase?: array<string, array{ // Default: []
- *             http_client?: string|Param, // Service ID of the HTTP client to use
- *             url?: string|Param,
- *             api_key?: string|Param,
- *             table?: string|Param,
- *             vector_field?: string|Param, // Default: "embedding"
- *             vector_dimension?: int|Param, // Default: 1536
- *             function_name?: string|Param, // Default: "match_documents"
- *         }>,
- *         surrealdb?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             username?: string|Param,
- *             password?: string|Param,
- *             namespace?: string|Param,
- *             database?: string|Param,
- *             table?: string|Param,
- *             http_client?: string|Param, // Default: "http_client"
- *             vector_field?: string|Param, // Default: "_vectors"
- *             strategy?: string|Param, // Default: "cosine"
- *             dimensions?: int|Param, // Default: 1536
- *             namespaced_user?: bool|Param,
- *         }>,
- *         typesense?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             api_key?: string|Param,
- *             collection?: string|Param,
- *             http_client?: string|Param, // Default: "http_client"
- *             vector_field?: string|Param, // Default: "_vectors"
- *             dimensions?: int|Param, // Default: 1536
- *         }>,
- *         weaviate?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             api_key?: string|Param,
- *             http_client?: string|Param, // Default: "http_client"
- *             collection?: string|Param, // The name of the store will be used if the "collection" is not set
- *         }>,
- *         vektor?: array<string, array{ // Default: []
- *             storage_path?: string|Param, // Default: "%kernel.project_dir%/var/share"
- *             dimensions?: int|Param, // Default: 1536
- *         }>,
- *     },
- *     message_store?: array{
- *         cache?: array<string, array{ // Default: []
- *             service?: string|Param, // Default: "cache.app"
- *             key?: string|Param, // The name of the message store will be used if the key is not set
- *             ttl?: int|Param,
- *         }>,
- *         cloudflare?: array<string, array{ // Default: []
- *             account_id?: string|Param,
- *             api_key?: string|Param,
- *             namespace?: string|Param,
- *             endpoint_url?: string|Param, // If the version of the Cloudflare API is updated, use this key to support it.
- *         }>,
- *         doctrine?: array{
- *             dbal?: array<string, array{ // Default: []
- *                 connection?: string|Param,
- *                 table_name?: string|Param, // The name of the message store will be used if the table_name is not set
- *             }>,
- *         },
- *         meilisearch?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             api_key?: string|Param,
- *             index_name?: string|Param,
- *         }>,
- *         memory?: array<string, array{ // Default: []
- *             identifier?: string|Param,
- *         }>,
- *         mongodb?: array<string, array{ // Default: []
- *             client?: string|Param, // Default: "MongoDB\\Client"
- *             database?: string|Param,
- *             collection?: string|Param,
- *         }>,
- *         pogocache?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             password?: string|Param,
- *             key?: string|Param,
- *         }>,
- *         redis?: array<string, array{ // Default: []
- *             connection_parameters?: mixed, // see https://github.com/phpredis/phpredis?tab=readme-ov-file#example-1
- *             client?: string|Param, // a service id of a Redis client
- *             endpoint?: string|Param,
- *             index_name?: string|Param,
- *         }>,
- *         session?: array<string, array{ // Default: []
- *             identifier?: string|Param,
- *         }>,
- *         surrealdb?: array<string, array{ // Default: []
- *             endpoint?: string|Param,
- *             username?: string|Param,
- *             password?: string|Param,
- *             namespace?: string|Param,
- *             database?: string|Param,
- *             table?: string|Param,
- *             namespaced_user?: bool|Param, // Using a namespaced user is a good practice to prevent any undesired access to a specific table, see https://surrealdb.com/docs/surrealdb/reference-guide/security-best-practices
- *         }>,
- *     },
- *     chat?: array<string, array{ // Default: []
- *         agent?: string|Param,
- *         message_store?: string|Param,
- *     }>,
- *     vectorizer?: array<string, array{ // Default: []
- *         platform?: string|Param, // Service name of platform // Default: "Symfony\\AI\\Platform\\PlatformInterface"
- *         model?: mixed,
- *     }>,
- *     indexer?: array<string, array{ // Default: []
- *         loader?: string|Param, // Service name of loader // Default: null
- *         source?: mixed, // Source identifier (file path, URL, etc.) or array of sources // Default: null
- *         transformers?: list<scalar|Param|null>,
- *         filters?: list<scalar|Param|null>,
- *         vectorizer?: scalar|Param|null, // Service name of vectorizer // Default: "Symfony\\AI\\Store\\Document\\VectorizerInterface"
- *         store?: string|Param, // Service name of store // Default: "Symfony\\AI\\Store\\StoreInterface"
- *     }>,
- *     retriever?: array<string, array{ // Default: []
- *         vectorizer?: scalar|Param|null, // Service name of vectorizer // Default: "Symfony\\AI\\Store\\Document\\VectorizerInterface"
- *         store?: string|Param, // Service name of store // Default: "Symfony\\AI\\Store\\StoreInterface"
- *     }>,
- * }
  * @psalm-type McpConfig = array{
  *     servers?: list<array{ // Default: []
  *         name?: string|Param, // Name advertised to clients. Defaults to the configuration key. // Default: null
@@ -2551,6 +2047,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         http?: array{
  *             path?: string|Param, // HTTP endpoint path. Defaults to "/mcp/<name>". // Default: null
  *             allowed_hosts?: mixed, // DNS rebinding protection hosts (without port). Leave unset to keep the SDK default (localhost only), set an array of hostnames to expose a public MCP server, or false to disable the protection entirely. // Default: null
+ *             allowed_origins?: list<scalar|Param|null>,
  *         },
  *         protocol_versions?: Param|string|list<"2024-11-05"|"2025-03-26"|"2025-06-18"|"2025-11-25"|"2026-07-28"|Param>,
  *         request_state?: array{ // Signs the state a multi-round-trip answer carries through the client, which has no session to keep progress in. Required for a modern-era server whose handlers return an InputRequiredResult, and for one whose handlers call ClientGateway::elicit() more than once: the second ask has to carry the first answer to the next round.
@@ -2574,8 +2071,14 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             store?: "file"|"memory"|"cache"|"framework"|Param, // Default: "file"
  *             directory?: string|Param, // Directory for the "file" store. Defaults to "%kernel.cache_dir%/mcp-sessions/<name>". // Default: null
  *             cache_pool?: string|Param, // PSR-16 cache service for the "cache" store. // Default: "cache.mcp.sessions"
- *             prefix?: string|Param, // Key prefix for the "cache" and "framework" stores. Defaults to "mcp-<name>-". // Default: null
+ *             prefix?: string|Param, // Key prefix for the "cache" and "framework" stores and a "session.lock.factory" lock. Defaults to "mcp-<name>-". // Default: null
  *             ttl?: int|Param, // Default: 3600
+ *             lock?: bool|array{ // Serializes the concurrent requests of one session, so none of them overwrites what another saved.
+ *                 enabled?: bool|Param, // Default: false
+ *                 factory?: string|Param, // Service id of a Symfony\Component\Lock\LockFactory, for a store shared across machines. Unset, the "file" store locks with flock() next to its session files. // Default: null
+ *                 timeout?: float|Param, // Seconds to wait for a lock held by another request of the same session. // Default: 30.0
+ *                 ttl?: float|Param, // Seconds a "factory" lock lives before its store expires it; must exceed the longest handler run. Ignored by the file lock. // Default: 300.0
+ *             },
  *         },
  *         registry?: array{ // The elements this server exposes, either as one list covering every kind or as a map narrowing each kind.
  *             tools?: Param|string|list<scalar|Param|null>,
@@ -2641,7 +2144,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     liip_test_fixtures?: LiipTestFixturesConfig,
  *     debug?: DebugConfig,
  *     web_profiler?: WebProfilerConfig,
- *     ai?: AiConfig,
  *     mcp?: McpConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
@@ -2665,7 +2167,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         liip_test_fixtures?: LiipTestFixturesConfig,
  *         debug?: DebugConfig,
  *         web_profiler?: WebProfilerConfig,
- *         ai?: AiConfig,
  *         mcp?: McpConfig,
  *     },
  *     "when@test"?: array{
@@ -2689,7 +2190,6 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         liip_test_fixtures?: LiipTestFixturesConfig,
  *         debug?: DebugConfig,
  *         web_profiler?: WebProfilerConfig,
- *         ai?: AiConfig,
  *         mcp?: McpConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias

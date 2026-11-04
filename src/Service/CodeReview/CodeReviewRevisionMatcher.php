@@ -13,22 +13,21 @@ use DR\Review\Service\Revision\RevisionTitleNormalizer;
 use DR\Utils\Assert;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class CodeReviewRevisionMatcher implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /** @var string[] */
-    private array $excludeAuthors;
-
+    /** @param array<string|null> $excludeAuthors */
     public function __construct(
         private readonly RevisionTitleNormalizer $titleNormalizer,
         private readonly CodeReviewRepository $reviewRepository,
         private readonly RevisionPatternMatcher $patternMatcher,
         private readonly CodeReviewCreationService $reviewCreationService,
-        readonly string $codeReviewExcludeAuthors
+        #[Autowire(env: 'csv:CODE_REVIEW_EXCLUDE_AUTHORS')] private readonly array $excludeAuthors,
+        #[Autowire(env: 'CODE_REVIEW_EXCLUDE_COMMIT_MESSAGE')] private readonly string $excludeCommitMessage
     ) {
-        $this->excludeAuthors = $codeReviewExcludeAuthors === '' ? [] : explode(',', $codeReviewExcludeAuthors);
     }
 
     /**
@@ -56,6 +55,12 @@ class CodeReviewRevisionMatcher implements LoggerAwareInterface
 
         if (in_array($revision->getAuthorEmail(), $this->excludeAuthors, true)) {
             $this->logger?->notice('Matcher: revision is excluded by author: {email}', ['email' => $revision->getAuthorEmail()]);
+
+            return false;
+        }
+
+        if ($this->excludeCommitMessage !== '' && preg_match($this->excludeCommitMessage, $revision->getTitle()) === 1) {
+            $this->logger?->notice('Matcher: revision is excluded by commit message: {title}', ['title' => $revision->getTitle()]);
 
             return false;
         }

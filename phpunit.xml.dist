@@ -22,7 +22,7 @@
     <php>
         <ini name="error_reporting" value="24575"/><!-- E_ALL^E_DEPRECATED -->
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[direct]=0&amp;quiet[]=indirect&amp;quiet[]=other"/>
-        <env name="APP_ENV" value="test"/>
+        <env name="APP_ENV" value="test" force="true"/>
         <env name="APP_DEBUG" value="false"/>
     </php>
     <testsuites>

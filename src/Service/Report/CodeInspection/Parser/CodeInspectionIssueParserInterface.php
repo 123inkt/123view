@@ -7,6 +7,8 @@ use DR\Review\Entity\Report\CodeInspectionIssue;
 
 interface CodeInspectionIssueParserInterface
 {
+    public function validate(string $data): bool;
+
     /**
      * @return CodeInspectionIssue[]
      */

@@ -9,7 +9,7 @@ use DR\Review\Entity\Notification\RuleOptions;
 use DR\Review\Repository\Config\RuleRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\UserFixtures;
+use DR\Review\Tests\DataFixtures\Test\UserFixtures;
 use DR\Utils\Assert;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
