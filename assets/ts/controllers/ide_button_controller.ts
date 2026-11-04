@@ -5,6 +5,7 @@ export default class extends Controller {
         event.preventDefault();
 
         const iframe = document.createElement('iframe');
+        iframe.referrerPolicy = 'origin';
         document.body.appendChild(iframe);
         iframe.onload        = () => iframe.remove();
         iframe.onerror       = () => iframe.remove();
