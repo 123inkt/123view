@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dede4a3fe8610b865e9e27fbe09a90a9",
+    "content-hash": "68575afcf379a546aaa0d7d4486b06fe",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -3676,7 +3676,8 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-10-17T11:30:53+00:00"
+            "time": "2025-10-17T11:30:53+00:00",
+            "published-time": "2025-10-17T11:32:06+00:00"
         },
         {
             "name": "league/commonmark",
@@ -5324,7 +5325,8 @@
                 "issues": "https://github.com/php-fig/clock/issues",
                 "source": "https://github.com/php-fig/clock/tree/1.0.0"
             },
-            "time": "2022-11-25T14:36:26+00:00"
+            "time": "2022-11-25T14:36:26+00:00",
+            "published-time": "2022-11-25T14:59:22+00:00"
         },
         {
             "name": "psr/container",
@@ -5377,7 +5379,8 @@
                 "issues": "https://github.com/php-fig/container/issues",
                 "source": "https://github.com/php-fig/container/tree/2.0.2"
             },
-            "time": "2021-11-05T16:47:00+00:00"
+            "time": "2021-11-05T16:47:00+00:00",
+            "published-time": "2021-11-05T16:53:27+00:00"
         },
         {
             "name": "psr/event-dispatcher",
@@ -5427,7 +5430,8 @@
                 "issues": "https://github.com/php-fig/event-dispatcher/issues",
                 "source": "https://github.com/php-fig/event-dispatcher/tree/1.0.0"
             },
-            "time": "2019-01-08T18:20:26+00:00"
+            "time": "2019-01-08T18:20:26+00:00",
+            "published-time": "2019-03-25T15:31:44+00:00"
         },
         {
             "name": "psr/http-client",
@@ -5756,7 +5760,8 @@
             "support": {
                 "source": "https://github.com/php-fig/link/tree/2.0.1"
             },
-            "time": "2021-03-11T23:00:27+00:00"
+            "time": "2021-03-11T23:00:27+00:00",
+            "published-time": "2021-03-11T23:05:05+00:00"
         },
         {
             "name": "psr/log",
@@ -5806,7 +5811,8 @@
             "support": {
                 "source": "https://github.com/php-fig/log/tree/3.0.2"
             },
-            "time": "2024-09-11T13:17:53+00:00"
+            "time": "2024-09-11T13:17:53+00:00",
+            "published-time": "2024-09-11T13:21:14+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -6651,7 +6657,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-13T12:55:44+00:00"
+            "time": "2026-10-13T12:55:44+00:00",
+            "published-time": "2026-10-14T06:48:43+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -6722,7 +6729,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-05T06:23:12+00:00"
+            "time": "2026-06-05T06:23:12+00:00",
+            "published-time": "2026-06-27T21:46:34+00:00"
         },
         {
             "name": "symfony/doctrine-bridge",
@@ -7146,7 +7154,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-21T17:47:34+00:00"
+            "time": "2026-08-21T17:47:34+00:00",
+            "published-time": "2026-08-22T13:46:58+00:00"
         },
         {
             "name": "symfony/event-dispatcher-contracts",
@@ -7226,7 +7235,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-05T06:23:12+00:00"
+            "time": "2026-06-05T06:23:12+00:00",
+            "published-time": "2026-06-27T21:46:35+00:00"
         },
         {
             "name": "symfony/expression-language",
@@ -7924,7 +7934,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-04T08:41:16+00:00"
+            "time": "2026-08-04T08:41:16+00:00",
+            "published-time": "2026-08-30T19:56:36+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -8005,7 +8016,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-08T16:57:43+00:00"
+            "time": "2026-10-08T16:57:43+00:00",
+            "published-time": "2026-10-14T06:49:17+00:00"
         },
         {
             "name": "symfony/http-kernel",
@@ -8115,7 +8127,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-14T06:47:03+00:00"
+            "time": "2026-10-14T06:47:03+00:00",
+            "published-time": "2026-10-14T06:48:21+00:00"
         },
         {
             "name": "symfony/intl",
@@ -8462,20 +8475,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-07T21:19:29+00:00"
+            "time": "2026-10-07T21:19:29+00:00",
+            "published-time": "2026-10-07T21:19:41+00:00"
         },
         {
             "name": "symfony/mercure-bundle",
-            "version": "v0.6.1",
+            "version": "v0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mercure-bundle.git",
-                "reference": "a9f1affc1cbd81413938d2035141732b614a9507"
+                "reference": "0433692370ab9cc01885fdc07e27b279399c3be8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mercure-bundle/zipball/a9f1affc1cbd81413938d2035141732b614a9507",
-                "reference": "a9f1affc1cbd81413938d2035141732b614a9507",
+                "url": "https://api.github.com/repos/symfony/mercure-bundle/zipball/0433692370ab9cc01885fdc07e27b279399c3be8",
+                "reference": "0433692370ab9cc01885fdc07e27b279399c3be8",
                 "shasum": ""
             },
             "require": {
@@ -8484,11 +8498,12 @@
                 "symfony/config": "^6.4|^7.3|^8.0",
                 "symfony/dependency-injection": "^6.4|^7.3|^8.0",
                 "symfony/http-kernel": "^6.4|^7.3|^8.0",
-                "symfony/mercure": "^0.8|^0.9",
+                "symfony/mercure": "^0.9|^0.10",
                 "symfony/web-link": "^6.4|^7.3|^8.0"
             },
             "require-dev": {
                 "symfony/phpunit-bridge": "^7.3.4|^8.0",
+                "symfony/security-http": "^6.4|^7.3|^8.0",
                 "symfony/stopwatch": "^6.4|^7.3|^8.0",
                 "symfony/ux-turbo": "*",
                 "symfony/var-dumper": "^6.4|^7.3|^8.0",
@@ -8496,12 +8511,13 @@
             },
             "suggest": {
                 "symfony/messenger": "To use the Messenger integration",
+                "symfony/security-http": "To clear the subscriber authorization cookie on logout",
                 "web-token/jwt-library": "To build Mercure protocol 1.0-compatible JSON Web Tokens from a \"jwt.jwks_uri\" option"
             },
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "0.6.x-dev"
+                    "dev-main": "0.7.x-dev"
                 }
             },
             "autoload": {
@@ -8533,7 +8549,7 @@
             ],
             "support": {
                 "issues": "https://github.com/symfony/mercure-bundle/issues",
-                "source": "https://github.com/symfony/mercure-bundle/tree/v0.6.1"
+                "source": "https://github.com/symfony/mercure-bundle/tree/v0.7.0"
             },
             "funding": [
                 {
@@ -8545,7 +8561,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-11T21:01:28+00:00"
+            "time": "2026-11-03T07:28:05+00:00",
+            "published-time": "2026-11-03T07:28:10+00:00"
         },
         {
             "name": "symfony/messenger",
@@ -9111,7 +9128,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-14T07:17:09+00:00"
+            "time": "2026-10-14T07:17:09+00:00",
+            "published-time": "2026-10-14T09:42:25+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -9829,7 +9847,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-12T12:37:13+00:00"
+            "time": "2026-10-12T12:37:13+00:00",
+            "published-time": "2026-10-14T06:49:11+00:00"
         },
         {
             "name": "symfony/runtime",
@@ -10445,7 +10464,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-27T15:39:01+00:00"
+            "time": "2026-07-27T15:39:01+00:00",
+            "published-time": "2026-08-30T19:56:37+00:00"
         },
         {
             "name": "symfony/stimulus-bundle",
@@ -11471,7 +11491,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-07T07:28:40+00:00"
+            "time": "2026-10-07T07:28:40+00:00",
+            "published-time": "2026-10-14T06:49:32+00:00"
         },
         {
             "name": "symfony/web-link",
@@ -11555,7 +11576,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-29T05:06:50+00:00"
+            "time": "2026-05-29T05:06:50+00:00",
+            "published-time": "2026-05-29T08:50:55+00:00"
         },
         {
             "name": "symfony/webhook",
@@ -17141,16 +17163,16 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "v8.1.9",
+            "version": "v8.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/browser-kit.git",
-                "reference": "90f77a846d0772aaf3dec24456410d160d06e6d0"
+                "reference": "cc23f4014de03abce0425f9c6ff01c2d1e93ca5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/90f77a846d0772aaf3dec24456410d160d06e6d0",
-                "reference": "90f77a846d0772aaf3dec24456410d160d06e6d0",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/cc23f4014de03abce0425f9c6ff01c2d1e93ca5c",
+                "reference": "cc23f4014de03abce0425f9c6ff01c2d1e93ca5c",
                 "shasum": ""
             },
             "require": {
@@ -17160,6 +17182,7 @@
             "require-dev": {
                 "symfony/css-selector": "^7.4|^8.0",
                 "symfony/http-client": "^7.4|^8.0",
+                "symfony/http-foundation": "^7.4|^8.0",
                 "symfony/mime": "^7.4|^8.0",
                 "symfony/process": "^7.4|^8.0"
             },
@@ -17189,7 +17212,7 @@
             "description": "Simulates the behavior of a web browser, allowing you to make requests, click on links and submit forms programmatically",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/browser-kit/tree/v8.1.9"
+                "source": "https://github.com/symfony/browser-kit/tree/v8.1.11"
             },
             "funding": [
                 {
@@ -17209,7 +17232,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-13T12:55:44+00:00"
+            "time": "2026-11-01T07:18:47+00:00",
+            "published-time": "2026-11-04T11:32:22+00:00"
         },
         {
             "name": "symfony/debug-bundle",
@@ -17354,7 +17378,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-21T17:47:34+00:00"
+            "time": "2026-08-21T17:47:34+00:00",
+            "published-time": "2026-08-22T13:46:40+00:00"
         },
         {
             "name": "symfony/maker-bundle",
@@ -17458,16 +17483,16 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v8.1.9",
+            "version": "v8.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",
-                "reference": "8a18197104d682fc3fa59718524ccca0d090f8ad"
+                "reference": "989d3fba892a7229c0529c33650e50eba51b6565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/8a18197104d682fc3fa59718524ccca0d090f8ad",
-                "reference": "8a18197104d682fc3fa59718524ccca0d090f8ad",
+                "url": "https://api.github.com/repos/symfony/phpunit-bridge/zipball/989d3fba892a7229c0529c33650e50eba51b6565",
+                "reference": "989d3fba892a7229c0529c33650e50eba51b6565",
                 "shasum": ""
             },
             "require": {
@@ -17519,7 +17544,7 @@
                 "testing"
             ],
             "support": {
-                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.1.9"
+                "source": "https://github.com/symfony/phpunit-bridge/tree/v8.1.10"
             },
             "funding": [
                 {
@@ -17539,20 +17564,21 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-09-30T22:00:36+00:00"
+            "time": "2026-10-18T14:56:39+00:00",
+            "published-time": "2026-10-28T18:24:00+00:00"
         },
         {
             "name": "symfony/web-profiler-bundle",
-            "version": "v8.1.9",
+            "version": "v8.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/web-profiler-bundle.git",
-                "reference": "481a6d4b0b6bce7e83573576abcf01d9674cd934"
+                "reference": "8d4af209492efdc90b9253dbeaa1b8fffdb1285a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/481a6d4b0b6bce7e83573576abcf01d9674cd934",
-                "reference": "481a6d4b0b6bce7e83573576abcf01d9674cd934",
+                "url": "https://api.github.com/repos/symfony/web-profiler-bundle/zipball/8d4af209492efdc90b9253dbeaa1b8fffdb1285a",
+                "reference": "8d4af209492efdc90b9253dbeaa1b8fffdb1285a",
                 "shasum": ""
             },
             "require": {
@@ -17604,7 +17630,7 @@
                 "dev"
             ],
             "support": {
-                "source": "https://github.com/symfony/web-profiler-bundle/tree/v8.1.9"
+                "source": "https://github.com/symfony/web-profiler-bundle/tree/v8.1.11"
             },
             "funding": [
                 {
@@ -17624,7 +17650,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-07T15:50:48+00:00"
+            "time": "2026-10-30T12:52:48+00:00",
+            "published-time": "2026-11-04T11:32:15+00:00"
         },
         {
             "name": "yep/reflection",
@@ -17694,5 +17721,5 @@
         "ext-zlib": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "plugin-api-version": "2.11.0"
 }
