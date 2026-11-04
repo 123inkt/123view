@@ -99,7 +99,7 @@ class CodeReviewRevisionMatcherTest extends AbstractTestCase
         static::assertFalse($this->matcher->isSupported($revision));
     }
 
-    public function testIsSupportedCommitMessageShouldBeExcluded(): void
+    public function testIsSupportedExcludesCommitMessage(): void
     {
         $repository = new Repository();
         $repository->setCreateTimestamp(10000);
