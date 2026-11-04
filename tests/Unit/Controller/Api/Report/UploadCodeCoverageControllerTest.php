@@ -64,6 +64,22 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, 'repository', 'hash');
     }
 
+    public function testInvokeInvalidData(): void
+    {
+        $request = static::createStub(UploadCodeCoverageRequest::class);
+        $request->method('getFormat')->willReturn('clover');
+        $request->method('getData')->willReturn('invalid data');
+
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(new Repository());
+        $this->reportFactory->expects($this->once())->method('validate')->with('clover', 'invalid data')->willReturn(false);
+        $this->reportFactory->expects($this->never())->method('parse');
+        $this->reportRepository->expects($this->never())->method(static::anything());
+
+        $this->expectException(BadRequestHttpException::class);
+        $this->expectExceptionMessage('Invalid code coverage report data.');
+        ($this->controller)($request, 'repository', 'hash');
+    }
+
     public function testInvoke(): void
     {
         $request = static::createStub(UploadCodeCoverageRequest::class);
@@ -75,6 +91,8 @@ class UploadCodeCoverageControllerTest extends AbstractControllerTestCase
 
         $report = new CodeCoverageReport();
         $report->getFiles()->add(new CodeCoverageFile());
+
+        $this->reportFactory->expects($this->once())->method('validate')->with('format', 'data')->willReturn(true);
 
         $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
         $this->reportFactory->expects($this->once())

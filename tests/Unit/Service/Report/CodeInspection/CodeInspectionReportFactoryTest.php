@@ -10,6 +10,7 @@ use DR\Review\Service\Report\CodeInspection\CodeInspectionReportFactory;
 use DR\Review\Service\Report\CodeInspection\Parser\CodeInspectionIssueParserInterface;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 
 #[CoversClass(CodeInspectionReportFactory::class)]
@@ -23,6 +24,18 @@ class CodeInspectionReportFactoryTest extends AbstractTestCase
         parent::setUp();
         $this->parserProvider = $this->createMock(CodeInspectionIssueParserProvider::class);
         $this->reportFactory  = new CodeInspectionReportFactory($this->parserProvider);
+    }
+
+    #[TestWith([true])]
+    #[TestWith([false])]
+    public function testValidate(bool $valid): void
+    {
+        $parser = $this->createMock(CodeInspectionIssueParserInterface::class);
+        $this->parserProvider->expects($this->once())->method('getParser')->with('checkstyle')->willReturn($parser);
+        $parser->expects($this->once())->method('validate')->with('data')->willReturn($valid);
+        $parser->expects($this->never())->method('parse');
+
+        static::assertSame($valid, $this->reportFactory->validate('checkstyle', 'data'));
     }
 
     public function testParse(): void

@@ -41,6 +41,10 @@ class UploadCodeInspectionController extends AbstractController implements Logge
             throw new BadRequestHttpException('Body cannot be empty.');
         }
 
+        if ($this->reportFactory->validate($request->getFormat(), $request->getData()) === false) {
+            throw new BadRequestHttpException('Invalid code inspection report data.');
+        }
+
         $this->logger?->info(
             'CodeInspectionReport: {name}, {basePath}, {hash}, {id}, {branchId}, {format}, body size: {size}',
             [

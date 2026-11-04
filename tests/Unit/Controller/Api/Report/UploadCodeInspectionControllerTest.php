@@ -65,6 +65,22 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
         ($this->controller)($request, 'repository', 'hash');
     }
 
+    public function testInvokeInvalidData(): void
+    {
+        $request = static::createStub(UploadCodeInspectionRequest::class);
+        $request->method('getFormat')->willReturn('checkstyle');
+        $request->method('getData')->willReturn('invalid data');
+
+        $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn(new Repository());
+        $this->reportFactory->expects($this->once())->method('validate')->with('checkstyle', 'invalid data')->willReturn(false);
+        $this->reportFactory->expects($this->never())->method('parse');
+        $this->reportRepository->expects($this->never())->method(static::anything());
+
+        $this->expectException(BadRequestHttpException::class);
+        $this->expectExceptionMessage('Invalid code inspection report data.');
+        ($this->controller)($request, 'repository', 'hash');
+    }
+
     public function testInvoke(): void
     {
         $request = static::createStub(UploadCodeInspectionRequest::class);
@@ -78,6 +94,8 @@ class UploadCodeInspectionControllerTest extends AbstractControllerTestCase
 
         $report = new CodeInspectionReport();
         $report->getIssues()->add(new CodeInspectionIssue());
+
+        $this->reportFactory->expects($this->once())->method('validate')->with('format', 'data')->willReturn(true);
 
         $this->repositoryRepository->expects($this->once())->method('findOneBy')->with(['name' => 'repository'])->willReturn($repository);
         $this->reportFactory->expects($this->once())

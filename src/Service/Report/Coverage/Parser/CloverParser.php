@@ -15,10 +15,23 @@ use DR\Utils\Assert;
 
 class CloverParser implements CodeCoverageParserInterface
 {
-    public const FORMAT = 'clover';
+    public const string FORMAT = 'clover';
 
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {
+    }
+
+    public function validate(string $data): bool
+    {
+        if (trim($data) === '') {
+            return false;
+        }
+
+        try {
+            return $this->documentFactory->createFromString($data)->documentElement?->nodeName === 'coverage';
+        } catch (XMLException | ParseException) {
+            return false;
+        }
     }
 
     /**

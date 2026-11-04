@@ -14,10 +14,23 @@ use DR\Utils\Assert;
 
 class JunitIssueParser implements CodeInspectionIssueParserInterface
 {
-    public const FORMAT = 'junit';
+    public const string FORMAT = 'junit';
 
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {
+    }
+
+    public function validate(string $data): bool
+    {
+        if (trim($data) === '') {
+            return false;
+        }
+
+        try {
+            return in_array($this->documentFactory->createFromString($data)->documentElement?->nodeName, ['testsuites', 'testsuite'], true);
+        } catch (XMLException | ParseException) {
+            return false;
+        }
     }
 
     /**
