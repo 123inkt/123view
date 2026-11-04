@@ -12,6 +12,11 @@ class CodeInspectionReportFactory
     {
     }
 
+    public function validate(string $format, string $data): bool
+    {
+        return $this->parserProvider->getParser($format)->validate($data);
+    }
+
     public function parse(
         Repository $repository,
         string $commitHash,

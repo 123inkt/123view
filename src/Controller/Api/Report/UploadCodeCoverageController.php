@@ -46,6 +46,10 @@ class UploadCodeCoverageController extends AbstractController implements LoggerA
         $branchId = $request->getBranchId();
         $data     = $request->getData();
 
+        if ($this->reportFactory->validate($format, $data) === false) {
+            throw new BadRequestHttpException('Invalid code coverage report data.');
+        }
+
         $this->logger?->info(
             'CodeCoverageReport: {name}, {basePath}, {hash}, {branchId}, {format}, body size: {size}',
             [

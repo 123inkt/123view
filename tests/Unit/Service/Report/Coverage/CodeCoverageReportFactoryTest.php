@@ -10,6 +10,7 @@ use DR\Review\Service\Report\Coverage\CodeCoverageReportFactory;
 use DR\Review\Service\Report\Coverage\Parser\CodeCoverageParserInterface;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\MockObject\MockObject;
 
 #[CoversClass(CodeCoverageReportFactory::class)]
@@ -23,6 +24,18 @@ class CodeCoverageReportFactoryTest extends AbstractTestCase
         parent::setUp();
         $this->parserProvider = $this->createMock(CodeCoverageParserProvider::class);
         $this->factory        = new CodeCoverageReportFactory($this->parserProvider);
+    }
+
+    #[TestWith([true])]
+    #[TestWith([false])]
+    public function testValidate(bool $valid): void
+    {
+        $parser = $this->createMock(CodeCoverageParserInterface::class);
+        $this->parserProvider->expects($this->once())->method('getParser')->with('clover')->willReturn($parser);
+        $parser->expects($this->once())->method('validate')->with('data')->willReturn($valid);
+        $parser->expects($this->never())->method('parse');
+
+        static::assertSame($valid, $this->factory->validate('clover', 'data'));
     }
 
     public function testParse(): void
