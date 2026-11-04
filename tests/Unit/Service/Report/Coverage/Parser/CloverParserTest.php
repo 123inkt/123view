@@ -11,10 +11,25 @@ use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 
 #[CoversClass(CloverParser::class)]
 class CloverParserTest extends AbstractTestCase
 {
+    #[TestWith(['<coverage/>', true])]
+    #[TestWith(['<coverage><project/></coverage>', true])]
+    #[TestWith(['<checkstyle/>', false])]
+    #[TestWith(['<coverage>', false])]
+    #[TestWith(['not xml', false])]
+    #[TestWith(['', false])]
+    #[TestWith(['   ', false])]
+    public function testValidate(string $data, bool $expected): void
+    {
+        $parser = new CloverParser(new DOMDocumentFactory(), new FilePathNormalizer());
+
+        static::assertSame($expected, $parser->validate($data));
+    }
+
     /**
      * @throws XMLException|ParseException
      */
@@ -23,6 +38,8 @@ class CloverParserTest extends AbstractTestCase
         $data = Assert::notFalse(file_get_contents(__DIR__ . '/coverage-clover.xml'));
 
         $parser  = new CloverParser(new DOMDocumentFactory(), new FilePathNormalizer());
+        static::assertTrue($parser->validate($data));
+
         $results = $parser->parse('\\mnt\\123view\\', $data);
         static::assertCount(2, $results);
 

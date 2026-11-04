@@ -17,6 +17,15 @@ class GitlabIssueParser implements CodeInspectionIssueParserInterface
     {
     }
 
+    public function validate(string $data): bool
+    {
+        try {
+            return is_array(Json::decode($data));
+        } catch (JsonException) {
+            return false;
+        }
+    }
+
     /**
      * @inheritDoc
      * @throws JsonException

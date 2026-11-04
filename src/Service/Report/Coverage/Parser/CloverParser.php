@@ -21,6 +21,19 @@ class CloverParser implements CodeCoverageParserInterface
     {
     }
 
+    public function validate(string $data): bool
+    {
+        if (trim($data) === '') {
+            return false;
+        }
+
+        try {
+            return $this->documentFactory->createFromString($data)->documentElement?->nodeName === 'coverage';
+        } catch (XMLException | ParseException) {
+            return false;
+        }
+    }
+
     /**
      * @return CodeCoverageFile[]
      * @throws XMLException|ParseException

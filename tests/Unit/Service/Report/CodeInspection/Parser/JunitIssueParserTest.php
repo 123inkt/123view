@@ -10,6 +10,7 @@ use DR\Review\Service\Report\CodeInspection\Parser\JunitIssueParser;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 
 #[CoversClass(JunitIssueParser::class)]
 class JunitIssueParserTest extends AbstractTestCase
@@ -22,12 +23,25 @@ class JunitIssueParserTest extends AbstractTestCase
         $this->parser = new JunitIssueParser(new DOMDocumentFactory(), new FilePathNormalizer());
     }
 
+    #[TestWith(['<testsuites/>', true])]
+    #[TestWith(['<testsuite/>', true])]
+    #[TestWith(['<checkstyle/>', false])]
+    #[TestWith(['<testsuites>', false])]
+    #[TestWith(['not xml', false])]
+    #[TestWith(['', false])]
+    #[TestWith(['   ', false])]
+    public function testValidate(string $data, bool $expected): void
+    {
+        static::assertSame($expected, $this->parser->validate($data));
+    }
+
     /**
      * @throws XMLException|ParseException
      */
     public function testParse(): void
     {
         $data = (string)file_get_contents(__DIR__ . '/JunitIssueParserTest.xml');
+        static::assertTrue($this->parser->validate($data));
 
         $issues = $this->parser->parse('/builds/123/production/drs/drs/', 'subDir', $data);
 

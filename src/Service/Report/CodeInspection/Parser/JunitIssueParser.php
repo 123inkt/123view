@@ -20,6 +20,19 @@ class JunitIssueParser implements CodeInspectionIssueParserInterface
     {
     }
 
+    public function validate(string $data): bool
+    {
+        if (trim($data) === '') {
+            return false;
+        }
+
+        try {
+            return in_array($this->documentFactory->createFromString($data)->documentElement?->nodeName, ['testsuites', 'testsuite'], true);
+        } catch (XMLException | ParseException) {
+            return false;
+        }
+    }
+
     /**
      * @inheritDoc
      * @throws XMLException|ParseException
