@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1fe3ea976196579828c5dc1491fe84c9",
+    "content-hash": "dede4a3fe8610b865e9e27fbe09a90a9",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -13333,16 +13333,16 @@
         },
         {
             "name": "pdepend/pdepend",
-            "version": "3.x-dev",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pdepend/pdepend.git",
-                "reference": "694c96539213fd390d151a519126b18fd5cc57c5"
+                "reference": "7088704510ba42729dc86cfb023640a4b8c26458"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/694c96539213fd390d151a519126b18fd5cc57c5",
-                "reference": "694c96539213fd390d151a519126b18fd5cc57c5",
+                "url": "https://api.github.com/repos/pdepend/pdepend/zipball/7088704510ba42729dc86cfb023640a4b8c26458",
+                "reference": "7088704510ba42729dc86cfb023640a4b8c26458",
                 "shasum": ""
             },
             "require": {
@@ -13361,14 +13361,13 @@
                 "easy-doc/easy-doc": "^1.2.3",
                 "friendsofphp/php-cs-fixer": "^3.57",
                 "gregwar/rst": "^1.0.6",
-                "phpstan/phpstan": "~2.1.32",
+                "phpstan/phpstan": "~2.2.15",
                 "phpunit/phpunit": "^10.5.20,<10.5.32 || ^11.0.0",
                 "squizlabs/php_codesniffer": "^3.8.0"
             },
             "suggest": {
                 "ext-sockets": "Recommended on Windows for multiprocessing support"
             },
-            "default-branch": true,
             "bin": [
                 "bin/pdepend"
             ],
@@ -13396,7 +13395,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pdepend/pdepend/issues",
-                "source": "https://github.com/pdepend/pdepend/tree/3.x"
+                "source": "https://github.com/pdepend/pdepend/tree/3.0.0"
             },
             "funding": [
                 {
@@ -13404,7 +13403,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-02T08:21:05+00:00"
+            "time": "2026-09-29T07:30:15+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -13526,22 +13525,23 @@
         },
         {
             "name": "phpmd/phpmd",
-            "version": "3.x-dev",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmd/phpmd.git",
-                "reference": "020ebd954b8343638b566815aec5044a2fff3441"
+                "reference": "b0f328de45f7af9a7355f794cf016779a763955c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/020ebd954b8343638b566815aec5044a2fff3441",
-                "reference": "020ebd954b8343638b566815aec5044a2fff3441",
+                "url": "https://api.github.com/repos/phpmd/phpmd/zipball/b0f328de45f7af9a7355f794cf016779a763955c",
+                "reference": "b0f328de45f7af9a7355f794cf016779a763955c",
                 "shasum": ""
             },
             "require": {
                 "composer/xdebug-handler": "^3.0",
                 "ext-xml": "*",
-                "pdepend/pdepend": "3.x-dev",
+                "fidry/cpu-core-counter": "^1.2",
+                "pdepend/pdepend": "^3.0.0",
                 "php": "^8.1",
                 "symfony/console": "^6.4|^7.0|^8.0",
                 "symfony/yaml": "^5.4.31 || ^6.0 || ^7.0 || ^8.0"
@@ -13554,9 +13554,12 @@
                 "friendsofphp/php-cs-fixer": "^3.57",
                 "gregwar/rst": "^1.0",
                 "mikey179/vfsstream": "^1.6.8",
-                "phpstan/phpstan": "~2.1.56",
+                "phpstan/phpstan": "~2.2.15",
                 "phpunit/phpunit": "^10.5.62|^11.5.50",
                 "squizlabs/php_codesniffer": "^3.8.0"
+            },
+            "suggest": {
+                "ext-pcntl": "Needed to apply the rules in parallel"
             },
             "bin": [
                 "bin/phpmd"
@@ -13603,7 +13606,7 @@
             "support": {
                 "irc": "irc://irc.freenode.org/phpmd",
                 "issues": "https://github.com/phpmd/phpmd/issues",
-                "source": "https://github.com/phpmd/phpmd/tree/3.x"
+                "source": "https://github.com/phpmd/phpmd/tree/3.0.0"
             },
             "funding": [
                 {
@@ -13611,7 +13614,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-23T08:00:22+00:00"
+            "time": "2026-10-04T13:20:01+00:00"
         },
         {
             "name": "phpstan/extension-installer",
@@ -17676,7 +17679,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "phpmd/phpmd": 20,
         "roave/security-advisories": 20,
         "symfony/mcp-bundle": 20
     },
