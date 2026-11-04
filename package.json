@@ -25,6 +25,9 @@
         "webpack": "^5.110.3",
         "webpack-cli": "^7.2.3"
     },
+    "overrides": {
+        "minimatch": "^11.0.1"
+    },
     "scripts": {
         "dev": "encore dev --config webpack.config.mjs",
         "watch": "encore dev --watch --config webpack.config.mjs",
