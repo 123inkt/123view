@@ -44,8 +44,6 @@ class CodeReviewActivityFormatter
         ReviewResumed::NAME                      => 'timeline.review.resumed',
         ReviewRevisionAdded::NAME                => 'timeline.review.revision.added',
         ReviewRevisionRemoved::NAME              => 'timeline.review.revision.removed',
-        // Keep historical AI review requests readable after removal of the agent.
-        'request-ai-review'                      => 'timeline.review.ai_requested',
         CommentAdded::NAME                       => 'timeline.comment.added',
         CommentReplyAdded::NAME                  => 'timeline.comment.reply.added',
         CommentRemoved::NAME                     => 'timeline.comment.removed',

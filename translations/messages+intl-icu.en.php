@@ -329,7 +329,6 @@ return [
     'timeline.comment.unresolved'                 => '<span class="text-primary">{username}</span> unresolved a comment on <code>{file}</code>.',
     'timeline.review'                             => 'Review timeline',
     'timeline.review.accepted'                    => '<span class="text-primary">{username}</span> <span class="text-success">accepted</span> the review.',
-    'timeline.review.ai_requested'                => '<span class="text-primary">{username}</span> requested an AI code review.',
     'timeline.review.closed'                      => '<span class="text-primary">{username}</span> closed the review.',
     'timeline.review.created.from.revision'       => '<span class="text-primary">{username}</span> created the review from a revision.',
     'timeline.review.opened'                      => '<span class="text-primary">{username}</span> reopened the review.',
