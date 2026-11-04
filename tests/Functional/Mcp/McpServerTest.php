@@ -107,7 +107,7 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertIsArray($data['result']['tools']);
 
         $toolNames = array_column($data['result']['tools'], 'name');
-        static::assertCount(16, $toolNames);
+        static::assertCount(17, $toolNames);
         static::assertContains('get_code_review', $toolNames);
         static::assertContains('get_code_reviews', $toolNames);
         static::assertContains('get_code_review_diff', $toolNames);
@@ -115,6 +115,7 @@ class McpServerTest extends AbstractFunctionalTestCase
         static::assertContains('get_comment_replies', $toolNames);
         static::assertContains('get_current_user', $toolNames);
         static::assertContains('add_comment', $toolNames);
+        static::assertContains('add_comment_reply', $toolNames);
         static::assertContains('update_comment', $toolNames);
         static::assertContains('update_comment_reply', $toolNames);
         static::assertContains('delete_comment', $toolNames);
