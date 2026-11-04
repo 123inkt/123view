@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use DR\Review\Message\AsyncMessageInterface;
 use DR\Review\Message\Delay\DelayableMessage;
-use DR\Review\Message\Review\AiReviewRequested;
 use DR\Review\Message\Revision\CommitAddedMessage;
 use DR\Review\Message\Revision\CommitRemovedMessage;
 use DR\Review\Message\Revision\FetchRepositoryRevisionsMessage;
@@ -20,7 +19,6 @@ return App::config([
             'transports'        => [
                 'async_messages'   => ['dsn' => '%env(MESSENGER_TRANSPORT_DSN)%messages'],
                 'async_revisions'  => ['dsn' => '%env(MESSENGER_TRANSPORT_DSN)%revisions'],
-                'async_ai_review'  => ['dsn' => '%env(MESSENGER_TRANSPORT_DSN)%ai-review'],
                 'async_delay_mail' => ['dsn' => '%env(MESSENGER_TRANSPORT_DSN)%mail'],
                 'failed'           => ['dsn' => 'doctrine://default?queue_name=failed'],
                 'sync'             => ['dsn' => 'sync://'],
@@ -34,7 +32,6 @@ return App::config([
                 CommitRemovedMessage::class            => ['async_revisions'],
                 ValidateRevisionsMessage::class        => ['async_revisions'],
                 RepositoryUpdatedMessage::class        => ['async_revisions'],
-                AiReviewRequested::class               => ['async_ai_review', 'async_messages'],
                 DelayableMessage::class                => ['async_delay_mail'],
                 AsyncMessageInterface::class           => ['async_messages'],
             ],

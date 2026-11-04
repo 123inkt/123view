@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Monolog;
 
 use DateTimeImmutable;
-use DR\Review\Exception\Ai\InvalidReviewUrlException;
+use DR\Review\Exception\Review\InvalidReviewUrlException;
 use DR\Review\Monolog\ToolExecutionExceptionActivationStrategy;
 use DR\Review\Tests\AbstractTestCase;
 use Monolog\Handler\FingersCrossed\ActivationStrategyInterface;

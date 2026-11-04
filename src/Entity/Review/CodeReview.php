@@ -104,9 +104,6 @@ class CodeReview
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $extReferenceId = null;
 
-    #[ORM\Column]
-    private bool $aiReviewRequested = false;
-
     /** @var int[] */
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
     private array $actors = [];
@@ -259,18 +256,6 @@ class CodeReview
     public function setExtReferenceId(?string $extReferenceId): self
     {
         $this->extReferenceId = $extReferenceId;
-
-        return $this;
-    }
-
-    public function isAiReviewRequested(): bool
-    {
-        return $this->aiReviewRequested;
-    }
-
-    public function setAiReviewRequested(bool $aiReviewRequested): self
-    {
-        $this->aiReviewRequested = $aiReviewRequested;
 
         return $this;
     }

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace DR\Review\Monolog;
 
+use DR\Review\Exception\Review\ReviewException;
 use Monolog\Handler\FingersCrossed\ActivationStrategyInterface;
 use Monolog\LogRecord;
-use Symfony\AI\Agent\Toolbox\Exception\ToolExecutionExceptionInterface;
 
 class ToolExecutionExceptionActivationStrategy implements ActivationStrategyInterface
 {
@@ -15,7 +15,7 @@ class ToolExecutionExceptionActivationStrategy implements ActivationStrategyInte
 
     public function isHandlerActivated(LogRecord $record): bool
     {
-        if (($record->context['exception'] ?? null) instanceof ToolExecutionExceptionInterface) {
+        if (($record->context['exception'] ?? null) instanceof ReviewException) {
             return false;
         }
 
