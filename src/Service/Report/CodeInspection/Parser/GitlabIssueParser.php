@@ -11,10 +11,19 @@ use Nette\Utils\JsonException;
 
 class GitlabIssueParser implements CodeInspectionIssueParserInterface
 {
-    public const FORMAT = 'gitlab';
+    public const string FORMAT = 'gitlab';
 
     public function __construct(private readonly FilePathNormalizer $pathNormalizer)
     {
+    }
+
+    public function validate(string $data): bool
+    {
+        try {
+            return is_array(Json::decode($data));
+        } catch (JsonException) {
+            return false;
+        }
     }
 
     /**

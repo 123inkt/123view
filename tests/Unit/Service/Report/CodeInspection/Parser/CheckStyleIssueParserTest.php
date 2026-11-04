@@ -10,6 +10,7 @@ use DR\Review\Service\Report\CodeInspection\Parser\CheckStyleIssueParser;
 use DR\Review\Service\Xml\DOMDocumentFactory;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\TestWith;
 
 #[CoversClass(CheckStyleIssueParser::class)]
 class CheckStyleIssueParserTest extends AbstractTestCase
@@ -22,12 +23,24 @@ class CheckStyleIssueParserTest extends AbstractTestCase
         $this->parser = new CheckStyleIssueParser(new DOMDocumentFactory(), new FilePathNormalizer());
     }
 
+    #[TestWith(['<checkstyle/>', true])]
+    #[TestWith(['<testsuites/>', false])]
+    #[TestWith(['<checkstyle>', false])]
+    #[TestWith(['not xml', false])]
+    #[TestWith(['', false])]
+    #[TestWith(['   ', false])]
+    public function testValidate(string $data, bool $expected): void
+    {
+        static::assertSame($expected, $this->parser->validate($data));
+    }
+
     /**
      * @throws XMLException|ParseException
      */
     public function testParse(): void
     {
         $data = (string)file_get_contents(__DIR__ . '/CheckStyleIssueParserTest.xml');
+        static::assertTrue($this->parser->validate($data));
 
         $issues = $this->parser->parse('/build/5', 'subDir', $data);
 

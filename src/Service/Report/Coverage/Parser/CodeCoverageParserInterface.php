@@ -7,6 +7,8 @@ use DR\Review\Entity\Report\CodeCoverageFile;
 
 interface CodeCoverageParserInterface
 {
+    public function validate(string $data): bool;
+
     /**
      * @return CodeCoverageFile[]
      */
