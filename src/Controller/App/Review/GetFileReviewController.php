@@ -13,6 +13,7 @@ use DR\Review\ViewModel\App\Review\ReviewDiffModeEnum;
 use DR\Review\ViewModelProvider\FileReviewViewModelProvider;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Throwable;
@@ -40,6 +41,10 @@ class GetFileReviewController extends AbstractController
             $this->settingsProvider->getReviewDiffMode(),
             $this->settingsProvider->getVisibleLines()
         );
+
+        if ($viewModel === null) {
+            throw new NotFoundHttpException();
+        }
 
         $this->fileSeenService->markAsSeen($review, $this->getUser(), $viewModel->selectedFile);
 
