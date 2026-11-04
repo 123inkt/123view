@@ -15,7 +15,7 @@ use DR\Utils\Assert;
 
 class CloverParser implements CodeCoverageParserInterface
 {
-    public const FORMAT = 'clover';
+    public const string FORMAT = 'clover';
 
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {

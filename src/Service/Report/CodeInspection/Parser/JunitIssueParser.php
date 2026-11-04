@@ -14,7 +14,7 @@ use DR\Utils\Assert;
 
 class JunitIssueParser implements CodeInspectionIssueParserInterface
 {
-    public const FORMAT = 'junit';
+    public const string FORMAT = 'junit';
 
     public function __construct(private readonly DOMDocumentFactory $documentFactory, private readonly FilePathNormalizer $pathNormalizer)
     {
