@@ -68,6 +68,23 @@ class CodeReviewActivityFormatterTest extends AbstractTestCase
         $this->formatter->format($activity, $user);
     }
 
+    public function testFormatHistoricalAiRequest(): void
+    {
+        $user = new User()->setName('reviewer');
+        $activity = new CodeReviewActivity();
+        $activity->setEventName('request-ai-review');
+        $activity->setUser($user);
+
+        $this->translator->expects($this->once())
+            ->method('trans')
+            ->with('timeline.review.ai_requested', ['username' => 'reviewer'])
+            ->willReturn('reviewer requested an AI code review.');
+        $this->userRepository->expects($this->never())->method('find');
+        $this->revisionRepository->expects($this->never())->method('find');
+
+        static::assertSame('reviewer requested an AI code review.', $this->formatter->format($activity));
+    }
+
     public function testFormatReviewerEvent(): void
     {
         $user = new User();

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d48c7584b863b89e5996676e9ed96fc",
+    "content-hash": "1fe3ea976196579828c5dc1491fe84c9",
     "packages": [
         {
             "name": "api-platform/doctrine-common",
@@ -4846,58 +4846,6 @@
             "time": "2021-05-22T15:57:08+00:00"
         },
         {
-            "name": "oskarstark/enum-helper",
-            "version": "1.8.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/OskarStark/enum-helper.git",
-                "reference": "14e185f1cc259d7cd3f61eea17f9b174a886a6da"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/OskarStark/enum-helper/zipball/14e185f1cc259d7cd3f61eea17f9b174a886a6da",
-                "reference": "14e185f1cc259d7cd3f61eea17f9b174a886a6da",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1"
-            },
-            "conflict": {
-                "phpunit/phpunit": "<10"
-            },
-            "require-dev": {
-                "ergebnis/php-cs-fixer-config": "^6.58",
-                "phpstan/phpstan": "^2.1",
-                "phpunit/phpunit": "^10.5",
-                "rector/rector": "^2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "OskarStark\\Enum\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oskar Stark",
-                    "email": "oskarstark@googlemail.com"
-                }
-            ],
-            "description": "This library provides helpers for several enum operations",
-            "keywords": [
-                "enum"
-            ],
-            "support": {
-                "issues": "https://github.com/OskarStark/enum-helper/issues",
-                "source": "https://github.com/OskarStark/enum-helper/tree/1.8.4"
-            },
-            "time": "2026-02-05T08:59:09+00:00"
-        },
-        {
             "name": "parsica-php/parsica",
             "version": "0.8.3",
             "source": {
@@ -5279,8 +5227,7 @@
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/2.3.6"
             },
-            "time": "2026-09-27T20:07:45+00:00",
-            "published-time": "2026-09-27T20:08:57+00:00"
+            "time": "2026-09-27T20:07:45+00:00"
         },
         {
             "name": "psr/cache",
@@ -5978,616 +5925,6 @@
                 "source": "https://github.com/ScientaNL/DoctrineJsonFunctions/tree/6.5.0"
             },
             "time": "2026-03-10T08:22:48+00:00"
-        },
-        {
-            "name": "symfony/ai-agent",
-            "version": "v0.14.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/ai-agent.git",
-                "reference": "db62132492d85dfd0a7c90ec098c7e810b8f01bc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-agent/zipball/db62132492d85dfd0a7c90ec098c7e810b8f01bc",
-                "reference": "db62132492d85dfd0a7c90ec098c7e810b8f01bc",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "php": ">=8.2",
-                "phpdocumentor/reflection-docblock": "^5.4|^6.0",
-                "phpstan/phpdoc-parser": "^2.1",
-                "psr/log": "^3.0",
-                "symfony/ai-platform": "^0.14",
-                "symfony/clock": "^7.3|^8.0",
-                "symfony/http-client": "^7.3|^8.0",
-                "symfony/polyfill-php85": "^1.33",
-                "symfony/property-access": "^7.3|^8.0",
-                "symfony/property-info": "^7.3|^8.0",
-                "symfony/serializer": "^7.3|^8.0",
-                "symfony/type-info": "^7.3|^8.0"
-            },
-            "conflict": {
-                "phpstan/phpstan": "2.2.x-dev || 2.3.x-dev"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^11.5.53",
-                "symfony/ai-store": "^0.14",
-                "symfony/event-dispatcher": "^7.3|^8.0",
-                "symfony/stopwatch": "^7.3|^8.0",
-                "symfony/translation": "^7.3|^8.0",
-                "symfony/translation-contracts": "^3.6",
-                "symfony/validator": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/ai",
-                    "name": "symfony/ai"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\AI\\Agent\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christopher Hertel",
-                    "email": "mail@christopher-hertel.de"
-                },
-                {
-                    "name": "Oskar Stark",
-                    "email": "oskarstark@googlemail.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "PHP library for building agentic applications.",
-            "keywords": [
-                "Agent",
-                "ai",
-                "llm"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/ai-agent/tree/v0.14.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-09-26T01:02:23+00:00"
-        },
-        {
-            "name": "symfony/ai-anthropic-platform",
-            "version": "v0.14.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/ai-anthropic-platform.git",
-                "reference": "aa5e635b8fb2d9177cffaac424e1a76d87035b5c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-anthropic-platform/zipball/aa5e635b8fb2d9177cffaac424e1a76d87035b5c",
-                "reference": "aa5e635b8fb2d9177cffaac424e1a76d87035b5c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/ai-platform": "^0.14",
-                "symfony/http-client": "^7.3|^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^11.5.53"
-            },
-            "type": "symfony-ai-platform",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/ai",
-                    "name": "symfony/ai"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\AI\\Platform\\Bridge\\Anthropic\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christopher Hertel",
-                    "email": "mail@christopher-hertel.de"
-                },
-                {
-                    "name": "Oskar Stark",
-                    "email": "oskarstark@googlemail.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Anthropic (Claude) platform bridge for Symfony AI",
-            "keywords": [
-                "Bridge",
-                "ai",
-                "anthropic",
-                "claude",
-                "platform"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/ai-anthropic-platform/tree/v0.14.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-09-24T22:33:15+00:00"
-        },
-        {
-            "name": "symfony/ai-bundle",
-            "version": "v0.14.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/ai-bundle.git",
-                "reference": "015f614161f1d15cc4a21b5471d211422d090225"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-bundle/zipball/015f614161f1d15cc4a21b5471d211422d090225",
-                "reference": "015f614161f1d15cc4a21b5471d211422d090225",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.2",
-                "symfony/ai-platform": "^0.14",
-                "symfony/clock": "^7.3|^8.0",
-                "symfony/config": "^7.3|^8.0",
-                "symfony/console": "^7.3|^8.0",
-                "symfony/dependency-injection": "^7.3|^8.0",
-                "symfony/framework-bundle": "^7.3|^8.0",
-                "symfony/service-contracts": "^2.5|^3",
-                "symfony/string": "^7.3|^8.0"
-            },
-            "require-dev": {
-                "google/auth": "^1.47",
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^11.5.53",
-                "symfony/ai-agent": "^0.14",
-                "symfony/ai-ai-ml-api-platform": "^0.14",
-                "symfony/ai-albert-platform": "^0.14",
-                "symfony/ai-amazee-ai-platform": "^0.14",
-                "symfony/ai-anthropic-platform": "^0.14",
-                "symfony/ai-azure-platform": "^0.14",
-                "symfony/ai-azure-search-store": "^0.14",
-                "symfony/ai-bedrock-platform": "^0.14",
-                "symfony/ai-cache-message-store": "^0.14",
-                "symfony/ai-cache-platform": "^0.14",
-                "symfony/ai-cache-store": "^0.14",
-                "symfony/ai-cartesia-platform": "^0.14",
-                "symfony/ai-cerebras-platform": "^0.14",
-                "symfony/ai-chat": "^0.14",
-                "symfony/ai-chroma-db-store": "^0.14",
-                "symfony/ai-click-house-store": "^0.14",
-                "symfony/ai-cloudflare-message-store": "^0.14",
-                "symfony/ai-cloudflare-store": "^0.14",
-                "symfony/ai-cohere-platform": "^0.14",
-                "symfony/ai-decart-platform": "^0.14",
-                "symfony/ai-deep-seek-platform": "^0.14",
-                "symfony/ai-deepgram-platform": "^0.14",
-                "symfony/ai-docker-model-runner-platform": "^0.14",
-                "symfony/ai-doctrine-message-store": "^0.14",
-                "symfony/ai-eden-ai-platform": "^0.14",
-                "symfony/ai-elasticsearch-store": "^0.14",
-                "symfony/ai-eleven-labs-platform": "^0.14",
-                "symfony/ai-failover-platform": "^0.14",
-                "symfony/ai-fireworks-platform": "^0.14",
-                "symfony/ai-gemini-platform": "^0.14",
-                "symfony/ai-generic-platform": "^0.14",
-                "symfony/ai-higgsfield-platform": "^0.14",
-                "symfony/ai-hugging-face-platform": "^0.14",
-                "symfony/ai-lm-studio-platform": "^0.14",
-                "symfony/ai-manticore-search-store": "^0.14",
-                "symfony/ai-maria-db-store": "^0.14",
-                "symfony/ai-mcp-tool": "^0.14",
-                "symfony/ai-meilisearch-message-store": "^0.14",
-                "symfony/ai-meilisearch-store": "^0.14",
-                "symfony/ai-meta-platform": "^0.14",
-                "symfony/ai-milvus-store": "^0.14",
-                "symfony/ai-mini-max-platform": "^0.14",
-                "symfony/ai-mistral-platform": "^0.14",
-                "symfony/ai-mongo-db-message-store": "^0.14",
-                "symfony/ai-mongo-db-store": "^0.14",
-                "symfony/ai-neo4j-store": "^0.14",
-                "symfony/ai-ollama-platform": "^0.14",
-                "symfony/ai-open-ai-platform": "^0.14",
-                "symfony/ai-open-responses-platform": "^0.14",
-                "symfony/ai-open-router-platform": "^0.14",
-                "symfony/ai-open-search-store": "^0.14",
-                "symfony/ai-ovh-platform": "^0.14",
-                "symfony/ai-perplexity-platform": "^0.14",
-                "symfony/ai-pinecone-store": "^0.14",
-                "symfony/ai-pogocache-message-store": "^0.14",
-                "symfony/ai-postgres-store": "^0.14",
-                "symfony/ai-qdrant-store": "^0.14",
-                "symfony/ai-redis-message-store": "^0.14",
-                "symfony/ai-redis-store": "^0.14",
-                "symfony/ai-replicate-platform": "^0.14",
-                "symfony/ai-s3vectors-store": "^0.14",
-                "symfony/ai-scaleway-platform": "^0.14",
-                "symfony/ai-session-message-store": "^0.14",
-                "symfony/ai-sqlite-store": "^0.14",
-                "symfony/ai-store": "^0.14",
-                "symfony/ai-supabase-store": "^0.14",
-                "symfony/ai-surreal-db-message-store": "^0.14",
-                "symfony/ai-surreal-db-store": "^0.14",
-                "symfony/ai-together-platform": "^0.14",
-                "symfony/ai-transformers-php-platform": "^0.14",
-                "symfony/ai-type-safe-platform": "^0.14",
-                "symfony/ai-typesense-store": "^0.14",
-                "symfony/ai-vektor-store": "^0.14",
-                "symfony/ai-venice-platform": "^0.14",
-                "symfony/ai-vertex-ai-platform": "^0.14",
-                "symfony/ai-voyage-platform": "^0.14",
-                "symfony/ai-weaviate-store": "^0.14",
-                "symfony/expression-language": "^7.3|^8.0",
-                "symfony/mcp-bundle": "^0.14",
-                "symfony/security-core": "^7.3|^8.0",
-                "symfony/translation": "^7.3|^8.0",
-                "symfony/validator": "^7.3|^8.0"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/ai",
-                    "name": "symfony/ai"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\AI\\AiBundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christopher Hertel",
-                    "email": "mail@christopher-hertel.de"
-                },
-                {
-                    "name": "Oskar Stark",
-                    "email": "oskarstark@googlemail.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Integration bundle for Symfony AI components",
-            "support": {
-                "source": "https://github.com/symfony/ai-bundle/tree/v0.14.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-09-26T01:36:04+00:00"
-        },
-        {
-            "name": "symfony/ai-platform",
-            "version": "v0.14.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/ai-platform.git",
-                "reference": "b455008c751189b05556f0611a4f3690d6d8404b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-platform/zipball/b455008c751189b05556f0611a4f3690d6d8404b",
-                "reference": "b455008c751189b05556f0611a4f3690d6d8404b",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "oskarstark/enum-helper": "^1.5",
-                "php": ">=8.2",
-                "phpdocumentor/reflection-docblock": "^5.4|^6.0",
-                "phpstan/phpdoc-parser": "^2.1",
-                "psr/log": "^3.0",
-                "symfony/clock": "^7.3|^8.0",
-                "symfony/event-dispatcher": "^7.3|^8.0",
-                "symfony/property-access": "^7.3|^8.0",
-                "symfony/property-info": "^7.3|^8.0",
-                "symfony/serializer": "^7.3|^8.0",
-                "symfony/type-info": "^7.3|^8.0",
-                "symfony/uid": "^7.3|^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^11.5.53",
-                "symfony/cache": "^7.3|^8.0",
-                "symfony/console": "^7.3|^8.0",
-                "symfony/dotenv": "^7.3|^8.0",
-                "symfony/expression-language": "^7.3|^8.0",
-                "symfony/finder": "^7.3|^8.0",
-                "symfony/http-client": "^7.3|^8.0",
-                "symfony/http-client-contracts": "^3.5",
-                "symfony/intl": "^7.3|^8.0",
-                "symfony/process": "^7.3|^8.0",
-                "symfony/stopwatch": "^7.3|^8.0",
-                "symfony/validator": "^7.3|^8.0",
-                "symfony/var-dumper": "^7.3|^8.0",
-                "symfony/yaml": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/ai",
-                    "name": "symfony/ai"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\AI\\Platform\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christopher Hertel",
-                    "email": "mail@christopher-hertel.de"
-                },
-                {
-                    "name": "Oskar Stark",
-                    "email": "oskarstark@googlemail.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "PHP library for interacting with AI platform provider.",
-            "keywords": [
-                "Gemini",
-                "OpenRouter",
-                "ai",
-                "aimlapi",
-                "albert",
-                "amazeeai",
-                "anthropic",
-                "azure",
-                "bedrock",
-                "cerebras",
-                "dockermodelrunner",
-                "edenai",
-                "elevenlabs",
-                "fireworks",
-                "higgsfield",
-                "huggingface",
-                "inference",
-                "litellm",
-                "llama",
-                "lmstudio",
-                "meta",
-                "mistral",
-                "nova",
-                "ollama",
-                "openai",
-                "ovh",
-                "perplexity",
-                "replicate",
-                "speech",
-                "together",
-                "transformers",
-                "typesafe",
-                "venice",
-                "vertexai",
-                "voyage"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/ai-platform/tree/v0.14.1"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-09-26T01:36:04+00:00"
-        },
-        {
-            "name": "symfony/ai-store",
-            "version": "v0.14.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/ai-store.git",
-                "reference": "d77ba0b094b75f6b2412826f85f66bb4ca9fbef1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/ai-store/zipball/d77ba0b094b75f6b2412826f85f66bb4ca9fbef1",
-                "reference": "d77ba0b094b75f6b2412826f85f66bb4ca9fbef1",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "php": ">=8.2",
-                "psr/log": "^3.0",
-                "symfony/ai-platform": "^0.14",
-                "symfony/clock": "^7.3|^8.0",
-                "symfony/event-dispatcher-contracts": "^3.0",
-                "symfony/http-client": "^7.3|^8.0",
-                "symfony/polyfill-php83": "^1.32",
-                "symfony/service-contracts": "^2.5|^3",
-                "symfony/uid": "^7.3|^8.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-phpunit": "^2.0",
-                "phpstan/phpstan-strict-rules": "^2.0",
-                "phpunit/phpunit": "^11.5.53",
-                "symfony/console": "^7.3|^8.0",
-                "symfony/dependency-injection": "^7.3|^8.0",
-                "symfony/dom-crawler": "^7.3|^8.0",
-                "symfony/filesystem": "^7.3|^8.0",
-                "symfony/finder": "^7.3|^8.0",
-                "symfony/json-path": "^7.3|^8.0",
-                "symfony/string": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "url": "https://github.com/symfony/ai",
-                    "name": "symfony/ai"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\AI\\Store\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Christopher Hertel",
-                    "email": "mail@christopher-hertel.de"
-                },
-                {
-                    "name": "Oskar Stark",
-                    "email": "oskarstark@googlemail.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Low-level abstraction for storing and retrieving documents in a vector store.",
-            "keywords": [
-                "ai",
-                "azure",
-                "chromadb",
-                "clickhouse",
-                "cloudflare",
-                "elasticsearch",
-                "mariadb",
-                "meilisearch",
-                "milvus",
-                "mongodb",
-                "neo4j",
-                "opensearch",
-                "pinecone",
-                "postgres",
-                "qdrant",
-                "supabase",
-                "surrealdb",
-                "typesense",
-                "weaviate"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/ai-store/tree/v0.14.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://github.com/nicolas-grekas",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2026-09-24T22:33:15+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -13278,8 +12615,7 @@
                     "type": "thanks_dev"
                 }
             ],
-            "time": "2026-05-06T08:26:05+00:00",
-            "published-time": "2026-05-06T12:56:03+00:00"
+            "time": "2026-05-06T08:26:05+00:00"
         },
         {
             "name": "digitalrevolution/accessorpair-constraint",
@@ -13936,8 +13272,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-08-11T10:17:44+00:00",
-            "published-time": "2026-08-11T10:29:20+00:00"
+            "time": "2026-08-11T10:17:44+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -13994,8 +13329,7 @@
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
                 "source": "https://github.com/nikic/PHP-Parser/tree/v5.9.0"
             },
-            "time": "2026-09-13T18:51:52+00:00",
-            "published-time": "2026-09-13T18:53:16+00:00"
+            "time": "2026-09-13T18:51:52+00:00"
         },
         {
             "name": "pdepend/pdepend",
@@ -14137,8 +13471,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-03T12:33:53+00:00",
-            "published-time": "2024-03-03T12:39:44+00:00"
+            "time": "2024-03-03T12:33:53+00:00"
         },
         {
             "name": "phar-io/version",
@@ -14189,8 +13522,7 @@
                 "issues": "https://github.com/phar-io/version/issues",
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
-            "time": "2022-02-21T01:04:05+00:00",
-            "published-time": "2022-02-21T01:04:30+00:00"
+            "time": "2022-02-21T01:04:05+00:00"
         },
         {
             "name": "phpmd/phpmd",
@@ -14391,8 +13723,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-11-03T12:14:22+00:00",
-            "published-time": "2026-11-03T12:14:36+00:00"
+            "time": "2026-11-03T12:14:22+00:00"
         },
         {
             "name": "phpstan/phpstan-doctrine",
@@ -14469,8 +13800,7 @@
                 "issues": "https://github.com/phpstan/phpstan-doctrine/issues",
                 "source": "https://github.com/phpstan/phpstan-doctrine/tree/2.1.0"
             },
-            "time": "2026-10-30T17:56:27+00:00",
-            "published-time": "2026-10-30T18:00:10+00:00"
+            "time": "2026-10-30T17:56:27+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
@@ -14580,8 +13910,7 @@
                 "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
                 "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.1.1"
             },
-            "time": "2026-11-02T08:16:15+00:00",
-            "published-time": "2026-11-02T10:55:07+00:00"
+            "time": "2026-11-02T08:16:15+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
@@ -14744,8 +14073,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-11-02T11:47:37+00:00",
-            "published-time": "2026-11-02T11:49:08+00:00"
+            "time": "2026-11-02T11:47:37+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -14818,8 +14146,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-25T14:47:43+00:00",
-            "published-time": "2026-08-25T14:48:49+00:00"
+            "time": "2026-08-25T14:47:43+00:00"
         },
         {
             "name": "phpunit/php-invoker",
@@ -14895,8 +14222,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-06T04:34:47+00:00",
-            "published-time": "2026-02-06T04:35:29+00:00"
+            "time": "2026-02-06T04:34:47+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -14968,8 +14294,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-03T04:54:24+00:00",
-            "published-time": "2026-10-03T04:54:39+00:00"
+            "time": "2026-10-03T04:54:24+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -15041,8 +14366,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-06T04:37:53+00:00",
-            "published-time": "2026-02-06T04:38:39+00:00"
+            "time": "2026-02-06T04:37:53+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -15134,8 +14458,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-11-02T07:12:28+00:00",
-            "published-time": "2026-11-02T07:13:08+00:00"
+            "time": "2026-11-02T07:12:28+00:00"
         },
         {
             "name": "react/child-process",
@@ -16573,8 +15896,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-01T04:27:14+00:00",
-            "published-time": "2026-08-01T04:29:01+00:00"
+            "time": "2026-08-01T04:27:14+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -16666,8 +15988,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-07T07:23:13+00:00",
-            "published-time": "2026-08-07T07:23:29+00:00"
+            "time": "2026-08-07T07:23:13+00:00"
         },
         {
             "name": "sebastian/complexity",
@@ -16737,8 +16058,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-02-06T04:41:32+00:00",
-            "published-time": "2026-02-06T04:41:49+00:00"
+            "time": "2026-02-06T04:41:32+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -16817,8 +16137,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-25T15:38:55+00:00",
-            "published-time": "2026-08-25T15:39:44+00:00"
+            "time": "2026-08-25T15:38:55+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -16894,8 +16213,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-01T12:37:56+00:00",
-            "published-time": "2026-10-01T12:38:48+00:00"
+            "time": "2026-10-01T12:37:56+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -16985,8 +16303,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-07T07:22:06+00:00",
-            "published-time": "2026-08-07T07:23:47+00:00"
+            "time": "2026-08-07T07:22:06+00:00"
         },
         {
             "name": "sebastian/file-filter",
@@ -17055,8 +16372,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-22T07:20:04+00:00",
-            "published-time": "2026-04-22T07:20:25+00:00"
+            "time": "2026-04-22T07:20:04+00:00"
         },
         {
             "name": "sebastian/git-state",
@@ -17125,8 +16441,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-21T05:59:52+00:00",
-            "published-time": "2026-10-21T06:01:28+00:00"
+            "time": "2026-10-21T05:59:52+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -17200,8 +16515,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-01T15:11:33+00:00",
-            "published-time": "2026-06-01T15:20:45+00:00"
+            "time": "2026-06-01T15:11:33+00:00"
         },
         {
             "name": "sebastian/lines-of-code",
@@ -17271,8 +16585,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-09T08:42:34+00:00",
-            "published-time": "2026-07-09T08:44:06+00:00"
+            "time": "2026-07-09T08:42:34+00:00"
         },
         {
             "name": "sebastian/object-enumerator",
@@ -17341,8 +16654,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-13T07:05:05+00:00",
-            "published-time": "2026-08-13T07:07:58+00:00"
+            "time": "2026-08-13T07:05:05+00:00"
         },
         {
             "name": "sebastian/object-reflector",
@@ -17410,8 +16722,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-13T06:34:36+00:00",
-            "published-time": "2026-08-13T06:39:22+00:00"
+            "time": "2026-08-13T06:34:36+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -17487,8 +16798,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-03T05:58:12+00:00",
-            "published-time": "2026-08-03T05:59:59+00:00"
+            "time": "2026-08-03T05:58:12+00:00"
         },
         {
             "name": "sebastian/type",
@@ -17557,8 +16867,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-08-10T08:00:57+00:00",
-            "published-time": "2026-08-10T08:01:43+00:00"
+            "time": "2026-08-10T08:00:57+00:00"
         },
         {
             "name": "sebastian/version",
@@ -17624,8 +16933,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-04T05:51:14+00:00",
-            "published-time": "2026-10-04T05:52:22+00:00"
+            "time": "2026-10-04T05:51:14+00:00"
         },
         {
             "name": "slevomat/coding-standard",
@@ -17690,8 +16998,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-10-28T16:34:46+00:00",
-            "published-time": "2026-10-28T16:36:09+00:00"
+            "time": "2026-10-28T16:34:46+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
@@ -17827,8 +17134,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-10-20T05:08:20+00:00",
-            "published-time": "2024-10-20T05:09:39+00:00"
+            "time": "2024-10-20T05:08:20+00:00"
         },
         {
             "name": "symfony/browser-kit",
@@ -18386,5 +17692,5 @@
         "ext-zlib": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.11.0"
+    "plugin-api-version": "2.9.0"
 }

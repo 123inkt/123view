@@ -129,6 +129,33 @@ class McpServerTest extends AbstractFunctionalTestCase
     /**
      * @throws Throwable
      */
+    public function testCallCurrentUser(): void
+    {
+        $sessionId = $this->createMcpSession();
+
+        $this->client->request(
+            Request::METHOD_POST,
+            '/_mcp',
+            server : array_merge(self::SERVER_HEADERS, ['HTTP_MCP_SESSION_ID' => $sessionId]),
+            content: Json::encode([
+                'jsonrpc' => '2.0',
+                'id'      => 2,
+                'method'  => 'tools/call',
+                'params'  => ['name' => 'get_current_user', 'arguments' => (object)[]],
+            ]),
+        );
+
+        static::assertResponseStatusCodeSame(Response::HTTP_OK);
+        $data = $this->getResponseArray();
+        static::assertArrayNotHasKey('error', $data);
+        static::assertIsArray($data['result']);
+        static::assertFalse($data['result']['isError'] ?? false);
+        static::assertStringContainsString('Sherlock Holmes', Json::encode($data['result']));
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testSubscriptionsListen(): void
     {
         $request = Request::create(

@@ -35,7 +35,6 @@
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Controller/AbstractControllerTest.php" method="testGetUserShouldThrowExceptionOnAbsentUser"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Controller/AbstractControllerTest.php" method="testRefererRedirectInvalidRefererShouldBeSkipped"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Controller/AbstractControllerTest.php" method="testRefererRedirectShouldFilterQueryParam"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Controller/App/Review/AiCodeReviewControllerTest.php" method="testInvokeReviewAlreadyRequestedReturnsWarning"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Controller/App/Review/Comment/GetCommentThreadControllerTest.php" method="testInvokeDraftCommentByOtherUserThrowsAccessDeniedException"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Doctrine/Type/AbstractEnumTypeTest.php" method="testConvertToDatabaseValueThrowsExceptionOnInvalidArgument"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Doctrine/Type/NotificationStatusTypeTest.php" method="testConvertToPHPValueNullValueShouldBeIgnore"/>
@@ -75,34 +74,20 @@
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Security/Api/BearerAuthenticatorTest.php" method="testOnAuthenticationFailureForMcpShouldReturnUnauthorized"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Security/AzureAd/LoginServiceTest.php" method="testHandleLoginAzureProviderThrowsException"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Security/Voter/AssetVoterTest.php" method="testVoteOnAttributeWithMissingHashParameter"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AddCommentServiceTest.php" method="testAddCommentShouldThrowExceptionWhenReviewNotFound"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AddCommentServiceTest.php" method="testAddCommentShouldAddCommentWithoutSuggestion"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AddCommentServiceTest.php" method="testAddCommentShouldSkipEmptyCodeSuggestion"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AddCommentServiceTest.php" method="testAddCommentShouldReplaceKissEmoticonInMessage"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewFileFilterTest.php" method="testInvokeShouldRejectFileWithBaselineInPath"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewFileFilterTest.php" method="testInvokeShouldRejectFileWithDisallowedExtensionLock"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewFileFilterTest.php" method="testInvokeShouldRejectFileWithDisallowedExtensionJson"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewFileFilterTest.php" method="testInvokeShouldRejectFileWithMoreThan500Lines"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewFileFilterTest.php" method="testInvokeShouldHandleUppercaseExtensions"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewServiceTest.php" method="testStartCodeReviewShouldReturnSuccessOnHappyFlow"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewServiceTest.php" method="testStartCodeReviewShouldReturnNoFilesWhenAllFilesFiltered"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/AiCodeReviewServiceTest.php" method="testStartCodeReviewShouldReturnFailureWhenAgentThrowsException"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Mcp/CodeReviewAddCommentToolTest.php" method="testInvokeShouldAddCommentWithoutSuggestion"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Mcp/GetCodeReviewDiffToolTest.php" method="testInvokeReturnsNoChangesMessageWhenDiffIsEmpty"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Mcp/GetCodeReviewsToolTest.php" method="testInvokeReturnsEmptyArrayWhenNoReviewsFound"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewAddCommentToolTest.php" method="testInvokeShouldAddCommentWithoutSuggestion"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewFileToolTest.php" method="testInvokeShouldThrowExceptionWhenReviewNotFound"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewFileToolTest.php" method="testInvokeShouldThrowExceptionWhenNoRevisions"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewGrepToolTest.php" method="testInvokeShouldThrowExceptionForInvalidRegex"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewGrepToolTest.php" method="testInvokeShouldThrowExceptionWhenReviewNotFound"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewGrepToolTest.php" method="testInvokeShouldThrowExceptionWhenNoRevisions"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewGrepToolTest.php" method="testInvokeShouldReturnNoResultsFoundWhenGrepReturnsNull"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewGrepToolTest.php" method="testInvokeShouldPassNullContextWhenContextIsZero"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewListFilesToolTest.php" method="testInvokeShouldThrowExceptionWhenReviewNotFound"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/CodeReviewListFilesToolTest.php" method="testInvokeShouldThrowExceptionWhenNoRevisions"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/GetCommentsToolTest.php" method="testInvokeShouldThrowExceptionWhenReviewNotFound"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/GetCommentsToolTest.php" method="testInvokeShouldReturnEmptyArrayForReviewWithNoComments"/>
-  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Ai/Tool/GetCommentsToolTest.php" method="testInvokeShouldFallBackToOldPathWhenNewPathIsNull"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/AddCommentServiceTest.php" method="testAddCommentShouldThrowExceptionWhenReviewNotFound"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/AddCommentServiceTest.php" method="testAddCommentShouldAddCommentWithoutSuggestion"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/AddCommentServiceTest.php" method="testAddCommentShouldSkipEmptyCodeSuggestion"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/AddCommentServiceTest.php" method="testAddCommentShouldReplaceKissEmoticonInMessage"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/CodeReviewAddCommentToolTest.php" method="testInvokeShouldAddCommentWithoutSuggestion"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/GetCodeReviewDiffToolTest.php" method="testInvokeReturnsNoChangesMessageWhenDiffIsEmpty"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/GetCodeReviewsToolTest.php" method="testInvokeReturnsEmptyArrayWhenNoReviewsFound"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/CodeReviewFileToolTest.php" method="testInvokeShouldThrowExceptionWhenReviewNotFound"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/CodeReviewFileToolTest.php" method="testInvokeShouldThrowExceptionWhenNoRevisions"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/CodeReviewListFilesToolTest.php" method="testInvokeShouldThrowExceptionWhenReviewNotFound"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/CodeReviewListFilesToolTest.php" method="testInvokeShouldThrowExceptionWhenNoRevisions"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/GetCommentsToolTest.php" method="testInvokeShouldThrowExceptionWhenReviewNotFound"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/GetCommentsToolTest.php" method="testInvokeShouldReturnEmptyArrayForReviewWithNoComments"/>
+  <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Mcp/GetCommentsToolTest.php" method="testInvokeShouldFallBackToOldPathWhenNewPathIsNull"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Api/Gitlab/ReviewApprovalServiceTest.php" method="testApproveShouldSkipWithoutMergeRequestIId"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Api/Gitlab/ReviewApprovalValidatorServiceTest.php" method="testValidateShouldReturnFalseWhenReviewIsNull"/>
   <violation rule="PHPMD\Rule\Naming\LongMethodName" file="tests/Unit/Service/Api/Gitlab/ReviewApprovalValidatorServiceTest.php" method="testValidateShouldReturnFalseWhenReviewerIsNull"/>
