@@ -52,6 +52,32 @@ class FileReviewViewModelProviderTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testGetViewModelWithoutSelectedFile(): void
+    {
+        $review   = new CodeReview();
+        $revision = new Revision();
+
+        $this->revisionService->expects($this->once())->method('getRevisions')->with($review)->willReturn([$revision]);
+        $this->visibilityService->expects($this->once())->method('getVisibleRevisions')->with($review, [$revision])->willReturn([$revision]);
+        $this->reviewTypeDecider->expects($this->once())->method('decide')
+            ->with($review, [$revision], [$revision])
+            ->willReturn(CodeReviewType::COMMITS);
+        $this->fileService->expects($this->once())->method('getFiles')
+            ->with(
+                $review,
+                [$revision],
+                'filepath',
+                new FileDiffOptions(FileDiffOptions::DEFAULT_LINE_DIFF, DiffComparePolicy::IGNORE, CodeReviewType::COMMITS, 6)
+            )
+            ->willReturn([[], null]);
+        $this->fileDiffViewModelProvider->expects($this->never())->method(static::anything());
+
+        static::assertNull($this->provider->getViewModel($review, 'filepath', DiffComparePolicy::IGNORE, ReviewDiffModeEnum::INLINE, 6));
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testGetViewModel(): void
     {
         $review    = new CodeReview();
