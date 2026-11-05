@@ -134,7 +134,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             $this->handler->handle($event, $user);
             static::fail('Expected the missing branch to be retried later.');
         } catch (RecoverableMessageHandlingException $exception) {
-            static::assertSame(60_000, $exception->getRetryDelay());
+            static::assertSame(120_000, $exception->getRetryDelay());
             static::assertFalse($exception->forceRetry());
             static::assertSame($failure, $exception->getPrevious());
             static::assertSame($failure->getMessage(), $exception->getMessage());
