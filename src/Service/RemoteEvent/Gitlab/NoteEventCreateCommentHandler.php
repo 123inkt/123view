@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\RemoteEvent\Gitlab;
 
+use DR\Review\Entity\Repository\Repository;
 use DR\Review\Entity\Revision\Revision;
 use DR\Review\Entity\User\User;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
@@ -13,6 +14,8 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Utils\Assert;
+use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Throwable;
 
 class NoteEventCreateCommentHandler
@@ -49,7 +52,7 @@ class NoteEventCreateCommentHandler
         }
 
         // find revisions
-        $revisions = $this->branchRevisionService->getRevisionsFor($repository, 'origin/' . $mergeRequest->sourceBranch, $mergeRequest->targetBranch);
+        $revisions = $this->getRevisions($repository, $mergeRequest->sourceBranch, $mergeRequest->targetBranch);
         if (count($revisions) === 0) {
             $this->eventLogger->logRevisionsNotFound($event);
 
@@ -70,5 +73,27 @@ class NoteEventCreateCommentHandler
         // create comment and save
         $this->commentRepository->save($this->commentFactory->create($event, $user, $revision, $filepath), true);
         $this->eventLogger->logCommentAddedSuccess($event, Assert::notNull($revision->getReview()), $user);
+    }
+
+    /**
+     * @return Revision[]
+     * @throws Throwable
+     */
+    private function getRevisions(Repository $repository, string $sourceBranch, string $targetBranch): array
+    {
+        try {
+            return $this->branchRevisionService->getRevisionsFor($repository, 'origin/' . $sourceBranch, $targetBranch);
+        } catch (ProcessFailedException $exception) {
+            $process = $exception->getProcess();
+            if ($process->getExitCode() !== 128
+                || !str_contains($process->getErrorOutput(), 'fatal: ambiguous argument ')
+                || !str_contains($process->getErrorOutput(), 'unknown revision or path not in the working tree.')
+            ) {
+                throw $exception;
+            }
+
+            // Allow the asynchronous repository fetch to finish, but keep the transport's retry limit.
+            throw new RecoverableMessageHandlingException($exception->getMessage(), previous: $exception, retryDelay: 60_000, forceRetry: false);
+        }
     }
 }

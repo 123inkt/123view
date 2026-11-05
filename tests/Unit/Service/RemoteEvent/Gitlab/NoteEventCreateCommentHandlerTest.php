@@ -20,7 +20,11 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateCommentHandler;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 #[CoversClass(NoteEventCreateCommentHandler::class)]
 class NoteEventCreateCommentHandlerTest extends AbstractTestCase
@@ -113,6 +117,49 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $this->handler->handle($event, $user);
     }
 
+    public function testHandleDelaysMissingBranchRetry(): void
+    {
+        $failure = $this->createProcessFailure(
+            128,
+            "fatal: ambiguous argument 'origin/main...origin/feature': unknown revision or path not in the working tree."
+        );
+        [$event, $user] = $this->configureRevisionLookupFailure($failure);
+
+        try {
+            $this->handler->handle($event, $user);
+            static::fail('Expected the missing branch to be retried later.');
+        } catch (RecoverableMessageHandlingException $exception) {
+            static::assertSame(60_000, $exception->getRetryDelay());
+            static::assertFalse($exception->forceRetry());
+            static::assertSame($failure, $exception->getPrevious());
+            static::assertSame($failure->getMessage(), $exception->getMessage());
+        }
+    }
+
+    #[DataProvider('provideOtherGitFailures')]
+    public function testHandlePreservesOtherGitFailures(int $exitCode, string $errorOutput): void
+    {
+        $failure       = $this->createProcessFailure($exitCode, $errorOutput);
+        [$event, $user] = $this->configureRevisionLookupFailure($failure);
+        $this->expectExceptionObject($failure);
+
+        $this->handler->handle($event, $user);
+    }
+
+    /**
+     * @return array<string, array{int, string}>
+     */
+    public static function provideOtherGitFailures(): array
+    {
+        return [
+            'repository not found'    => [128, 'fatal: not a git repository (or any of the parent directories): .git'],
+            'permission denied'      => [128, 'fatal: could not read from remote repository.'],
+            'different exit code'    => [1, "fatal: ambiguous argument 'range': unknown revision or path not in the working tree."],
+            'ambiguous path'         => [128, "fatal: ambiguous argument 'range': both revision and filename"],
+            'different error format' => [128, 'unknown revision or path not in the working tree.'],
+        ];
+    }
+
     public function testHandleIgnoresRevisionsWithoutAReview(): void
     {
         [$event, $user] = $this->configureResolvedUser();
@@ -174,6 +221,36 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             ->willReturn(null);
 
         return [$event, $user];
+    }
+
+    /**
+     * @return array{0: NoteEvent, 1: User}
+     */
+    private function configureRevisionLookupFailure(ProcessFailedException $failure): array
+    {
+        [$event, $user] = $this->configureResolvedUser();
+        $repository = new Repository()->setActive(true);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
+        $this->branchRevisionService->expects($this->once())
+            ->method('getRevisionsFor')
+            ->with($repository, 'origin/feature', 'main')
+            ->willThrowException($failure);
+        $this->eventLogger->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
+        $this->commentRepository->expects($this->never())->method('save');
+
+        return [$event, $user];
+    }
+
+    private function createProcessFailure(int $exitCode, string $errorOutput): ProcessFailedException
+    {
+        $process = static::createStub(Process::class);
+        $process->method('getCommandLine')->willReturn('git rev-list origin/main...origin/feature --left-right --pretty=oneline --right-only');
+        $process->method('getExitCode')->willReturn($exitCode);
+        $process->method('getErrorOutput')->willReturn($errorOutput);
+
+        return new ProcessFailedException($process);
     }
 
     private function createEvent(): NoteEvent
