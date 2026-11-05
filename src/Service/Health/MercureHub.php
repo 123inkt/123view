@@ -8,7 +8,7 @@ use Laminas\Diagnostics\Result\Failure;
 use Laminas\Diagnostics\Result\ResultInterface;
 use Laminas\Diagnostics\Result\Success;
 use Override;
-use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\RemoteHubInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
 
@@ -17,7 +17,7 @@ use Throwable;
  */
 class MercureHub extends AbstractCheck
 {
-    public function __construct(private readonly HttpClientInterface $httpClient, private readonly HubInterface $hub)
+    public function __construct(private readonly HttpClientInterface $httpClient, private readonly RemoteHubInterface $hub)
     {
     }
 
@@ -27,7 +27,7 @@ class MercureHub extends AbstractCheck
     #[Override]
     public function check(): ResultInterface
     {
-        $response = $this->httpClient->request('POST', $this->hub->getPublicUrl());
+        $response = $this->httpClient->request('POST', $this->hub->getUrl(), ['timeout' => 5, 'max_duration' => 5]);
         if (in_array($response->getStatusCode(), [200, 401], true) === false) {
             return new Failure('Mercure hub is not reachable');
         }
