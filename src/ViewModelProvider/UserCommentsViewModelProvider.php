@@ -8,7 +8,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
-use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\Review\UserCommentRepository;
 use DR\Review\ViewModel\App\Comment\UserCommentEntryViewModel;
 use DR\Review\ViewModel\App\Comment\UserCommentsViewModel;
 
@@ -16,7 +16,7 @@ readonly class UserCommentsViewModelProvider
 {
     private const int PAGE_SIZE = 30;
 
-    public function __construct(private CommentRepository $commentRepository)
+    public function __construct(private UserCommentRepository $userCommentRepository)
     {
     }
 
@@ -32,8 +32,8 @@ readonly class UserCommentsViewModelProvider
         int $page,
         ?CommentStateEnum $state = null
     ): UserCommentsViewModel {
-        $comments = $this->commentRepository->findCommentsAndRepliesByUser($user, $searchQuery, $orderBy, $page, self::PAGE_SIZE, $state);
-        $count    = $this->commentRepository->countCommentsAndRepliesByUser($user, $searchQuery, $state);
+        $comments = $this->userCommentRepository->findCommentsAndRepliesByUser($user, $searchQuery, $orderBy, $page, self::PAGE_SIZE, $state);
+        $count    = $this->userCommentRepository->countCommentsAndRepliesByUser($user, $searchQuery, $state);
 
         $entries = array_map(
             static fn(Comment|CommentReply $item): UserCommentEntryViewModel => $item instanceof CommentReply

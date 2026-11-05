@@ -6,7 +6,7 @@ namespace DR\Review\Request\Comment;
 use DigitalRevolution\SymfonyRequestValidation\AbstractValidatedRequest;
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DR\Review\Entity\Review\CommentStateEnum;
-use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\Review\UserCommentRepository;
 
 class UserCommentsRequest extends AbstractValidatedRequest
 {
@@ -17,7 +17,7 @@ class UserCommentsRequest extends AbstractValidatedRequest
 
     public function getOrderBy(): string
     {
-        return $this->request->query->getString('order-by', CommentRepository::ORDER_CREATE_TIMESTAMP);
+        return $this->request->query->getString('order-by', UserCommentRepository::ORDER_CREATE_TIMESTAMP);
     }
 
     public function getState(): ?CommentStateEnum
@@ -35,7 +35,7 @@ class UserCommentsRequest extends AbstractValidatedRequest
 
     protected function getValidationRules(): ValidationRules
     {
-        $orderBys = [CommentRepository::ORDER_CREATE_TIMESTAMP, CommentRepository::ORDER_UPDATE_TIMESTAMP];
+        $orderBys = [UserCommentRepository::ORDER_CREATE_TIMESTAMP, UserCommentRepository::ORDER_UPDATE_TIMESTAMP];
         $states   = array_merge(['any'], CommentStateEnum::values());
 
         return new ValidationRules(

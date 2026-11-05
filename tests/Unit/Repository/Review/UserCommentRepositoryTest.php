@@ -7,7 +7,7 @@ use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
 use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
-use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Repository\Review\UserCommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
 use DR\Review\Tests\DataFixtures\Test\UserCommentFixtures;
@@ -15,13 +15,13 @@ use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-#[CoversClass(CommentRepository::class)]
+#[CoversClass(UserCommentRepository::class)]
 class UserCommentRepositoryTest extends AbstractRepositoryTestCase
 {
     public function testFindOrderedByCreateTimestamp(): void
     {
-        $result = self::getService(CommentRepository::class)
-            ->findCommentsAndRepliesByUser($this->getUser(), '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1);
+        $result = self::getService(UserCommentRepository::class)
+            ->findCommentsAndRepliesByUser($this->getUser(), '', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 1);
 
         static::assertSame(
             [
@@ -40,8 +40,8 @@ class UserCommentRepositoryTest extends AbstractRepositoryTestCase
 
     public function testFindOrderedByUpdateTimestamp(): void
     {
-        $result = self::getService(CommentRepository::class)
-            ->findCommentsAndRepliesByUser($this->getUser(), '', CommentRepository::ORDER_UPDATE_TIMESTAMP, 1);
+        $result = self::getService(UserCommentRepository::class)
+            ->findCommentsAndRepliesByUser($this->getUser(), '', UserCommentRepository::ORDER_UPDATE_TIMESTAMP, 1);
 
         static::assertSame(
             [
@@ -56,41 +56,41 @@ class UserCommentRepositoryTest extends AbstractRepositoryTestCase
 
     public function testFindWithSearchQuery(): void
     {
-        $repository = self::getService(CommentRepository::class);
+        $repository = self::getService(UserCommentRepository::class);
         $user       = $this->getUser();
 
         static::assertSame(
             [UserCommentFixtures::OWN_REPLY, UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT],
-            self::getMessages($repository->findCommentsAndRepliesByUser($user, 'reply', CommentRepository::ORDER_CREATE_TIMESTAMP, 1))
+            self::getMessages($repository->findCommentsAndRepliesByUser($user, 'reply', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 1))
         );
 
         // like wildcards should be escaped
         static::assertSame(
             [UserCommentFixtures::OWN_DRAFT_COMMENT],
-            self::getMessages($repository->findCommentsAndRepliesByUser($user, '%', CommentRepository::ORDER_CREATE_TIMESTAMP, 1))
+            self::getMessages($repository->findCommentsAndRepliesByUser($user, '%', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 1))
         );
-        static::assertSame([], $repository->findCommentsAndRepliesByUser($user, '_', CommentRepository::ORDER_CREATE_TIMESTAMP, 1));
+        static::assertSame([], $repository->findCommentsAndRepliesByUser($user, '_', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 1));
     }
 
     public function testFindPaginated(): void
     {
-        $repository = self::getService(CommentRepository::class);
+        $repository = self::getService(UserCommentRepository::class);
         $user       = $this->getUser();
 
         static::assertSame(
             [UserCommentFixtures::OWN_REPLY, UserCommentFixtures::OWN_DRAFT_COMMENT],
-            self::getMessages($repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 2))
+            self::getMessages($repository->findCommentsAndRepliesByUser($user, '', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 1, 2))
         );
         static::assertSame(
             [UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT, UserCommentFixtures::OWN_COMMENT],
-            self::getMessages($repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 2, 2))
+            self::getMessages($repository->findCommentsAndRepliesByUser($user, '', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 2, 2))
         );
-        static::assertSame([], $repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 3, 2));
+        static::assertSame([], $repository->findCommentsAndRepliesByUser($user, '', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 3, 2));
     }
 
     public function testCountCommentsAndRepliesByUser(): void
     {
-        $repository = self::getService(CommentRepository::class);
+        $repository = self::getService(UserCommentRepository::class);
         $user       = $this->getUser();
 
         static::assertSame(4, $repository->countCommentsAndRepliesByUser($user, ''));
@@ -106,12 +106,12 @@ class UserCommentRepositoryTest extends AbstractRepositoryTestCase
     public function testFindAndCountWithState(?CommentStateEnum $state, array $expected): void
     {
         $this->resolveComments();
-        $repository = self::getService(CommentRepository::class);
+        $repository = self::getService(UserCommentRepository::class);
         $user       = $this->getUser();
 
         static::assertSame(
             $expected,
-            self::getMessages($repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30, $state))
+            self::getMessages($repository->findCommentsAndRepliesByUser($user, '', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30, $state))
         );
         static::assertSame(count($expected), $repository->countCommentsAndRepliesByUser($user, '', $state));
     }
@@ -136,11 +136,11 @@ class UserCommentRepositoryTest extends AbstractRepositoryTestCase
     public function testFindAndCountWithStateAndSearchQuery(): void
     {
         $this->resolveComments();
-        $repository = self::getService(CommentRepository::class);
+        $repository = self::getService(UserCommentRepository::class);
         $user       = $this->getUser();
 
         foreach ([CommentStateEnum::Resolved, CommentStateEnum::Open] as $state) {
-            $result = $repository->findCommentsAndRepliesByUser($user, 'reply', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30, $state);
+            $result = $repository->findCommentsAndRepliesByUser($user, 'reply', UserCommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30, $state);
 
             static::assertSame(
                 [$state === CommentStateEnum::Resolved ? UserCommentFixtures::OWN_REPLY : UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT],
@@ -153,8 +153,8 @@ class UserCommentRepositoryTest extends AbstractRepositoryTestCase
     public function testFindWithStateOrderedByUpdate(): void
     {
         $this->resolveComments();
-        $result = self::getService(CommentRepository::class)
-            ->findCommentsAndRepliesByUser($this->getUser(), '', CommentRepository::ORDER_UPDATE_TIMESTAMP, 1, 30, CommentStateEnum::Resolved);
+        $result = self::getService(UserCommentRepository::class)
+            ->findCommentsAndRepliesByUser($this->getUser(), '', UserCommentRepository::ORDER_UPDATE_TIMESTAMP, 1, 30, CommentStateEnum::Resolved);
 
         static::assertSame([UserCommentFixtures::OWN_COMMENT, UserCommentFixtures::OWN_REPLY], self::getMessages($result));
     }
@@ -162,11 +162,33 @@ class UserCommentRepositoryTest extends AbstractRepositoryTestCase
     public function testFindWithStatePaginated(): void
     {
         $this->resolveComments();
-        $repository = self::getService(CommentRepository::class);
+        $repository = self::getService(UserCommentRepository::class);
         $user       = $this->getUser();
-        $firstPage  = $repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 1, CommentStateEnum::Open);
-        $secondPage = $repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 2, 1, CommentStateEnum::Open);
-        $thirdPage  = $repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 3, 1, CommentStateEnum::Open);
+
+        $firstPage = $repository->findCommentsAndRepliesByUser(
+            $user,
+            '',
+            UserCommentRepository::ORDER_CREATE_TIMESTAMP,
+            1,
+            1,
+            CommentStateEnum::Open
+        );
+        $secondPage = $repository->findCommentsAndRepliesByUser(
+            $user,
+            '',
+            UserCommentRepository::ORDER_CREATE_TIMESTAMP,
+            2,
+            1,
+            CommentStateEnum::Open
+        );
+        $thirdPage = $repository->findCommentsAndRepliesByUser(
+            $user,
+            '',
+            UserCommentRepository::ORDER_CREATE_TIMESTAMP,
+            3,
+            1,
+            CommentStateEnum::Open
+        );
 
         static::assertSame([UserCommentFixtures::OWN_DRAFT_COMMENT], self::getMessages($firstPage));
         static::assertSame([UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT], self::getMessages($secondPage));
