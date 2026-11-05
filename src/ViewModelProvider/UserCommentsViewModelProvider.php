@@ -6,6 +6,7 @@ namespace DR\Review\ViewModelProvider;
 use Doctrine\DBAL\Exception as DBALException;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\ViewModel\App\Comment\UserCommentEntryViewModel;
@@ -24,10 +25,15 @@ readonly class UserCommentsViewModelProvider
      *
      * @throws DBALException
      */
-    public function getUserCommentsViewModel(User $user, string $searchQuery, string $orderBy, int $page): UserCommentsViewModel
-    {
-        $comments = $this->commentRepository->findCommentsAndRepliesByUser($user, $searchQuery, $orderBy, $page, self::PAGE_SIZE);
-        $count    = $this->commentRepository->countCommentsAndRepliesByUser($user, $searchQuery);
+    public function getUserCommentsViewModel(
+        User $user,
+        string $searchQuery,
+        string $orderBy,
+        int $page,
+        ?CommentStateEnum $state = null
+    ): UserCommentsViewModel {
+        $comments = $this->commentRepository->findCommentsAndRepliesByUser($user, $searchQuery, $orderBy, $page, self::PAGE_SIZE, $state);
+        $count    = $this->commentRepository->countCommentsAndRepliesByUser($user, $searchQuery, $state);
 
         $entries = array_map(
             static fn(Comment|CommentReply $item): UserCommentEntryViewModel => $item instanceof CommentReply
@@ -36,6 +42,6 @@ readonly class UserCommentsViewModelProvider
             $comments
         );
 
-        return new UserCommentsViewModel($entries, $searchQuery, $orderBy, $page, (int)ceil($count / self::PAGE_SIZE));
+        return new UserCommentsViewModel($entries, $searchQuery, $orderBy, $page, (int)ceil($count / self::PAGE_SIZE), $state);
     }
 }

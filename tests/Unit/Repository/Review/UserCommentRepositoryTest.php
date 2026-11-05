@@ -5,13 +5,15 @@ namespace DR\Review\Tests\Unit\Repository\Review;
 
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractRepositoryTestCase;
-use DR\Review\Tests\DataFixtures\UserCommentFixtures;
+use DR\Review\Tests\DataFixtures\Test\UserCommentFixtures;
 use DR\Utils\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 #[CoversClass(CommentRepository::class)]
 class UserCommentRepositoryTest extends AbstractRepositoryTestCase
@@ -95,6 +97,88 @@ class UserCommentRepositoryTest extends AbstractRepositoryTestCase
         static::assertSame(2, $repository->countCommentsAndRepliesByUser($user, 'reply'));
         static::assertSame(1, $repository->countCommentsAndRepliesByUser($user, '%'));
         static::assertSame(0, $repository->countCommentsAndRepliesByUser($user, 'foobar'));
+    }
+
+    /**
+     * @param string[] $expected
+     */
+    #[DataProvider('statesProvider')]
+    public function testFindAndCountWithState(?CommentStateEnum $state, array $expected): void
+    {
+        $this->resolveComments();
+        $repository = self::getService(CommentRepository::class);
+        $user       = $this->getUser();
+
+        static::assertSame(
+            $expected,
+            self::getMessages($repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30, $state))
+        );
+        static::assertSame(count($expected), $repository->countCommentsAndRepliesByUser($user, '', $state));
+    }
+
+    /**
+     * @return array<string, array{?CommentStateEnum, string[]}>
+     */
+    public static function statesProvider(): array
+    {
+        return [
+            'any'        => [null, [
+                UserCommentFixtures::OWN_REPLY,
+                UserCommentFixtures::OWN_DRAFT_COMMENT,
+                UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT,
+                UserCommentFixtures::OWN_COMMENT,
+            ]],
+            'resolved'   => [CommentStateEnum::Resolved, [UserCommentFixtures::OWN_REPLY, UserCommentFixtures::OWN_COMMENT]],
+            'unresolved' => [CommentStateEnum::Open, [UserCommentFixtures::OWN_DRAFT_COMMENT, UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT]],
+        ];
+    }
+
+    public function testFindAndCountWithStateAndSearchQuery(): void
+    {
+        $this->resolveComments();
+        $repository = self::getService(CommentRepository::class);
+        $user       = $this->getUser();
+
+        foreach ([CommentStateEnum::Resolved, CommentStateEnum::Open] as $state) {
+            $result = $repository->findCommentsAndRepliesByUser($user, 'reply', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30, $state);
+
+            static::assertSame(
+                [$state === CommentStateEnum::Resolved ? UserCommentFixtures::OWN_REPLY : UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT],
+                self::getMessages($result)
+            );
+            static::assertSame(1, $repository->countCommentsAndRepliesByUser($user, 'reply', $state));
+        }
+    }
+
+    public function testFindWithStateOrderedByUpdate(): void
+    {
+        $this->resolveComments();
+        $result = self::getService(CommentRepository::class)
+            ->findCommentsAndRepliesByUser($this->getUser(), '', CommentRepository::ORDER_UPDATE_TIMESTAMP, 1, 30, CommentStateEnum::Resolved);
+
+        static::assertSame([UserCommentFixtures::OWN_COMMENT, UserCommentFixtures::OWN_REPLY], self::getMessages($result));
+    }
+
+    public function testFindWithStatePaginated(): void
+    {
+        $this->resolveComments();
+        $repository = self::getService(CommentRepository::class);
+        $user       = $this->getUser();
+        $firstPage  = $repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 1, CommentStateEnum::Open);
+        $secondPage = $repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 2, 1, CommentStateEnum::Open);
+        $thirdPage  = $repository->findCommentsAndRepliesByUser($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 3, 1, CommentStateEnum::Open);
+
+        static::assertSame([UserCommentFixtures::OWN_DRAFT_COMMENT], self::getMessages($firstPage));
+        static::assertSame([UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT], self::getMessages($secondPage));
+        static::assertSame([], $thirdPage);
+    }
+
+    private function resolveComments(): void
+    {
+        $connection = Assert::notNull($this->entityManager)->getConnection();
+        foreach ([UserCommentFixtures::OWN_COMMENT, UserCommentFixtures::OTHER_COMMENT, UserCommentFixtures::OTHER_DRAFT_COMMENT] as $message) {
+            $connection->update('comment', ['state' => CommentStateEnum::Resolved->value], ['message' => $message]);
+        }
     }
 
     /**

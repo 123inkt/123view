@@ -13,6 +13,7 @@ use DR\Review\Doctrine\EntityRepository\ServiceEntityRepository;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Entity\User\User;
 use DR\Utils\Assert;
@@ -106,12 +107,18 @@ class CommentRepository extends ServiceEntityRepository
      * @return list<Comment|CommentReply>
      * @throws DBALException
      */
-    public function findCommentsAndRepliesByUser(User $user, string $searchQuery, string $orderBy, int $page, int $perPage = 30): array
-    {
+    public function findCommentsAndRepliesByUser(
+        User $user,
+        string $searchQuery,
+        string $orderBy,
+        int $page,
+        int $perPage = 30,
+        ?CommentStateEnum $state = null
+    ): array {
         $orderColumn = $orderBy === self::ORDER_UPDATE_TIMESTAMP ? 'update_timestamp' : 'create_timestamp';
 
         /** @var list<array{type: 'comment'|'reply', id: int|numeric-string}> $rows */
-        $rows = $this->createCommentsAndRepliesQuery($user, $searchQuery)
+        $rows = $this->createCommentsAndRepliesQuery($user, $searchQuery, $state)
             ->orderBy($orderColumn, 'DESC')
             ->addOrderBy('id', 'DESC')
             ->addOrderBy('type', 'ASC')
@@ -143,9 +150,9 @@ class CommentRepository extends ServiceEntityRepository
      * Count all comments and replies placed by the given user.
      * @throws DBALException
      */
-    public function countCommentsAndRepliesByUser(User $user, string $searchQuery): int
+    public function countCommentsAndRepliesByUser(User $user, string $searchQuery, ?CommentStateEnum $state = null): int
     {
-        $query = $this->createCommentsAndRepliesQuery($user, $searchQuery);
+        $query = $this->createCommentsAndRepliesQuery($user, $searchQuery, $state);
         $count = $this->getEntityManager()
             ->getConnection()
             ->executeQuery(sprintf('SELECT COUNT(*) FROM (%s) AS `items`', $query->getSQL()), $query->getParameters(), $query->getParameterTypes())
@@ -155,11 +162,11 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * Create the UNION query for all comments and replies of the given user, optionally filtered by message. Replies on draft
+     * Create the UNION query for all comments and replies of the given user, optionally filtered by message and comment state. Replies on draft
      * comments of other users are excluded, as these comments are not visible to the user.
      * @throws DBALException
      */
-    private function createCommentsAndRepliesQuery(User $user, string $searchQuery): QueryBuilder
+    private function createCommentsAndRepliesQuery(User $user, string $searchQuery, ?CommentStateEnum $state): QueryBuilder
     {
         $connection = $this->getEntityManager()->getConnection();
 
@@ -183,6 +190,12 @@ class CommentRepository extends ServiceEntityRepository
             $comments->andWhere("c.message LIKE :search ESCAPE '!'");
             $replies->andWhere("r.message LIKE :search ESCAPE '!'");
             $query->setParameter('search', '%' . $connection->getDatabasePlatform()->escapeStringForLike($searchQuery, '!') . '%');
+        }
+
+        if ($state !== null) {
+            $comments->andWhere('c.state = :state');
+            $replies->andWhere('c.state = :state');
+            $query->setParameter('state', $state->value);
         }
 
         return $query->union($comments)->addUnion($replies, UnionType::ALL);

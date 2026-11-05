@@ -5,11 +5,13 @@ namespace DR\Review\Tests\Unit\ViewModelProvider;
 
 use DR\Review\Entity\Review\Comment;
 use DR\Review\Entity\Review\CommentReply;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Repository\Review\CommentRepository;
 use DR\Review\Tests\AbstractTestCase;
 use DR\Review\ViewModelProvider\UserCommentsViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 
 #[CoversClass(UserCommentsViewModelProvider::class)]
@@ -25,7 +27,8 @@ class UserCommentsViewModelProviderTest extends AbstractTestCase
         $this->provider          = new UserCommentsViewModelProvider($this->commentRepository);
     }
 
-    public function testGetUserCommentsViewModel(): void
+    #[DataProvider('statesProvider')]
+    public function testGetUserCommentsViewModel(?CommentStateEnum $state): void
     {
         $user         = new User();
         $comment      = new Comment();
@@ -36,15 +39,15 @@ class UserCommentsViewModelProviderTest extends AbstractTestCase
         $this->commentRepository
             ->expects($this->once())
             ->method('findCommentsAndRepliesByUser')
-            ->with($user, 'search', CommentRepository::ORDER_UPDATE_TIMESTAMP, 2, 30)
+            ->with($user, 'search', CommentRepository::ORDER_UPDATE_TIMESTAMP, 2, 30, $state)
             ->willReturn([$reply, $comment]);
         $this->commentRepository
             ->expects($this->once())
             ->method('countCommentsAndRepliesByUser')
-            ->with($user, 'search')
+            ->with($user, 'search', $state)
             ->willReturn(61);
 
-        $viewModel = $this->provider->getUserCommentsViewModel($user, 'search', CommentRepository::ORDER_UPDATE_TIMESTAMP, 2);
+        $viewModel = $this->provider->getUserCommentsViewModel($user, 'search', CommentRepository::ORDER_UPDATE_TIMESTAMP, 2, $state);
 
         static::assertCount(2, $viewModel->comments);
         static::assertSame($otherComment, $viewModel->comments[0]->comment);
@@ -53,8 +56,21 @@ class UserCommentsViewModelProviderTest extends AbstractTestCase
         static::assertNull($viewModel->comments[1]->reply);
         static::assertSame('search', $viewModel->searchQuery);
         static::assertSame(CommentRepository::ORDER_UPDATE_TIMESTAMP, $viewModel->orderBy);
+        static::assertSame($state, $viewModel->state);
         static::assertSame(2, $viewModel->page);
         static::assertSame(3, $viewModel->lastPage);
+    }
+
+    /**
+     * @return array<string, array{?CommentStateEnum}>
+     */
+    public static function statesProvider(): array
+    {
+        return [
+            'any'        => [null],
+            'resolved'   => [CommentStateEnum::Resolved],
+            'unresolved' => [CommentStateEnum::Open],
+        ];
     }
 
     public function testGetUserCommentsViewModelEmpty(): void
@@ -64,17 +80,18 @@ class UserCommentsViewModelProviderTest extends AbstractTestCase
         $this->commentRepository
             ->expects($this->once())
             ->method('findCommentsAndRepliesByUser')
-            ->with($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30)
+            ->with($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1, 30, null)
             ->willReturn([]);
         $this->commentRepository
             ->expects($this->once())
             ->method('countCommentsAndRepliesByUser')
-            ->with($user, '')
+            ->with($user, '', null)
             ->willReturn(0);
 
         $viewModel = $this->provider->getUserCommentsViewModel($user, '', CommentRepository::ORDER_CREATE_TIMESTAMP, 1);
 
         static::assertSame([], $viewModel->comments);
+        static::assertNull($viewModel->state);
         static::assertSame(1, $viewModel->page);
         static::assertSame(0, $viewModel->lastPage);
     }

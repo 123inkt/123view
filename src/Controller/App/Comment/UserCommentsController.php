@@ -35,7 +35,8 @@ class UserCommentsController extends AbstractController
                 $this->getUser(),
                 $request->getSearchQuery(),
                 $request->getOrderBy(),
-                $request->getPage()
+                $request->getPage(),
+                $request->getState()
             )
         ];
     }

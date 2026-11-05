@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace DR\Review\Tests\Unit\Controller\App\Comment;
 
 use DR\Review\Controller\App\Comment\UserCommentsController;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\User\User;
 use DR\Review\Request\Comment\UserCommentsRequest;
 use DR\Review\Tests\AbstractControllerTestCase;
@@ -33,19 +34,20 @@ class UserCommentsControllerTest extends AbstractControllerTestCase
     public function testInvoke(): void
     {
         $user      = new User();
-        $viewModel = new UserCommentsViewModel([], 'search', 'update-timestamp', 3, 5);
+        $viewModel = new UserCommentsViewModel([], 'search', 'update-timestamp', 3, 5, CommentStateEnum::Resolved);
 
         $request = static::createStub(UserCommentsRequest::class);
         $request->method('getSearchQuery')->willReturn('search');
         $request->method('getOrderBy')->willReturn('update-timestamp');
         $request->method('getPage')->willReturn(3);
+        $request->method('getState')->willReturn(CommentStateEnum::Resolved);
 
         $this->expectGetUser($user);
         $this->translator->expects($this->once())->method('trans')->with('my.comments')->willReturn('translation');
         $this->viewModelProvider
             ->expects($this->once())
             ->method('getUserCommentsViewModel')
-            ->with($user, 'search', 'update-timestamp', 3)
+            ->with($user, 'search', 'update-timestamp', 3, CommentStateEnum::Resolved)
             ->willReturn($viewModel);
 
         $result = ($this->controller)($request);

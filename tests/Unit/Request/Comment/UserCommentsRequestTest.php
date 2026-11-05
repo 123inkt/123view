@@ -5,6 +5,7 @@ namespace DR\Review\Tests\Unit\Request\Comment;
 
 use DigitalRevolution\SymfonyRequestValidation\ValidationRules;
 use DigitalRevolution\SymfonyValidationShorthand\Rule\InvalidRuleException;
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Request\Comment\UserCommentsRequest;
 use DR\Review\Tests\Unit\Request\AbstractRequestTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -39,6 +40,20 @@ class UserCommentsRequestTest extends AbstractRequestTestCase
         static::assertSame(10, $this->validatedRequest->getPage());
     }
 
+    public function testGetState(): void
+    {
+        static::assertNull($this->validatedRequest->getState());
+
+        $this->request->query->set('state', 'any');
+        static::assertNull($this->validatedRequest->getState());
+
+        $this->request->query->set('state', 'resolved');
+        static::assertSame(CommentStateEnum::Resolved, $this->validatedRequest->getState());
+
+        $this->request->query->set('state', 'open');
+        static::assertSame(CommentStateEnum::Open, $this->validatedRequest->getState());
+    }
+
     /**
      * @throws InvalidRuleException
      */
@@ -49,6 +64,7 @@ class UserCommentsRequestTest extends AbstractRequestTestCase
                 'query' => [
                     'search'   => 'string',
                     'order-by' => 'string|in:create-timestamp,update-timestamp',
+                    'state'    => 'string|in:any,open,resolved',
                     'page'     => 'integer|min:1'
                 ],
             ],

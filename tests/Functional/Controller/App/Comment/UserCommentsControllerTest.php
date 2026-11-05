@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Functional\Controller\App\Comment;
 
+use DR\Review\Entity\Review\CommentStateEnum;
 use DR\Review\Entity\Review\CommentTypeEnum;
 use DR\Review\Repository\User\UserRepository;
 use DR\Review\Tests\AbstractFunctionalTestCase;
@@ -49,6 +50,7 @@ class UserCommentsControllerTest extends AbstractFunctionalTestCase
         self::assertSelectorCount(4, '.list-group-item > a[href*="#focus:"]');
         self::assertSelectorCount(4, '.card > .card-header');
         self::assertSelectorCount(4, '.card > .list-group-flush');
+        self::assertSelectorExists('select[name="state"] option[value="any"][selected]');
     }
 
     /**
@@ -222,6 +224,93 @@ class UserCommentsControllerTest extends AbstractFunctionalTestCase
         $this->client->request(Request::METHOD_GET, '/app/comments?order-by=foobar');
 
         self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    /**
+     * @param string[] $expected
+     * @throws Exception
+     */
+    #[DataProvider('statesProvider')]
+    public function testFilterByState(string $state, array $expected): void
+    {
+        $this->resolveComments();
+        $this->login();
+        $crawler = $this->client->request(Request::METHOD_GET, '/app/comments?state=' . $state);
+
+        self::assertResponseIsSuccessful();
+        static::assertSame($expected, self::getMessages($crawler));
+        self::assertSelectorExists('select[name="state"][aria-label="Comment status"][data-controller="form-submitter"]');
+        self::assertSelectorExists('select[name="state"] option[value="' . $state . '"][selected]');
+        self::assertSelectorTextSame('select[name="state"] option[value="any"]', 'Any');
+        self::assertSelectorTextSame('select[name="state"] option[value="resolved"]', 'Resolved');
+        self::assertSelectorTextSame('select[name="state"] option[value="open"]', 'Unresolved');
+    }
+
+    /**
+     * @return array<string, array{string, string[]}>
+     */
+    public static function statesProvider(): array
+    {
+        return [
+            'any'        => ['any', [
+                UserCommentFixtures::OTHER_COMMENT . ' ' . UserCommentFixtures::OWN_REPLY,
+                UserCommentFixtures::OWN_DRAFT_COMMENT,
+                UserCommentFixtures::OWN_DRAFT_COMMENT . ' ' . UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT,
+                UserCommentFixtures::OWN_COMMENT,
+            ]],
+            'resolved'   => ['resolved', [
+                UserCommentFixtures::OTHER_COMMENT . ' ' . UserCommentFixtures::OWN_REPLY,
+                UserCommentFixtures::OWN_COMMENT,
+            ]],
+            'unresolved' => ['open', [
+                UserCommentFixtures::OWN_DRAFT_COMMENT,
+                UserCommentFixtures::OWN_DRAFT_COMMENT . ' ' . UserCommentFixtures::OWN_REPLY_ON_OWN_DRAFT,
+            ]],
+        ];
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testFilterFormAndNavigation(): void
+    {
+        $this->resolveComments();
+        $this->login();
+        $crawler = $this->client->request(Request::METHOD_GET, '/app/comments?search=reply&order-by=update-timestamp&page=3&state=resolved');
+
+        self::assertResponseIsSuccessful();
+        self::assertSelectorExists('select[name="state"] option[value="resolved"][selected]');
+        static::assertSame(
+            ['order-by' => 'update-timestamp', 'search' => 'reply', 'state' => 'open'],
+            $crawler->filter('form.mb-3')->form(['state' => 'open'])->getPhpValues()
+        );
+        static::assertSame(
+            '?search=reply&order-by=create-timestamp&page=1&state=resolved',
+            $crawler->filter('a[title="Sort by creation date"]')->attr('href')
+        );
+        static::assertSame(
+            '?search=&order-by=update-timestamp&page=1&state=resolved',
+            $crawler->filter('form.mb-3 a.btn-secondary')->attr('href')
+        );
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testInvalidStateIsRejected(): void
+    {
+        $this->login();
+        $this->client->request(Request::METHOD_GET, '/app/comments?state=foobar');
+
+        self::assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
+    }
+
+    private function resolveComments(): void
+    {
+        $connection = Assert::notNull($this->entityManager)->getConnection();
+        foreach ([UserCommentFixtures::OWN_COMMENT, UserCommentFixtures::OTHER_COMMENT, UserCommentFixtures::OTHER_DRAFT_COMMENT] as $message) {
+            $connection->update('comment', ['state' => CommentStateEnum::Resolved->value], ['message' => $message]);
+        }
     }
 
     /**
