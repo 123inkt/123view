@@ -13,6 +13,7 @@ use DR\Review\Model\Api\Gitlab\Position;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\Git\GitProcessExceptionInspector;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentFactory;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
@@ -21,17 +22,21 @@ use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 #[CoversClass(NoteEventCreateCommentHandler::class)]
 class NoteEventCreateCommentHandlerTest extends AbstractTestCase
 {
-    private NoteEventHandlerLogger&MockObject  $eventLogger;
-    private RepositoryRepository&MockObject    $repositoryRepository;
-    private BranchRevisionService&MockObject   $branchRevisionService;
-    private RevisionFilepathMatcher&MockObject $revisionMatcher;
-    private CommentFactory&MockObject          $commentFactory;
-    private CommentRepository&MockObject       $commentRepository;
-    private NoteEventCreateCommentHandler      $handler;
+    private NoteEventHandlerLogger&MockObject       $eventLogger;
+    private RepositoryRepository&MockObject         $repositoryRepository;
+    private BranchRevisionService&MockObject        $branchRevisionService;
+    private GitProcessExceptionInspector&MockObject $gitExceptionInspector;
+    private RevisionFilepathMatcher&MockObject      $revisionMatcher;
+    private CommentFactory&MockObject               $commentFactory;
+    private CommentRepository&MockObject            $commentRepository;
+    private NoteEventCreateCommentHandler           $handler;
 
     protected function setUp(): void
     {
@@ -39,6 +44,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $this->eventLogger           = $this->createMock(NoteEventHandlerLogger::class);
         $this->repositoryRepository  = $this->createMock(RepositoryRepository::class);
         $this->branchRevisionService = $this->createMock(BranchRevisionService::class);
+        $this->gitExceptionInspector = $this->createMock(GitProcessExceptionInspector::class);
         $this->revisionMatcher       = $this->createMock(RevisionFilepathMatcher::class);
         $this->commentFactory        = $this->createMock(CommentFactory::class);
         $this->commentRepository     = $this->createMock(CommentRepository::class);
@@ -46,6 +52,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             $this->eventLogger,
             $this->repositoryRepository,
             $this->branchRevisionService,
+            $this->gitExceptionInspector,
             $this->revisionMatcher,
             $this->commentFactory,
             $this->commentRepository,
@@ -63,6 +70,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $this->eventLogger->expects($this->once())->method('logCommentAlreadyExists')->with($event);
         $this->repositoryRepository->expects($this->never())->method('findByProperty');
         $this->branchRevisionService->expects($this->never())->method(static::anything());
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->never())->method(static::anything());
         $this->commentFactory->expects($this->never())->method(static::anything());
 
@@ -78,6 +86,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             ->willReturn(null);
         $this->eventLogger->expects($this->once())->method('logRepositoryNotFound')->with($event);
         $this->branchRevisionService->expects($this->never())->method('getRevisionsFor');
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->never())->method(static::anything());
         $this->commentFactory->expects($this->never())->method(static::anything());
 
@@ -91,6 +100,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
         $this->eventLogger->expects($this->once())->method('logRepositoryNotFound')->with($event);
         $this->branchRevisionService->expects($this->never())->method('getRevisionsFor');
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->never())->method(static::anything());
         $this->commentFactory->expects($this->never())->method(static::anything());
 
@@ -106,9 +116,37 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             ->method('getRevisionsFor')
             ->with($repository, 'origin/feature', 'main')
             ->willReturn([]);
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
         $this->eventLogger->expects($this->once())->method('logRevisionsNotFound')->with($event);
         $this->revisionMatcher->expects($this->never())->method('matchRevision');
         $this->commentFactory->expects($this->never())->method(static::anything());
+
+        $this->handler->handle($event, $user);
+    }
+
+    public function testHandleDelaysMissingBranchRetry(): void
+    {
+        $failure       = new ProcessFailedException(static::createStub(Process::class));
+        [$event, $user] = $this->configureRevisionLookupFailure($failure);
+        $this->gitExceptionInspector->expects($this->once())->method('isMissingRevision')->with($failure)->willReturn(true);
+
+        try {
+            $this->handler->handle($event, $user);
+            static::fail('Expected the missing branch to be retried later.');
+        } catch (RecoverableMessageHandlingException $exception) {
+            static::assertSame(120_000, $exception->getRetryDelay());
+            static::assertFalse($exception->forceRetry());
+            static::assertSame($failure, $exception->getPrevious());
+            static::assertSame($failure->getMessage(), $exception->getMessage());
+        }
+    }
+
+    public function testHandlePreservesOtherGitFailures(): void
+    {
+        $failure       = new ProcessFailedException(static::createStub(Process::class));
+        [$event, $user] = $this->configureRevisionLookupFailure($failure);
+        $this->gitExceptionInspector->expects($this->once())->method('isMissingRevision')->with($failure)->willReturn(false);
+        $this->expectExceptionObject($failure);
 
         $this->handler->handle($event, $user);
     }
@@ -120,6 +158,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $revision   = new Revision()->setCommitHash('commit-sha');
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
         $this->branchRevisionService->expects($this->once())->method('getRevisionsFor')->willReturn([$revision]);
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [])->willReturn([null, null]);
         $this->eventLogger->expects($this->once())->method('logRevisionForFilenameNotFound')->with($event);
         $this->commentFactory->expects($this->never())->method(static::anything());
@@ -136,6 +175,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $revision->setReview($review);
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
         $this->branchRevisionService->expects($this->once())->method('getRevisionsFor')->willReturn([$revision]);
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [$revision])->willReturn([null, null]);
         $this->eventLogger->expects($this->once())->method('logRevisionForFilenameNotFound')->with($event);
         $this->commentFactory->expects($this->never())->method(static::anything());
@@ -153,6 +193,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
         $comment = new Comment();
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
         $this->branchRevisionService->expects($this->once())->method('getRevisionsFor')->willReturn([$revision]);
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
         $this->revisionMatcher->expects($this->once())->method('matchRevision')->with($event, [$revision])->willReturn([$revision, 'new.php']);
         $this->commentFactory->expects($this->once())->method('create')->with($event, $user, $revision, 'new.php')->willReturn($comment);
         $this->commentRepository->expects($this->once())->method('save')->with($comment, true);
@@ -172,6 +213,26 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             ->method('findOneBy')
             ->with(['extReferenceId' => '7:discussion:42'])
             ->willReturn(null);
+
+        return [$event, $user];
+    }
+
+    /**
+     * @return array{0: NoteEvent, 1: User}
+     */
+    private function configureRevisionLookupFailure(ProcessFailedException $failure): array
+    {
+        [$event, $user] = $this->configureResolvedUser();
+        $repository = new Repository()->setActive(true);
+        $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
+        $this->branchRevisionService->expects($this->once())
+            ->method('getRevisionsFor')
+            ->with($repository, 'origin/feature', 'main')
+            ->willThrowException($failure);
+        $this->eventLogger->expects($this->never())->method(static::anything());
+        $this->revisionMatcher->expects($this->never())->method(static::anything());
+        $this->commentFactory->expects($this->never())->method(static::anything());
+        $this->commentRepository->expects($this->never())->method('save');
 
         return [$event, $user];
     }
