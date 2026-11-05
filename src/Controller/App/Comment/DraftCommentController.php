@@ -10,10 +10,11 @@ use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class DraftCommentController extends AbstractController
 {
-    public function __construct(private readonly DraftCommentViewModelProvider $viewModelProvider)
+    public function __construct(private readonly TranslatorInterface $translator, private readonly DraftCommentViewModelProvider $viewModelProvider)
     {
     }
 
@@ -29,7 +30,7 @@ class DraftCommentController extends AbstractController
         $page = max(1, $request->query->getInt('page', 1));
 
         return [
-            'page_title' => 'draft.comments.overview',
+            'page_title' => $this->translator->trans('draft.comments.overview'),
             'viewModel'  => $this->viewModelProvider->getDraftCommentsViewModel($user, $page)
         ];
     }

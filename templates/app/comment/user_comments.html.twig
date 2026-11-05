@@ -1,0 +1,77 @@
+{% extends 'app/comment/comment.base.html.twig' %}
+
+{% set active_tab = 'comments' %}
+
+{% block comment_content %}
+    {% set order_by_update = viewModel.orderBy == 'update-timestamp' %}
+    {% set state = viewModel.state is null ? 'any' : viewModel.state.value %}
+    <form method="get" class="mb-3">
+        <input type="hidden" name="order-by" value="{{ viewModel.orderBy }}"/>
+        <div class="input-group">
+            <input type="search"
+                   name="search"
+                   value="{{ viewModel.searchQuery }}"
+                   class="form-control"
+                   aria-label="{{ 'search.comments'|trans }}"
+                   placeholder="{{ 'search.comments'|trans }}"
+                    {{ stimulus_controller('search-field') }}/>
+            <select name="state"
+                    class="form-select flex-grow-0 w-auto"
+                    aria-label="{{ 'comment.state'|trans }}"
+                    {{ stimulus_controller('form-submitter') }}>
+                <option value="any" {{ state == 'any' ? 'selected' : '' }}>{{ 'any'|trans }}</option>
+                <option value="resolved" {{ state == 'resolved' ? 'selected' : '' }}>{{ 'resolved'|trans }}</option>
+                <option value="open" {{ state == 'open' ? 'selected' : '' }}>{{ 'unresolved'|trans }}</option>
+            </select>
+            {% if viewModel.searchQuery != '' %}
+                <a href="{{ url_query_params({search: '', page: 1}) }}" class="btn btn-secondary">&times;</a>
+            {% endif %}
+            <button type="submit" class="btn btn-secondary" title="{{ 'search'|trans }}" aria-label="{{ 'search'|trans }}">
+                <i class="bi bi-search"></i>
+            </button>
+            <a href="{{ url_query_params({'order-by': order_by_update ? 'create-timestamp' : 'update-timestamp', page: 1}) }}"
+               class="btn btn-outline-secondary"
+               title="{{ (order_by_update ? 'sort.by.creation.date' : 'sort.by.last.updated')|trans }}">
+                <i class="bi bi-sort-down"></i>
+                {{ (order_by_update ? 'last.updated' : 'creation.date')|trans }}
+            </a>
+        </div>
+    </form>
+
+    {% if viewModel.comments is empty %}
+        <p class="text-body-secondary">{{ 'my.comments.empty'|trans }}</p>
+    {% else %}
+        {% for entry in viewModel.comments %}
+            {% set comment = entry.comment %}
+            {% set reply = entry.reply %}
+            {% set review = comment.review %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    {{ 'review'|trans }}:
+                    <a href="{{ path('DR\\Review\\Controller\\App\\Review\\ReviewController', {review: review}) }}">
+                        CR-{{ review.projectId }} — {{ review.title }}
+                    </a>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        {% if reply is null %}
+                            <a href="{{ comment_url(comment) }}#focus:comment:{{ comment.id }}">{{ comment.filePath }}</a>
+                        {% else %}
+                            <a href="{{ comment_reply_url(reply) }}#focus:reply:{{ reply.id }}">{{ comment.filePath }}</a>
+                        {% endif %}
+
+                        {% include 'app/review/comment/comment.html.twig' with {
+                            comment: comment,
+                            detached: false,
+                            editCommentForm: null,
+                            replyCommentForm: null,
+                            visible: true
+                        } %}
+                    </li>
+                </ul>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% include 'app/paginator/paginator.html.twig' with {paginatorModel: viewModel} %}
+{% endblock %}

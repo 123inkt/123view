@@ -1,0 +1,22 @@
+{% extends 'app/app.base.html.twig' %}
+
+{% block page_content %}
+    <div class="comment-overview container-fluid mt-3">
+        <h1>{{ 'my.comments'|trans }}</h1>
+
+        <ul class="nav nav-tabs flex-nowrap mb-3">
+            <li class="nav-item">
+                <a class="nav-link h-100{% if active_tab == 'comments' %} active{% endif %}"
+                   {% if active_tab == 'comments' %}aria-current="page"{% endif %}
+                   href="{{ path('DR\\Review\\Controller\\App\\Comment\\UserCommentsController') }}">{{ 'comments.and.replies'|trans }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link h-100{% if active_tab == 'drafts' %} active{% endif %}"
+                   {% if active_tab == 'drafts' %}aria-current="page"{% endif %}
+                   href="{{ path('DR\\Review\\Controller\\App\\Comment\\DraftCommentController') }}">{{ 'draft.comments.overview'|trans }} ({{ draft_comment_count() }})</a>
+            </li>
+        </ul>
+
+        {% block comment_content %}{% endblock %}
+    </div>
+{% endblock %}

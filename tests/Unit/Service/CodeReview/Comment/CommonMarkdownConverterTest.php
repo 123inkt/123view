@@ -45,6 +45,14 @@ class CommonMarkdownConverterTest extends AbstractTestCase
         );
     }
 
+    public function testLineBreakHtml(): void
+    {
+        static::assertSame(
+            "<p>first<br>second<br/>third<br />fourth</p>\n",
+            $this->converter->convert('first<br>second<br/>third<br />fourth')->getContent()
+        );
+    }
+
     public function testDisallowedHtmlIsEscaped(): void
     {
         static::assertSame(

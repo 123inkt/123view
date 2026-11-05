@@ -1,9 +1,8 @@
-{% extends 'app/app.base.html.twig' %}
+{% extends 'app/comment/comment.base.html.twig' %}
 
-{% block page_content %}
-<div class="container-fluid mt-3">
-    <h1>{{ 'draft.comments.overview'|trans }}</h1>
+{% set active_tab = 'drafts' %}
 
+{% block comment_content %}
     {% if viewModel.reviews is empty %}
         <p class="text-muted">{{ 'draft.comments.empty'|trans }}</p>
     {% else %}
@@ -29,5 +28,4 @@
 
         {% include 'app/paginator/paginator.html.twig' with {paginatorModel: viewModel.paginator} %}
     {% endif %}
-</div>
 {% endblock %}

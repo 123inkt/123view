@@ -59,6 +59,11 @@
     max-width: calc((100vw - var(--review-sidebar-width) - var(--review-sidebar-gap)) / 2 - 35px);
 }
 
+.comment-overview .comment__comment,
+.comment-overview .comment__reply {
+    max-width: 100%;
+}
+
 .comment__edit-reply {
     padding-left: 32px;
 }
