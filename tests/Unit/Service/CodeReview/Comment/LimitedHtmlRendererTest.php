@@ -29,7 +29,7 @@ class LimitedHtmlRendererTest extends AbstractTestCase
         static::assertSame($html, $this->renderer->render(new HtmlInline($html), $this->childRenderer));
     }
 
-    public function testLineBreaksArePreservedWithoutAllowingAttributes(): void
+    public function testLineBreaksWithoutAttributes(): void
     {
         $html = 'first<br>second<BR/>third<br />fourth';
 

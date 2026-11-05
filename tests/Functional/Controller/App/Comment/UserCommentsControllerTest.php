@@ -56,7 +56,7 @@ class UserCommentsControllerTest extends AbstractFunctionalTestCase
     /**
      * @throws Exception
      */
-    public function testCommentsAndRepliesUseSharedCommentRendering(): void
+    public function testSharedCommentRendering(): void
     {
         $this->login();
         $this->client->request(Request::METHOD_GET, '/app/comments');
