@@ -32,6 +32,7 @@
         "dev": "encore dev --config webpack.config.mjs",
         "watch": "encore dev --watch --config webpack.config.mjs",
         "build": "encore production --progress --config webpack.config.mjs",
+        "test:browser": "node --test tests/Browser/*.test.cjs",
         "stylelint": "stylelint \"assets/**/*.scss\"",
         "stylelint-fix": "stylelint \"assets/**/*.scss\" --fix",
         "eslint": "eslint \"assets/**/*.ts\" --report-unused-disable-directives"

@@ -27,7 +27,7 @@ export default class extends Controller {
             )
             .then(form => {
                 this.commentFormTargets.forEach(el => el.remove());
-                Elements.siblingRole(line, 'add-comment-inserter').after(form);
+                Elements.siblingRole(line, 'add-comment-inserter').append(form);
             })
             .catch(Errors.catch);
     }
