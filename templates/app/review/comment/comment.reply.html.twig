@@ -1,5 +1,6 @@
 {# reply:  CommentReply #}
 {# indented: bool|null #}
+{# readOnly: bool|null #}
 
 {% set is_edit_comment_reply = editReplyCommentForm is defined and editReplyCommentForm != null and editReplyCommentForm.reply == reply %}
 
@@ -34,7 +35,7 @@
                    data-role="icon"
                 ></i>
             </a>
-            {% if reply.user == app.user %}
+            {% if not (readOnly ?? false) and reply.user == app.user %}
                 <span class="comment__edit">
                     {# edit reply #}
                     <a href="#" class="ms-1 text-decoration-none"

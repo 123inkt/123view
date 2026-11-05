@@ -12,6 +12,7 @@ use DR\Review\ViewModelProvider\DraftCommentViewModelProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @extends AbstractControllerTestCase<DraftCommentController>
@@ -19,10 +20,12 @@ use Symfony\Component\HttpFoundation\Request;
 #[CoversClass(DraftCommentController::class)]
 class DraftCommentControllerTest extends AbstractControllerTestCase
 {
+    private TranslatorInterface&MockObject $translator;
     private DraftCommentViewModelProvider&MockObject $viewModelProvider;
 
     protected function setUp(): void
     {
+        $this->translator        = $this->createMock(TranslatorInterface::class);
         $this->viewModelProvider = $this->createMock(DraftCommentViewModelProvider::class);
         parent::setUp();
     }
@@ -34,6 +37,7 @@ class DraftCommentControllerTest extends AbstractControllerTestCase
         $request   = new Request(['page' => '3']);
 
         $this->expectGetUser($user);
+        $this->translator->expects($this->once())->method('trans')->with('draft.comments.overview')->willReturn('Draft comments');
         $this->viewModelProvider
             ->expects($this->once())
             ->method('getDraftCommentsViewModel')
@@ -42,7 +46,7 @@ class DraftCommentControllerTest extends AbstractControllerTestCase
 
         $result = ($this->controller)($request);
 
-        static::assertSame('draft.comments.overview', $result['page_title']);
+        static::assertSame('Draft comments', $result['page_title']);
         static::assertSame($viewModel, $result['viewModel']);
     }
 
@@ -53,6 +57,7 @@ class DraftCommentControllerTest extends AbstractControllerTestCase
         $request   = new Request();
 
         $this->expectGetUser($user);
+        $this->translator->expects($this->once())->method('trans')->with('draft.comments.overview')->willReturn('Draft comments');
         $this->viewModelProvider
             ->expects($this->once())
             ->method('getDraftCommentsViewModel')
@@ -61,12 +66,12 @@ class DraftCommentControllerTest extends AbstractControllerTestCase
 
         $result = ($this->controller)($request);
 
-        static::assertSame('draft.comments.overview', $result['page_title']);
+        static::assertSame('Draft comments', $result['page_title']);
         static::assertSame($viewModel, $result['viewModel']);
     }
 
     public function getController(): AbstractController
     {
-        return new DraftCommentController($this->viewModelProvider);
+        return new DraftCommentController($this->translator, $this->viewModelProvider);
     }
 }

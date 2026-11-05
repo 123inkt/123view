@@ -29,6 +29,17 @@ class LimitedHtmlRendererTest extends AbstractTestCase
         static::assertSame($html, $this->renderer->render(new HtmlInline($html), $this->childRenderer));
     }
 
+    public function testLineBreaksArePreservedWithoutAllowingAttributes(): void
+    {
+        $html = 'first<br>second<BR/>third<br />fourth';
+
+        static::assertSame($html, $this->renderer->render(new HtmlInline($html), $this->childRenderer));
+        static::assertSame(
+            '&lt;br onclick="alert(1)"&gt;',
+            $this->renderer->render(new HtmlInline('<br onclick="alert(1)">'), $this->childRenderer)
+        );
+    }
+
     public function testMixedHtmlIsEscapedAndPreserved(): void
     {
         static::assertSame(

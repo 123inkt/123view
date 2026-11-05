@@ -45,55 +45,21 @@
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        {# repository and file the comment was placed on #}
-                        <div class="small mb-2">
-                            <span class="badge rounded-pill text-bg-primary">{{ review.repository.displayName }}</span>
-                            {% if comment.type.value != 'draft' and comment.state.value == 'resolved' %}
-                                <span class="badge rounded-pill text-bg-success">{{ 'resolved'|trans }}</span>
-                            {% endif %}
-                            <br/>
-                            <i class="bi bi-file-earmark-code"></i>
-                            {% if reply is null %}
-                                <a href="{{ comment_url(comment) }}#focus:comment:{{ comment.id }}">{{ comment.filePath }}</a>
-                            {% else %}
-                                <a href="{{ comment_reply_url(reply) }}#focus:reply:{{ reply.id }}">{{ comment.filePath }}</a>
-                            {% endif %}
-                            {% if comment.type.value == 'draft' %}
-                                <span class="badge rounded-pill text-bg-info">{{ 'comment.draft.label'|trans }}</span>
-                            {% endif %}
-                        </div>
-
-                        {# the comment the reply was placed on #}
-                        {% if reply is not null %}
-                            <div class="border-start border-3 ps-2 mb-2 text-body-secondary">
-                                <div class="small">
-                                    <strong>{{ comment.user.name }}</strong>
-                                    {{ 'on'|trans }} {{ comment.createTimestamp|format_datetime('short', 'short') }}
-                                </div>
-                                <div class="comment__markdown">{{ comment.message|mentions|markdown }}</div>
-                            </div>
+                        {% if reply is null %}
+                            <a href="{{ comment_url(comment) }}#focus:comment:{{ comment.id }}">{{ comment.filePath }}</a>
+                        {% else %}
+                            <a href="{{ comment_reply_url(reply) }}#focus:reply:{{ reply.id }}">{{ comment.filePath }}</a>
                         {% endif %}
 
-                        {# the comment or reply of the user #}
-                        {% set item = reply ?? comment %}
-                        <div{% if reply is not null %} class="ms-3"{% endif %}>
-                            <div class="small">
-                                {% if reply is not null %}
-                                    <i class="bi bi-reply-fill text-body-secondary" title="{{ 'reply'|trans }}"></i>
-                                {% endif %}
-                                <strong>{{ item.user.name }}</strong>
-                                {{ 'on'|trans }} {{ item.createTimestamp|format_datetime('short', 'short') }}
-                                {% if item.updateTimestamp != item.createTimestamp %}
-                                    <span class="text-body-secondary">
-                                        ({{ 'last.updated'|trans }}: {{ item.updateTimestamp|format_datetime('short', 'short') }})
-                                    </span>
-                                {% endif %}
-                                {% if item.tag %}
-                                    <span class="badge rounded-pill text-bg-secondary">{{ ('tag.' ~ item.tag.value)|trans }}</span>
-                                {% endif %}
-                            </div>
-                            <div class="comment__markdown">{{ item.message|mentions|markdown }}</div>
-                        </div>
+                        {% include 'app/review/comment/comment.html.twig' with {
+                            comment: comment,
+                            detached: false,
+                            editCommentForm: null,
+                            replyCommentForm: null,
+                            visible: true,
+                            readOnly: true,
+                            visibleReplies: reply is null ? [] : [reply]
+                        } %}
                     </li>
                 </ul>
             </div>
