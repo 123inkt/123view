@@ -64,8 +64,9 @@ class NoteEventCreateCommentHandler
                 throw $exception;
             }
 
-            // Allow the asynchronous repository fetch to finish, but keep the transport's retry limit.
-            throw new RecoverableMessageHandlingException($exception->getMessage(), previous: $exception, retryDelay: 120_000, forceRetry: false);
+            // Wait for at least one repository polling interval, but keep the transport's retry limit.
+            $retryDelay = max(120_000, $repository->getUpdateRevisionsInterval() * 1000);
+            throw new RecoverableMessageHandlingException($exception->getMessage(), previous: $exception, retryDelay: $retryDelay, forceRetry: false);
         }
         if (count($revisions) === 0) {
             $this->eventLogger->logRevisionsNotFound($event);

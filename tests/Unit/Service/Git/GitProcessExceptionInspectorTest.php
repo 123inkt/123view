@@ -35,6 +35,14 @@ class GitProcessExceptionInspectorTest extends AbstractTestCase
                 "fatal: ambiguous argument 'origin/main...origin/feature': unknown revision or path not in the working tree.",
                 true,
             ],
+            'reported missing release revision' => [
+                128,
+                "fatal: ambiguous argument 'origin/2026.45.7..."
+                . "origin/B319783_TP_OrderReference_contains_wrong_value-2026.45': unknown revision or path not in the working tree.\n"
+                . "Use '--' to separate paths from revisions, like this:\n"
+                . "'git <command> [<revision>...] -- [<file>...]'\n",
+                true,
+            ],
             'repository not found'    => [128, 'fatal: not a git repository (or any of the parent directories): .git', false],
             'permission denied'      => [128, 'fatal: could not read from remote repository.', false],
             'different exit code'    => [1, "fatal: ambiguous argument 'range': unknown revision or path not in the working tree.", false],
