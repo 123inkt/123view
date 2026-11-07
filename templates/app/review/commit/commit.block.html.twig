@@ -28,11 +28,11 @@
         {%- include 'app/review/commit/commit.line.html.twig' -%}
 
         {#- comments -#}
-        {%- for comment in commentsViewModel.getComments(line) -%}
-            {%- include 'app/review/comment/comment.html.twig' with {visible: commentsViewModel.isCommentVisible(comment), collapsed: commentsViewModel.isCommentCollapsed(comment)} -%}
-        {%- endfor -%}
-
-        <div data-role="add-comment-inserter"></div>
+        <div class="diff-file__line-comments" data-role="add-comment-inserter">
+            {%- for comment in commentsViewModel.getComments(line) -%}
+                {%- include 'app/review/comment/comment.html.twig' with {visible: commentsViewModel.isCommentVisible(comment), collapsed: commentsViewModel.isCommentCollapsed(comment)} -%}
+            {%- endfor -%}
+        </div>
 
         {#- last line, and not eof -#}
         {%- if loop.last and line_visible is same as (false) -%}

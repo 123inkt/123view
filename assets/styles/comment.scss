@@ -96,7 +96,8 @@
     filter: grayscale(1);
 }
 
-.comment__comment-thread.comment__collapsed {
+// Hidden lines cannot anchor a bubble, so keep their comment threads in the normal flow.
+.comment__comment-thread.comment__collapsed:not(:where(.diff-file__diff-line-hidden + .diff-file__line-comments > *)) {
     position: absolute;
     z-index: 1;
     margin-top: -20px;
