@@ -21,6 +21,7 @@ use DR\Review\Service\RemoteEvent\Gitlab\NoteEventCreateCommentHandler;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Review\Tests\AbstractTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -127,7 +128,7 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
     public function testHandleDelaysMissingBranchRetry(): void
     {
         $failure       = new ProcessFailedException(static::createStub(Process::class));
-        [$event, $user] = $this->configureRevisionLookupFailure($failure);
+        [$event, $user] = $this->configureRevisionLookupFailure($failure, 30);
         $this->gitExceptionInspector->expects($this->once())->method('isMissingRevision')->with($failure)->willReturn(true);
 
         try {
@@ -139,6 +140,51 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
             static::assertSame($failure, $exception->getPrevious());
             static::assertSame($failure->getMessage(), $exception->getMessage());
         }
+    }
+
+    #[DataProvider('provideRepositoryFetchIntervals')]
+    public function testHandleWaitsForRepositoryFetch(int $fetchInterval, int $retryDelay): void
+    {
+        $process = static::createStub(Process::class);
+        $process->method('getExitCode')->willReturn(128);
+        $process->method('getErrorOutput')->willReturn(
+            "fatal: ambiguous argument 'origin/main...origin/feature': unknown revision or path not in the working tree."
+        );
+        $failure       = new ProcessFailedException($process);
+        [$event, $user] = $this->configureRevisionLookupFailure($failure, $fetchInterval);
+        $this->gitExceptionInspector->expects($this->never())->method(static::anything());
+        $handler = new NoteEventCreateCommentHandler(
+            $this->eventLogger,
+            $this->repositoryRepository,
+            $this->branchRevisionService,
+            new GitProcessExceptionInspector(),
+            $this->revisionMatcher,
+            $this->commentFactory,
+            $this->commentRepository,
+        );
+
+        try {
+            $handler->handle($event, $user);
+            static::fail('Expected the missing branch to be retried after the repository can be fetched.');
+        } catch (RecoverableMessageHandlingException $exception) {
+            static::assertSame($retryDelay, $exception->getRetryDelay());
+            static::assertFalse($exception->forceRetry());
+            static::assertSame($failure, $exception->getPrevious());
+        }
+    }
+
+    /**
+     * @return array<string, array{int, int}>
+     */
+    public static function provideRepositoryFetchIntervals(): array
+    {
+        return [
+            'default polling interval' => [900, 900_000],
+            'long polling interval'    => [3600, 3_600_000],
+            'short polling interval'   => [30, 120_000],
+            'zero polling interval'    => [0, 120_000],
+            'minimum retry delay'      => [120, 120_000],
+        ];
     }
 
     public function testHandlePreservesOtherGitFailures(): void
@@ -220,10 +266,11 @@ class NoteEventCreateCommentHandlerTest extends AbstractTestCase
     /**
      * @return array{0: NoteEvent, 1: User}
      */
-    private function configureRevisionLookupFailure(ProcessFailedException $failure): array
+    private function configureRevisionLookupFailure(ProcessFailedException $failure, int $fetchInterval = 900): array
     {
         [$event, $user] = $this->configureResolvedUser();
         $repository = new Repository()->setActive(true);
+        $repository->setUpdateRevisionsInterval($fetchInterval);
         $this->repositoryRepository->expects($this->once())->method('findByProperty')->willReturn($repository);
         $this->branchRevisionService->expects($this->once())
             ->method('getRevisionsFor')
