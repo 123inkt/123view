@@ -125,6 +125,10 @@
     }
 }
 
+.diff-file__diff-line.diff-file__diff-line-hidden + .comment__comment-thread.comment__collapsed {
+    display: none;
+}
+
 .comment__comment-thread.comment__draft {
     background: var(--bs-info-bg-subtle);
     border-left: 3px solid var(--bs-info);
