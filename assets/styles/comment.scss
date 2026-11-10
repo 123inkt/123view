@@ -97,9 +97,9 @@
 }
 
 .comment__comment-thread.comment__collapsed {
-    position: absolute;
-    z-index: 1;
+    position: relative;
     margin-top: -20px;
+    z-index: 1;
     width: 20px;
     height: 20px;
     background: transparent;
