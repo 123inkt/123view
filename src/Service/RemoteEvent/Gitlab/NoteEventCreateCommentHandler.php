@@ -8,11 +8,14 @@ use DR\Review\Entity\User\User;
 use DR\Review\Model\Webhook\Gitlab\NoteEvent;
 use DR\Review\Repository\Config\RepositoryRepository;
 use DR\Review\Repository\Review\CommentRepository;
+use DR\Review\Service\Git\GitProcessExceptionInspector;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\CommentFactory;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\NoteEventHandlerLogger;
 use DR\Review\Service\RemoteEvent\Gitlab\NoteEvent\RevisionFilepathMatcher;
 use DR\Review\Service\Revision\BranchRevisionService;
 use DR\Utils\Assert;
+use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Throwable;
 
 class NoteEventCreateCommentHandler
@@ -21,6 +24,7 @@ class NoteEventCreateCommentHandler
         private readonly NoteEventHandlerLogger $eventLogger,
         private readonly RepositoryRepository $repository,
         private readonly BranchRevisionService $branchRevisionService,
+        private readonly GitProcessExceptionInspector $gitExceptionInspector,
         private readonly RevisionFilepathMatcher $revisionMatcher,
         private readonly CommentFactory $commentFactory,
         private readonly CommentRepository $commentRepository,
@@ -49,7 +53,20 @@ class NoteEventCreateCommentHandler
         }
 
         // find revisions
-        $revisions = $this->branchRevisionService->getRevisionsFor($repository, 'origin/' . $mergeRequest->sourceBranch, $mergeRequest->targetBranch);
+        try {
+            $revisions = $this->branchRevisionService->getRevisionsFor(
+                $repository,
+                'origin/' . $mergeRequest->sourceBranch,
+                $mergeRequest->targetBranch
+            );
+        } catch (ProcessFailedException $exception) {
+            if ($this->gitExceptionInspector->isMissingRevision($exception) === false) {
+                throw $exception;
+            }
+
+            // Allow the asynchronous repository fetch to finish, but keep the transport's retry limit.
+            throw new RecoverableMessageHandlingException($exception->getMessage(), previous: $exception, retryDelay: 120_000, forceRetry: false);
+        }
         if (count($revisions) === 0) {
             $this->eventLogger->logRevisionsNotFound($event);
 
