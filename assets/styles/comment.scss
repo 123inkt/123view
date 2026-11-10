@@ -97,9 +97,9 @@
 }
 
 .comment__comment-thread.comment__collapsed {
-    position: absolute;
-    z-index: 1;
+    position: relative;
     margin-top: -20px;
+    z-index: 1;
     width: 20px;
     height: 20px;
     background: transparent;
@@ -123,6 +123,10 @@
     .comment__toolbar {
         display: none;
     }
+}
+
+.diff-file__diff-line.diff-file__diff-line-hidden + .comment__comment-thread.comment__collapsed {
+    display: none;
 }
 
 .comment__comment-thread.comment__draft {
