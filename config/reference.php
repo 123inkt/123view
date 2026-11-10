@@ -1449,6 +1449,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     }>,
  *     default_hub?: scalar|Param|null,
  *     default_cookie_lifetime?: int|Param, // Default lifetime of the cookie containing the JWT, in seconds. Defaults to the value of "framework.session.cookie_lifetime". // Default: null
+ *     clear_cookie_on_logout?: bool|Param, // Clear the subscriber authorization cookie of every hub when the user logs out. Requires "symfony/security-http". // Default: true
  *     enable_profiler?: bool|Param, // Deprecated: The child node "enable_profiler" at path "mercure.enable_profiler" is deprecated. // Enable Symfony Web Profiler integration.
  * }
  * @psalm-type MonologConfig = array{
