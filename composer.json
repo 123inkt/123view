@@ -54,7 +54,7 @@
         "league/oauth2-client": "^2.9",
         "league/uri": "^7.8",
         "liip/monitor-bundle": "^2.25",
-        "mcp/sdk": "^0.9.0",
+        "mcp/sdk": "^0.9.0 || ^0.10.0",
         "nesbot/carbon": "^3.11",
         "nette/utils": "^4.0",
         "parsica-php/parsica": "^0.8.3",
