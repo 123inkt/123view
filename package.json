@@ -11,7 +11,6 @@
         "@babel/preset-env": "^8.0.2",
         "@hotwired/stimulus": "^3.2.2",
         "@symfony/stimulus-bridge": "^4.0.1",
-        "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
         "@symfony/webpack-encore": "^7.2.0",
         "eslint-config-love": "^158.0.0",
         "sass": "^1.103.1",
