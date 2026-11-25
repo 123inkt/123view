@@ -15,6 +15,7 @@ readonly class MergeRequestSummaryNoteFactory
     public function __construct(
         private string $summaryNoteSuccessPattern,
         private string $summaryNoteWarningPattern,
+        private string $summaryNoteProgressPattern,
         private MarkdownConverterService $markdownConverter,
         private LoggerInterface $logger
     ) {
@@ -28,7 +29,11 @@ readonly class MergeRequestSummaryNoteFactory
         $status = SummaryNoteStatus::Unknown;
         $title  = $note->author->name ?? 'Summary';
 
-        $patterns = [[SummaryNoteStatus::Success, $this->summaryNoteSuccessPattern], [SummaryNoteStatus::Warning, $this->summaryNoteWarningPattern]];
+        $patterns = [
+            [SummaryNoteStatus::Success, $this->summaryNoteSuccessPattern],
+            [SummaryNoteStatus::Warning, $this->summaryNoteWarningPattern],
+            [SummaryNoteStatus::Progress, $this->summaryNoteProgressPattern],
+        ];
         foreach ($patterns as [$patternStatus, $pattern]) {
             $matches = $this->match($pattern, $note->body);
             if ($matches === null) {

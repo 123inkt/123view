@@ -3,7 +3,7 @@ import axios from 'axios';
 import Function from '../lib/Function';
 
 interface SummaryNote {
-    status: 'success' | 'warning' | 'unknown';
+    status: 'success' | 'warning' | 'progress' | 'unknown';
     title: string;
     html: string;
     url: string;
@@ -12,13 +12,15 @@ interface SummaryNote {
 const statusClasses: Record<SummaryNote['status'], string[]> = {
     success: ['btn-outline-success'],
     warning: ['btn-outline-primary', 'dr-btn-orange'],
+    progress: ['btn-outline-secondary'],
     unknown: ['btn-outline-secondary'],
 };
 
 const statusIcons: Record<SummaryNote['status'], string> = {
-    success: 'bi-check-circle',
-    warning: 'bi-exclamation-triangle',
-    unknown: 'bi-chat-square-text',
+    success: 'bi bi-check-circle',
+    warning: 'bi bi-exclamation-triangle',
+    progress: 'bi bi-gear summary-note-spin',
+    unknown: 'bi bi-chat-square-text',
 };
 
 export default class extends Controller {
@@ -41,7 +43,7 @@ export default class extends Controller {
 
                 this.element.classList.remove('d-none');
                 this.linkTarget.classList.add(...statusClasses[summaryNote.status]);
-                this.iconTarget.className = `bi ${statusIcons[summaryNote.status]}`;
+                this.iconTarget.className = statusIcons[summaryNote.status];
                 this.linkTarget.setAttribute('href', summaryNote.url);
                 this.linkTarget.setAttribute('title', summaryNote.title);
                 this.linkTarget.setAttribute('aria-label', summaryNote.title);

@@ -7,5 +7,6 @@ enum SummaryNoteStatus: string
 {
     case Success = 'success';
     case Warning = 'warning';
+    case Progress = 'progress';
     case Unknown = 'unknown';
 }

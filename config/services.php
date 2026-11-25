@@ -109,6 +109,7 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$summaryNotePrefix', '%env(GITLAB_SUMMARY_NOTE_PREFIX)%')
         ->bind('$summaryNoteSuccessPattern', '%env(GITLAB_SUMMARY_NOTE_SUCCESS_PATTERN)%')
         ->bind('$summaryNoteWarningPattern', '%env(GITLAB_SUMMARY_NOTE_WARNING_PATTERN)%')
+        ->bind('$summaryNoteProgressPattern', '%env(GITLAB_SUMMARY_NOTE_PROGRESS_PATTERN)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
         ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
         ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));

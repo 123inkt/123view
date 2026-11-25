@@ -17,9 +17,10 @@ use Throwable;
 #[CoversClass(MergeRequestSummaryNoteFactory::class)]
 class MergeRequestSummaryNoteFactoryTest extends AbstractTestCase
 {
-    private const SUCCESS_PATTERN = '/^Result: (passed)$/m';
-    private const WARNING_PATTERN = '/^Result: (\d+ failed)$/m';
-    private const MR_URL          = 'https://gitlab.example.com/mr/1';
+    private const SUCCESS_PATTERN  = '/^Result: (passed)$/m';
+    private const WARNING_PATTERN  = '/^Result: (\d+ failed)$/m';
+    private const PROGRESS_PATTERN = '/^Result: (in progress)$/m';
+    private const MR_URL           = 'https://gitlab.example.com/mr/1';
 
     private MarkdownConverterService&MockObject $markdownConverter;
     private LoggerInterface&MockObject          $patternLogger;
@@ -64,6 +65,20 @@ class MergeRequestSummaryNoteFactoryTest extends AbstractTestCase
     /**
      * @throws Throwable
      */
+    public function testCreateProgress(): void
+    {
+        $this->patternLogger->expects($this->never())->method('warning');
+        $this->markdownConverter->expects($this->once())->method('convert')->willReturn('html');
+
+        $summaryNote = $this->createFactory()->create($this->createNote(5, "## Summary\nResult: in progress"), self::MR_URL);
+
+        static::assertSame(SummaryNoteStatus::Progress, $summaryNote->status);
+        static::assertSame('in progress', $summaryNote->title);
+    }
+
+    /**
+     * @throws Throwable
+     */
     public function testCreateWithoutMatchUsesAuthorName(): void
     {
         $this->patternLogger->expects($this->never())->method('warning');
@@ -83,7 +98,7 @@ class MergeRequestSummaryNoteFactoryTest extends AbstractTestCase
         $this->patternLogger->expects($this->never())->method('warning');
         $this->markdownConverter->expects($this->once())->method('convert')->willReturn('html');
 
-        $summaryNote = $this->createFactory('', '')->create($this->createNote(5, 'Result: passed'), self::MR_URL);
+        $summaryNote = $this->createFactory('', '', '')->create($this->createNote(5, 'Result: passed'), self::MR_URL);
 
         static::assertSame(SummaryNoteStatus::Unknown, $summaryNote->status);
         static::assertSame('Summary bot', $summaryNote->title);
@@ -166,9 +181,10 @@ class MergeRequestSummaryNoteFactoryTest extends AbstractTestCase
 
     private function createFactory(
         string $successPattern = self::SUCCESS_PATTERN,
-        string $warningPattern = self::WARNING_PATTERN
+        string $warningPattern = self::WARNING_PATTERN,
+        string $progressPattern = self::PROGRESS_PATTERN
     ): MergeRequestSummaryNoteFactory {
-        return new MergeRequestSummaryNoteFactory($successPattern, $warningPattern, $this->markdownConverter, $this->patternLogger);
+        return new MergeRequestSummaryNoteFactory($successPattern, $warningPattern, $progressPattern, $this->markdownConverter, $this->patternLogger);
     }
 
     private function createNote(int $id, string $body): Note

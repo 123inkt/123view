@@ -70,6 +70,17 @@
     font-size: 0.8rem;
 }
 
+.summary-note-spin {
+    display: inline-block;
+    animation: summary-note-spin 2s linear infinite;
+}
+
+@keyframes summary-note-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .summary-note:hover .summary-note-panel,
 .summary-note:focus-within .summary-note-panel {
     display: block;
