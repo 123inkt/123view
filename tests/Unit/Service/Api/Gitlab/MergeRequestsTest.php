@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Tests\Unit\Service\Api\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\Note;
 use DR\Review\Model\Api\Gitlab\Version;
 use DR\Review\Service\Api\Gitlab\MergeRequests;
 use DR\Review\Tests\AbstractTestCase;
@@ -15,6 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
+use function DR\PHPUnitExtensions\Mock\consecutive;
 
 #[CoversClass(MergeRequests::class)]
 class MergeRequestsTest extends AbstractTestCase
@@ -65,6 +67,47 @@ class MergeRequestsTest extends AbstractTestCase
         $this->serializer->expects($this->never())->method('deserialize');
 
         static::assertNull($this->mergeRequests->findByRemoteRef(111, 'foo'));
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function testNotes(): void
+    {
+        $noteA = new Note();
+        $noteB = new Note();
+
+        $response = static::createStub(ResponseInterface::class);
+        $response->method('getHeaders')->willReturn(['x-next-page' => ['2']], ['x-next-page' => ['']]);
+        $response->method('getContent')->willReturn('json-a', 'json-b');
+
+        $this->client->expects($this->exactly(2))->method('request')
+            ->with(
+                ...consecutive(
+                    [
+                        'GET',
+                        'projects/111/merge_requests/222/notes',
+                        ['query' => ['sort' => 'desc', 'order_by' => 'created_at', 'per_page' => 100, 'page' => 1]]
+                    ],
+                    [
+                        'GET',
+                        'projects/111/merge_requests/222/notes',
+                        ['query' => ['sort' => 'desc', 'order_by' => 'created_at', 'per_page' => 100, 'page' => 2]]
+                    ]
+                )
+            )
+            ->willReturn($response);
+        $this->serializer->expects($this->exactly(2))
+            ->method('deserialize')
+            ->with(
+                ...consecutive(
+                    ['json-a', Note::class . '[]', JsonEncoder::FORMAT, [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]],
+                    ['json-b', Note::class . '[]', JsonEncoder::FORMAT, [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]],
+                )
+            )
+            ->willReturn([$noteA], [$noteB]);
+
+        static::assertSame([$noteA, $noteB], $this->mergeRequests->notes(111, 222));
     }
 
     /**

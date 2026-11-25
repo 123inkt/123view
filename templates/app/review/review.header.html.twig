@@ -62,6 +62,19 @@
             {{ stimulus_controller('merge-request', {id: review.id}) }}
         ><i class="bi" {{ stimulus_target('merge-request', 'icon') }}></i>
         </a>
+
+        <div class="d-none position-relative summary-note"
+             {{ stimulus_controller('summary-note', {id: review.id}) }}
+             {{ stimulus_action('summary-note', 'position', 'mouseenter')|stimulus_action('summary-note', 'position', 'focusin') }}
+        >
+            <a href="#"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="btn btn-sm border-0"
+               {{ stimulus_target('summary-note', 'link') }}
+            ><i class="bi bi-chat-square-text" {{ stimulus_target('summary-note', 'icon') }}></i></a>
+            <div class="summary-note-panel" {{ stimulus_target('summary-note', 'panel') }}></div>
+        </div>
     </div>
 
     {% include 'app/flash/flashes.html.twig' %}

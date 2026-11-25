@@ -90,4 +90,38 @@ class CodeReviewRevisionServiceTest extends AbstractTestCase
 
         static::assertSame([], $this->service->getRevisions($review));
     }
+
+    public function testFindRemoteRef(): void
+    {
+        $revisionA = new Revision();
+        $revisionA->setFirstBranch('older');
+        $revisionB = new Revision();
+        $revisionB->setFirstBranch('latest');
+        $revisionC = new Revision();
+        $revisionC->setFirstBranch(null);
+        $review = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
+        $review->getRevisions()->add($revisionA);
+        $review->getRevisions()->add($revisionB);
+        $review->getRevisions()->add($revisionC);
+
+        $this->revisionSorter->expects($this->once())->method('sort')->willReturnArgument(0);
+        $this->revListService->expects($this->never())->method('getCommitsAheadOf');
+        $this->revisionRepository->expects($this->never())->method('findBy');
+
+        static::assertSame('latest', $this->service->findRemoteRef($review));
+    }
+
+    public function testFindRemoteRefWithoutBranch(): void
+    {
+        $review = new CodeReview();
+        $review->setType(CodeReviewType::COMMITS);
+        $review->getRevisions()->add(new Revision()->setFirstBranch(null));
+
+        $this->revisionSorter->expects($this->once())->method('sort')->willReturnArgument(0);
+        $this->revListService->expects($this->never())->method('getCommitsAheadOf');
+        $this->revisionRepository->expects($this->never())->method('findBy');
+
+        static::assertNull($this->service->findRemoteRef($review));
+    }
 }

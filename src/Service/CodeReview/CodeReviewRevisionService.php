@@ -64,4 +64,11 @@ class CodeReviewRevisionService implements LoggerAwareInterface
 
         return $this->revisions[$reviewId] = $revisions;
     }
+
+    public function findRemoteRef(CodeReview $review): ?string
+    {
+        $revisions = array_reverse($this->getRevisions($review));
+
+        return Arrays::findOrNull($revisions, static fn(Revision $revision) => $revision->getFirstBranch() !== null)?->getFirstBranch();
+    }
 }

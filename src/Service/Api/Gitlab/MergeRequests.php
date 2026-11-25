@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DR\Review\Service\Api\Gitlab;
 
+use DR\Review\Model\Api\Gitlab\Note;
 use DR\Review\Model\Api\Gitlab\Version;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -43,6 +44,35 @@ class MergeRequests
         )->toArray();
 
         return count($result) === 0 ? null : $result[0];
+    }
+
+    /**
+     * @return Note[]
+     * @throws Throwable
+     * @link https://docs.gitlab.com/ee/api/notes.html#list-all-merge-request-notes
+     */
+    public function notes(int $projectId, int $mergeRequestIId, int $perPage = 100): array
+    {
+        $notes = [];
+        $page  = 1;
+        do {
+            $response = $this->client->request(
+                'GET',
+                sprintf('projects/%d/merge_requests/%d/notes', $projectId, $mergeRequestIId),
+                ['query' => ['sort' => 'desc', 'order_by' => 'created_at', 'per_page' => $perPage, 'page' => $page]]
+            );
+            $page     = (int)($response->getHeaders()['x-next-page'][0] ?? -1);
+            /** @phpstan-var list<Note> $pageNotes */
+            $pageNotes = $this->serializer->deserialize(
+                $response->getContent(),
+                Note::class . '[]',
+                JsonEncoder::FORMAT,
+                [AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => true]
+            );
+            $notes     = [...$notes, ...$pageNotes];
+        } while ($page > 0);
+
+        return $notes;
     }
 
     /**
