@@ -7,7 +7,6 @@ use DR\Review\Controller\AbstractController;
 use DR\Review\Entity\Review\CodeReview;
 use DR\Review\ExternalTool\Gitlab\GitlabService;
 use DR\Review\Service\CodeReview\CodeReviewRevisionService;
-use DR\Utils\Arrays;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -37,8 +36,7 @@ class GetMergeRequestForReviewController extends AbstractController
             return new JsonResponse(null, headers: ['Cache-Control' => 'public']);
         }
 
-        $revisions = array_reverse($this->revisionService->getRevisions($review));
-        $remoteRef = Arrays::findOrNull($revisions, static fn($value) => $value->getFirstBranch() !== null)?->getFirstBranch();
+        $remoteRef = $this->revisionService->findRemoteRef($review);
         if ($remoteRef === null) {
             return new JsonResponse(null, headers: ['Cache-Control' => 'public,max-age=3600']);
         }

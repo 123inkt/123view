@@ -52,6 +52,40 @@
     font-size: 0.8rem;
 }
 
+.summary-note-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    width: max-content;
+    max-width: min(32rem, calc(100vw - 20px));
+    max-height: 60vh;
+    overflow: auto;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    background-color: var(--bs-body-bg);
+    box-shadow: var(--bs-box-shadow-lg);
+    font-size: 0.8rem;
+}
+
+.summary-note-spin {
+    display: inline-block;
+    animation: summary-note-spin 2s linear infinite;
+}
+
+@keyframes summary-note-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.summary-note:hover .summary-note-panel,
+.summary-note:focus-within .summary-note-panel {
+    display: block;
+}
+
 .diff-file__file-preview {
     padding: 5px 20px;
     border: 1px solid var(--comment-border-color);

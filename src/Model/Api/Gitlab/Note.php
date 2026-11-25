@@ -8,4 +8,6 @@ class Note
     public int      $id;
     public string   $body;
     public ?Position $position = null;
+    public ?User $author = null;
+    public bool $system = false;
 }

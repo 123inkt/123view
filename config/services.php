@@ -105,6 +105,11 @@ return static function (ContainerConfigurator $container): void {
         ->bind('$gitlabReviewerSyncEnabled', '%env(bool:GITLAB_REVIEWER_SYNC)%')
         ->bind('$gitlabSyncMandatory', '%env(bool:GITLAB_SYNC_MANDATORY)%')
         ->bind('$gitlabApiUrl', '%env(GITLAB_API_URL)%')
+        ->bind('$summaryNoteAuthor', '%env(GITLAB_SUMMARY_NOTE_AUTHOR)%')
+        ->bind('$summaryNotePrefix', '%env(GITLAB_SUMMARY_NOTE_PREFIX)%')
+        ->bind('$summaryNoteSuccessPattern', '%env(GITLAB_SUMMARY_NOTE_SUCCESS_PATTERN)%')
+        ->bind('$summaryNoteWarningPattern', '%env(GITLAB_SUMMARY_NOTE_WARNING_PATTERN)%')
+        ->bind('$summaryNoteProgressPattern', '%env(GITLAB_SUMMARY_NOTE_PROGRESS_PATTERN)%')
         ->bind('$applicationName', '%env(APP_NAME)%')
         ->bind('$appAbsoluteUrl', '%env(APP_ABSOLUTE_URL)%')
         ->bind(ProviderInterface::class . ' $collectionProvider', service(CollectionProvider::class));
